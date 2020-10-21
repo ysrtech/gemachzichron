@@ -13,11 +13,26 @@ module.exports = {
             fontFamily: {
                 sans: ['Nunito', ...defaultTheme.fontFamily.sans],
             },
+            colors: {
+              indigo: {
+                '900': '#191e38',
+                '800': '#2f365f',
+                '700': '#394173',
+                '600': '#5661b3',
+                '500': '#6574cd',
+                '400': '#7886d7',
+                '300': '#b2b7ff',
+                '200': '#c3dafe',
+                '100': '#e6e8ff',
+              },
+            },
+            fill: theme => theme('colors'),
         },
     },
 
     variants: {
-        opacity: ['responsive', 'hover', 'focus', 'disabled'],
+      fill: ['responsive', 'hover', 'focus', 'group-hover'],
+      opacity: ['responsive', 'hover', 'focus', 'disabled'],
     },
 
     plugins: [require('@tailwindcss/ui')],

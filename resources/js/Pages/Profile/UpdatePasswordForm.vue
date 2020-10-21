@@ -33,7 +33,7 @@
                 Saved.
             </jet-action-message>
 
-            <jet-button :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+            <jet-button :processing="form.processing">
                 Save
             </jet-button>
         </template>

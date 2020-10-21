@@ -16,16 +16,20 @@
 
         <x-jet-validation-errors class="mb-4" />
 
-        <form method="POST" action="{{ route('password.email') }}">
+        <form method="POST" action="{{ route('password.email') }}" x-data="{ processing: false }" @submit="processing = true">
             @csrf
 
             <div class="block">
                 <x-jet-label for="email" value="{{ __('Email') }}" />
-                <x-jet-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
+                <x-jet-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" x-bind:readonly="processing" required autofocus />
             </div>
 
             <div class="flex items-center justify-end mt-4">
-                <x-jet-button>
+                <a class="underline text-sm text-gray-400 hover:text-gray-700" href="{{ route('login') }}">
+                    {{ __('Back to login') }}
+                </a>
+
+                <x-jet-button class="ml-4">
                     {{ __('Email Password Reset Link') }}
                 </x-jet-button>
             </div>

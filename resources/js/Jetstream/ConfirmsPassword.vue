@@ -16,6 +16,7 @@
                     <jet-input type="password" class="mt-1 block w-3/4" placeholder="Password"
                                 ref="password"
                                 v-model="form.password"
+                                @input.native="clearErrors"
                                 @keyup.enter.native="confirmPassword" />
 
                     <jet-input-error :message="form.error" class="mt-2" />
@@ -24,10 +25,10 @@
 
             <template #footer>
                 <jet-secondary-button @click.native="confirmingPassword = false">
-                    Nevermind
+                    Cancel
                 </jet-secondary-button>
 
-                <jet-button class="ml-2" @click.native="confirmPassword" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                <jet-button class="ml-2" @click.native="confirmPassword" :processing="form.processing">
                     {{ button }}
                 </jet-button>
             </template>
@@ -96,13 +97,13 @@
 
             confirmPassword() {
                 this.form.processing = true;
+                this.form.error = '';
 
                 axios.post(route('password.confirm').url(), {
                     password: this.form.password,
                 }).then(response => {
                     this.confirmingPassword = false;
                     this.form.password = '';
-                    this.form.error = '';
                     this.form.processing = false;
 
                     this.$nextTick(() => this.$emit('confirmed'));
@@ -110,6 +111,10 @@
                     this.form.processing = false;
                     this.form.error = error.response.data.errors.password[0];
                 });
+            },
+
+            clearErrors() {
+                this.form.error = '';
             }
         }
     }
