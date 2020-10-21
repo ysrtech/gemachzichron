@@ -15,8 +15,10 @@ jobs:
           username: ${{ secrets.DEV_SERVER_USERNAME }}
           password: ${{ secrets.DEV_SERVER_PASSWORD }}
           port: ${{ secrets.DEV_SERVER_PORT }}
-          script: |
+          script: |          
             echo -e "\e[1;32mDeploying application...\e[0m"
+            
+            cd ${{ secrets.DEV_SERVER_REPO_PATH }}
 
             echo "Entering maintenance mode."
             (php artisan down --message 'We are working on some updates. Please try again in a few minutes.') || true
