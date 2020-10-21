@@ -38,7 +38,8 @@
                  class="absolute z-50 mt-2 rounded-md shadow-lg w-48 right-0"
                  @click="showingNavigationDropdown = false">
               <div class="rounded-md shadow-xs bg-indigo-800 p-4">
-                <side-nav-item title="Dashboard" routeName="dashboard" icon="dashboard"></side-nav-item>
+                <nav-item title="Dashboard" routeName="dashboard" icon="dashboard"></nav-item>
+                <nav-item title="Members" routeName="members.index" icon="people"></nav-item>
               </div>
             </div>
           </transition>
@@ -100,7 +101,8 @@
 
     <div class="md:flex md:flex-grow md:overflow-hidden">
       <div class="hidden md:block bg-indigo-800 flex-shrink-0 w-56 p-12 overflow-y-auto">
-        <side-nav-item title="Dashboard" routeName="dashboard" icon="dashboard"></side-nav-item>
+        <nav-item title="Dashboard" routeName="dashboard" icon="dashboard"></nav-item>
+        <nav-item title="Members" routeName="members.index" icon="people"></nav-item>
       </div>
 
       <!-- Page Content -->
@@ -117,17 +119,17 @@
 </template>
 
 <script>
-import JetApplicationLogo from './../Jetstream/ApplicationLogo'
-import JetApplicationMark from './../Jetstream/ApplicationMark'
-import JetDropdown from './../Jetstream/Dropdown'
-import JetDropdownLink from './../Jetstream/DropdownLink'
-import JetNavLink from './../Jetstream/NavLink'
-import JetResponsiveNavLink from './../Jetstream/ResponsiveNavLink'
-import SideNavItem from "../Shared/SideNavItem";
+import JetApplicationLogo from '../Components/ApplicationLogo'
+import JetApplicationMark from '../Components/ApplicationMark'
+import JetDropdown from '../Components/Dropdown'
+import JetDropdownLink from '../Components/DropdownLink'
+import JetNavLink from '../Components/NavLink'
+import JetResponsiveNavLink from '../Components/ResponsiveNavLink'
+import NavItem from "../Components/NavItem";
 
 export default {
   components: {
-    SideNavItem,
+    NavItem,
     JetApplicationLogo,
     JetApplicationMark,
     JetDropdown,

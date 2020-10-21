@@ -94,7 +94,7 @@
 </template>
 
 <script>
-    import JetApplicationLogo from './../Jetstream/ApplicationLogo'
+    import JetApplicationLogo from './/ApplicationLogo'
 
     export default {
         components: {

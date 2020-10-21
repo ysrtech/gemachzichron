@@ -11,7 +11,7 @@
 import Icon from "./Icon";
 
 export default {
-  name: "SideNavItem",
+  name: "NavItem",
   components: {
     Icon,
   },
