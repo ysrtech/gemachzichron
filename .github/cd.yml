@@ -1,0 +1,53 @@
+name: CD
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          script: |
+            echo -e "\e[1;32mDeploying application...\e[0m"
+
+            echo "Entering maintenance mode."
+            (php artisan down --message 'We are working on some updates. Please try again in a few minutes.') || true
+
+            echo "Updating codebase..."
+            git fetch origin ${GITHUB_REF##*/}
+            git reset --hard origin/${GITHUB_REF##*/}
+
+            echo "Updating composer dependencies..."
+            composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
+
+            echo "Updating npm dependencies..."
+            npm ci
+            npm run prod
+
+            echo "Optimizing code..."
+            php artisan optimize:clear
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
+
+            # echo "Reloading PHP..."
+            # echo "" | sudo -S service php reload
+
+            echo "Migrating database..."
+            php artisan migrate --force
+
+            # echo "Restarting queue workers..."
+            # php artisan queue:restart
+
+            echo "Exiting maintenance mode."
+            php artisan up
+
+            echo -e "\e[1;32mApplication deployed! \e[0m"
