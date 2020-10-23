@@ -1,6 +1,6 @@
 <template>
     <div class="relative">
-        <div @click="open = ! open">
+        <div @click="open = !open">
             <slot name="trigger"></slot>
         </div>
 
@@ -16,10 +16,10 @@
             leave-class="transform opacity-100 scale-100"
             leave-to-class="transform opacity-0 scale-95">
             <div v-show="open"
-                    class="absolute z-50 mt-2 rounded-md shadow-lg"
-                    :class="[widthClass, alignmentClasses]"
-                    style="display: none;"
-                    @click="open = false">
+                 class="absolute z-50 mt-2 rounded-md shadow-lg"
+                 :class="[widthClass, alignmentClasses]"
+                 style="display: none;"
+                 @click="open = (closeOnClick ? false : open)">
                 <div class="rounded-md shadow-xs" :class="contentClasses">
                     <slot name="content"></slot>
                 </div>
@@ -29,55 +29,60 @@
 </template>
 
 <script>
-    export default {
-        props: {
-            align: {
-                default: 'right'
-            },
-            width: {
-                default: '48'
-            },
-            contentClasses: {
-                default: () => ['py-1', 'bg-white']
-            }
+export default {
+    props: {
+        align: {
+            default: 'right'
         },
-
-        data() {
-            return {
-                open: false
-            }
+        width: {
+            default: '48'
         },
-
-        created() {
-            const closeOnEscape = (e) => {
-                if (this.open && e.keyCode === 27) {
-                    this.open = false
-                }
-            }
-
-            this.$once('hook:destroyed', () => {
-                document.removeEventListener('keydown', closeOnEscape)
-            })
-
-            document.addEventListener('keydown', closeOnEscape)
+        contentClasses: {
+            default: () => ['py-1', 'bg-white']
         },
+      closeOnClick: {
+          default: true
+      }
+    },
 
-        computed: {
-            widthClass() {
-                return {
-                    '48': 'w-48',
-                }[this.width.toString()]
-            },
-
-            alignmentClasses() {
-                if (this.align == 'left') {
-                    return 'origin-top-left left-0'
-                } else if (this.align == 'right') {
-                    return 'origin-top-right right-0'
-                } else {
-                    return 'origin-top'
-                }
-            },
+    data() {
+        return {
+            open: false
         }
+    },
+
+    created() {
+        const closeOnEscape = (e) => {
+            if (this.open && e.keyCode === 27) {
+                this.open = false
+            }
+        }
+
+        this.$once('hook:destroyed', () => {
+            document.removeEventListener('keydown', closeOnEscape)
+        })
+
+        document.addEventListener('keydown', closeOnEscape)
+    },
+
+    computed: {
+        widthClass() {
+            return {
+                '36': 'w-36',
+                '48': 'w-48',
+                '56': 'w-56',
+            }[this.width.toString()]
+        },
+
+        alignmentClasses() {
+            if (this.align == 'left') {
+                return 'origin-top-left left-0'
+            } else if (this.align == 'right') {
+                return 'origin-top-right right-0'
+            } else {
+                return 'origin-top'
+            }
+        },
     }
+}
 </script>
