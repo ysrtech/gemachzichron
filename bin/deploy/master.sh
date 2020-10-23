@@ -11,8 +11,7 @@ printf "Entering maintenance mode.\n"
 php artisan down
 
 printf "Updating codebase...\n"
-git fetch origin master
-git reset --hard origin/master
+git fetch && git reset --hard origin/master
 
 printf "Updating composer dependencies...\n"
 composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
