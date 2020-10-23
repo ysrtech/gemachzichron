@@ -19,6 +19,8 @@ composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
 
 echo "Updating npm dependencies..."
 npm ci
+
+echo "Building assets..."
 npm run prod
 
 echo "Optimizing code..."
