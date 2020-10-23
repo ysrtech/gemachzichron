@@ -18,10 +18,10 @@ echo "Updating composer dependencies..."
 composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
 
 echo "Updating npm dependencies..."
-npm ci
+npm ci -q
 
 echo "Building assets..."
-npm run prod
+npm run prod -q
 
 echo "Optimizing code..."
 php artisan optimize:clear
