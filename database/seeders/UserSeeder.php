@@ -22,5 +22,7 @@ class UserSeeder extends Seeder
             'role' => User::ROLE_SUPER_ADMIN,
             'password' => Hash::make('11111111')
         ]);
+
+        // \App\Models\User::factory(10)->create();
     }
 }
