@@ -1,3 +1,10 @@
+#!/bin/bash
+
+if [ ! -f composer.json ]; then
+    echo "Please make sure to run this script from the root directory of this repo."
+    exit 1
+fi
+
 echo -e "\e[1;32mDeploying application...\e[0m"
 
 echo "Entering maintenance mode."
