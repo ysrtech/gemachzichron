@@ -40,7 +40,8 @@
                  @click="showingNavigationDropdown = false">
               <div class="rounded-md shadow-xs bg-primary-800 p-4">
                 <template v-for="item in navItems">
-                  <inertia-link class="flex items-center group py-3 transition rounded-md group focus:outline-none"
+                  <inertia-link class="flex items-center group py-2 px-3 my-2 transition rounded-md group focus:outline-none"
+                                :class="$page.currentRouteName == item.route ? 'bg-primary-600' : 'hover:bg-primary-700'"
                                 :href="route(item.route)">
                     <i class="material-icons-outlined mr-2"
                        :class="$page.currentRouteName == item.route ? 'text-white' : 'text-primary-500 group-hover:text-white'">{{
@@ -112,10 +113,11 @@
     </div>
 
     <div class="md:flex md:flex-grow md:overflow-hidden">
-      <div class="hidden md:block bg-primary-800 flex-shrink-0 w-56 p-12 overflow-y-auto">
+      <div class="hidden md:block bg-primary-800 flex-shrink-0 w-56 py-12 px-5 overflow-y-auto">
         <template v-for="item in navItems">
           <inertia-link
-            class="flex items-center group py-3 transition rounded-md group focus:outline-none"
+            class="flex items-center group py-2 px-3 my-2 transition rounded-md group focus:outline-none"
+            :class="$page.currentRouteName == item.route ? 'bg-primary-600' : 'hover:bg-primary-700'"
             :href="route(item.route)">
             <i class="material-icons-outlined mr-2"
                :class="$page.currentRouteName == item.route ? 'text-white' : 'text-primary-400 group-hover:text-white'">{{
@@ -132,7 +134,7 @@
       <!-- Page Content -->
       <main class="w-full md:overflow-y-auto">
         <div class="mx-auto pt-24 md:py-10 sm:px-6 lg:px-8">
-          <slot></slot>
+          <slot/>
         </div>
       </main>
 
@@ -180,10 +182,6 @@ export default {
       }, {
         preserveState: false
       })
-    },
-
-    url() {
-      return location.pathname.substr(1)
     },
 
     logout() {

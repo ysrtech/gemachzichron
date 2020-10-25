@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Traits\RouteBindingWithTrashed;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Member extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, RouteBindingWithTrashed;
 
     public function scopeFilter($query, array $filters)
     {

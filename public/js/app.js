@@ -112,6 +112,19 @@ var e,t=(e=__webpack_require__(/*! axios */ "./node_modules/axios/index.js"))&&"
 
 /***/ }),
 
+/***/ "./node_modules/@inertiajs/progress/dist/index.js":
+/*!********************************************************!*\
+  !*** ./node_modules/@inertiajs/progress/dist/index.js ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var n,e=(n=__webpack_require__(/*! nprogress */ "./node_modules/nprogress/nprogress.js"))&&"object"==typeof n&&"default"in n?n.default:n;exports.InertiaProgress={delay:null,timeout:null,inProgress:0,init:function(n){var e=void 0===n?{}:n,t=e.delay,r=e.color,i=void 0===r?"#29d":r,s=e.includeCSS,o=void 0===s||s,a=e.showSpinner,p=void 0!==a&&a;this.delay=void 0===t?250:t,this.configureNProgress({showSpinner:p}),this.registerEvents(),o&&this.injectCSS(i)},configureNProgress:function(n){e.configure(n)},registerEvents:function(){document.addEventListener("inertia:start",this.start.bind(this)),document.addEventListener("inertia:progress",this.progress.bind(this)),document.addEventListener("inertia:finish",this.finish.bind(this))},injectCSS:function(n){var e=document.createElement("style");e.type="text/css",e.textContent="\n      #nprogress {\n        pointer-events: none;\n      }\n\n      #nprogress .bar {\n        background: "+n+";\n\n        position: fixed;\n        z-index: 1031;\n        top: 0;\n        left: 0;\n\n        width: 100%;\n        height: 2px;\n      }\n\n      #nprogress .peg {\n        display: block;\n        position: absolute;\n        right: 0px;\n        width: 100px;\n        height: 100%;\n        box-shadow: 0 0 10px "+n+", 0 0 5px "+n+";\n        opacity: 1.0;\n\n        -webkit-transform: rotate(3deg) translate(0px, -4px);\n            -ms-transform: rotate(3deg) translate(0px, -4px);\n                transform: rotate(3deg) translate(0px, -4px);\n      }\n\n      #nprogress .spinner {\n        display: block;\n        position: fixed;\n        z-index: 1031;\n        top: 15px;\n        right: 15px;\n      }\n\n      #nprogress .spinner-icon {\n        width: 18px;\n        height: 18px;\n        box-sizing: border-box;\n\n        border: solid 2px transparent;\n        border-top-color: "+n+";\n        border-left-color: "+n+";\n        border-radius: 50%;\n\n        -webkit-animation: nprogress-spinner 400ms linear infinite;\n                animation: nprogress-spinner 400ms linear infinite;\n      }\n\n      .nprogress-custom-parent {\n        overflow: hidden;\n        position: relative;\n      }\n\n      .nprogress-custom-parent #nprogress .spinner,\n      .nprogress-custom-parent #nprogress .bar {\n        position: absolute;\n      }\n\n      @-webkit-keyframes nprogress-spinner {\n        0%   { -webkit-transform: rotate(0deg); }\n        100% { -webkit-transform: rotate(360deg); }\n      }\n      @keyframes nprogress-spinner {\n        0%   { transform: rotate(0deg); }\n        100% { transform: rotate(360deg); }\n      }\n    ",document.head.appendChild(e)},start:function(n){var t=this;Promise.resolve().then(function(){n.defaultPrevented||(t.inProgress++,clearTimeout(t.timeout),t.timeout=setTimeout(function(){e.set(0),e.start()},t.delay))})},progress:function(n){e.isStarted()&&n.detail.progress.percentage&&e.set(n.detail.progress.percentage/100*.9)},finish:function(){this.inProgress--,0===this.inProgress&&(e.done(),clearTimeout(this.timeout))}};
+//# sourceMappingURL=index.js.map
+
+
+/***/ }),
+
 /***/ "./node_modules/axios/index.js":
 /*!*************************************!*\
   !*** ./node_modules/axios/index.js ***!
@@ -2538,6 +2551,157 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Components/Members/IndexRow.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/Components/Members/IndexRow.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Dropdown__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Dropdown */ "./resources/js/Components/Dropdown.vue");
+/* harmony import */ var _DropdownLink__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../DropdownLink */ "./resources/js/Components/DropdownLink.vue");
+/* harmony import */ var _Button__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Button */ "./resources/js/Components/Button.vue");
+/* harmony import */ var _DialogModal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../DialogModal */ "./resources/js/Components/DialogModal.vue");
+/* harmony import */ var _SecondaryButton__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../SecondaryButton */ "./resources/js/Components/SecondaryButton.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    JetDropdown: _Dropdown__WEBPACK_IMPORTED_MODULE_0__["default"],
+    JetDropdownLink: _DropdownLink__WEBPACK_IMPORTED_MODULE_1__["default"],
+    JetButton: _Button__WEBPACK_IMPORTED_MODULE_2__["default"],
+    JetDialogModal: _DialogModal__WEBPACK_IMPORTED_MODULE_3__["default"],
+    JetSecondaryButton: _SecondaryButton__WEBPACK_IMPORTED_MODULE_4__["default"]
+  },
+  props: {
+    member: {
+      type: Object,
+      required: true
+    }
+  },
+  data: function data() {
+    return {
+      confirmingArchiveMember: false,
+      form: this.$inertia.form()
+    };
+  },
+  methods: {
+    deleteMember: function deleteMember() {
+      var _this = this;
+
+      this.form["delete"](route('members.destroy', this.member.id), {
+        preserveScroll: true
+      }).then(function (response) {
+        if (!_this.form.hasErrors()) {
+          _this.confirmingArchiveMember = false;
+        }
+      });
+    },
+    restoreMember: function restoreMember() {
+      this.form.put(route('members.restore', this.member.id), {
+        preserveScroll: true
+      });
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Components/Modal.vue?vue&type=script&lang=js&":
 /*!****************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/Components/Modal.vue?vue&type=script&lang=js& ***!
@@ -3079,6 +3243,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 
@@ -3119,9 +3285,6 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         preserveState: false
       });
-    },
-    url: function url() {
-      return location.pathname.substr(1);
     },
     logout: function logout() {
       axios.post(route('logout').url()).then(function (response) {
@@ -3518,6 +3681,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Components_Dropdown__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../Components/Dropdown */ "./resources/js/Components/Dropdown.vue");
 /* harmony import */ var _Components_DropdownLink__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../Components/DropdownLink */ "./resources/js/Components/DropdownLink.vue");
 /* harmony import */ var _Components_Button__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../Components/Button */ "./resources/js/Components/Button.vue");
+/* harmony import */ var _Components_Members_IndexRow__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../Components/Members/IndexRow */ "./resources/js/Components/Members/IndexRow.vue");
 //
 //
 //
@@ -3571,66 +3735,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
 
 
 
@@ -3642,6 +3747,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
+    IndexRow: _Components_Members_IndexRow__WEBPACK_IMPORTED_MODULE_9__["default"],
     AppLayout: _Layouts_AppLayout__WEBPACK_IMPORTED_MODULE_0__["default"],
     Pagination: _Components_Pagination__WEBPACK_IMPORTED_MODULE_4__["default"],
     SearchFilter: _Components_SearchFilter__WEBPACK_IMPORTED_MODULE_5__["default"],
@@ -3655,16 +3761,16 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      form: {
+      filterForm: {
         search: this.filters.search,
         archived: this.filters.archived
       }
     };
   },
   watch: {
-    form: {
+    filterForm: {
       handler: lodash_throttle__WEBPACK_IMPORTED_MODULE_1___default()(function () {
-        var query = lodash_pickBy__WEBPACK_IMPORTED_MODULE_2___default()(this.form);
+        var query = lodash_pickBy__WEBPACK_IMPORTED_MODULE_2___default()(this.filterForm);
         this.$inertia.replace(this.route('members.index', Object.keys(query).length ? query : {
           remember: 'forget'
         }));
@@ -3674,7 +3780,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     reset: function reset() {
-      this.form = lodash_mapValues__WEBPACK_IMPORTED_MODULE_3___default()(this.form, function () {
+      this.filterForm = lodash_mapValues__WEBPACK_IMPORTED_MODULE_3___default()(this.filterForm, function () {
         return null;
       });
     }
@@ -27407,6 +27513,493 @@ module.exports = toString;
 
 /***/ }),
 
+/***/ "./node_modules/nprogress/nprogress.js":
+/*!*********************************************!*\
+  !*** ./node_modules/nprogress/nprogress.js ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/* NProgress, (c) 2013, 2014 Rico Sta. Cruz - http://ricostacruz.com/nprogress
+ * @license MIT */
+
+;(function(root, factory) {
+
+  if (true) {
+    !(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
+				__WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  } else {}
+
+})(this, function() {
+  var NProgress = {};
+
+  NProgress.version = '0.2.0';
+
+  var Settings = NProgress.settings = {
+    minimum: 0.08,
+    easing: 'ease',
+    positionUsing: '',
+    speed: 200,
+    trickle: true,
+    trickleRate: 0.02,
+    trickleSpeed: 800,
+    showSpinner: true,
+    barSelector: '[role="bar"]',
+    spinnerSelector: '[role="spinner"]',
+    parent: 'body',
+    template: '<div class="bar" role="bar"><div class="peg"></div></div><div class="spinner" role="spinner"><div class="spinner-icon"></div></div>'
+  };
+
+  /**
+   * Updates configuration.
+   *
+   *     NProgress.configure({
+   *       minimum: 0.1
+   *     });
+   */
+  NProgress.configure = function(options) {
+    var key, value;
+    for (key in options) {
+      value = options[key];
+      if (value !== undefined && options.hasOwnProperty(key)) Settings[key] = value;
+    }
+
+    return this;
+  };
+
+  /**
+   * Last number.
+   */
+
+  NProgress.status = null;
+
+  /**
+   * Sets the progress bar status, where `n` is a number from `0.0` to `1.0`.
+   *
+   *     NProgress.set(0.4);
+   *     NProgress.set(1.0);
+   */
+
+  NProgress.set = function(n) {
+    var started = NProgress.isStarted();
+
+    n = clamp(n, Settings.minimum, 1);
+    NProgress.status = (n === 1 ? null : n);
+
+    var progress = NProgress.render(!started),
+        bar      = progress.querySelector(Settings.barSelector),
+        speed    = Settings.speed,
+        ease     = Settings.easing;
+
+    progress.offsetWidth; /* Repaint */
+
+    queue(function(next) {
+      // Set positionUsing if it hasn't already been set
+      if (Settings.positionUsing === '') Settings.positionUsing = NProgress.getPositioningCSS();
+
+      // Add transition
+      css(bar, barPositionCSS(n, speed, ease));
+
+      if (n === 1) {
+        // Fade out
+        css(progress, { 
+          transition: 'none', 
+          opacity: 1 
+        });
+        progress.offsetWidth; /* Repaint */
+
+        setTimeout(function() {
+          css(progress, { 
+            transition: 'all ' + speed + 'ms linear', 
+            opacity: 0 
+          });
+          setTimeout(function() {
+            NProgress.remove();
+            next();
+          }, speed);
+        }, speed);
+      } else {
+        setTimeout(next, speed);
+      }
+    });
+
+    return this;
+  };
+
+  NProgress.isStarted = function() {
+    return typeof NProgress.status === 'number';
+  };
+
+  /**
+   * Shows the progress bar.
+   * This is the same as setting the status to 0%, except that it doesn't go backwards.
+   *
+   *     NProgress.start();
+   *
+   */
+  NProgress.start = function() {
+    if (!NProgress.status) NProgress.set(0);
+
+    var work = function() {
+      setTimeout(function() {
+        if (!NProgress.status) return;
+        NProgress.trickle();
+        work();
+      }, Settings.trickleSpeed);
+    };
+
+    if (Settings.trickle) work();
+
+    return this;
+  };
+
+  /**
+   * Hides the progress bar.
+   * This is the *sort of* the same as setting the status to 100%, with the
+   * difference being `done()` makes some placebo effect of some realistic motion.
+   *
+   *     NProgress.done();
+   *
+   * If `true` is passed, it will show the progress bar even if its hidden.
+   *
+   *     NProgress.done(true);
+   */
+
+  NProgress.done = function(force) {
+    if (!force && !NProgress.status) return this;
+
+    return NProgress.inc(0.3 + 0.5 * Math.random()).set(1);
+  };
+
+  /**
+   * Increments by a random amount.
+   */
+
+  NProgress.inc = function(amount) {
+    var n = NProgress.status;
+
+    if (!n) {
+      return NProgress.start();
+    } else {
+      if (typeof amount !== 'number') {
+        amount = (1 - n) * clamp(Math.random() * n, 0.1, 0.95);
+      }
+
+      n = clamp(n + amount, 0, 0.994);
+      return NProgress.set(n);
+    }
+  };
+
+  NProgress.trickle = function() {
+    return NProgress.inc(Math.random() * Settings.trickleRate);
+  };
+
+  /**
+   * Waits for all supplied jQuery promises and
+   * increases the progress as the promises resolve.
+   *
+   * @param $promise jQUery Promise
+   */
+  (function() {
+    var initial = 0, current = 0;
+
+    NProgress.promise = function($promise) {
+      if (!$promise || $promise.state() === "resolved") {
+        return this;
+      }
+
+      if (current === 0) {
+        NProgress.start();
+      }
+
+      initial++;
+      current++;
+
+      $promise.always(function() {
+        current--;
+        if (current === 0) {
+            initial = 0;
+            NProgress.done();
+        } else {
+            NProgress.set((initial - current) / initial);
+        }
+      });
+
+      return this;
+    };
+
+  })();
+
+  /**
+   * (Internal) renders the progress bar markup based on the `template`
+   * setting.
+   */
+
+  NProgress.render = function(fromStart) {
+    if (NProgress.isRendered()) return document.getElementById('nprogress');
+
+    addClass(document.documentElement, 'nprogress-busy');
+    
+    var progress = document.createElement('div');
+    progress.id = 'nprogress';
+    progress.innerHTML = Settings.template;
+
+    var bar      = progress.querySelector(Settings.barSelector),
+        perc     = fromStart ? '-100' : toBarPerc(NProgress.status || 0),
+        parent   = document.querySelector(Settings.parent),
+        spinner;
+    
+    css(bar, {
+      transition: 'all 0 linear',
+      transform: 'translate3d(' + perc + '%,0,0)'
+    });
+
+    if (!Settings.showSpinner) {
+      spinner = progress.querySelector(Settings.spinnerSelector);
+      spinner && removeElement(spinner);
+    }
+
+    if (parent != document.body) {
+      addClass(parent, 'nprogress-custom-parent');
+    }
+
+    parent.appendChild(progress);
+    return progress;
+  };
+
+  /**
+   * Removes the element. Opposite of render().
+   */
+
+  NProgress.remove = function() {
+    removeClass(document.documentElement, 'nprogress-busy');
+    removeClass(document.querySelector(Settings.parent), 'nprogress-custom-parent');
+    var progress = document.getElementById('nprogress');
+    progress && removeElement(progress);
+  };
+
+  /**
+   * Checks if the progress bar is rendered.
+   */
+
+  NProgress.isRendered = function() {
+    return !!document.getElementById('nprogress');
+  };
+
+  /**
+   * Determine which positioning CSS rule to use.
+   */
+
+  NProgress.getPositioningCSS = function() {
+    // Sniff on document.body.style
+    var bodyStyle = document.body.style;
+
+    // Sniff prefixes
+    var vendorPrefix = ('WebkitTransform' in bodyStyle) ? 'Webkit' :
+                       ('MozTransform' in bodyStyle) ? 'Moz' :
+                       ('msTransform' in bodyStyle) ? 'ms' :
+                       ('OTransform' in bodyStyle) ? 'O' : '';
+
+    if (vendorPrefix + 'Perspective' in bodyStyle) {
+      // Modern browsers with 3D support, e.g. Webkit, IE10
+      return 'translate3d';
+    } else if (vendorPrefix + 'Transform' in bodyStyle) {
+      // Browsers without 3D support, e.g. IE9
+      return 'translate';
+    } else {
+      // Browsers without translate() support, e.g. IE7-8
+      return 'margin';
+    }
+  };
+
+  /**
+   * Helpers
+   */
+
+  function clamp(n, min, max) {
+    if (n < min) return min;
+    if (n > max) return max;
+    return n;
+  }
+
+  /**
+   * (Internal) converts a percentage (`0..1`) to a bar translateX
+   * percentage (`-100%..0%`).
+   */
+
+  function toBarPerc(n) {
+    return (-1 + n) * 100;
+  }
+
+
+  /**
+   * (Internal) returns the correct CSS for changing the bar's
+   * position given an n percentage, and speed and ease from Settings
+   */
+
+  function barPositionCSS(n, speed, ease) {
+    var barCSS;
+
+    if (Settings.positionUsing === 'translate3d') {
+      barCSS = { transform: 'translate3d('+toBarPerc(n)+'%,0,0)' };
+    } else if (Settings.positionUsing === 'translate') {
+      barCSS = { transform: 'translate('+toBarPerc(n)+'%,0)' };
+    } else {
+      barCSS = { 'margin-left': toBarPerc(n)+'%' };
+    }
+
+    barCSS.transition = 'all '+speed+'ms '+ease;
+
+    return barCSS;
+  }
+
+  /**
+   * (Internal) Queues a function to be executed.
+   */
+
+  var queue = (function() {
+    var pending = [];
+    
+    function next() {
+      var fn = pending.shift();
+      if (fn) {
+        fn(next);
+      }
+    }
+
+    return function(fn) {
+      pending.push(fn);
+      if (pending.length == 1) next();
+    };
+  })();
+
+  /**
+   * (Internal) Applies css properties to an element, similar to the jQuery 
+   * css method.
+   *
+   * While this helper does assist with vendor prefixed property names, it 
+   * does not perform any manipulation of values prior to setting styles.
+   */
+
+  var css = (function() {
+    var cssPrefixes = [ 'Webkit', 'O', 'Moz', 'ms' ],
+        cssProps    = {};
+
+    function camelCase(string) {
+      return string.replace(/^-ms-/, 'ms-').replace(/-([\da-z])/gi, function(match, letter) {
+        return letter.toUpperCase();
+      });
+    }
+
+    function getVendorProp(name) {
+      var style = document.body.style;
+      if (name in style) return name;
+
+      var i = cssPrefixes.length,
+          capName = name.charAt(0).toUpperCase() + name.slice(1),
+          vendorName;
+      while (i--) {
+        vendorName = cssPrefixes[i] + capName;
+        if (vendorName in style) return vendorName;
+      }
+
+      return name;
+    }
+
+    function getStyleProp(name) {
+      name = camelCase(name);
+      return cssProps[name] || (cssProps[name] = getVendorProp(name));
+    }
+
+    function applyCss(element, prop, value) {
+      prop = getStyleProp(prop);
+      element.style[prop] = value;
+    }
+
+    return function(element, properties) {
+      var args = arguments,
+          prop, 
+          value;
+
+      if (args.length == 2) {
+        for (prop in properties) {
+          value = properties[prop];
+          if (value !== undefined && properties.hasOwnProperty(prop)) applyCss(element, prop, value);
+        }
+      } else {
+        applyCss(element, args[1], args[2]);
+      }
+    }
+  })();
+
+  /**
+   * (Internal) Determines if an element or space separated list of class names contains a class name.
+   */
+
+  function hasClass(element, name) {
+    var list = typeof element == 'string' ? element : classList(element);
+    return list.indexOf(' ' + name + ' ') >= 0;
+  }
+
+  /**
+   * (Internal) Adds a class to an element.
+   */
+
+  function addClass(element, name) {
+    var oldList = classList(element),
+        newList = oldList + name;
+
+    if (hasClass(oldList, name)) return; 
+
+    // Trim the opening space.
+    element.className = newList.substring(1);
+  }
+
+  /**
+   * (Internal) Removes a class from an element.
+   */
+
+  function removeClass(element, name) {
+    var oldList = classList(element),
+        newList;
+
+    if (!hasClass(element, name)) return;
+
+    // Replace the class name.
+    newList = oldList.replace(' ' + name + ' ', ' ');
+
+    // Trim the opening and closing spaces.
+    element.className = newList.substring(1, newList.length - 1);
+  }
+
+  /**
+   * (Internal) Gets a space separated list of the class names on the element. 
+   * The list is wrapped with a single space on each end to facilitate finding 
+   * matches within the list.
+   */
+
+  function classList(element) {
+    return (' ' + (element.className || '') + ' ').replace(/\s+/gi, ' ');
+  }
+
+  /**
+   * (Internal) Removes an element from the DOM.
+   */
+
+  function removeElement(element) {
+    element && element.parentNode && element.parentNode.removeChild(element);
+  }
+
+  return NProgress;
+});
+
+
+
+/***/ }),
+
 /***/ "./node_modules/portal-vue/dist/portal-vue.common.js":
 /*!***********************************************************!*\
   !*** ./node_modules/portal-vue/dist/portal-vue.common.js ***!
@@ -29440,6 +30033,329 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Components/Members/IndexRow.vue?vue&type=template&id=858bd96e&":
+/*!*******************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/Components/Members/IndexRow.vue?vue&type=template&id=858bd96e& ***!
+  \*******************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "tr",
+    { staticClass: "hover:bg-gray-100 focus-within:bg-gray-100" },
+    [
+      _c(
+        "td",
+        { staticClass: "border-t" },
+        [
+          _c(
+            "inertia-link",
+            {
+              staticClass: "px-6 py-4 flex items-center focus:text-primary-500",
+              attrs: { href: _vm.route("members.show", _vm.member.id) }
+            },
+            [
+              _vm._v(
+                "\n      " +
+                  _vm._s(_vm.member.last_name + ", " + _vm.member.first_name) +
+                  "\n      "
+              ),
+              _vm.member.deleted_at
+                ? _c(
+                    "i",
+                    {
+                      staticClass:
+                        "material-icons flex-shrink-0 text-sm text-red-300 ml-2",
+                      attrs: { title: "Archived member" }
+                    },
+                    [_vm._v("delete")]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              true
+                ? _c(
+                    "i",
+                    {
+                      staticClass:
+                        "material-icons flex-shrink-0 text-sm text-green-300 ml-2",
+                      attrs: { title: "Active Membership" }
+                    },
+                    [_vm._v("verified_user")]
+                  )
+                : undefined
+            ]
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "td",
+        { staticClass: "border-t" },
+        [
+          _c(
+            "inertia-link",
+            {
+              staticClass: "px-6 py-4 flex items-center focus:outline-none",
+              attrs: {
+                href: _vm.route("members.show", _vm.member.id),
+                tabindex: "-1"
+              }
+            },
+            [_vm._v("\n      " + _vm._s(_vm.member.total_paid) + "\n    ")]
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "td",
+        { staticClass: "border-t" },
+        [
+          _c(
+            "inertia-link",
+            {
+              staticClass: "px-6 py-4 flex items-center focus:outline-none",
+              attrs: {
+                href: _vm.route("members.show", _vm.member.id),
+                tabindex: "-1"
+              }
+            },
+            [_vm._v("\n      " + _vm._s(_vm.member.home_phone) + "\n    ")]
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "td",
+        { staticClass: "border-t" },
+        [
+          _c(
+            "inertia-link",
+            {
+              staticClass: "px-6 py-4 flex items-center focus:outline-none",
+              attrs: {
+                href: _vm.route("members.show", _vm.member.id),
+                tabindex: "-1"
+              }
+            },
+            [_vm._v("\n      " + _vm._s(_vm.member.mobile_phone) + "\n    ")]
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "td",
+        { staticClass: "border-t" },
+        [
+          _c(
+            "inertia-link",
+            {
+              staticClass: "px-6 py-4 flex items-center focus:outline-none",
+              attrs: {
+                href: _vm.route("members.show", _vm.member.id),
+                tabindex: "-1"
+              }
+            },
+            [_vm._v("\n      " + _vm._s(_vm.member.email) + "\n    ")]
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "td",
+        { staticClass: "border-t w-px p-0" },
+        [
+          _c("jet-dropdown", {
+            staticClass: "mx-2",
+            attrs: { align: "right", width: "36" },
+            scopedSlots: _vm._u([
+              {
+                key: "trigger",
+                fn: function() {
+                  return [
+                    _c("div", { staticClass: "px-2 flex items-center" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass:
+                            "material-icons focus:outline-none rounded-full p-1 hover:bg-gray-200 focus:bg-gray-300"
+                        },
+                        [_vm._v("more_vert")]
+                      )
+                    ])
+                  ]
+                },
+                proxy: true
+              },
+              {
+                key: "content",
+                fn: function() {
+                  return [
+                    !_vm.member.deleted_at
+                      ? _c(
+                          "jet-dropdown-link",
+                          {
+                            attrs: { as: "button" },
+                            nativeOn: {
+                              click: function($event) {
+                                _vm.confirmingArchiveMember = true
+                              }
+                            }
+                          },
+                          [
+                            _c("div", { staticClass: "flex items-center" }, [
+                              _c(
+                                "i",
+                                {
+                                  staticClass:
+                                    "material-icons-outlined mr-3 text-gray-400"
+                                },
+                                [_vm._v("archive")]
+                              ),
+                              _vm._v(" "),
+                              _c("div", [_vm._v("Archive")])
+                            ])
+                          ]
+                        )
+                      : _c(
+                          "jet-dropdown-link",
+                          {
+                            attrs: { as: "button" },
+                            nativeOn: {
+                              click: function($event) {
+                                return _vm.restoreMember($event)
+                              }
+                            }
+                          },
+                          [
+                            _c("div", { staticClass: "flex items-center" }, [
+                              _c(
+                                "i",
+                                {
+                                  staticClass:
+                                    "material-icons-outlined mr-3 text-gray-400"
+                                },
+                                [_vm._v("unarchive")]
+                              ),
+                              _vm._v(" "),
+                              _c("div", [_vm._v("Restore")])
+                            ])
+                          ]
+                        ),
+                    _vm._v(" "),
+                    _c("jet-dropdown-link", { attrs: { href: "#" } }, [
+                      _c("div", { staticClass: "flex items-center" }, [
+                        _c(
+                          "i",
+                          {
+                            staticClass:
+                              "material-icons-outlined mr-3 text-gray-400"
+                          },
+                          [_vm._v("content_copy")]
+                        ),
+                        _vm._v(" "),
+                        _c("div", [_vm._v("Duplicate")])
+                      ])
+                    ])
+                  ]
+                },
+                proxy: true
+              }
+            ])
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("jet-dialog-modal", {
+        attrs: { show: _vm.confirmingArchiveMember, "max-width": "sm" },
+        on: {
+          close: function($event) {
+            _vm.confirmingArchiveMember = false
+          }
+        },
+        scopedSlots: _vm._u([
+          {
+            key: "title",
+            fn: function() {
+              return [_vm._v("\n      Archive Member\n    ")]
+            },
+            proxy: true
+          },
+          {
+            key: "content",
+            fn: function() {
+              return [
+                _vm._v("\n      Are you sure you want to archive "),
+                _c("strong", [
+                  _vm._v(
+                    _vm._s(_vm.member.first_name + " " + _vm.member.last_name)
+                  )
+                ]),
+                _vm._v("?\n    ")
+              ]
+            },
+            proxy: true
+          },
+          {
+            key: "footer",
+            fn: function() {
+              return [
+                _c(
+                  "jet-secondary-button",
+                  {
+                    nativeOn: {
+                      click: function($event) {
+                        _vm.confirmingArchiveMember = false
+                      }
+                    }
+                  },
+                  [_vm._v("\n        Cancel\n      ")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "jet-button",
+                  {
+                    staticClass: "ml-2",
+                    class: { "opacity-25": _vm.form.processing },
+                    attrs: { processing: _vm.form.processing },
+                    nativeOn: {
+                      click: function($event) {
+                        return _vm.deleteMember($event)
+                      }
+                    }
+                  },
+                  [_vm._v("\n        Confirm\n      ")]
+                )
+              ]
+            },
+            proxy: true
+          }
+        ])
+      })
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Components/Modal.vue?vue&type=template&id=5f7088f2&":
 /*!********************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/Components/Modal.vue?vue&type=template&id=5f7088f2& ***!
@@ -30432,7 +31348,11 @@ var render = function() {
                                   "inertia-link",
                                   {
                                     staticClass:
-                                      "flex items-center group py-3 transition rounded-md group focus:outline-none",
+                                      "flex items-center group py-2 px-3 my-2 transition rounded-md group focus:outline-none",
+                                    class:
+                                      _vm.$page.currentRouteName == item.route
+                                        ? "bg-primary-600"
+                                        : "hover:bg-primary-700",
                                     attrs: { href: _vm.route(item.route) }
                                   },
                                   [
@@ -30630,7 +31550,7 @@ var render = function() {
           "div",
           {
             staticClass:
-              "hidden md:block bg-primary-800 flex-shrink-0 w-56 p-12 overflow-y-auto"
+              "hidden md:block bg-primary-800 flex-shrink-0 w-56 py-12 px-5 overflow-y-auto"
           },
           [
             _vm._l(_vm.navItems, function(item) {
@@ -30639,7 +31559,11 @@ var render = function() {
                   "inertia-link",
                   {
                     staticClass:
-                      "flex items-center group py-3 transition rounded-md group focus:outline-none",
+                      "flex items-center group py-2 px-3 my-2 transition rounded-md group focus:outline-none",
+                    class:
+                      _vm.$page.currentRouteName == item.route
+                        ? "bg-primary-600"
+                        : "hover:bg-primary-700",
                     attrs: { href: _vm.route(item.route) }
                   },
                   [
@@ -31490,11 +32414,11 @@ var render = function() {
                   staticClass: "w-full max-w-md mr-4",
                   on: { reset: _vm.reset },
                   model: {
-                    value: _vm.form.search,
+                    value: _vm.filterForm.search,
                     callback: function($$v) {
-                      _vm.$set(_vm.form, "search", $$v)
+                      _vm.$set(_vm.filterForm, "search", $$v)
                     },
-                    expression: "form.search"
+                    expression: "filterForm.search"
                   }
                 },
                 [
@@ -31510,8 +32434,8 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.form.archived,
-                            expression: "form.archived"
+                            value: _vm.filterForm.archived,
+                            expression: "filterForm.archived"
                           }
                         ],
                         staticClass: "mt-1 w-full form-select",
@@ -31526,7 +32450,7 @@ var render = function() {
                                 return val
                               })
                             _vm.$set(
-                              _vm.form,
+                              _vm.filterForm,
                               "archived",
                               $event.target.multiple
                                 ? $$selectedVal
@@ -31610,272 +32534,11 @@ var render = function() {
                     )
                   ]),
                   _vm._v(" "),
-                  _vm._l(_vm.members.data, function(member, index) {
-                    return _c(
-                      "tr",
-                      {
-                        key: member.id,
-                        staticClass:
-                          "hover:bg-gray-100 focus-within:bg-gray-100"
-                      },
-                      [
-                        _c(
-                          "td",
-                          { staticClass: "border-t" },
-                          [
-                            _c(
-                              "inertia-link",
-                              {
-                                staticClass:
-                                  "px-6 py-4 flex items-center focus:text-primary-500",
-                                attrs: {
-                                  href: _vm.route("members.show", member.id)
-                                }
-                              },
-                              [
-                                _vm._v(
-                                  "\n              " +
-                                    _vm._s(
-                                      member.last_name +
-                                        ", " +
-                                        member.first_name
-                                    ) +
-                                    "\n              "
-                                ),
-                                true
-                                  ? _c(
-                                      "i",
-                                      {
-                                        staticClass:
-                                          "material-icons flex-shrink-0 text-sm text-green-300 ml-2",
-                                        attrs: { title: "Active Membership" }
-                                      },
-                                      [_vm._v("verified_user")]
-                                    )
-                                  : undefined,
-                                _vm._v(" "),
-                                member.deleted_at
-                                  ? _c(
-                                      "i",
-                                      {
-                                        staticClass:
-                                          "material-icons flex-shrink-0 text-red-200 ml-2",
-                                        attrs: { title: "Archived member" }
-                                      },
-                                      [_vm._v("delete")]
-                                    )
-                                  : _vm._e()
-                              ]
-                            )
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "td",
-                          { staticClass: "border-t" },
-                          [
-                            _c(
-                              "inertia-link",
-                              {
-                                staticClass:
-                                  "px-6 py-4 flex items-center focus:outline-none",
-                                attrs: {
-                                  href: _vm.route("members.show", member.id),
-                                  tabindex: "-1"
-                                }
-                              },
-                              [
-                                _vm._v(
-                                  "\n              " +
-                                    _vm._s(member.total_paid) +
-                                    "\n            "
-                                )
-                              ]
-                            )
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "td",
-                          { staticClass: "border-t" },
-                          [
-                            _c(
-                              "inertia-link",
-                              {
-                                staticClass:
-                                  "px-6 py-4 flex items-center focus:outline-none",
-                                attrs: {
-                                  href: _vm.route("members.show", member.id),
-                                  tabindex: "-1"
-                                }
-                              },
-                              [
-                                _vm._v(
-                                  "\n              " +
-                                    _vm._s(member.home_phone) +
-                                    "\n            "
-                                )
-                              ]
-                            )
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "td",
-                          { staticClass: "border-t" },
-                          [
-                            _c(
-                              "inertia-link",
-                              {
-                                staticClass:
-                                  "px-6 py-4 flex items-center focus:outline-none",
-                                attrs: {
-                                  href: _vm.route("members.show", member.id),
-                                  tabindex: "-1"
-                                }
-                              },
-                              [
-                                _vm._v(
-                                  "\n              " +
-                                    _vm._s(member.mobile_phone) +
-                                    "\n            "
-                                )
-                              ]
-                            )
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "td",
-                          { staticClass: "border-t" },
-                          [
-                            _c(
-                              "inertia-link",
-                              {
-                                staticClass:
-                                  "px-6 py-4 flex items-center focus:outline-none",
-                                attrs: {
-                                  href: _vm.route("members.show", member.id),
-                                  tabindex: "-1"
-                                }
-                              },
-                              [
-                                _vm._v(
-                                  "\n              " +
-                                    _vm._s(member.email) +
-                                    "\n            "
-                                )
-                              ]
-                            )
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "td",
-                          { staticClass: "border-t w-px p-0" },
-                          [
-                            _c("jet-dropdown", {
-                              staticClass: "mx-2",
-                              attrs: { align: "right", width: "36" },
-                              scopedSlots: _vm._u(
-                                [
-                                  {
-                                    key: "trigger",
-                                    fn: function() {
-                                      return [
-                                        _c(
-                                          "div",
-                                          {
-                                            staticClass:
-                                              "px-2 flex items-center"
-                                          },
-                                          [
-                                            _c(
-                                              "button",
-                                              {
-                                                staticClass:
-                                                  "material-icons focus:outline-none rounded-full p-1 hover:bg-gray-200 focus:bg-gray-300"
-                                              },
-                                              [_vm._v("more_vert")]
-                                            )
-                                          ]
-                                        )
-                                      ]
-                                    },
-                                    proxy: true
-                                  },
-                                  {
-                                    key: "content",
-                                    fn: function() {
-                                      return [
-                                        _c(
-                                          "jet-dropdown-link",
-                                          { attrs: { href: "#" } },
-                                          [
-                                            _c(
-                                              "div",
-                                              {
-                                                staticClass: "flex items-center"
-                                              },
-                                              [
-                                                _c(
-                                                  "i",
-                                                  {
-                                                    staticClass:
-                                                      "material-icons-outlined mr-3 text-gray-400"
-                                                  },
-                                                  [_vm._v("archive")]
-                                                ),
-                                                _vm._v(" "),
-                                                _c("div", [_vm._v("Archive")])
-                                              ]
-                                            )
-                                          ]
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "jet-dropdown-link",
-                                          { attrs: { href: "#" } },
-                                          [
-                                            _c(
-                                              "div",
-                                              {
-                                                staticClass: "flex items-center"
-                                              },
-                                              [
-                                                _c(
-                                                  "i",
-                                                  {
-                                                    staticClass:
-                                                      "material-icons-outlined mr-3 text-gray-400"
-                                                  },
-                                                  [_vm._v("content_copy")]
-                                                ),
-                                                _vm._v(" "),
-                                                _c("div", [_vm._v("Duplicate")])
-                                              ]
-                                            )
-                                          ]
-                                        )
-                                      ]
-                                    },
-                                    proxy: true
-                                  }
-                                ],
-                                null,
-                                true
-                              )
-                            })
-                          ],
-                          1
-                        )
-                      ]
-                    )
+                  _vm._l(_vm.members.data, function(member) {
+                    return _c("index-row", {
+                      key: member.id,
+                      attrs: { member: member }
+                    })
                   }),
                   _vm._v(" "),
                   _vm.members.data.length === 0
@@ -46315,6 +46978,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/Components/Members/IndexRow.vue":
+/*!******************************************************!*\
+  !*** ./resources/js/Components/Members/IndexRow.vue ***!
+  \******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _IndexRow_vue_vue_type_template_id_858bd96e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./IndexRow.vue?vue&type=template&id=858bd96e& */ "./resources/js/Components/Members/IndexRow.vue?vue&type=template&id=858bd96e&");
+/* harmony import */ var _IndexRow_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./IndexRow.vue?vue&type=script&lang=js& */ "./resources/js/Components/Members/IndexRow.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _IndexRow_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _IndexRow_vue_vue_type_template_id_858bd96e___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _IndexRow_vue_vue_type_template_id_858bd96e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/Components/Members/IndexRow.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/Components/Members/IndexRow.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/Components/Members/IndexRow.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_IndexRow_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./IndexRow.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Components/Members/IndexRow.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_IndexRow_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/Components/Members/IndexRow.vue?vue&type=template&id=858bd96e&":
+/*!*************************************************************************************!*\
+  !*** ./resources/js/Components/Members/IndexRow.vue?vue&type=template&id=858bd96e& ***!
+  \*************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_IndexRow_vue_vue_type_template_id_858bd96e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./IndexRow.vue?vue&type=template&id=858bd96e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Components/Members/IndexRow.vue?vue&type=template&id=858bd96e&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_IndexRow_vue_vue_type_template_id_858bd96e___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_IndexRow_vue_vue_type_template_id_858bd96e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/Components/Modal.vue":
 /*!*******************************************!*\
   !*** ./resources/js/Components/Modal.vue ***!
@@ -47732,7 +48464,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var laravel_jetstream__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(laravel_jetstream__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var portal_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! portal-vue */ "./node_modules/portal-vue/dist/portal-vue.common.js");
 /* harmony import */ var portal_vue__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(portal_vue__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _inertiajs_progress__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @inertiajs/progress */ "./node_modules/@inertiajs/progress/dist/index.js");
+/* harmony import */ var _inertiajs_progress__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_inertiajs_progress__WEBPACK_IMPORTED_MODULE_4__);
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
+
 
 
 
@@ -47746,6 +48481,9 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.mixin({
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(_inertiajs_inertia_vue__WEBPACK_IMPORTED_MODULE_1__["InertiaApp"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(laravel_jetstream__WEBPACK_IMPORTED_MODULE_2__["InertiaForm"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(portal_vue__WEBPACK_IMPORTED_MODULE_3___default.a);
+_inertiajs_progress__WEBPACK_IMPORTED_MODULE_4__["InertiaProgress"].init({
+  color: '#5661b3'
+});
 var app = document.getElementById('app');
 new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   render: function render(h) {

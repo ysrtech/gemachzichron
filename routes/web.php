@@ -18,5 +18,7 @@ Route::view('/', 'welcome')->name('welcome');
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/dashboard', Controllers\DashboardController::class)->name('dashboard');
+
     Route::resource('members', Controllers\MemberController::class);
+    Route::put('members/{member}/restore', [Controllers\MemberController::class, 'restore'])->name('members.restore');
 });

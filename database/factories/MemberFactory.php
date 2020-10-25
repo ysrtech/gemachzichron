@@ -24,7 +24,7 @@ class MemberFactory extends Factory
         return [
             'first_name'   => $this->faker->firstNameMale,
             'last_name'    => $this->faker->firstNameMale,
-            'hebrew_name'  => $this->faker->firstNameMale,
+            'hebrew_name'  => \Faker\Provider\he_IL\Person::firstNameMale(),
             'wife_name'    => $this->faker->firstNameFemale,
             'email'        => $this->faker->safeEmail,
             'home_phone'   => $this->faker->phoneNumber,

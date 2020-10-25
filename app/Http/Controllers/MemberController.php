@@ -59,6 +59,15 @@ class MemberController extends Controller
 
     public function destroy(Member $member)
     {
-        //
+        $member->delete();
+
+        return back()->with('status', 'member-archived');
+    }
+
+    public function restore(Member $member)
+    {
+        $member->restore();
+
+        return back()->with('success', 'Organization restored.');
     }
 }
