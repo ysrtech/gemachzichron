@@ -21,7 +21,7 @@ printf "Updating npm dependencies...\n"
 npm ci -q
 
 printf "Building assets...\n"
-npm run prod -q
+npm run production -q
 
 printf "Optimizing code...\n"
 php artisan optimize:clear
