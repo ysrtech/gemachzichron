@@ -11,7 +11,7 @@ printf "Entering maintenance mode.\n"
 php artisan down
 
 printf "Updating codebase...\n"
-git fetch origin master
+git fetch origin
 git reset --hard origin/master
 
 printf "Updating composer dependencies...\n"
