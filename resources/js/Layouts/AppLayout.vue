@@ -3,7 +3,8 @@
     <!-- Primary Navigation Menu -->
     <div class="flex justify-between h-16 flex-wrap">
 
-      <div class="bg-indigo-900 md:flex-shrink-0 w-full md:w-56 px-6 py-4 flex items-center justify-between md:justify-center">
+      <div
+        class="bg-primary-900 md:flex-shrink-0 w-full md:w-56 px-6 py-4 flex items-center justify-between md:justify-center">
         <!-- Logo -->
         <div class="flex-shrink-0 flex items-center">
           <inertia-link :href="route('dashboard')">
@@ -37,8 +38,21 @@
             <div v-show="showingNavigationDropdown"
                  class="absolute z-50 mt-2 rounded-md shadow-lg w-48 right-0"
                  @click="showingNavigationDropdown = false">
-              <div class="rounded-md shadow-xs bg-indigo-800 p-4">
-                <side-nav-item title="Dashboard" routeName="dashboard" icon="dashboard"></side-nav-item>
+              <div class="rounded-md shadow-xs bg-primary-800 p-4">
+                <template v-for="item in navItems">
+                  <inertia-link class="flex items-center group py-2 px-3 my-2 transition rounded-md group focus:outline-none"
+                                :class="$page.currentRouteName == item.route ? 'bg-primary-600' : 'hover:bg-primary-700'"
+                                :href="route(item.route)">
+                    <i class="material-icons-outlined mr-2"
+                       :class="$page.currentRouteName == item.route ? 'text-white' : 'text-primary-500 group-hover:text-white'">{{
+                        item.icon
+                      }}</i>
+                    <div
+                      :class="$page.currentRouteName == item.route ? 'text-white' : 'text-primary-300 group-hover:text-white'">
+                      {{ item.title }}
+                    </div>
+                  </inertia-link>
+                </template>
               </div>
             </div>
           </transition>
@@ -99,13 +113,29 @@
     </div>
 
     <div class="md:flex md:flex-grow md:overflow-hidden">
-      <div class="hidden md:block bg-indigo-800 flex-shrink-0 w-56 p-12 overflow-y-auto">
-        <side-nav-item title="Dashboard" routeName="dashboard" icon="dashboard"></side-nav-item>
+      <div class="hidden md:block bg-primary-800 flex-shrink-0 w-56 py-12 px-5 overflow-y-auto">
+        <template v-for="item in navItems">
+          <inertia-link
+            class="flex items-center group py-2 px-3 my-2 transition rounded-md group focus:outline-none"
+            :class="$page.currentRouteName == item.route ? 'bg-primary-600' : 'hover:bg-primary-700'"
+            :href="route(item.route)">
+            <i class="material-icons-outlined mr-2"
+               :class="$page.currentRouteName == item.route ? 'text-white' : 'text-primary-400 group-hover:text-white'">{{
+                item.icon
+              }}</i>
+            <div
+              :class="$page.currentRouteName == item.route ? 'text-white' : 'text-primary-300 group-hover:text-white'">
+              {{ item.title }}
+            </div>
+          </inertia-link>
+        </template>
       </div>
 
       <!-- Page Content -->
       <main class="w-full md:overflow-y-auto">
-        <slot></slot>
+        <div class="mx-auto pt-24 md:py-10 sm:px-6 lg:px-8">
+          <slot/>
+        </div>
       </main>
 
     </div>
@@ -117,17 +147,15 @@
 </template>
 
 <script>
-import JetApplicationLogo from './../Jetstream/ApplicationLogo'
-import JetApplicationMark from './../Jetstream/ApplicationMark'
-import JetDropdown from './../Jetstream/Dropdown'
-import JetDropdownLink from './../Jetstream/DropdownLink'
-import JetNavLink from './../Jetstream/NavLink'
-import JetResponsiveNavLink from './../Jetstream/ResponsiveNavLink'
-import SideNavItem from "../Shared/SideNavItem";
+import JetApplicationLogo from '../Components/ApplicationLogo'
+import JetApplicationMark from '../Components/ApplicationMark'
+import JetDropdown from '../Components/Dropdown'
+import JetDropdownLink from '../Components/DropdownLink'
+import JetNavLink from '../Components/NavLink'
+import JetResponsiveNavLink from '../Components/ResponsiveNavLink'
 
 export default {
   components: {
-    SideNavItem,
     JetApplicationLogo,
     JetApplicationMark,
     JetDropdown,
@@ -139,6 +167,11 @@ export default {
   data() {
     return {
       showingNavigationDropdown: false,
+      navItems: [
+        {title: "Dashboard", route: "dashboard", icon: "dashboard"},
+        {title: "Members", route: "members.index", icon: "people"},
+        {title: "Settings", route: "welcome", icon: "settings"}
+      ]
     }
   },
 
@@ -149,10 +182,6 @@ export default {
       }, {
         preserveState: false
       })
-    },
-
-    url() {
-      return location.pathname.substr(1)
     },
 
     logout() {

@@ -69,13 +69,13 @@
 </template>
 
 <script>
-    import JetButton from './../../Jetstream/Button'
-    import JetFormSection from './../../Jetstream/FormSection'
-    import JetInput from './../../Jetstream/Input'
-    import JetInputError from './../../Jetstream/InputError'
-    import JetLabel from './../../Jetstream/Label'
-    import JetActionMessage from './../../Jetstream/ActionMessage'
-    import JetSecondaryButton from './../../Jetstream/SecondaryButton'
+    import JetButton from '../../Components/Button'
+    import JetFormSection from '../../Components/FormSection'
+    import JetInput from '../../Components/Input'
+    import JetInputError from '../../Components/InputError'
+    import JetLabel from '../../Components/Label'
+    import JetActionMessage from '../../Components/ActionMessage'
+    import JetSecondaryButton from '../../Components/SecondaryButton'
 
     export default {
         components: {

@@ -5,11 +5,16 @@ import Vue from 'vue';
 import { InertiaApp } from '@inertiajs/inertia-vue';
 import { InertiaForm } from 'laravel-jetstream';
 import PortalVue from 'portal-vue';
+import { InertiaProgress } from '@inertiajs/progress'
 
 Vue.mixin({ methods: { route } });
 Vue.use(InertiaApp);
 Vue.use(InertiaForm);
 Vue.use(PortalVue);
+
+InertiaProgress.init({
+  color: '#5661b3',
+})
 
 const app = document.getElementById('app');
 

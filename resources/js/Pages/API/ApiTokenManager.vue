@@ -163,18 +163,18 @@
 </template>
 
 <script>
-    import JetActionMessage from './../../Jetstream/ActionMessage'
-    import JetActionSection from './../../Jetstream/ActionSection'
-    import JetButton from './../../Jetstream/Button'
-    import JetConfirmationModal from './../../Jetstream/ConfirmationModal'
-    import JetDangerButton from './../../Jetstream/DangerButton'
-    import JetDialogModal from './../../Jetstream/DialogModal'
-    import JetFormSection from './../../Jetstream/FormSection'
-    import JetInput from './../../Jetstream/Input'
-    import JetInputError from './../../Jetstream/InputError'
-    import JetLabel from './../../Jetstream/Label'
-    import JetSecondaryButton from './../../Jetstream/SecondaryButton'
-    import JetSectionBorder from './../../Jetstream/SectionBorder'
+    import JetActionMessage from '../../Components/ActionMessage'
+    import JetActionSection from '../../Components/ActionSection'
+    import JetButton from '../../Components/Button'
+    import JetConfirmationModal from '../../Components/ConfirmationModal'
+    import JetDangerButton from '../../Components/DangerButton'
+    import JetDialogModal from '../../Components/DialogModal'
+    import JetFormSection from '../../Components/FormSection'
+    import JetInput from '../../Components/Input'
+    import JetInputError from '../../Components/InputError'
+    import JetLabel from '../../Components/Label'
+    import JetSecondaryButton from '../../Components/SecondaryButton'
+    import JetSectionBorder from '../../Components/SectionBorder'
 
     export default {
         components: {

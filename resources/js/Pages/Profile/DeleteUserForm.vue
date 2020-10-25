@@ -53,13 +53,13 @@
 </template>
 
 <script>
-    import JetActionSection from './../../Jetstream/ActionSection'
-    import JetButton from './../../Jetstream/Button'
-    import JetDialogModal from './../../Jetstream/DialogModal'
-    import JetDangerButton from './../../Jetstream/DangerButton'
-    import JetInput from './../../Jetstream/Input'
-    import JetInputError from './../../Jetstream/InputError'
-    import JetSecondaryButton from './../../Jetstream/SecondaryButton'
+    import JetActionSection from '../../Components/ActionSection'
+    import JetButton from '../../Components/Button'
+    import JetDialogModal from '../../Components/DialogModal'
+    import JetDangerButton from '../../Components/DangerButton'
+    import JetInput from '../../Components/Input'
+    import JetInputError from '../../Components/InputError'
+    import JetSecondaryButton from '../../Components/SecondaryButton'
 
     export default {
         components: {

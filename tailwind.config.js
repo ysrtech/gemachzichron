@@ -11,14 +11,15 @@ module.exports = {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Nunito', ...defaultTheme.fontFamily.sans],
+                sans: ['Roboto', ...defaultTheme.fontFamily.sans],
             },
             colors: {
-              indigo: {
+              primary: {
                 '900': '#191e38',
                 '800': '#2f365f',
                 '700': '#394173',
-                '600': '#5661b3',
+                // '600': '#5661b3',
+                '600': '#4b5495',
                 '500': '#6574cd',
                 '400': '#7886d7',
                 '300': '#b2b7ff',
@@ -26,7 +27,6 @@ module.exports = {
                 '100': '#e6e8ff',
               },
             },
-            fill: theme => theme('colors'),
         },
     },
 

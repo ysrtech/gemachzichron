@@ -87,11 +87,11 @@
 </template>
 
 <script>
-    import JetActionSection from './../../Jetstream/ActionSection'
-    import JetButton from './../../Jetstream/Button'
-    import JetConfirmsPassword from './../../Jetstream/ConfirmsPassword'
-    import JetDangerButton from './../../Jetstream/DangerButton'
-    import JetSecondaryButton from './../../Jetstream/SecondaryButton'
+    import JetActionSection from '../../Components/ActionSection'
+    import JetButton from '../../Components/Button'
+    import JetConfirmsPassword from '../../Components/ConfirmsPassword'
+    import JetDangerButton from '../../Components/DangerButton'
+    import JetSecondaryButton from '../../Components/SecondaryButton'
 
     export default {
         components: {
