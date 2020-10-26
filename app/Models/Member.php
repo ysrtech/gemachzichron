@@ -11,6 +11,8 @@ class Member extends Model
 {
     use HasFactory, SoftDeletes, RouteBindingWithTrashed;
 
+    protected $guarded = [];
+
     public function scopeFilter($query, array $filters)
     {
         return $query

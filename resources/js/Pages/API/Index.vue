@@ -1,7 +1,7 @@
 <template>
   <app-layout>
     <template #header>
-      <h2 class="font-semibold text-2xl text-gray-800 leading-tight">
+      <h2 class="font-medium text-2xl text-gray-800 leading-tight">
         API Tokens
       </h2>
     </template>
@@ -17,7 +17,7 @@
 <script>
 import ApiTokenManager from './ApiTokenManager'
 import AppLayout from './../../Layouts/AppLayout'
-import JetSectionBorder from '../../Components/SectionBorder'
+import JetSectionBorder from '../../Shared/SectionBorder'
 
 export default {
   props: [

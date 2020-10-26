@@ -27,8 +27,8 @@
 </template>
 
 <script>
-import JetInput from "./Input"
-import JetDropdown from "./Dropdown"
+import JetInput from "../../../Shared/Input"
+import JetDropdown from "../../../Shared/Dropdown"
 
 export default {
   components: {

@@ -147,12 +147,12 @@
 </template>
 
 <script>
-import JetApplicationLogo from '../Components/ApplicationLogo'
-import JetApplicationMark from '../Components/ApplicationMark'
-import JetDropdown from '../Components/Dropdown'
-import JetDropdownLink from '../Components/DropdownLink'
-import JetNavLink from '../Components/NavLink'
-import JetResponsiveNavLink from '../Components/ResponsiveNavLink'
+import JetApplicationLogo from '../Shared/ApplicationLogo'
+import JetApplicationMark from '../Shared/ApplicationMark'
+import JetDropdown from '../Shared/Dropdown'
+import JetDropdownLink from '../Shared/DropdownLink'
+import JetNavLink from '../Shared/NavLink'
+import JetResponsiveNavLink from '../Shared/ResponsiveNavLink'
 
 export default {
   components: {

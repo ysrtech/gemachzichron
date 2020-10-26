@@ -61,24 +61,22 @@
 
                 <div v-else>
                     <jet-confirms-password @confirmed="regenerateRecoveryCodes">
-                        <jet-secondary-button class="mr-3"
+                        <jet-button color="secondary" class="mr-3"
                                         v-if="recoveryCodes.length > 0">
                             Regenerate Recovery Codes
-                        </jet-secondary-button>
+                        </jet-button>
                     </jet-confirms-password>
 
                     <jet-confirms-password @confirmed="showRecoveryCodes">
-                        <jet-secondary-button class="mr-3" v-if="recoveryCodes.length == 0">
+                        <jet-button color="secondary" class="mr-3" v-if="recoveryCodes.length == 0">
                             Show Recovery Codes
-                        </jet-secondary-button>
+                        </jet-button>
                     </jet-confirms-password>
 
                     <jet-confirms-password @confirmed="disableTwoFactorAuthentication">
-                        <jet-danger-button
-                                        :class="{ 'opacity-25': disabling }"
-                                        :disabled="disabling">
+                        <jet-button :processing="disabling">
                             Disable
-                        </jet-danger-button>
+                        </jet-button>
                     </jet-confirms-password>
                 </div>
             </div>
@@ -87,19 +85,15 @@
 </template>
 
 <script>
-    import JetActionSection from '../../Components/ActionSection'
-    import JetButton from '../../Components/Button'
-    import JetConfirmsPassword from '../../Components/ConfirmsPassword'
-    import JetDangerButton from '../../Components/DangerButton'
-    import JetSecondaryButton from '../../Components/SecondaryButton'
+    import JetActionSection from '../../../Shared/ActionSection'
+    import JetButton from '../../../Shared/Button'
+    import JetConfirmsPassword from '../../../Shared/ConfirmsPassword'
 
     export default {
         components: {
             JetActionSection,
             JetButton,
             JetConfirmsPassword,
-            JetDangerButton,
-            JetSecondaryButton,
         },
 
         data() {

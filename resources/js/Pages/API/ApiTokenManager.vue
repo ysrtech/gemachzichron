@@ -38,7 +38,7 @@
                     Created.
                 </jet-action-message>
 
-                <jet-button :processing="createApiTokenForm.processing">
+                <jet-button type="submit" :processing="createApiTokenForm.processing">
                     Create
                 </jet-button>
             </template>
@@ -105,9 +105,9 @@
             </template>
 
             <template #footer>
-                <jet-secondary-button @click.native="displayingToken = false">
+                <jet-button color="secondary" @click.native="displayingToken = false">
                     Close
-                </jet-secondary-button>
+                </jet-button>
             </template>
         </jet-dialog-modal>
 
@@ -129,11 +129,11 @@
             </template>
 
             <template #footer>
-                <jet-secondary-button @click.native="managingPermissionsFor = null">
+                <jet-button color="secondary" @click.native="managingPermissionsFor = null">
                   Cancel
-                </jet-secondary-button>
+                </jet-button>
 
-                <jet-button class="ml-2" @click.native="updateApiToken" :processing="updateApiTokenForm.processing">
+                <jet-button type="submit" class="ml-2" @click.native="updateApiToken" :processing="updateApiTokenForm.processing">
                     Save
                 </jet-button>
             </template>
@@ -150,31 +150,29 @@
             </template>
 
             <template #footer>
-                <jet-secondary-button @click.native="apiTokenBeingDeleted = null">
+                <jet-button color="secondary" @click.native="apiTokenBeingDeleted = null">
                   Cancel
-                </jet-secondary-button>
+                </jet-button>
 
-                <jet-danger-button class="ml-2" @click.native="deleteApiToken" :class="{ 'opacity-25': deleteApiTokenForm.processing }" :disabled="deleteApiTokenForm.processing">
+                <jet-button color="danger" class="ml-2" @click.native="deleteApiToken" :processing="deleteApiTokenForm.processing">
                     Delete
-                </jet-danger-button>
+                </jet-button>
             </template>
         </jet-confirmation-modal>
     </div>
 </template>
 
 <script>
-    import JetActionMessage from '../../Components/ActionMessage'
-    import JetActionSection from '../../Components/ActionSection'
-    import JetButton from '../../Components/Button'
-    import JetConfirmationModal from '../../Components/ConfirmationModal'
-    import JetDangerButton from '../../Components/DangerButton'
-    import JetDialogModal from '../../Components/DialogModal'
-    import JetFormSection from '../../Components/FormSection'
-    import JetInput from '../../Components/Input'
-    import JetInputError from '../../Components/InputError'
-    import JetLabel from '../../Components/Label'
-    import JetSecondaryButton from '../../Components/SecondaryButton'
-    import JetSectionBorder from '../../Components/SectionBorder'
+    import JetActionMessage from '../../Shared/ActionMessage'
+    import JetActionSection from '../../Shared/ActionSection'
+    import JetButton from '../../Shared/Button'
+    import JetConfirmationModal from '../../Shared/ConfirmationModal'
+    import JetDialogModal from '../../Shared/DialogModal'
+    import JetFormSection from '../../Shared/FormSection'
+    import JetInput from '../../Shared/Input'
+    import JetInputError from '../../Shared/InputError'
+    import JetLabel from '../../Shared/Label'
+    import JetSectionBorder from '../../Shared/SectionBorder'
 
     export default {
         components: {
@@ -182,13 +180,11 @@
             JetActionSection,
             JetButton,
             JetConfirmationModal,
-            JetDangerButton,
             JetDialogModal,
             JetFormSection,
             JetInput,
             JetInputError,
             JetLabel,
-            JetSecondaryButton,
             JetSectionBorder,
         },
 

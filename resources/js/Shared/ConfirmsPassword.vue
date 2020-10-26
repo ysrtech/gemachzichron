@@ -24,11 +24,11 @@
             </template>
 
             <template #footer>
-                <jet-secondary-button @click.native="confirmingPassword = false">
+                <jet-button color="secondary" @click.native="confirmingPassword = false">
                     Cancel
-                </jet-secondary-button>
+                </jet-button>
 
-                <jet-button class="ml-2" @click.native="confirmPassword" :processing="form.processing">
+                <jet-button type="submit" class="ml-2" @click.native="confirmPassword" :processing="form.processing">
                     {{ button }}
                 </jet-button>
             </template>
@@ -41,7 +41,6 @@
     import JetDialogModal from './DialogModal'
     import JetInput from './Input'
     import JetInputError from './InputError'
-    import JetSecondaryButton from './SecondaryButton'
 
     export default {
         props: {
@@ -61,7 +60,6 @@
             JetDialogModal,
             JetInput,
             JetInputError,
-            JetSecondaryButton,
         },
 
         data() {

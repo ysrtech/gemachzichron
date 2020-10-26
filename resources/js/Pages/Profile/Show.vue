@@ -1,7 +1,7 @@
 <template>
   <app-layout>
     <template #header>
-      <h2 class="font-semibold text-2xl text-gray-800 leading-tight">
+      <h2 class="font-medium text-2xl text-gray-800 leading-tight">
         Profile
       </h2>
     </template>
@@ -32,12 +32,12 @@
 
 <script>
 import AppLayout from './../../Layouts/AppLayout'
-import DeleteUserForm from './DeleteUserForm'
-import JetSectionBorder from '../../Components/SectionBorder'
-import LogoutOtherBrowserSessionsForm from './LogoutOtherBrowserSessionsForm'
-import TwoFactorAuthenticationForm from './TwoFactorAuthenticationForm'
-import UpdatePasswordForm from './UpdatePasswordForm'
-import UpdateProfileInformationForm from './UpdateProfileInformationForm'
+import DeleteUserForm from './Components/DeleteUserForm'
+import JetSectionBorder from '../../Shared/SectionBorder'
+import LogoutOtherBrowserSessionsForm from './Components/LogoutOtherBrowserSessionsForm'
+import TwoFactorAuthenticationForm from './Components/TwoFactorAuthenticationForm'
+import UpdatePasswordForm from './Components/UpdatePasswordForm'
+import UpdateProfileInformationForm from './Components/UpdateProfileInformationForm'
 
 export default {
   props: ['sessions'],
