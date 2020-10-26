@@ -73,11 +73,11 @@
                 </template>
 
                 <template #footer>
-                    <jet-secondary-button @click.native="confirmingLogout = false">
+                    <jet-button color="secondary" @click.native="confirmingLogout = false">
                       Cancel
-                    </jet-secondary-button>
+                    </jet-button>
 
-                    <jet-button class="ml-2" @click.native="logoutOtherBrowserSessions" :processing="form.processing">
+                    <jet-button type="submit" class="ml-2" @click.native="logoutOtherBrowserSessions" :processing="form.processing">
                         Logout Other Browser Sessions
                     </jet-button>
                 </template>
@@ -87,13 +87,12 @@
 </template>
 
 <script>
-    import JetActionMessage from '../../Components/ActionMessage'
-    import JetActionSection from '../../Components/ActionSection'
-    import JetButton from '../../Components/Button'
-    import JetDialogModal from '../../Components/DialogModal'
-    import JetInput from '../../Components/Input'
-    import JetInputError from '../../Components/InputError'
-    import JetSecondaryButton from '../../Components/SecondaryButton'
+    import JetActionMessage from '../../../Shared/ActionMessage'
+    import JetActionSection from '../../../Shared/ActionSection'
+    import JetButton from '../../../Shared/Button'
+    import JetDialogModal from '../../../Shared/DialogModal'
+    import JetInput from '../../../Shared/Input'
+    import JetInputError from '../../../Shared/InputError'
 
     export default {
         props: ['sessions'],
@@ -105,7 +104,6 @@
             JetDialogModal,
             JetInput,
             JetInputError,
-            JetSecondaryButton,
         },
 
         data() {

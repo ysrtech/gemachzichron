@@ -14,9 +14,9 @@
             </div>
 
             <div class="mt-5">
-                <jet-danger-button @click.native="confirmUserDeletion">
+                <jet-button color="danger" @click.native="confirmUserDeletion">
                     Delete Account
-                </jet-danger-button>
+                </jet-button>
             </div>
 
             <!-- Delete Account Confirmation Modal -->
@@ -39,13 +39,13 @@
                 </template>
 
                 <template #footer>
-                    <jet-secondary-button @click.native="confirmingUserDeletion = false">
+                    <jet-button color="secondary" @click.native="confirmingUserDeletion = false">
                         Cancel
-                    </jet-secondary-button>
+                    </jet-button>
 
-                    <jet-danger-button class="ml-2" @click.native="deleteUser" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                    <jet-button color="danger" class="ml-2" @click.native="deleteUser" :processing="form.processing">
                         Delete Account
-                    </jet-danger-button>
+                    </jet-button>
                 </template>
             </jet-dialog-modal>
         </template>
@@ -53,23 +53,19 @@
 </template>
 
 <script>
-    import JetActionSection from '../../Components/ActionSection'
-    import JetButton from '../../Components/Button'
-    import JetDialogModal from '../../Components/DialogModal'
-    import JetDangerButton from '../../Components/DangerButton'
-    import JetInput from '../../Components/Input'
-    import JetInputError from '../../Components/InputError'
-    import JetSecondaryButton from '../../Components/SecondaryButton'
+    import JetActionSection from '../../../Shared/ActionSection'
+    import JetDialogModal from '../../../Shared/DialogModal'
+    import JetButton from '../../../Shared/Button'
+    import JetInput from '../../../Shared/Input'
+    import JetInputError from '../../../Shared/InputError'
 
     export default {
         components: {
             JetActionSection,
             JetButton,
-            JetDangerButton,
             JetDialogModal,
             JetInput,
             JetInputError,
-            JetSecondaryButton,
         },
 
         data() {

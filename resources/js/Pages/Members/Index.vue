@@ -1,7 +1,7 @@
 <template>
   <app-layout>
     <template #header>
-      <h2 class="font-semibold text-2xl text-gray-800 leading-tight">
+      <h2 class="font-medium text-2xl text-gray-800 leading-tight">
         Members
       </h2>
     </template>
@@ -10,9 +10,9 @@
 
       <div class="mb-6 flex justify-between items-center">
         <search-filter v-model="filterForm.search" class="w-full max-w-md mr-4" @reset="reset">
-          <div class="p-6">
-            <label class="block text-gray-700">Archived:</label>
-              <select v-model="filterForm.archived" class="mt-1 w-full form-select">
+          <div class="p-5">
+            <label class="block text-gray-700 text-sm">Archived:</label>
+              <select v-model="filterForm.archived" class="mt-1 w-full form-select text-sm">
                 <option :value="null">Without Archived</option>
                 <option value="with">With Archived</option>
                 <option value="only">Only Archived</option>
@@ -22,32 +22,19 @@
           </div>
         </search-filter>
 
-        <jet-button type="button">
-          <inertia-link :href="route('members.create')">
-            <span>Create</span>
-            <span class="hidden md:inline">Member</span>
-          </inertia-link>
+        <jet-button @click.native="showCreateMemberModal = true">
+          <span>Create</span>
+          <span class="hidden md:inline pl-1"> Member</span>
         </jet-button>
 
       </div>
 
-      <div class="bg-white rounded shadow overflow-x-auto">
-        <table class="w-full whitespace-no-wrap">
-          <tr class="text-left font-bold">
-            <th class="px-6 pt-6 pb-4">Name</th>
-            <th class="px-6 pt-6 pb-4">Total Paid</th>
-            <th class="px-6 pt-6 pb-4">Home Phone</th>
-            <th class="px-6 pt-6 pb-4">Cellphone</th>
-            <th class="px-6 pt-6 pb-4" colspan="2">Email</th>
-          </tr>
-          <index-row v-for="member in members.data" :key="member.id" :member="member"></index-row>
-          <tr v-if="members.data.length === 0">
-            <td class="border-t px-6 py-4" colspan="4">No members found.</td>
-          </tr>
-        </table>
-      </div>
+      <members-table :members="members.data"></members-table>
       <pagination :links="members.links"/>
     </div>
+
+    <create-member-modal :show="showCreateMemberModal" @close="showCreateMemberModal = false" />
+
   </app-layout>
 </template>
 
@@ -56,21 +43,19 @@ import AppLayout from '../../Layouts/AppLayout'
 import throttle from "lodash/throttle";
 import pickBy from "lodash/pickBy";
 import mapValues from "lodash/mapValues";
-import Pagination from "../../Components/Pagination";
-import SearchFilter from "../../Components/SearchFilter";
-import JetDropdown from "../../Components/Dropdown"
-import JetDropdownLink from "../../Components/DropdownLink"
-import JetButton from "../../Components/Button"
-import IndexRow from "../../Components/Members/IndexRow";
+import Pagination from "../../Shared/Pagination";
+import SearchFilter from "./Components/SearchFilter";
+import JetButton from "../../Shared/Button"
+import CreateMemberModal from "./Components/CreateMemberModal";
+import MembersTable from "./Components/MembersTable";
 
 export default {
   components: {
-    IndexRow,
+    MembersTable,
+    CreateMemberModal,
     AppLayout,
     Pagination,
     SearchFilter,
-    JetDropdown,
-    JetDropdownLink,
     JetButton,
   },
   props: {
@@ -79,6 +64,7 @@ export default {
   },
   data() {
     return {
+      showCreateMemberModal: false,
       filterForm: {
         search: this.filters.search,
         archived: this.filters.archived,

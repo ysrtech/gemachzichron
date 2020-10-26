@@ -1,7 +1,7 @@
 <template>
   <app-layout>
     <template #header>
-      <h2 class="font-semibold text-2xl text-gray-800 leading-tight">
+      <h2 class="font-medium text-2xl text-gray-800 leading-tight">
         Dashboard
       </h2>
     </template>
@@ -14,7 +14,7 @@
 
 <script>
 import AppLayout from '../Layouts/AppLayout'
-import Welcome from '../Components/Welcome'
+import Welcome from '../Shared/Welcome'
 
 export default {
   components: {

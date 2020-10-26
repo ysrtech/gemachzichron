@@ -33,7 +33,7 @@
                 Saved.
             </jet-action-message>
 
-            <jet-button :processing="form.processing">
+            <jet-button type="submit" :processing="form.processing">
                 Save
             </jet-button>
         </template>
@@ -41,12 +41,12 @@
 </template>
 
 <script>
-    import JetActionMessage from '../../Components/ActionMessage'
-    import JetButton from '../../Components/Button'
-    import JetFormSection from '../../Components/FormSection'
-    import JetInput from '../../Components/Input'
-    import JetInputError from '../../Components/InputError'
-    import JetLabel from '../../Components/Label'
+    import JetActionMessage from '../../../Shared/ActionMessage'
+    import JetButton from '../../../Shared/Button'
+    import JetFormSection from '../../../Shared/FormSection'
+    import JetInput from '../../../Shared/Input'
+    import JetInputError from '../../../Shared/InputError'
+    import JetLabel from '../../../Shared/Label'
 
     export default {
         components: {

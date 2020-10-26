@@ -30,13 +30,13 @@
                     </span>
                 </div>
 
-                <jet-secondary-button class="mt-2 mr-2" type="button" @click.native.prevent="selectNewPhoto">
+                <jet-button color="secondary" class="mt-2 mr-2" type="button" @click.native.prevent="selectNewPhoto">
                     Select A New Photo
-                </jet-secondary-button>
+                </jet-button>
 
-                <jet-secondary-button type="button" class="mt-2" @click.native.prevent="deletePhoto" v-if="user.profile_photo_path">
+                <jet-button color="secondary" type="button" class="mt-2" @click.native.prevent="deletePhoto" v-if="user.profile_photo_path">
                     Remove Photo
-                </jet-secondary-button>
+                </jet-button>
 
                 <jet-input-error :message="form.error('photo')" class="mt-2" />
             </div>
@@ -61,7 +61,7 @@
                 Saved.
             </jet-action-message>
 
-            <jet-button :processing="form.processing">
+            <jet-button type="submit" :processing="form.processing">
                 Save
             </jet-button>
         </template>
@@ -69,13 +69,12 @@
 </template>
 
 <script>
-    import JetButton from '../../Components/Button'
-    import JetFormSection from '../../Components/FormSection'
-    import JetInput from '../../Components/Input'
-    import JetInputError from '../../Components/InputError'
-    import JetLabel from '../../Components/Label'
-    import JetActionMessage from '../../Components/ActionMessage'
-    import JetSecondaryButton from '../../Components/SecondaryButton'
+    import JetButton from '../../../Shared/Button'
+    import JetFormSection from '../../../Shared/FormSection'
+    import JetInput from '../../../Shared/Input'
+    import JetInputError from '../../../Shared/InputError'
+    import JetLabel from '../../../Shared/Label'
+    import JetActionMessage from '../../../Shared/ActionMessage'
 
     export default {
         components: {
@@ -85,7 +84,6 @@
             JetInput,
             JetInputError,
             JetLabel,
-            JetSecondaryButton,
         },
 
         props: ['user'],

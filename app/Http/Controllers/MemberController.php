@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateMemberRequest;
+use App\Http\Requests\UpdateMemberRequest;
 use App\Models\Member;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -32,42 +34,38 @@ class MemberController extends Controller
         ]);
     }
 
-    public function create()
+    public function store(CreateMemberRequest $request)
     {
-        //
-    }
+        Member::create($request->validated());
 
-    public function store(Request $request)
-    {
-        //
+        return back()->with('flash', ['success' => 'Member created.']);
     }
 
     public function show(Member $member)
     {
-        //
+        return Inertia::render('Members/Show', [
+           'member' => $member
+        ]);
     }
 
-    public function edit(Member $member)
+    public function update(UpdateMemberRequest $request, Member $member)
     {
-        //
-    }
+        $member->update($request->validated());
 
-    public function update(Request $request, Member $member)
-    {
-        //
+        return back()->with('flash', ['success' => 'Member updated.']);
     }
 
     public function destroy(Member $member)
     {
         $member->delete();
 
-        return back()->with('status', 'member-archived');
+        return back()->with('flash', ['success' => 'Member archived.']);
     }
 
     public function restore(Member $member)
     {
         $member->restore();
 
-        return back()->with('success', 'Organization restored.');
+        return back()->with('flash', ['success' => 'Member restored.']);
     }
 }
