@@ -16,14 +16,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        Inertia::share([
-            'flash' => function () {
-                return [
-                    'success' => Session::get('success'),
-                    'error' => Session::get('error'),
-                ];
-            },
-        ]);
+        //
     }
 
     /**
