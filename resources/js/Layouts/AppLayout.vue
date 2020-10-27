@@ -41,14 +41,14 @@
               <div class="rounded-md shadow-xs bg-primary-800 p-4">
                 <template v-for="item in navItems">
                   <inertia-link class="flex items-center group py-2 px-3 my-2 transition rounded-md group focus:outline-none"
-                                :class="$page.currentRouteName == item.route ? 'bg-primary-600' : 'hover:bg-primary-700'"
+                                :class="item.activeClass ? 'bg-primary-600' : 'hover:bg-primary-700'"
                                 :href="route(item.route)">
                     <i class="material-icons-outlined mr-2"
-                       :class="$page.currentRouteName == item.route ? 'text-white' : 'text-primary-500 group-hover:text-white'">{{
+                       :class="item.activeClass ? 'text-white' : 'text-primary-500 group-hover:text-white'">{{
                         item.icon
                       }}</i>
                     <div
-                      :class="$page.currentRouteName == item.route ? 'text-white' : 'text-primary-300 group-hover:text-white'">
+                      :class="item.activeClass ? 'text-white' : 'text-primary-300 group-hover:text-white'">
                       {{ item.title }}
                     </div>
                   </inertia-link>
@@ -117,14 +117,14 @@
         <template v-for="item in navItems">
           <inertia-link
             class="flex items-center group py-2 px-3 my-2 transition rounded-md group focus:outline-none"
-            :class="$page.currentRouteName == item.route ? 'bg-primary-600' : 'hover:bg-primary-700'"
+            :class="item.activeClass ? 'bg-primary-600' : 'hover:bg-primary-700'"
             :href="route(item.route)">
             <i class="material-icons-outlined mr-2"
-               :class="$page.currentRouteName == item.route ? 'text-white' : 'text-primary-400 group-hover:text-white'">{{
+               :class="item.activeClass ? 'text-white' : 'text-primary-400 group-hover:text-white'">{{
                 item.icon
               }}</i>
             <div
-              :class="$page.currentRouteName == item.route ? 'text-white' : 'text-primary-300 group-hover:text-white'">
+              :class="item.activeClass ? 'text-white' : 'text-primary-300 group-hover:text-white'">
               {{ item.title }}
             </div>
           </inertia-link>
@@ -164,22 +164,14 @@ export default {
     return {
       showingNavigationDropdown: false,
       navItems: [
-        {title: "Dashboard", route: "dashboard", icon: "dashboard"},
-        {title: "Members", route: "members.index", icon: "people"},
-        {title: "Settings", route: "", icon: "settings"}
+        {title: "Dashboard", route: "dashboard", icon: "dashboard", activeClass: this.$page.currentRouteName == 'dashboard'},
+        {title: "Members", route: "members.index", icon: "people", activeClass: this.$page.currentRouteName.startsWith('members.')},
+        {title: "Settings", route: "", icon: "settings", activeClass: false}
       ]
     }
   },
 
   methods: {
-    switchToTeam(team) {
-      this.$inertia.put(route('current-team.update'), {
-        'team_id': team.id
-      }, {
-        preserveState: false
-      })
-    },
-
     logout() {
       this.$inertia.post(route('logout'));
     },
