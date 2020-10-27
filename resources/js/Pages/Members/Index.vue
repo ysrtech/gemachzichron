@@ -75,7 +75,7 @@ export default {
     filterForm: {
       handler: throttle(function () {
         let query = pickBy(this.filterForm)
-        this.$inertia.replace(this.route('members.index', Object.keys(query).length ? query : {remember: 'forget'}))
+        this.$inertia.replace(this.route('members.index', Object.keys(query).length ? query : {}))
       }, 150),
       deep: true,
     },
