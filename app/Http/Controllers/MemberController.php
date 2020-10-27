@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CreateMemberRequest;
 use App\Http\Requests\UpdateMemberRequest;
 use App\Models\Member;
 use Illuminate\Http\Request;
@@ -34,7 +33,7 @@ class MemberController extends Controller
         ]);
     }
 
-    public function store(CreateMemberRequest $request)
+    public function store(UpdateMemberRequest $request)
     {
         Member::create($request->validated());
 
