@@ -79,7 +79,8 @@
             startConfirmingPassword() {
                 this.form.error = '';
 
-                axios.get(route('password.confirmation').url()).then(response => {
+                axios.get(route('password.confirmation').url())
+                  .then(response => {
                     if (response.data.confirmed) {
                         this.$emit('confirmed');
                     } else {
@@ -90,7 +91,7 @@
                             this.$refs.password.focus()
                         }, 250)
                     }
-                })
+                  })
             },
 
             confirmPassword() {

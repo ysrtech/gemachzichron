@@ -221,13 +221,14 @@
 
         methods: {
             createApiToken() {
-                this.createApiTokenForm.post(route('api-tokens.store'), {
-                    preserveScroll: true,
-                }).then(response => {
-                    if (! this.createApiTokenForm.hasErrors()) {
-                        this.displayingToken = true
-                    }
-                })
+              this.createApiTokenForm.post(route('api-tokens.store'), {
+                preserveScroll: true,
+                onSuccess: () => {
+                  if (! this.createApiTokenForm.hasErrors()) {
+                    this.displayingToken = true
+                  }
+                }
+              })
             },
 
             manageApiTokenPermissions(token) {
@@ -237,12 +238,13 @@
             },
 
             updateApiToken() {
-                this.updateApiTokenForm.put(route('api-tokens.update', this.managingPermissionsFor), {
-                    preserveScroll: true,
-                    preserveState: true,
-                }).then(response => {
-                    this.managingPermissionsFor = null
-                })
+              this.updateApiTokenForm.put(route('api-tokens.update', this.managingPermissionsFor), {
+                preserveScroll: true,
+                preserveState: true,
+                onSuccess: () => {
+                  this.managingPermissionsFor = null
+                }
+              })
             },
 
             confirmApiTokenDeletion(token) {
@@ -250,12 +252,13 @@
             },
 
             deleteApiToken() {
-                this.deleteApiTokenForm.delete(route('api-tokens.destroy', this.apiTokenBeingDeleted), {
-                    preserveScroll: true,
-                    preserveState: true,
-                }).then(() => {
-                    this.apiTokenBeingDeleted = null
-                })
+              this.deleteApiTokenForm.delete(route('api-tokens.destroy', this.apiTokenBeingDeleted), {
+                preserveScroll: true,
+                preserveState: true,
+                onSuccess: () => {
+                  this.apiTokenBeingDeleted = null
+                }
+              })
             },
 
             fromNow(timestamp) {

@@ -95,11 +95,12 @@
 
             deleteUser() {
                 this.form.post(route('current-user.destroy'), {
-                    preserveScroll: true
-                }).then(response => {
+                  preserveScroll: true,
+                  onSuccess: () => {
                     if (! this.form.hasErrors()) {
-                        this.confirmingUserDeletion = false;
+                      this.confirmingUserDeletion = false;
                     }
+                  }
                 })
             },
         },
