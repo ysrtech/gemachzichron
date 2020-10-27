@@ -52,7 +52,7 @@
       </div>
     </div>
 
-    <create-member-modal
+    <member-form-modal
       :member="member"
       :show="showEditModal"
       title="Edit Member"
@@ -64,11 +64,13 @@
 </template>
 
 <script>
-import CreateMemberModal from "./CreateMemberModal";
+import MemberFormModal from "./MemberFormModal";
 
 export default {
   name: "MemberInfoCard",
-  components: {CreateMemberModal},
+  components: {
+    MemberFormModal
+  },
   data() {
     return {
       showEditModal: false,

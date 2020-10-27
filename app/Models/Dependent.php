@@ -12,7 +12,7 @@ class Dependent extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'dob' => 'date:M j, Y'
+        'dob' => 'date:Y-m-d' //'date:M j, Y'
     ];
 
     public function member()

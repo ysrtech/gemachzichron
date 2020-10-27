@@ -129,27 +129,22 @@ export default {
         mobile_phone: this.member?.mobile_phone || '',
         shtibel: this.member?.shtibel || '',
       }, {
-        resetOnSuccess: true
+        resetOnSuccess: false
       })
     }
   },
 
   methods: {
     submitMember() {
-
-      let submit;
-
       if (this.member) {
-        submit = this.form.put(route('members.update', this.member.id).url(), this.form)
+        this.form.put(route('members.update', this.member.id).url(), {
+          onSuccess: () => !this.form.hasErrors() ? this.$emit('close') : null
+        })
       } else {
-        submit = this.form.post(route('members.store').url(), this.form)
+        this.form.post(route('members.store').url(), {
+          onSuccess: () => !this.form.hasErrors() ? this.$emit('close') : null
+        })
       }
-
-      submit.then(() => {
-        if (!this.form.hasErrors()) {
-          this.$emit('close');
-        }
-      })
 
     },
   }

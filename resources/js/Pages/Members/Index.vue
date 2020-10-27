@@ -33,7 +33,7 @@
       <pagination :links="members.links"/>
     </div>
 
-    <create-member-modal :show="showCreateMemberModal" @close="showCreateMemberModal = false" />
+    <member-form-modal :show="showCreateMemberModal" @close="showCreateMemberModal = false" />
 
   </app-layout>
 </template>
@@ -46,13 +46,13 @@ import mapValues from "lodash/mapValues";
 import Pagination from "../../Shared/Pagination";
 import SearchFilter from "./Components/SearchFilter";
 import JetButton from "../../Shared/Button"
-import CreateMemberModal from "./Components/CreateMemberModal";
+import MemberFormModal from "./Components/MemberFormModal";
 import MembersTable from "./Components/MembersTable";
 
 export default {
   components: {
     MembersTable,
-    CreateMemberModal,
+    MemberFormModal,
     AppLayout,
     Pagination,
     SearchFilter,

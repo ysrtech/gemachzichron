@@ -77,47 +77,29 @@
         </td>
       </tr>
       <tr v-if="members.length === 0">
-        <td class="border-t px-6 py-4" colspan="4">No members found.</td>
+        <td class="border-t px-6 py-4" colspan="5">No members found.</td>
       </tr>
     </table>
 
-    <!-- Archive Member Confirmation Modal -->
-    <jet-dialog-modal :show="memberBeingArchived" @close="memberBeingArchived = null" max-width="sm">
-      <template #title>
-        Archive Member
-      </template>
+    <archive-confirmation :member="memberBeingArchived" @close="memberBeingArchived = null"></archive-confirmation>
 
-      <template #content>
-        Are you sure you want to archive <strong>{{ archiveMemberFullName }}</strong>?
-      </template>
-
-      <template #footer>
-        <jet-button color="secondary" @click.native="memberBeingArchived = null">
-          Cancel
-        </jet-button>
-
-        <jet-button type="submit" class="ml-2" @click.native="deleteMember" :processing="form.processing">
-          Confirm
-        </jet-button>
-      </template>
-    </jet-dialog-modal>
   </div>
+
 </template>
 
 <script>
 import JetDropdown from "../../../Shared/Dropdown";
 import JetDropdownLink from "../../../Shared/DropdownLink";
-import JetButton from "../../../Shared/Button";
-import JetDialogModal from "../../../Shared/DialogModal";
+import ArchiveConfirmation from "./ArchiveConfirmation";
 
 export default {
   name: "MembersTable",
 
   components: {
+    ArchiveConfirmation,
     JetDropdown,
     JetDropdownLink,
-    JetButton,
-    JetDialogModal,
+
   },
 
   data() {
@@ -131,23 +113,7 @@ export default {
     members: Array
   },
 
-  computed: {
-    archiveMemberFullName() {
-      return this.memberBeingArchived?.first_name + ' ' + this.memberBeingArchived?.last_name
-    }
-  },
-
   methods: {
-    deleteMember() {
-      this.form.delete(route('members.destroy', this.memberBeingArchived.id), {
-        preserveScroll: true
-      }).then(response => {
-        if (!this.form.hasErrors()) {
-          this.memberBeingArchived = null;
-        }
-      })
-    },
-
     restoreMember(member) {
       this.form.put(route('members.restore', member.id), {
         preserveScroll: true

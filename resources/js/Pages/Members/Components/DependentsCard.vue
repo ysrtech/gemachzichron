@@ -3,7 +3,9 @@
 
     <div class="py-4 flex justify-between">
       <div class="text-xl font-medium">Dependents</div>
-      <button class="material-icons focus:outline-none rounded-full p-1 hover:bg-gray-200 focus:bg-gray-300">
+      <button
+        class="material-icons focus:outline-none rounded-full p-1 hover:bg-gray-200 focus:bg-gray-300"
+        @click="addDependent = true">
         add
       </button>
     </div>
@@ -23,14 +25,18 @@
               {{ dependent.first_name + ' ' + dependent.last_name }}
             </td>
 
-            <td class="border-t px-6 py-3">{{ dependent.dob }}</td>
+            <td class="border-t px-6 py-3">{{ formatDate(dependent.dob) }}</td>
 
             <td class="border-t w-px p-0">
               <div class="px-2 flex items-center text-gray-500">
-                <button class="material-icons focus:outline-none rounded-full p-1 hover:bg-gray-200 hover:text-gray-900 focus:bg-gray-300">
+                <button
+                  class="material-icons focus:outline-none rounded-full p-1 hover:bg-gray-200 hover:text-gray-900 focus:bg-gray-300"
+                  @click="dependentToUpdate = dependent">
                   edit
                 </button>
-                <button class="material-icons focus:outline-none rounded-full p-1 hover:bg-gray-200 hover:text-gray-900 focus:bg-gray-300">
+                <button
+                  class="material-icons focus:outline-none rounded-full p-1 hover:bg-gray-200 hover:text-gray-900 focus:bg-gray-300"
+                  @click="dependentToDelete = dependent">
                   delete
                 </button>
               </div>
@@ -45,16 +51,56 @@
         </table>
       </div>
     </div>
+
+    <dependent-form-modal
+      :member="member"
+      :show="addDependent"
+      :dependent="dependentToUpdate"
+      @close="addDependent = false; dependentToUpdate = null;"
+    />
+
+    <delete-dependent-confirmation
+      :dependent="dependentToDelete"
+      @close="dependentToDelete = null"
+    />
+
   </div>
 </template>
 
 <script>
 
+import DependentFormModal from "./DependentFormModal";
+import DeleteDependentConfirmation from "./DeleteDependentConfirmation";
+
 export default {
   name: "DependentsCard",
-  components: {},
+
+  components: {
+    DeleteDependentConfirmation,
+    DependentFormModal,
+  },
+
+  data() {
+    return {
+      dependentToUpdate: null,
+      addDependent: false,
+      dependentToDelete: null
+    }
+  },
+
   props: {
+    member: Object,
     dependents: Array
+  },
+
+  methods: {
+    formatDate(date) {
+      // Temporary
+      if (!date) {
+        return '';
+      }
+      return new Date(date).toDateString().substr(4);
+    }
   }
 }
 </script>
