@@ -17,12 +17,10 @@
 
 <script>
 import AppLayout from '../Layouts/AppLayout'
-import Welcome from '../Shared/Welcome'
 
 export default {
   components: {
     AppLayout,
-    Welcome,
   },
 }
 </script>
