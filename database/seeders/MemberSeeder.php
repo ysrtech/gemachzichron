@@ -14,6 +14,9 @@ class MemberSeeder extends Seeder
      */
     public function run()
     {
-        Member::factory(500)->create();
+        Member::factory()
+            ->times(500)
+            ->hasDependents(3, fn (array $attributes, Member $member) => ['last_name' => $member->last_name])
+            ->create();
     }
 }

@@ -13,6 +13,11 @@ class Member extends Model
 
     protected $guarded = [];
 
+    public function dependents()
+    {
+        return $this->hasMany(Dependent::class);
+    }
+
     public function scopeFilter($query, array $filters)
     {
         return $query

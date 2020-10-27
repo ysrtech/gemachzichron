@@ -9,17 +9,50 @@
     </div>
 
     <div class="py-4">
-      <div v-for="dependent in dependents" :key="dependent.id">
-        dep
+      <div class="bg-white rounded border border-gray-200 overflow-x-auto">
+        <table class="w-full whitespace-no-wrap text-sm">
+
+          <tr class="text-left text-xs text-gray-400">
+            <th class="px-6 py-3 font-medium">Name</th>
+            <th class="px-6 py-3 font-medium" colspan="2">Date of Birth</th>
+          </tr>
+
+          <tr v-for="dependent in dependents" :key="dependent.id">
+
+            <td class="border-t px-6 py-3" :title="dependent.hebrew_name">
+              {{ dependent.first_name + ' ' + dependent.last_name }}
+            </td>
+
+            <td class="border-t px-6 py-3">{{ dependent.dob }}</td>
+
+            <td class="border-t w-px p-0">
+              <div class="px-2 flex items-center text-gray-500">
+                <button class="material-icons focus:outline-none rounded-full p-1 hover:bg-gray-200 hover:text-gray-900 focus:bg-gray-300">
+                  edit
+                </button>
+                <button class="material-icons focus:outline-none rounded-full p-1 hover:bg-gray-200 hover:text-gray-900 focus:bg-gray-300">
+                  delete
+                </button>
+              </div>
+            </td>
+
+          </tr>
+
+          <tr v-if="dependents.length === 0">
+            <td class="border-t px-6 py-4" colspan="4">No dependents.</td>
+          </tr>
+
+        </table>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+
 export default {
   name: "DependentsCard",
-
+  components: {},
   props: {
     dependents: Array
   }

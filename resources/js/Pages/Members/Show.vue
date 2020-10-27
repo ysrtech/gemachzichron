@@ -7,9 +7,14 @@
     </template>
 
     <div class="grid grid-cols-6 gap-6">
-      <member-info-card :member="member" class="col-span-6 sm:col-span-4"></member-info-card>
-      <dependents-card :dependents="[]" class="col-span-6 sm:col-span-2"></dependents-card>
+      <div class="col-span-6 sm:col-span-4">
+        <member-info-card :member="member"></member-info-card>
+      </div>
+      <div class="col-span-6 sm:col-span-2">
+        <dependents-card :dependents="member.dependents"></dependents-card>
+      </div>
     </div>
+
 
   </app-layout>
 </template>
