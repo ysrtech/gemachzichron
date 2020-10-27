@@ -11,7 +11,7 @@
 
         <form @submit.prevent="submit">
             <div class="mt-4 flex items-center justify-between">
-                <jet-button type="submit"::processing="form.processing">
+                <jet-button type="submit" :processing="form.processing">
                     Resend Verification Email
                 </jet-button>
 

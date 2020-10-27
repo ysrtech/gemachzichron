@@ -29,7 +29,7 @@
                     Already registered?
                 </inertia-link>
 
-                <jet-button type="submit"class="ml-4" ::processing="form.processing">
+                <jet-button type="submit"class="ml-4" :processing="form.processing">
                     Register
                 </jet-button>
             </div>

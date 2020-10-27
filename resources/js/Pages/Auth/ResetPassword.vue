@@ -20,7 +20,7 @@
             </div>
 
             <div class="flex items-center justify-end mt-4">
-                <jet-button type="submit"::processing="form.processing">
+                <jet-button type="submit" :processing="form.processing">
                     Reset Password
                 </jet-button>
             </div>

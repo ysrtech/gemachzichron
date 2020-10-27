@@ -3,12 +3,12 @@
     <!-- Primary Navigation Menu -->
     <div class="flex justify-between h-16 flex-wrap">
 
-      <div
-        class="bg-primary-900 md:flex-shrink-0 w-full md:w-56 px-6 py-4 flex items-center justify-between md:justify-center">
+      <div class="bg-primary-900 md:flex-shrink-0 w-full md:w-56 px-6 flex items-center justify-between md:justify-center">
+
         <!-- Logo -->
         <div class="flex-shrink-0 flex items-center">
           <inertia-link :href="route('dashboard')">
-            <jet-application-mark class="block h-9 w-auto"/>
+            <img src="/img/logo.png" alt="Logo" class="h-12 w-auto">
           </inertia-link>
         </div>
 
@@ -147,8 +147,6 @@
 </template>
 
 <script>
-import JetApplicationLogo from '../Shared/ApplicationLogo'
-import JetApplicationMark from '../Shared/ApplicationMark'
 import JetDropdown from '../Shared/Dropdown'
 import JetDropdownLink from '../Shared/DropdownLink'
 import JetNavLink from '../Shared/NavLink'
@@ -156,8 +154,6 @@ import JetResponsiveNavLink from '../Shared/ResponsiveNavLink'
 
 export default {
   components: {
-    JetApplicationLogo,
-    JetApplicationMark,
     JetDropdown,
     JetDropdownLink,
     JetNavLink,
