@@ -6,9 +6,12 @@
       </h2>
     </template>
 
-    <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-      <welcome/>
+    <div class="grid grid-cols-3 gap-6 text-gray-400 text-center">
+      <div class="rounded-md bg-white shadow-md px-5 py-12 col-span-3 md:col-span-1 mx-4 md:m-0">Nothing</div>
+      <div class="rounded-md bg-white shadow-md px-5 py-12 col-span-3 md:col-span-1 mx-4 md:m-0">here</div>
+      <div class="rounded-md bg-white shadow-md px-5 py-12 col-span-3 md:col-span-1 mx-4 md:m-0">yet</div>
     </div>
+
   </app-layout>
 </template>
 

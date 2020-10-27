@@ -170,7 +170,7 @@ export default {
       navItems: [
         {title: "Dashboard", route: "dashboard", icon: "dashboard"},
         {title: "Members", route: "members.index", icon: "people"},
-        {title: "Settings", route: "welcome", icon: "settings"}
+        {title: "Settings", route: "", icon: "settings"}
       ]
     }
   },
@@ -185,9 +185,7 @@ export default {
     },
 
     logout() {
-      axios.post(route('logout').url()).then(response => {
-        window.location = '/';
-      })
+      this.$inertia.post(route('logout'));
     },
   },
 
