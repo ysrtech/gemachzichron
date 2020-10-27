@@ -18,10 +18,10 @@ printf "Updating composer dependencies...\n"
 composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
 
 printf "Updating npm dependencies...\n"
-npm ci -q
+npm ci
 
 printf "Building assets...\n"
-npm run prod -q
+npm run prod
 
 printf "Optimizing code...\n"
 php artisan optimize:clear
@@ -35,8 +35,8 @@ php artisan view:cache
 printf "Migrating database...\n"
 php artisan migrate --force
 
-# printf "Restarting queue workers...\n"
-# php artisan queue:restart
+printf "Restarting queue workers...\n"
+php artisan queue:restart
 
 printf "Exiting maintenance mode.\n"
 php artisan up
