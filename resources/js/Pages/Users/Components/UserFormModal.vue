@@ -14,7 +14,7 @@
                 <jet-input-error :message="form.error('name')" class="mt-1"/>
             </div>
 
-            <div class="my-3">
+            <div class="my-3" v-if="$page.props.user.role == roles.super">
                 <jet-label for="role" value="Role"/>
                 <select id="role" v-model="form.role"
                         class="form-input rounded-md shadow-sm mt-1 block w-full">
