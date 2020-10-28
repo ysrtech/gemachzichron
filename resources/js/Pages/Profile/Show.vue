@@ -7,13 +7,13 @@
     </template>
 
     <div>
-      <update-profile-information-form :user="$page.user"/>
+      <update-profile-information-form :user="$page.props.user"/>
 
       <jet-section-border/>
 
       <update-password-form class="mt-10 sm:mt-0"/>
 
-      <div v-if="$page.jetstream.canManageTwoFactorAuthentication">
+      <div v-if="$page.props.jetstream.canManageTwoFactorAuthentication">
         <jet-section-border/>
 
         <two-factor-authentication-form class="mt-10 sm:mt-0"/>

@@ -3,7 +3,8 @@
     <!-- Primary Navigation Menu -->
     <div class="flex justify-between h-16 flex-wrap">
 
-      <div class="bg-primary-900 md:flex-shrink-0 w-full md:w-56 px-6 flex items-center justify-between md:justify-center">
+      <div
+        class="bg-primary-900 md:flex-shrink-0 w-full md:w-60 px-6 flex items-center justify-between md:justify-center">
 
         <!-- Logo -->
         <div class="flex-shrink-0 flex items-center">
@@ -40,9 +41,10 @@
                  @click="showingNavigationDropdown = false">
               <div class="rounded-md shadow-xs bg-primary-800 p-4">
                 <template v-for="item in navItems">
-                  <inertia-link class="flex items-center group py-2 px-3 my-2 transition rounded-md group focus:outline-none"
-                                :class="item.activeClass ? 'bg-primary-600' : 'hover:bg-primary-700'"
-                                :href="route(item.route)">
+                  <inertia-link
+                    class="flex items-center group py-2 px-3 my-2 transition rounded-md group focus:outline-none"
+                    :class="item.activeClass ? 'bg-primary-600' : 'hover:bg-primary-700'"
+                    :href="route(item.route)">
                     <i class="material-icons-outlined mr-2"
                        :class="item.activeClass ? 'text-white' : 'text-primary-500 group-hover:text-white'">{{
                         item.icon
@@ -67,15 +69,15 @@
         <div class="ml-3 relative">
           <jet-dropdown align="right" width="48">
             <template #trigger>
-              <button v-if="$page.jetstream.managesProfilePhotos"
+              <button v-if="$page.props.jetstream.managesProfilePhotos"
                       class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition duration-150 ease-in-out">
-                <img class="h-8 w-8 rounded-full object-cover" :src="$page.user.profile_photo_url"
-                     :alt="$page.user.name"/>
+                <img class="h-8 w-8 rounded-full object-cover" :src="$page.props.user.profile_photo_url"
+                     :alt="$page.props.user.name"/>
               </button>
 
               <button v-else
                       class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
-                <div>{{ $page.user.name }}</div>
+                <div>{{ $page.props.user.name }}</div>
 
                 <div class="ml-1">
                   <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -113,21 +115,48 @@
     </div>
 
     <div class="md:flex md:flex-grow md:overflow-hidden">
-      <div class="hidden md:block bg-primary-800 flex-shrink-0 w-56 py-12 px-5 overflow-y-auto">
+      <div class="hidden md:block bg-primary-800 flex-shrink-0 w-60 py-12 px-5 overflow-y-auto">
         <template v-for="item in navItems">
           <inertia-link
-            class="flex items-center group py-2 px-3 my-2 transition rounded-md group focus:outline-none"
+            class="flex items-center group py-2 px-3 my-2 transition rounded-md group focus:outline-none cursor-pointer"
             :class="item.activeClass ? 'bg-primary-600' : 'hover:bg-primary-700'"
+            :as="!item.route ? 'div' : 'a'"
+            @click.prevent="item.subItemsExpanded = !item.subItemsExpanded"
             :href="route(item.route)">
             <i class="material-icons-outlined mr-2"
-               :class="item.activeClass ? 'text-white' : 'text-primary-400 group-hover:text-white'">{{
-                item.icon
-              }}</i>
+               :class="item.activeClass ? 'text-white' : 'text-primary-400 group-hover:text-white'">
+              {{ item.icon }}
+            </i>
             <div
               :class="item.activeClass ? 'text-white' : 'text-primary-300 group-hover:text-white'">
               {{ item.title }}
             </div>
+            <div v-if="item.subItems" class="flex-grow flex items-center justify-end text-right"
+                 :class="item.activeClass ? 'text-white' : 'text-primary-300 group-hover:text-white'">
+              <i class="material-icons" :class="{ 'transform rotate-180': item.subItemsExpanded }">expand_more</i>
+            </div>
           </inertia-link>
+          <transition enter="" leave="">
+            <template v-if="item.subItemsExpanded">
+              <template v-for="subItem in item.subItems">
+                <inertia-link
+                  class="flex items-center group py-2 pr-3 pl-11 my-2 transition rounded-md group focus:outline-none"
+                  :class="subItem.activeClass ? 'bg-primary-600' : 'hover:bg-primary-700'"
+                  :href="route(subItem.route)">
+                  <i
+                    class="material-icons-outlined mr-2"
+                    v-show="subItem.icon"
+                    :class="subItem.activeClass ? 'text-white' : 'text-primary-400 group-hover:text-white'">
+                    {{ subItem.icon }}
+                  </i>
+                  <div
+                    :class="subItem.activeClass ? 'text-white' : 'text-primary-300 group-hover:text-white'">
+                    {{ subItem.title }}
+                  </div>
+                </inertia-link>
+              </template>
+            </template>
+          </transition>
         </template>
       </div>
 
@@ -164,9 +193,23 @@ export default {
     return {
       showingNavigationDropdown: false,
       navItems: [
-        {title: "Dashboard", route: "dashboard", icon: "dashboard", activeClass: this.$page.currentRouteName == 'dashboard'},
-        {title: "Members", route: "members.index", icon: "people", activeClass: this.$page.currentRouteName.startsWith('members.')},
-        {title: "Settings", route: "", icon: "settings", activeClass: false}
+        {
+          title: "Dashboard",
+          route: "dashboard",
+          icon: "dashboard",
+          activeClass: this.$page.props.currentRouteName == 'dashboard'
+        },
+        {
+          title: "Members",
+          route: "members.index",
+          icon: "people",
+          activeClass: this.$page.props.currentRouteName.startsWith('members.')
+        },
+        {
+          title: "Settings", icon: "settings", activeClass: false, subItemsExpanded: false, subItems: [
+            {title: "Users", route: "", activeClass: this.$page.props.currentRouteName.startsWith('users.')},
+          ]
+        }
       ]
     }
   },
@@ -175,12 +218,6 @@ export default {
     logout() {
       this.$inertia.post(route('logout'));
     },
-  },
-
-  computed: {
-    path() {
-      return window.location.pathname
-    }
   }
 }
 </script>
