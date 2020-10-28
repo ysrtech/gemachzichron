@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Inertia\Inertia;
 
 class Handler extends ExceptionHandler
 {
@@ -33,5 +34,18 @@ class Handler extends ExceptionHandler
     public function register()
     {
         //
+    }
+
+    public function render($request, \Throwable $exception)
+    {
+        $response = parent::render($request, $exception);
+
+        if ($request->header('X-Inertia') && !config('app.debug')) {
+            return Inertia::render('Error', ['status' => $response->status()])
+                ->toResponse($request)
+                ->setStatusCode($response->status());
+        }
+
+        return $response;
     }
 }
