@@ -118,10 +118,10 @@
       <div class="hidden md:block bg-primary-800 flex-shrink-0 w-60 py-12 px-5 overflow-y-auto">
         <template v-for="item in navItems">
           <inertia-link
+            preserve-state
+            v-if="!item.subItems"
             class="flex items-center group py-2 px-3 my-2 transition rounded-md group focus:outline-none cursor-pointer"
             :class="item.activeClass ? 'bg-primary-600' : 'hover:bg-primary-700'"
-            :as="!item.route ? 'div' : 'a'"
-            @click.prevent="item.subItemsExpanded = !item.subItemsExpanded"
             :href="route(item.route)">
             <i class="material-icons-outlined mr-2"
                :class="item.activeClass ? 'text-white' : 'text-primary-400 group-hover:text-white'">
@@ -131,32 +131,46 @@
               :class="item.activeClass ? 'text-white' : 'text-primary-300 group-hover:text-white'">
               {{ item.title }}
             </div>
-            <div v-if="item.subItems" class="flex-grow flex items-center justify-end text-right"
-                 :class="item.activeClass ? 'text-white' : 'text-primary-300 group-hover:text-white'">
+          </inertia-link>
+
+          <inertia-link
+            v-else
+            class="flex items-center group py-2 px-3 my-2 transition rounded-md group focus:outline-none cursor-pointer"
+            :class="item.activeClass ? 'bg-primary-600' : 'hover:bg-primary-700'"
+            :as="!item.route ? 'div' : 'a'"
+            @click.prevent="item.subItemsExpanded = !item.subItemsExpanded" href="#">
+            <i class="material-icons-outlined mr-2 text-primary-400 group-hover:text-white">
+              {{ item.icon }}
+            </i>
+            <div class="text-primary-300 group-hover:text-white">
+              {{ item.title }}
+            </div>
+            <div class="flex-grow flex items-center justify-end text-right text-primary-300 group-hover:text-white">
               <i class="material-icons" :class="{ 'transform rotate-180': item.subItemsExpanded }">expand_more</i>
             </div>
           </inertia-link>
-          <transition enter="" leave="">
-            <template v-if="item.subItemsExpanded">
-              <template v-for="subItem in item.subItems">
-                <inertia-link
-                  class="flex items-center group py-2 pr-3 pl-11 my-2 transition rounded-md group focus:outline-none"
-                  :class="subItem.activeClass ? 'bg-primary-600' : 'hover:bg-primary-700'"
-                  :href="route(subItem.route)">
-                  <i
-                    class="material-icons-outlined mr-2"
-                    v-show="subItem.icon"
-                    :class="subItem.activeClass ? 'text-white' : 'text-primary-400 group-hover:text-white'">
-                    {{ subItem.icon }}
-                  </i>
-                  <div
-                    :class="subItem.activeClass ? 'text-white' : 'text-primary-300 group-hover:text-white'">
-                    {{ subItem.title }}
-                  </div>
-                </inertia-link>
-              </template>
+
+          <template v-if="item.subItemsExpanded">
+            <template v-for="subItem in item.subItems">
+              <inertia-link
+                preserve-state
+                class="flex items-center group py-2 pr-3 pl-11 my-2 transition rounded-md group focus:outline-none"
+                :class="subItem.activeClass ? 'bg-primary-600' : 'hover:bg-primary-700'"
+                :href="route(subItem.route)">
+                <i
+                  class="material-icons-outlined mr-2"
+                  v-show="subItem.icon"
+                  :class="subItem.activeClass ? 'text-white' : 'text-primary-400 group-hover:text-white'">
+                  {{ subItem.icon }}
+                </i>
+                <div
+                  :class="subItem.activeClass ? 'text-white' : 'text-primary-300 group-hover:text-white'">
+                  {{ subItem.title }}
+                </div>
+              </inertia-link>
             </template>
-          </transition>
+          </template>
+
         </template>
       </div>
 
@@ -207,7 +221,7 @@ export default {
         },
         {
           title: "Settings", icon: "settings", activeClass: false, subItemsExpanded: false, subItems: [
-            {title: "Users", route: "", activeClass: this.$page.props.currentRouteName.startsWith('users.')},
+            {title: "Users", route: "users.index", activeClass: this.$page.props.currentRouteName.startsWith('users.')},
           ]
         }
       ]

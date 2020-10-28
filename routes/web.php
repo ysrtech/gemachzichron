@@ -19,6 +19,8 @@ Route::redirect('/', 'dashboard');
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/dashboard', Controllers\DashboardController::class)->name('dashboard');
 
+    Route::apiResource('users', Controllers\UserController::class);
+
     Route::apiResource('members', Controllers\MemberController::class);
     Route::put('members/{member}/restore', [Controllers\MemberController::class, 'restore'])->name('members.restore');
     Route::apiresource('members.dependents', Controllers\DependentController::class)->shallow();
