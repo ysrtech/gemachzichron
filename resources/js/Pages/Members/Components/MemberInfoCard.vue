@@ -9,7 +9,7 @@
       </button>
     </div>
 
-    <div class="py-4">
+    <div class="pb-4">
       <div class="grid grid-cols-2 gap-6">
 
         <div class="col-span-1">

@@ -31,6 +31,10 @@
         <dependents-card :dependents="member.dependents" :member="member"></dependents-card>
       </div>
 
+      <div class="col-span-6">
+        <membership-card :membership="member.membership"></membership-card>
+      </div>
+
     </div>
 
     <archive-confirmation :member="confirmArchive" @close="confirmArchive = null"></archive-confirmation>
@@ -43,6 +47,7 @@ import AppLayout from "../../Layouts/AppLayout";
 import MemberInfoCard from "./Components/MemberInfoCard";
 import DependentsCard from "./Components/DependentsCard";
 import ArchiveConfirmation from "./Components/ArchiveConfirmation";
+import MembershipCard from "./Components/MembershipCard";
 
 export default {
   name: "Show",
@@ -54,6 +59,7 @@ export default {
   },
 
   components: {
+    MembershipCard,
     ArchiveConfirmation,
     DependentsCard,
     MemberInfoCard,

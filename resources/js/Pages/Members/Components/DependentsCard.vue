@@ -10,7 +10,7 @@
       </button>
     </div>
 
-    <div class="py-4">
+    <div class="pb-4">
       <div class="bg-white rounded border border-gray-200 overflow-x-auto">
         <table class="w-full whitespace-no-wrap text-sm">
 
@@ -92,15 +92,5 @@ export default {
     member: Object,
     dependents: Array
   },
-
-  methods: {
-    formatDate(date) {
-      // Temporary
-      if (!date) {
-        return '';
-      }
-      return new Date(date).toDateString().substr(4);
-    }
-  }
 }
 </script>

@@ -21,6 +21,11 @@ class Member extends Model
         return $this->hasMany(Dependent::class);
     }
 
+    public function membership()
+    {
+        return $this->hasOne(Membership::class);
+    }
+
     public function scopeFilter($query, array $filters)
     {
         return $query

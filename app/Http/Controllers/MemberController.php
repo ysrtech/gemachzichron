@@ -26,6 +26,7 @@ class MemberController extends Controller
                     'mobile_phone',
                     'deleted_at'
                 )
+                ->with('membership')
                 ->orderBy('last_name')
                 ->orderBy('first_name')
                 ->paginate()
@@ -42,7 +43,11 @@ class MemberController extends Controller
 
     public function show(Member $member)
     {
-        $member->load('dependents');
+        $member->load([
+            'dependents',
+            'membership.plan_type',
+            'membership.subscriptions'
+        ]);
 
         return Inertia::render('Members/Show', [
            'member' => $member

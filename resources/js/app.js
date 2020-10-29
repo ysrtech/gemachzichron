@@ -9,7 +9,16 @@ import { InertiaProgress } from '@inertiajs/progress'
 export const EventBus = new Vue();
 
 Vue.mixin({
-  methods: { route },
+  methods: {
+    route,
+    formatDate(date) {
+      if (!date) {
+        return '';
+      }
+      return new Date(date).toDateString().substr(4);
+    }
+  },
+
   mounted() {
     if(this.$options.header) {
       EventBus.$emit('page-changed', this.$options.header)
