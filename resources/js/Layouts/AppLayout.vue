@@ -4,7 +4,7 @@
     <div class="flex justify-between h-16 flex-wrap">
 
       <div
-        class="bg-primary-900 md:flex-shrink-0 w-full md:w-60 px-6 flex items-center justify-between md:justify-center">
+        class="bg-primary-900 md:flex-shrink-0 w-full md:w-56 px-6 flex items-center justify-between md:justify-center">
 
         <!-- Logo -->
         <div class="flex-shrink-0 flex items-center">
@@ -40,21 +40,7 @@
                  class="absolute z-50 mt-2 rounded-md shadow-lg w-48 right-0"
                  @click="showingNavigationDropdown = false">
               <div class="rounded-md shadow-xs bg-primary-800 p-4">
-                <template v-for="item in navItems">
-                  <inertia-link
-                    class="flex items-center group py-2 px-3 my-2 transition rounded-md group focus:outline-none"
-                    :class="item.activeClass ? 'bg-primary-600' : 'hover:bg-primary-700'"
-                    :href="route(item.route)">
-                    <i class="material-icons-outlined mr-2"
-                       :class="item.activeClass ? 'text-white' : 'text-primary-500 group-hover:text-white'">{{
-                        item.icon
-                      }}</i>
-                    <div
-                      :class="item.activeClass ? 'text-white' : 'text-primary-300 group-hover:text-white'">
-                      {{ item.title }}
-                    </div>
-                  </inertia-link>
-                </template>
+                <app-nav></app-nav>
               </div>
             </div>
           </transition>
@@ -63,7 +49,12 @@
       </div>
 
       <div class="flex-grow flex items-center justify-between h-16 px-4 md:px-6 lg:px-8 bg-white shadow border-b">
-        <slot name="header"></slot>
+
+        <h2 class="font-medium text-2xl text-gray-800 leading-tight">
+          <template v-if="header">{{ header }}</template>
+          <slot name="header" v-else></slot>
+        </h2>
+
 
         <!-- Settings Dropdown -->
         <div class="ml-3 relative">
@@ -115,68 +106,13 @@
     </div>
 
     <div class="md:flex md:flex-grow md:overflow-hidden">
-      <div class="hidden md:block bg-primary-800 flex-shrink-0 w-60 py-12 px-5 overflow-y-auto">
-        <template v-for="item in navItems">
-          <inertia-link
-            preserve-state
-            v-if="!item.subItems"
-            class="flex items-center group py-2 px-3 my-2 transition rounded-md group focus:outline-none cursor-pointer"
-            :class="item.activeClass ? 'bg-primary-600' : 'hover:bg-primary-700'"
-            :href="route(item.route)">
-            <i class="material-icons-outlined mr-2"
-               :class="item.activeClass ? 'text-white' : 'text-primary-400 group-hover:text-white'">
-              {{ item.icon }}
-            </i>
-            <div
-              :class="item.activeClass ? 'text-white' : 'text-primary-300 group-hover:text-white'">
-              {{ item.title }}
-            </div>
-          </inertia-link>
-
-          <inertia-link
-            v-else
-            class="flex items-center group py-2 px-3 my-2 transition rounded-md group focus:outline-none cursor-pointer"
-            :class="item.activeClass ? 'bg-primary-600' : 'hover:bg-primary-700'"
-            :as="!item.route ? 'div' : 'a'"
-            @click.prevent="item.subItemsExpanded = !item.subItemsExpanded" href="#">
-            <i class="material-icons-outlined mr-2 text-primary-400 group-hover:text-white">
-              {{ item.icon }}
-            </i>
-            <div class="text-primary-300 group-hover:text-white">
-              {{ item.title }}
-            </div>
-            <div class="flex-grow flex items-center justify-end text-right text-primary-300 group-hover:text-white">
-              <i class="material-icons" :class="{ 'transform rotate-180': item.subItemsExpanded }">expand_more</i>
-            </div>
-          </inertia-link>
-
-          <template v-if="item.subItemsExpanded">
-            <template v-for="subItem in item.subItems">
-              <inertia-link
-                preserve-state
-                class="flex items-center group py-2 pr-3 pl-11 my-2 transition rounded-md group focus:outline-none"
-                :class="subItem.activeClass ? 'bg-primary-600' : 'hover:bg-primary-700'"
-                :href="route(subItem.route)">
-                <i
-                  class="material-icons-outlined mr-2"
-                  v-show="subItem.icon"
-                  :class="subItem.activeClass ? 'text-white' : 'text-primary-400 group-hover:text-white'">
-                  {{ subItem.icon }}
-                </i>
-                <div
-                  :class="subItem.activeClass ? 'text-white' : 'text-primary-300 group-hover:text-white'">
-                  {{ subItem.title }}
-                </div>
-              </inertia-link>
-            </template>
-          </template>
-
-        </template>
+      <div class="hidden md:block bg-primary-800 flex-shrink-0 w-56 py-12 px-5 overflow-y-auto">
+        <app-nav></app-nav>
       </div>
 
       <!-- Page Content -->
       <main class="w-full md:overflow-y-auto">
-        <div class="mx-auto pt-24 md:py-10 sm:px-6 lg:px-8">
+        <div class="mx-auto pt-24 md:py-10 px-3 sm:px-6 lg:px-8">
           <slot/>
         </div>
       </main>
@@ -194,9 +130,12 @@ import JetDropdown from '../Shared/Dropdown'
 import JetDropdownLink from '../Shared/DropdownLink'
 import JetNavLink from '../Shared/NavLink'
 import JetResponsiveNavLink from '../Shared/ResponsiveNavLink'
+import AppNav from "./AppNav";
+import {EventBus} from "../app";
 
 export default {
   components: {
+    AppNav,
     JetDropdown,
     JetDropdownLink,
     JetNavLink,
@@ -205,27 +144,13 @@ export default {
 
   data() {
     return {
+      header: '',
       showingNavigationDropdown: false,
-      navItems: [
-        {
-          title: "Dashboard",
-          route: "dashboard",
-          icon: "dashboard",
-          activeClass: this.$page.props.currentRouteName == 'dashboard'
-        },
-        {
-          title: "Members",
-          route: "members.index",
-          icon: "people",
-          activeClass: this.$page.props.currentRouteName.startsWith('members.')
-        },
-        {
-          title: "Settings", icon: "settings", activeClass: false, subItemsExpanded: false, subItems: [
-            {title: "Users", route: "users.index", activeClass: this.$page.props.currentRouteName.startsWith('users.')},
-          ]
-        }
-      ]
     }
+  },
+
+  created() {
+    EventBus.$on('page-changed', header => this.header = header);
   },
 
   methods: {

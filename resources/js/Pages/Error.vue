@@ -1,11 +1,7 @@
 <template>
   <div>
     <app-layout v-if="$page.props.user">
-      <template #header>
-        <h2 class="font-medium text-2xl text-gray-800 leading-tight">
-          {{ title }}
-        </h2>
-      </template>
+      <template #header>{{ title }}</template>
 
       <div class="flex items-center my-12 h-full justify-center text-lg text-gray-500 tracking-wider">
         <div>{{ description }}</div>

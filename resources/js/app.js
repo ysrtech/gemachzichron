@@ -1,13 +1,22 @@
 require('./bootstrap');
 
 import Vue from 'vue';
-
 import { InertiaApp, plugin } from '@inertiajs/inertia-vue';
 import { InertiaForm } from 'laravel-jetstream';
 import PortalVue from 'portal-vue';
 import { InertiaProgress } from '@inertiajs/progress'
 
-Vue.mixin({ methods: { route } });
+export const EventBus = new Vue();
+
+Vue.mixin({
+  methods: { route },
+  mounted() {
+    if(this.$options.header) {
+      EventBus.$emit('page-changed', this.$options.header, this.$page.props.currentRouteName)
+    }
+  }
+})
+
 Vue.use(plugin);
 Vue.use(InertiaForm);
 Vue.use(PortalVue);

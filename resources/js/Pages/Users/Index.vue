@@ -1,10 +1,5 @@
 <template>
-  <app-layout>
-    <template #header>
-      <h2 class="font-medium text-2xl text-gray-800 leading-tight">
-        Users
-      </h2>
-    </template>
+  <div>
 
     <div class="px-6">
 
@@ -23,7 +18,7 @@
 
     <user-form-modal :show="showCreateUserModal" @close="showCreateUserModal = false" />
 
-  </app-layout>
+  </div>
 </template>
 
 <script>
@@ -34,6 +29,8 @@ import UsersTable from "./Components/UsersTable";
 import UserFormModal from "./Components/UserFormModal";
 
 export default {
+  layout: AppLayout,
+  header: 'Users',
   components: {
     UserFormModal,
     UsersTable,
@@ -50,5 +47,6 @@ export default {
       showCreateUserModal: false,
     }
   },
+
 }
 </script>

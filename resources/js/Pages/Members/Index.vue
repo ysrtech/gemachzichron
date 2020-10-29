@@ -1,10 +1,5 @@
 <template>
-  <app-layout>
-    <template #header>
-      <h2 class="font-medium text-2xl text-gray-800 leading-tight">
-        Members
-      </h2>
-    </template>
+  <div>
 
     <div class="px-6">
 
@@ -35,7 +30,7 @@
 
     <member-form-modal :show="showCreateMemberModal" @close="showCreateMemberModal = false" />
 
-  </app-layout>
+  </div>
 </template>
 
 <script>
@@ -50,6 +45,8 @@ import MemberFormModal from "./Components/MemberFormModal";
 import MembersTable from "./Components/MembersTable";
 
 export default {
+  layout: AppLayout,
+  header: 'Members',
   components: {
     MembersTable,
     MemberFormModal,

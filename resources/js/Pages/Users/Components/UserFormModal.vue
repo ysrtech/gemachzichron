@@ -36,7 +36,7 @@
                 <jet-label for="password" value="Password"/>
                 <jet-input id="password" v-model="form.password"
                            class="mt-1 block w-full"
-                           :placeholder="user ? 'Leave empty to stay with the old password' : ''"
+                           :placeholder="user ? 'Leave blank for no change' : ''"
                            type="password"/>
                 <jet-input-error :message="form.error('password')" class="mt-1"/>
             </div>

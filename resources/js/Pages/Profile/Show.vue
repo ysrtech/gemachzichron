@@ -1,10 +1,5 @@
 <template>
-  <app-layout>
-    <template #header>
-      <h2 class="font-medium text-2xl text-gray-800 leading-tight">
-        Profile
-      </h2>
-    </template>
+  <div>
 
     <div>
       <update-profile-information-form :user="$page.props.user"/>
@@ -27,7 +22,8 @@
 
       <delete-user-form class="mt-10 sm:mt-0"/>
     </div>
-  </app-layout>
+
+  </div>
 </template>
 
 <script>
@@ -40,6 +36,9 @@ import UpdatePasswordForm from './Components/UpdatePasswordForm'
 import UpdateProfileInformationForm from './Components/UpdateProfileInformationForm'
 
 export default {
+  layout: AppLayout,
+  header: 'Profile',
+
   props: ['sessions'],
 
   components: {

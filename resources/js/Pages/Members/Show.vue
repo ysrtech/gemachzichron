@@ -1,10 +1,6 @@
 <template>
   <app-layout>
-    <template #header>
-      <h2 class="font-medium text-2xl text-gray-800 leading-tight">
-        {{ member.last_name + ' ' + member.first_name }}
-      </h2>
-    </template>
+    <template #header>{{ member.last_name + ' ' + member.first_name }}</template>
 
     <div class="bg-orange-100 border-t border-b border-orange-500 w-full p-6 mb-3" v-if="member.deleted_at">
       <div class="flex justify-between text-orange-600">
