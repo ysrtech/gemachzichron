@@ -12,7 +12,7 @@ Vue.mixin({
   methods: { route },
   mounted() {
     if(this.$options.header) {
-      EventBus.$emit('page-changed', this.$options.header, this.$page.props.currentRouteName)
+      EventBus.$emit('page-changed', this.$options.header)
     }
   }
 })
