@@ -53,8 +53,8 @@
 </template>
 
 <script>
-import JetDropdown from "../../../Shared/Dropdown";
-import JetDropdownLink from "../../../Shared/DropdownLink";
+import AppDropdown from "../../../Shared/Dropdown";
+import AppDropdownLink from "../../../Shared/DropdownLink";
 import UserFormModal from "./UserFormModal";
 
 export default {
@@ -63,8 +63,8 @@ export default {
   components: {
     UserFormModal,
 
-    JetDropdown,
-    JetDropdownLink,
+    AppDropdown,
+    AppDropdownLink,
 
   },
 

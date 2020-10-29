@@ -1,5 +1,5 @@
 <template>
-    <jet-form-section @submitted="updateProfileInformation">
+    <app-form-section @submitted="updateProfileInformation">
         <template #title>
             Profile Information
         </template>
@@ -16,7 +16,7 @@
                             ref="photo"
                             @change="updatePhotoPreview">
 
-                <jet-label for="photo" value="Photo" />
+                <app-label for="photo" value="Photo" />
 
                 <!-- Current Profile Photo -->
                 <div class="mt-2" v-show="! photoPreview">
@@ -30,60 +30,60 @@
                     </span>
                 </div>
 
-                <jet-button color="secondary" class="mt-2 mr-2" type="button" @click.native.prevent="selectNewPhoto">
+                <app-button color="secondary" class="mt-2 mr-2" type="button" @click.native.prevent="selectNewPhoto">
                     Select A New Photo
-                </jet-button>
+                </app-button>
 
-                <jet-button color="secondary" type="button" class="mt-2" @click.native.prevent="deletePhoto" v-if="user.profile_photo_path">
+                <app-button color="secondary" type="button" class="mt-2" @click.native.prevent="deletePhoto" v-if="user.profile_photo_path">
                     Remove Photo
-                </jet-button>
+                </app-button>
 
-                <jet-input-error :message="form.error('photo')" class="mt-2" />
+                <app-input-error :message="form.error('photo')" class="mt-2" />
             </div>
 
             <!-- Name -->
             <div class="col-span-6 sm:col-span-4">
-                <jet-label for="name" value="Name" />
-                <jet-input id="name" type="text" class="mt-1 block w-full" v-model="form.name" autocomplete="name" />
-                <jet-input-error :message="form.error('name')" class="mt-2" />
+                <app-label for="name" value="Name" />
+                <app-input id="name" type="text" class="mt-1 block w-full" v-model="form.name" autocomplete="name" />
+                <app-input-error :message="form.error('name')" class="mt-2" />
             </div>
 
             <!-- Email -->
             <div class="col-span-6 sm:col-span-4">
-                <jet-label for="email" value="Email" />
-                <jet-input id="email" type="email" class="mt-1 block w-full" v-model="form.email" />
-                <jet-input-error :message="form.error('email')" class="mt-2" />
+                <app-label for="email" value="Email" />
+                <app-input id="email" type="email" class="mt-1 block w-full" v-model="form.email" />
+                <app-input-error :message="form.error('email')" class="mt-2" />
             </div>
         </template>
 
         <template #actions>
-            <jet-action-message :on="form.recentlySuccessful" class="mr-3">
+            <app-action-message :on="form.recentlySuccessful" class="mr-3">
                 Saved.
-            </jet-action-message>
+            </app-action-message>
 
-            <jet-button type="submit" :processing="form.processing">
+            <app-button type="submit" :processing="form.processing">
                 Save
-            </jet-button>
+            </app-button>
         </template>
-    </jet-form-section>
+    </app-form-section>
 </template>
 
 <script>
-    import JetButton from '../../../Shared/Button'
-    import JetFormSection from '../../../Shared/FormSection'
-    import JetInput from '../../../Shared/Input'
-    import JetInputError from '../../../Shared/InputError'
-    import JetLabel from '../../../Shared/Label'
-    import JetActionMessage from '../../../Shared/ActionMessage'
+    import AppButton from '../../../Shared/Button'
+    import AppFormSection from '../../../Shared/FormSection'
+    import AppInput from '../../../Shared/Input'
+    import AppInputError from '../../../Shared/InputError'
+    import AppLabel from '../../../Shared/Label'
+    import AppActionMessage from '../../../Shared/ActionMessage'
 
     export default {
         components: {
-            JetActionMessage,
-            JetButton,
-            JetFormSection,
-            JetInput,
-            JetInputError,
-            JetLabel,
+            AppActionMessage,
+            AppButton,
+            AppFormSection,
+            AppInput,
+            AppInputError,
+            AppLabel,
         },
 
         props: ['user'],

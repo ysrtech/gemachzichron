@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- Generate API Token -->
-        <jet-form-section @submitted="createApiToken">
+        <app-form-section @submitted="createApiToken">
             <template #title>
                 Create API Token
             </template>
@@ -13,14 +13,14 @@
             <template #form>
                 <!-- Token Name -->
                 <div class="col-span-6 sm:col-span-4">
-                    <jet-label for="name" value="Name" />
-                    <jet-input id="name" type="text" class="mt-1 block w-full" v-model="createApiTokenForm.name" autofocus />
-                    <jet-input-error :message="createApiTokenForm.error('name')" class="mt-2" />
+                    <app-label for="name" value="Name" />
+                    <app-input id="name" type="text" class="mt-1 block w-full" v-model="createApiTokenForm.name" autofocus />
+                    <app-input-error :message="createApiTokenForm.error('name')" class="mt-2" />
                 </div>
 
                 <!-- Token Permissions -->
                 <div class="col-span-6" v-if="availablePermissions.length > 0">
-                    <jet-label for="permissions" value="Permissions" />
+                    <app-label for="permissions" value="Permissions" />
 
                     <div class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div v-for="permission in availablePermissions">
@@ -34,22 +34,22 @@
             </template>
 
             <template #actions>
-                <jet-action-message :on="createApiTokenForm.recentlySuccessful" class="mr-3">
+                <app-action-message :on="createApiTokenForm.recentlySuccessful" class="mr-3">
                     Created.
-                </jet-action-message>
+                </app-action-message>
 
-                <jet-button type="submit" :processing="createApiTokenForm.processing">
+                <app-button type="submit" :processing="createApiTokenForm.processing">
                     Create
-                </jet-button>
+                </app-button>
             </template>
-        </jet-form-section>
+        </app-form-section>
 
         <div v-if="tokens.length > 0">
-            <jet-section-border />
+            <app-section-border />
 
             <!-- Manage API Tokens -->
             <div class="mt-10 sm:mt-0">
-                <jet-action-section>
+                <app-action-section>
                     <template #title>
                         Manage API Tokens
                     </template>
@@ -84,12 +84,12 @@
                             </div>
                         </div>
                     </template>
-                </jet-action-section>
+                </app-action-section>
             </div>
         </div>
 
         <!-- Token Value Modal -->
-        <jet-dialog-modal :show="displayingToken" @close="displayingToken = false">
+        <app-dialog-modal :show="displayingToken" @close="displayingToken = false">
             <template #title>
                 API Token
             </template>
@@ -105,14 +105,14 @@
             </template>
 
             <template #footer>
-                <jet-button color="secondary" @click.native="displayingToken = false">
+                <app-button color="secondary" @click.native="displayingToken = false">
                     Close
-                </jet-button>
+                </app-button>
             </template>
-        </jet-dialog-modal>
+        </app-dialog-modal>
 
         <!-- API Token Permissions Modal -->
-        <jet-dialog-modal :show="managingPermissionsFor" @close="managingPermissionsFor = null">
+        <app-dialog-modal :show="managingPermissionsFor" @close="managingPermissionsFor = null">
             <template #title>
                 API Token Permissions
             </template>
@@ -129,18 +129,18 @@
             </template>
 
             <template #footer>
-                <jet-button color="secondary" @click.native="managingPermissionsFor = null">
+                <app-button color="secondary" @click.native="managingPermissionsFor = null">
                   Cancel
-                </jet-button>
+                </app-button>
 
-                <jet-button type="submit" class="ml-2" @click.native="updateApiToken" :processing="updateApiTokenForm.processing">
+                <app-button type="submit" class="ml-2" @click.native="updateApiToken" :processing="updateApiTokenForm.processing">
                     Save
-                </jet-button>
+                </app-button>
             </template>
-        </jet-dialog-modal>
+        </app-dialog-modal>
 
         <!-- Delete Token Confirmation Modal -->
-        <jet-confirmation-modal :show="apiTokenBeingDeleted" @close="apiTokenBeingDeleted = null">
+        <app-confirmation-modal :show="apiTokenBeingDeleted" @close="apiTokenBeingDeleted = null">
             <template #title>
                 Delete API Token
             </template>
@@ -150,42 +150,42 @@
             </template>
 
             <template #footer>
-                <jet-button color="secondary" @click.native="apiTokenBeingDeleted = null">
+                <app-button color="secondary" @click.native="apiTokenBeingDeleted = null">
                   Cancel
-                </jet-button>
+                </app-button>
 
-                <jet-button color="danger" class="ml-2" @click.native="deleteApiToken" :processing="deleteApiTokenForm.processing">
+                <app-button color="danger" class="ml-2" @click.native="deleteApiToken" :processing="deleteApiTokenForm.processing">
                     Delete
-                </jet-button>
+                </app-button>
             </template>
-        </jet-confirmation-modal>
+        </app-confirmation-modal>
     </div>
 </template>
 
 <script>
-    import JetActionMessage from '../../Shared/ActionMessage'
-    import JetActionSection from '../../Shared/ActionSection'
-    import JetButton from '../../Shared/Button'
-    import JetConfirmationModal from '../../Shared/ConfirmationModal'
-    import JetDialogModal from '../../Shared/DialogModal'
-    import JetFormSection from '../../Shared/FormSection'
-    import JetInput from '../../Shared/Input'
-    import JetInputError from '../../Shared/InputError'
-    import JetLabel from '../../Shared/Label'
-    import JetSectionBorder from '../../Shared/SectionBorder'
+    import AppActionMessage from '../../Shared/ActionMessage'
+    import AppActionSection from '../../Shared/ActionSection'
+    import AppButton from '../../Shared/Button'
+    import AppConfirmationModal from '../../Shared/ConfirmationModal'
+    import AppDialogModal from '../../Shared/DialogModal'
+    import AppFormSection from '../../Shared/FormSection'
+    import AppInput from '../../Shared/Input'
+    import AppInputError from '../../Shared/InputError'
+    import AppLabel from '../../Shared/Label'
+    import AppSectionBorder from '../../Shared/SectionBorder'
 
     export default {
         components: {
-            JetActionMessage,
-            JetActionSection,
-            JetButton,
-            JetConfirmationModal,
-            JetDialogModal,
-            JetFormSection,
-            JetInput,
-            JetInputError,
-            JetLabel,
-            JetSectionBorder,
+            AppActionMessage,
+            AppActionSection,
+            AppButton,
+            AppConfirmationModal,
+            AppDialogModal,
+            AppFormSection,
+            AppInput,
+            AppInputError,
+            AppLabel,
+            AppSectionBorder,
         },
 
         props: [

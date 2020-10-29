@@ -9,7 +9,7 @@
 <script>
 import ApiTokenManager from './ApiTokenManager'
 import AppLayout from './../../Layouts/AppLayout'
-import JetSectionBorder from '../../Shared/SectionBorder'
+import AppSectionBorder from '../../Shared/SectionBorder'
 
 export default {
   layout: AppLayout,
@@ -23,7 +23,7 @@ export default {
   components: {
     ApiTokenManager,
     AppLayout,
-    JetSectionBorder,
+    AppSectionBorder,
   },
 }
 </script>

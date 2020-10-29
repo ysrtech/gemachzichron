@@ -5,10 +5,10 @@
 
       <div class="mb-6 flex justify-end items-center">
 
-        <jet-button @click.native="showCreateUserModal = true">
+        <app-button @click.native="showCreateUserModal = true">
           <span>Create</span>
           <span class="hidden md:inline pl-1"> User</span>
-        </jet-button>
+        </app-button>
 
       </div>
 
@@ -24,7 +24,7 @@
 <script>
 import AppLayout from '../../Layouts/AppLayout'
 import Pagination from "../../Shared/Pagination";
-import JetButton from "../../Shared/Button"
+import AppButton from "../../Shared/Button"
 import UsersTable from "./Components/UsersTable";
 import UserFormModal from "./Components/UserFormModal";
 
@@ -36,7 +36,7 @@ export default {
     UsersTable,
     AppLayout,
     Pagination,
-    JetButton,
+    AppButton,
   },
   props: {
     users: Object,

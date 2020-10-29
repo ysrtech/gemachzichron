@@ -1,7 +1,7 @@
 <template>
   <div class="flex items-center">
     <div class="flex w-full">
-      <jet-dropdown
+      <app-dropdown
         class="px-4 md:px-6 form-input rounded-r-none hover:bg-gray-100 cursor-pointer border-r-0 py-3"
         align="left" width="56" :close-on-click="false">
         <template #trigger>
@@ -14,8 +14,8 @@
         <template #content>
           <slot />
         </template>
-      </jet-dropdown>
-      <jet-input class="relative w-full px-6 py-3 focus:shadow-outline rounded-l-none"
+      </app-dropdown>
+      <app-input class="relative w-full px-6 py-3 focus:shadow-outline rounded-l-none"
                  autocomplete="off" type="text"
                  name="search" placeholder="Search…" :value="value" @input="$emit('input', $event)"/>
     </div>
@@ -27,13 +27,13 @@
 </template>
 
 <script>
-import JetInput from "../../../Shared/Input"
-import JetDropdown from "../../../Shared/Dropdown"
+import AppInput from "../../../Shared/Input"
+import AppDropdown from "../../../Shared/Dropdown"
 
 export default {
   components: {
-    JetInput,
-    JetDropdown
+    AppInput,
+    AppDropdown
   },
   props: {
     value: String,

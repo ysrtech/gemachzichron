@@ -1,5 +1,5 @@
 <template>
-  <jet-dialog-modal :show="dependent" @close="$emit('close')" max-width="sm">
+  <app-dialog-modal :show="dependent" @close="$emit('close')" max-width="sm">
     <template #title>
       Delete Dependent
     </template>
@@ -9,27 +9,27 @@
     </template>
 
     <template #footer>
-      <jet-button color="secondary" @click.native="$emit('close')">
+      <app-button color="secondary" @click.native="$emit('close')">
         Cancel
-      </jet-button>
+      </app-button>
 
-      <jet-button type="submit" color="danger" class="ml-2" @click.native="deleteDependent" :processing="form.processing">
+      <app-button type="submit" color="danger" class="ml-2" @click.native="deleteDependent" :processing="form.processing">
         Confirm
-      </jet-button>
+      </app-button>
     </template>
-  </jet-dialog-modal>
+  </app-dialog-modal>
 </template>
 
 <script>
-import JetButton from "../../../Shared/Button";
-import JetDialogModal from "../../../Shared/DialogModal";
+import AppButton from "../../../Shared/Button";
+import AppDialogModal from "../../../Shared/DialogModal";
 
 export default {
   name: "DeleteDependentConfirmation",
 
   components: {
-    JetButton,
-    JetDialogModal,
+    AppButton,
+    AppDialogModal,
   },
 
   props: {

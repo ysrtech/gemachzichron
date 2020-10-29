@@ -58,7 +58,7 @@
 
         <!-- Settings Dropdown -->
         <div class="ml-3 relative">
-          <jet-dropdown align="right" width="48">
+          <app-dropdown align="right" width="48">
             <template #trigger>
               <button v-if="$page.props.jetstream.managesProfilePhotos"
                       class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition duration-150 ease-in-out">
@@ -86,20 +86,20 @@
                 Manage Account
               </div>
 
-              <jet-dropdown-link :href="route('profile.show')">
+              <app-dropdown-link :href="route('profile.show')">
                 Profile
-              </jet-dropdown-link>
+              </app-dropdown-link>
 
               <div class="border-t border-gray-100"></div>
 
               <!-- Authentication -->
               <form @submit.prevent="logout">
-                <jet-dropdown-link as="button">
+                <app-dropdown-link as="button">
                   Logout
-                </jet-dropdown-link>
+                </app-dropdown-link>
               </form>
             </template>
-          </jet-dropdown>
+          </app-dropdown>
         </div>
       </div>
 
@@ -126,20 +126,20 @@
 </template>
 
 <script>
-import JetDropdown from '../Shared/Dropdown'
-import JetDropdownLink from '../Shared/DropdownLink'
-import JetNavLink from '../Shared/NavLink'
-import JetResponsiveNavLink from '../Shared/ResponsiveNavLink'
+import AppDropdown from '../Shared/Dropdown'
+import AppDropdownLink from '../Shared/DropdownLink'
+import AppNavLink from '../Shared/NavLink'
+import AppResponsiveNavLink from '../Shared/ResponsiveNavLink'
 import AppNav from "./AppNav";
 import {EventBus} from "../app";
 
 export default {
   components: {
     AppNav,
-    JetDropdown,
-    JetDropdownLink,
-    JetNavLink,
-    JetResponsiveNavLink,
+    AppDropdown,
+    AppDropdownLink,
+    AppNavLink,
+    AppResponsiveNavLink,
   },
 
   data() {

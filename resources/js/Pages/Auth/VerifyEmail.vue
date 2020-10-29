@@ -1,5 +1,5 @@
 <template>
-    <jet-authentication-card>
+    <app-authentication-card>
 
         <div class="mb-4 text-sm text-gray-600">
             Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn't receive the email, we will gladly send you another.
@@ -11,24 +11,24 @@
 
         <form @submit.prevent="submit">
             <div class="mt-4 flex items-center justify-between">
-                <jet-button type="submit" :processing="form.processing">
+                <app-button type="submit" :processing="form.processing">
                     Resend Verification Email
-                </jet-button>
+                </app-button>
 
                 <inertia-link :href="route('logout')" method="post" class="underline text-sm text-gray-600 hover:text-gray-900">Logout</inertia-link>
             </div>
         </form>
-    </jet-authentication-card>
+    </app-authentication-card>
 </template>
 
 <script>
-    import JetAuthenticationCard from '../../Shared/AuthenticationCard'
-    import JetButton from '../../Shared/Button'
+    import AppAuthenticationCard from '../../Shared/AuthenticationCard'
+    import AppButton from '../../Shared/Button'
 
     export default {
         components: {
-            JetAuthenticationCard,
-            JetButton,
+            AppAuthenticationCard,
+            AppButton,
         },
 
         props: {

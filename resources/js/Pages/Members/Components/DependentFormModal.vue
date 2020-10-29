@@ -1,75 +1,75 @@
 <template>
   <span>
 
-      <jet-form-modal :show="show || dependent" @close="$emit('close')" @submitted="submit" max-width="sm">
+      <app-form-modal :show="show || dependent" @close="$emit('close')" @submitted="submit" max-width="sm">
 
           <template #title>{{ dependent ? 'Update Dependent' : 'Add Dependent' }}</template>
 
           <template #form>
 
               <div class="mb-4">
-                  <jet-label for="first_name" value="First Name"/>
-                  <jet-input id="first_name" v-model="form.first_name" autocomplete="blabla"
+                  <app-label for="first_name" value="First Name"/>
+                  <app-input id="first_name" v-model="form.first_name" autocomplete="blabla"
                              class="mt-1 block w-full"
                              type="text"/>
-                  <jet-input-error :message="form.error('first_name')" class="mt-1"/>
+                  <app-input-error :message="form.error('first_name')" class="mt-1"/>
               </div>
 
               <div class="my-4">
-                  <jet-label for="last_name" value="Last Name"/>
-                  <jet-input id="last_name" v-model="form.last_name" autocomplete="blabla"
+                  <app-label for="last_name" value="Last Name"/>
+                  <app-input id="last_name" v-model="form.last_name" autocomplete="blabla"
                              class="mt-1 block w-full"
                              type="text"/>
-                  <jet-input-error :message="form.error('last_name')" class="mt-1"/>
+                  <app-input-error :message="form.error('last_name')" class="mt-1"/>
               </div>
 
               <div class="my-4">
-                  <jet-label for="hebrew_name" value="Hebrew Name"/>
-                  <jet-input id="hebrew_name" v-model="form.hebrew_name" autocomplete="blabla"
+                  <app-label for="hebrew_name" value="Hebrew Name"/>
+                  <app-input id="hebrew_name" v-model="form.hebrew_name" autocomplete="blabla"
                              class="mt-1 block w-full"
                              type="text"/>
-                  <jet-input-error :message="form.error('hebrew_name')" class="mt-1"/>
+                  <app-input-error :message="form.error('hebrew_name')" class="mt-1"/>
               </div>
 
               <div class="my-4">
-                  <jet-label for="dob" value="Date of Birth"/>
-                  <jet-input id="wife_name" v-model="form.dob" autocomplete="blabla"
+                  <app-label for="dob" value="Date of Birth"/>
+                  <app-input id="wife_name" v-model="form.dob" autocomplete="blabla"
                              class="mt-1 block w-full"
                              type="date"/>
-                  <jet-input-error :message="form.error('dob')" class="mt-1"/>
+                  <app-input-error :message="form.error('dob')" class="mt-1"/>
               </div>
 
           </template>
 
           <template #footer>
-              <jet-button color="secondary" type="button" @click.native="$emit('close')">
+              <app-button color="secondary" type="button" @click.native="$emit('close')">
                   Cancel
-              </jet-button>
+              </app-button>
 
-              <jet-button :processing="form.processing" class="ml-3" color="primary" type="submit">
+              <app-button :processing="form.processing" class="ml-3" color="primary" type="submit">
                   {{ button }}
-              </jet-button>
+              </app-button>
           </template>
-      </jet-form-modal>
+      </app-form-modal>
   </span>
 </template>
 
 <script>
-import JetButton from '../../../Shared/Button'
-import JetFormModal from '../../../Shared/FormModal'
-import JetLabel from '../../../Shared/Label'
-import JetInput from '../../../Shared/Input'
-import JetInputError from '../../../Shared/InputError'
+import AppButton from '../../../Shared/Button'
+import AppFormModal from '../../../Shared/FormModal'
+import AppLabel from '../../../Shared/Label'
+import AppInput from '../../../Shared/Input'
+import AppInputError from '../../../Shared/InputError'
 
 
 export default {
 
   components: {
-    JetButton,
-    JetFormModal,
-    JetLabel,
-    JetInput,
-    JetInputError,
+    AppButton,
+    AppFormModal,
+    AppLabel,
+    AppInput,
+    AppInputError,
   },
 
   props: {

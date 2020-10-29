@@ -1,27 +1,27 @@
 <template>
-    <jet-authentication-card>
+    <app-authentication-card>
 
-        <jet-validation-errors class="mb-4" />
+        <app-validation-errors class="mb-4" />
 
         <form @submit.prevent="submit">
             <div>
-                <jet-label for="name" value="Name" />
-                <jet-input id="name" type="text" class="mt-1 block w-full" v-model="form.name" required autofocus autocomplete="name" />
+                <app-label for="name" value="Name" />
+                <app-input id="name" type="text" class="mt-1 block w-full" v-model="form.name" required autofocus autocomplete="name" />
             </div>
 
             <div class="mt-4">
-                <jet-label for="email" value="Email" />
-                <jet-input id="email" type="email" class="mt-1 block w-full" v-model="form.email" required />
+                <app-label for="email" value="Email" />
+                <app-input id="email" type="email" class="mt-1 block w-full" v-model="form.email" required />
             </div>
 
             <div class="mt-4">
-                <jet-label for="password" value="Password" />
-                <jet-input id="password" type="password" class="mt-1 block w-full" v-model="form.password" required autocomplete="new-password" />
+                <app-label for="password" value="Password" />
+                <app-input id="password" type="password" class="mt-1 block w-full" v-model="form.password" required autocomplete="new-password" />
             </div>
 
             <div class="mt-4">
-                <jet-label for="password_confirmation" value="Confirm Password" />
-                <jet-input id="password_confirmation" type="password" class="mt-1 block w-full" v-model="form.password_confirmation" required autocomplete="new-password" />
+                <app-label for="password_confirmation" value="Confirm Password" />
+                <app-input id="password_confirmation" type="password" class="mt-1 block w-full" v-model="form.password_confirmation" required autocomplete="new-password" />
             </div>
 
             <div class="flex items-center justify-end mt-4">
@@ -29,28 +29,28 @@
                     Already registered?
                 </inertia-link>
 
-                <jet-button type="submit"class="ml-4" :processing="form.processing">
+                <app-button type="submit"class="ml-4" :processing="form.processing">
                     Register
-                </jet-button>
+                </app-button>
             </div>
         </form>
-    </jet-authentication-card>
+    </app-authentication-card>
 </template>
 
 <script>
-    import JetAuthenticationCard from '../../Shared/AuthenticationCard'
-    import JetButton from '../../Shared/Button'
-    import JetInput from '../../Shared/Input'
-    import JetLabel from '../../Shared/Label'
-    import JetValidationErrors from '../../Shared/ValidationErrors'
+    import AppAuthenticationCard from '../../Shared/AuthenticationCard'
+    import AppButton from '../../Shared/Button'
+    import AppInput from '../../Shared/Input'
+    import AppLabel from '../../Shared/Label'
+    import AppValidationErrors from '../../Shared/ValidationErrors'
 
     export default {
         components: {
-            JetAuthenticationCard,
-            JetButton,
-            JetInput,
-            JetLabel,
-            JetValidationErrors
+            AppAuthenticationCard,
+            AppButton,
+            AppInput,
+            AppLabel,
+            AppValidationErrors
         },
 
         data() {

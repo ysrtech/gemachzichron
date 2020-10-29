@@ -17,10 +17,10 @@
           </div>
         </search-filter>
 
-        <jet-button @click.native="showCreateMemberModal = true">
+        <app-button @click.native="showCreateMemberModal = true">
           <span>Create</span>
           <span class="hidden md:inline pl-1"> Member</span>
-        </jet-button>
+        </app-button>
 
       </div>
 
@@ -40,7 +40,7 @@ import pickBy from "lodash/pickBy";
 import mapValues from "lodash/mapValues";
 import Pagination from "../../Shared/Pagination";
 import SearchFilter from "./Components/SearchFilter";
-import JetButton from "../../Shared/Button"
+import AppButton from "../../Shared/Button"
 import MemberFormModal from "./Components/MemberFormModal";
 import MembersTable from "./Components/MembersTable";
 
@@ -53,7 +53,7 @@ export default {
     AppLayout,
     Pagination,
     SearchFilter,
-    JetButton,
+    AppButton,
   },
   props: {
     members: Object,

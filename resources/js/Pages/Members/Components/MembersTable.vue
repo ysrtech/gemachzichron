@@ -44,7 +44,7 @@
           </inertia-link>
         </td>
         <td class="border-t w-px p-0">
-          <jet-dropdown align="right" width="36" class="mx-2">
+          <app-dropdown align="right" width="36" class="mx-2">
             <template #trigger>
               <div class="px-2 flex items-center">
                 <button class="material-icons focus:outline-none rounded-full p-1 hover:bg-gray-200 focus:bg-gray-300">
@@ -54,26 +54,26 @@
             </template>
 
             <template #content>
-              <jet-dropdown-link @click.native="memberBeingArchived = member" as="button" v-if="!member.deleted_at">
+              <app-dropdown-link @click.native="memberBeingArchived = member" as="button" v-if="!member.deleted_at">
                 <div class="flex items-center">
                   <i class="material-icons-outlined mr-3 text-gray-400">archive</i>
                   <div>Archive</div>
                 </div>
-              </jet-dropdown-link>
-              <jet-dropdown-link @click.native="restoreMember(member)" as="button" v-else>
+              </app-dropdown-link>
+              <app-dropdown-link @click.native="restoreMember(member)" as="button" v-else>
                 <div class="flex items-center">
                   <i class="material-icons-outlined mr-3 text-gray-400">unarchive</i>
                   <div>Restore</div>
                 </div>
-              </jet-dropdown-link>
-              <jet-dropdown-link @click.native="duplicateMember(member)" as="button">
+              </app-dropdown-link>
+              <app-dropdown-link @click.native="duplicateMember(member)" as="button">
                 <div class="flex items-center">
                   <i class="material-icons-outlined mr-3 text-gray-400">content_copy</i>
                   <div>Duplicate</div>
                 </div>
-              </jet-dropdown-link>
+              </app-dropdown-link>
             </template>
-          </jet-dropdown>
+          </app-dropdown>
         </td>
       </tr>
       <tr v-if="members.length === 0">
@@ -88,8 +88,8 @@
 </template>
 
 <script>
-import JetDropdown from "../../../Shared/Dropdown";
-import JetDropdownLink from "../../../Shared/DropdownLink";
+import AppDropdown from "../../../Shared/Dropdown";
+import AppDropdownLink from "../../../Shared/DropdownLink";
 import ArchiveConfirmation from "./ArchiveConfirmation";
 
 export default {
@@ -97,8 +97,8 @@ export default {
 
   components: {
     ArchiveConfirmation,
-    JetDropdown,
-    JetDropdownLink,
+    AppDropdown,
+    AppDropdownLink,
 
   },
 

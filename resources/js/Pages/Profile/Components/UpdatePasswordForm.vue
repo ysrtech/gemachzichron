@@ -1,5 +1,5 @@
 <template>
-    <jet-form-section @submitted="updatePassword">
+    <app-form-section @submitted="updatePassword">
         <template #title>
             Update Password
         </template>
@@ -10,52 +10,52 @@
 
         <template #form>
             <div class="col-span-6 sm:col-span-4">
-                <jet-label for="current_password" value="Current Password" />
-                <jet-input id="current_password" type="password" class="mt-1 block w-full" v-model="form.current_password" ref="current_password" autocomplete="current-password" />
-                <jet-input-error :message="form.error('current_password')" class="mt-2" />
+                <app-label for="current_password" value="Current Password" />
+                <app-input id="current_password" type="password" class="mt-1 block w-full" v-model="form.current_password" ref="current_password" autocomplete="current-password" />
+                <app-input-error :message="form.error('current_password')" class="mt-2" />
             </div>
 
             <div class="col-span-6 sm:col-span-4">
-                <jet-label for="password" value="New Password" />
-                <jet-input id="password" type="password" class="mt-1 block w-full" v-model="form.password" autocomplete="new-password" />
-                <jet-input-error :message="form.error('password')" class="mt-2" />
+                <app-label for="password" value="New Password" />
+                <app-input id="password" type="password" class="mt-1 block w-full" v-model="form.password" autocomplete="new-password" />
+                <app-input-error :message="form.error('password')" class="mt-2" />
             </div>
 
             <div class="col-span-6 sm:col-span-4">
-                <jet-label for="password_confirmation" value="Confirm Password" />
-                <jet-input id="password_confirmation" type="password" class="mt-1 block w-full" v-model="form.password_confirmation" autocomplete="new-password" />
-                <jet-input-error :message="form.error('password_confirmation')" class="mt-2" />
+                <app-label for="password_confirmation" value="Confirm Password" />
+                <app-input id="password_confirmation" type="password" class="mt-1 block w-full" v-model="form.password_confirmation" autocomplete="new-password" />
+                <app-input-error :message="form.error('password_confirmation')" class="mt-2" />
             </div>
         </template>
 
         <template #actions>
-            <jet-action-message :on="form.recentlySuccessful" class="mr-3">
+            <app-action-message :on="form.recentlySuccessful" class="mr-3">
                 Saved.
-            </jet-action-message>
+            </app-action-message>
 
-            <jet-button type="submit" :processing="form.processing">
+            <app-button type="submit" :processing="form.processing">
                 Save
-            </jet-button>
+            </app-button>
         </template>
-    </jet-form-section>
+    </app-form-section>
 </template>
 
 <script>
-    import JetActionMessage from '../../../Shared/ActionMessage'
-    import JetButton from '../../../Shared/Button'
-    import JetFormSection from '../../../Shared/FormSection'
-    import JetInput from '../../../Shared/Input'
-    import JetInputError from '../../../Shared/InputError'
-    import JetLabel from '../../../Shared/Label'
+    import AppActionMessage from '../../../Shared/ActionMessage'
+    import AppButton from '../../../Shared/Button'
+    import AppFormSection from '../../../Shared/FormSection'
+    import AppInput from '../../../Shared/Input'
+    import AppInputError from '../../../Shared/InputError'
+    import AppLabel from '../../../Shared/Label'
 
     export default {
         components: {
-            JetActionMessage,
-            JetButton,
-            JetFormSection,
-            JetInput,
-            JetInputError,
-            JetLabel,
+            AppActionMessage,
+            AppButton,
+            AppFormSection,
+            AppInput,
+            AppInputError,
+            AppLabel,
         },
 
         data() {

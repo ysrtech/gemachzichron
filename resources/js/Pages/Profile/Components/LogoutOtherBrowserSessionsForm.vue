@@ -1,5 +1,5 @@
 <template>
-    <jet-action-section>
+    <app-action-section>
         <template #title>
             Browser Sessions
         </template>
@@ -44,17 +44,17 @@
             </div>
 
             <div class="flex items-center mt-5">
-                <jet-button @click.native="confirmLogout">
+                <app-button @click.native="confirmLogout">
                     Logout Other Browser Sessions
-                </jet-button>
+                </app-button>
 
-                <jet-action-message :on="form.recentlySuccessful" class="ml-3">
+                <app-action-message :on="form.recentlySuccessful" class="ml-3">
                     Done.
-                </jet-action-message>
+                </app-action-message>
             </div>
 
             <!-- Logout Other Devices Confirmation Modal -->
-            <jet-dialog-modal :show="confirmingLogout" @close="confirmingLogout = false">
+            <app-dialog-modal :show="confirmingLogout" @close="confirmingLogout = false">
                 <template #title>
                     Logout Other Browser Sessions
                 </template>
@@ -63,47 +63,47 @@
                     Please enter your password to confirm you would like to logout of your other browser sessions across all of your devices.
 
                     <div class="mt-4">
-                        <jet-input type="password" class="mt-1 block w-3/4" placeholder="Password"
+                        <app-input type="password" class="mt-1 block w-3/4" placeholder="Password"
                                     ref="password"
                                     v-model="form.password"
                                     @keyup.enter.native="logoutOtherBrowserSessions" />
 
-                        <jet-input-error :message="form.error('password')" class="mt-2" />
+                        <app-input-error :message="form.error('password')" class="mt-2" />
                     </div>
                 </template>
 
                 <template #footer>
-                    <jet-button color="secondary" @click.native="confirmingLogout = false">
+                    <app-button color="secondary" @click.native="confirmingLogout = false">
                       Cancel
-                    </jet-button>
+                    </app-button>
 
-                    <jet-button type="submit" class="ml-2" @click.native="logoutOtherBrowserSessions" :processing="form.processing">
+                    <app-button type="submit" class="ml-2" @click.native="logoutOtherBrowserSessions" :processing="form.processing">
                         Logout Other Browser Sessions
-                    </jet-button>
+                    </app-button>
                 </template>
-            </jet-dialog-modal>
+            </app-dialog-modal>
         </template>
-    </jet-action-section>
+    </app-action-section>
 </template>
 
 <script>
-    import JetActionMessage from '../../../Shared/ActionMessage'
-    import JetActionSection from '../../../Shared/ActionSection'
-    import JetButton from '../../../Shared/Button'
-    import JetDialogModal from '../../../Shared/DialogModal'
-    import JetInput from '../../../Shared/Input'
-    import JetInputError from '../../../Shared/InputError'
+    import AppActionMessage from '../../../Shared/ActionMessage'
+    import AppActionSection from '../../../Shared/ActionSection'
+    import AppButton from '../../../Shared/Button'
+    import AppDialogModal from '../../../Shared/DialogModal'
+    import AppInput from '../../../Shared/Input'
+    import AppInputError from '../../../Shared/InputError'
 
     export default {
         props: ['sessions'],
 
         components: {
-            JetActionMessage,
-            JetActionSection,
-            JetButton,
-            JetDialogModal,
-            JetInput,
-            JetInputError,
+            AppActionMessage,
+            AppActionSection,
+            AppButton,
+            AppDialogModal,
+            AppInput,
+            AppInputError,
         },
 
         data() {

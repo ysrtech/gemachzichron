@@ -1,7 +1,7 @@
 <template>
-    <jet-authentication-card>
+    <app-authentication-card>
 
-        <jet-validation-errors class="mb-4" />
+        <app-validation-errors class="mb-4" />
 
         <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
             {{ status }}
@@ -9,13 +9,13 @@
 
         <form @submit.prevent="submit">
             <div>
-                <jet-label for="email" value="Email" />
-                <jet-input id="email" type="email" class="mt-1 block w-full" v-model="form.email" required autofocus />
+                <app-label for="email" value="Email" />
+                <app-input id="email" type="email" class="mt-1 block w-full" v-model="form.email" required autofocus />
             </div>
 
             <div class="mt-4">
-                <jet-label for="password" value="Password" />
-                <jet-input id="password" type="password" class="mt-1 block w-full" v-model="form.password" required autocomplete="current-password" />
+                <app-label for="password" value="Password" />
+                <app-input id="password" type="password" class="mt-1 block w-full" v-model="form.password" required autocomplete="current-password" />
             </div>
 
             <div class="block mt-4">
@@ -30,28 +30,28 @@
                     Forgot your password?
                 </inertia-link>
 
-                <jet-button type="submit"class="ml-4" :processing="form.processing">
+                <app-button type="submit"class="ml-4" :processing="form.processing">
                     Login
-                </jet-button>
+                </app-button>
             </div>
         </form>
-    </jet-authentication-card>
+    </app-authentication-card>
 </template>
 
 <script>
-    import JetAuthenticationCard from '../../Shared/AuthenticationCard'
-    import JetButton from '../../Shared/Button'
-    import JetInput from '../../Shared/Input'
-    import JetLabel from '../../Shared/Label'
-    import JetValidationErrors from '../../Shared/ValidationErrors'
+    import AppAuthenticationCard from '../../Shared/AuthenticationCard'
+    import AppButton from '../../Shared/Button'
+    import AppInput from '../../Shared/Input'
+    import AppLabel from '../../Shared/Label'
+    import AppValidationErrors from '../../Shared/ValidationErrors'
 
     export default {
         components: {
-            JetAuthenticationCard,
-            JetButton,
-            JetInput,
-            JetLabel,
-            JetValidationErrors
+            AppAuthenticationCard,
+            AppButton,
+            AppInput,
+            AppLabel,
+            AppValidationErrors
         },
 
         props: {

@@ -1,5 +1,5 @@
 <template>
-    <jet-action-section>
+    <app-action-section>
         <template #title>
             Two Factor Authentication
         </template>
@@ -52,48 +52,48 @@
 
             <div class="mt-5">
                 <div v-if="! twoFactorEnabled">
-                    <jet-confirms-password @confirmed="enableTwoFactorAuthentication">
-                        <jet-button type="button" :processing="enabling">
+                    <app-confirms-password @confirmed="enableTwoFactorAuthentication">
+                        <app-button type="button" :processing="enabling">
                             Enable
-                        </jet-button>
-                    </jet-confirms-password>
+                        </app-button>
+                    </app-confirms-password>
                 </div>
 
                 <div v-else>
-                    <jet-confirms-password @confirmed="regenerateRecoveryCodes">
-                        <jet-button color="secondary" class="mr-3"
+                    <app-confirms-password @confirmed="regenerateRecoveryCodes">
+                        <app-button color="secondary" class="mr-3"
                                         v-if="recoveryCodes.length > 0">
                             Regenerate Recovery Codes
-                        </jet-button>
-                    </jet-confirms-password>
+                        </app-button>
+                    </app-confirms-password>
 
-                    <jet-confirms-password @confirmed="showRecoveryCodes">
-                        <jet-button color="secondary" class="mr-3" v-if="recoveryCodes.length == 0">
+                    <app-confirms-password @confirmed="showRecoveryCodes">
+                        <app-button color="secondary" class="mr-3" v-if="recoveryCodes.length == 0">
                             Show Recovery Codes
-                        </jet-button>
-                    </jet-confirms-password>
+                        </app-button>
+                    </app-confirms-password>
 
-                    <jet-confirms-password @confirmed="disableTwoFactorAuthentication">
-                        <jet-button :processing="disabling">
+                    <app-confirms-password @confirmed="disableTwoFactorAuthentication">
+                        <app-button :processing="disabling">
                             Disable
-                        </jet-button>
-                    </jet-confirms-password>
+                        </app-button>
+                    </app-confirms-password>
                 </div>
             </div>
         </template>
-    </jet-action-section>
+    </app-action-section>
 </template>
 
 <script>
-    import JetActionSection from '../../../Shared/ActionSection'
-    import JetButton from '../../../Shared/Button'
-    import JetConfirmsPassword from '../../../Shared/ConfirmsPassword'
+    import AppActionSection from '../../../Shared/ActionSection'
+    import AppButton from '../../../Shared/Button'
+    import AppConfirmsPassword from '../../../Shared/ConfirmsPassword'
 
     export default {
         components: {
-            JetActionSection,
-            JetButton,
-            JetConfirmsPassword,
+            AppActionSection,
+            AppButton,
+            AppConfirmsPassword,
         },
 
         data() {

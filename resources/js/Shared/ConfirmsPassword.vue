@@ -4,7 +4,7 @@
             <slot />
         </span>
 
-        <jet-dialog-modal :show="confirmingPassword" @close="confirmingPassword = false">
+        <app-dialog-modal :show="confirmingPassword" @close="confirmingPassword = false">
             <template #title>
                 {{ title }}
             </template>
@@ -13,34 +13,34 @@
                 {{ content }}
 
                 <div class="mt-4">
-                    <jet-input type="password" class="mt-1 block w-3/4" placeholder="Password"
+                    <app-input type="password" class="mt-1 block w-3/4" placeholder="Password"
                                 ref="password"
                                 v-model="form.password"
                                 @input.native="clearErrors"
                                 @keyup.enter.native="confirmPassword" />
 
-                    <jet-input-error :message="form.error" class="mt-2" />
+                    <app-input-error :message="form.error" class="mt-2" />
                 </div>
             </template>
 
             <template #footer>
-                <jet-button color="secondary" @click.native="confirmingPassword = false">
+                <app-button color="secondary" @click.native="confirmingPassword = false">
                     Cancel
-                </jet-button>
+                </app-button>
 
-                <jet-button type="submit" class="ml-2" @click.native="confirmPassword" :processing="form.processing">
+                <app-button type="submit" class="ml-2" @click.native="confirmPassword" :processing="form.processing">
                     {{ button }}
-                </jet-button>
+                </app-button>
             </template>
-        </jet-dialog-modal>
+        </app-dialog-modal>
     </span>
 </template>
 
 <script>
-    import JetButton from './Button'
-    import JetDialogModal from './DialogModal'
-    import JetInput from './Input'
-    import JetInputError from './InputError'
+    import AppButton from './Button'
+    import AppDialogModal from './DialogModal'
+    import AppInput from './Input'
+    import AppInputError from './InputError'
 
     export default {
         props: {
@@ -56,10 +56,10 @@
         },
 
         components: {
-            JetButton,
-            JetDialogModal,
-            JetInput,
-            JetInputError,
+            AppButton,
+            AppDialogModal,
+            AppInput,
+            AppInputError,
         },
 
         data() {
