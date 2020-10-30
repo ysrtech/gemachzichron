@@ -86,8 +86,15 @@ export default {
           icon: "people",
         },
         {
-          title: "Settings", icon: "settings", subItemsExpanded: false, subItems: [
-            {title: "Users", route: "users.index", icon: 'supervised_user_circle'},
+          title: "Users",
+          route: "users.index",
+          icon: 'supervised_user_circle'
+        },
+        {
+          title: "Settings",
+          icon: "settings",
+          subItemsExpanded: false,
+          subItems: [
 
           ]
         }
@@ -100,7 +107,7 @@ export default {
       if (!route) {
         return false;
       }
-      return this.$page.props.currentRouteName?.startsWith(route)
+      return this.$page.props.currentRouteName?.split('.')[0] === route.split('.')[0]
     }
   }
 }
