@@ -40,12 +40,25 @@ class Handler extends ExceptionHandler
     {
         $response = parent::render($request, $exception);
 
-        if ($request->header('X-Inertia') && !config('app.debug')) {
-            return Inertia::render('Error', ['status' => $response->status()])
+        if ($request->header('X-Inertia')
+            && !config('app.debug')
+            && $message = $this->messages[$response->status()] ?? false
+        ) {
+            return Inertia::render('Error', ['message' => $message])
                 ->toResponse($request)
                 ->setStatusCode($response->status());
         }
 
         return $response;
     }
+
+    protected array $messages = [
+        403 => "Forbidden",
+        404 => "Page Not Found",
+        419 => "The page expired, please try again.",
+        500 => "Whoops, something went wrong on our servers.",
+        503 => "We are doing some maintenance. Please check back soon.",
+    ];
+
+
 }
