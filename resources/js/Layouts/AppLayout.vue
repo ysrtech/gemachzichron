@@ -51,10 +51,8 @@
       <div class="flex-grow flex items-center justify-between h-16 px-4 md:px-6 lg:px-8 bg-white shadow border-b">
 
         <h2 class="font-medium text-2xl text-gray-800 leading-tight">
-          <template v-if="header">{{ header }}</template>
-          <slot name="header" v-else></slot>
+          {{ header }}
         </h2>
-
 
         <!-- Settings Dropdown -->
         <div class="ml-3 relative">
