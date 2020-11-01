@@ -17,8 +17,8 @@ class CreateSubscriptionsTable extends Migration
             $table->id();
             $table->foreignId('membership_id')->constrained();
             $table->integer('type');
-
             $table->float('amount');
+            $table->date('start_date');
             $table->integer('recurrences');
             $table->integer('frequency');
             $table->integer('process_date');
