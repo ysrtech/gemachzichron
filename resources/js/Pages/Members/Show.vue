@@ -1,24 +1,26 @@
 <template>
-  <app-layout>
-    <template #header>{{ member.last_name + ' ' + member.first_name }}</template>
+  <div>
 
-    <div class="bg-orange-100 border-t border-b border-orange-500 w-full p-6 mb-3" v-if="member.deleted_at">
-      <div class="flex justify-between text-orange-600">
-        <div class="flex">
-          <div class="material-icons-outlined">report_problem</div>
-          <div class="ml-2">This member has been archived</div>
-        </div>
+    <div class="flex items-center mb-4 w-full">
+      <h2 class="font-medium text-3xl">{{ member.first_name + ' ' + member.last_name }}</h2>
 
-        <inertia-link method="put" :href="route('members.restore', member.id)" class="font-medium hover:text-orange-700 hover:underline">
+
+      <div class="flex text-orange-600 ml-5" v-if="member.deleted_at">
+        <div class="material-icons-outlined">report_problem</div>
+        <div class="ml-2">Archived member</div>
+
+        <inertia-link method="put" :href="route('members.restore', member.id)"
+                      class="font-medium hover:text-orange-700 underline ml-2">
           Restore
         </inertia-link>
       </div>
-    </div>
 
-    <div class="pb-3 w-full text-right" v-else>
-      <button type="button" class="text-red-600 hover:text-red-700 focus:outline-none" @click="confirmArchive = member">
-        Archive Member
-      </button>
+      <div class="ml-auto text-right" v-else>
+        <button type="button" class="text-orange-600 hover:text-orange-700 focus:outline-none"
+                @click="confirmArchive = member">
+          Archive Member
+        </button>
+      </div>
     </div>
 
     <div class="grid grid-cols-6 gap-6">
@@ -39,7 +41,7 @@
 
     <archive-confirmation :member="confirmArchive" @close="confirmArchive = null"></archive-confirmation>
 
-  </app-layout>
+  </div>
 </template>
 
 <script>
@@ -51,6 +53,8 @@ import MembershipCard from "./Components/MembershipCard";
 
 export default {
   name: "Show",
+  layout: AppLayout,
+  header: 'Members',
 
   data() {
     return {
