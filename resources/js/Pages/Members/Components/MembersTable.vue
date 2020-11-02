@@ -10,7 +10,7 @@
       </tr>
       <tr class="hover:bg-gray-100 focus-within:bg-gray-100" v-for="member in members" :key="member.id">
         <td class="border-t">
-          <inertia-link class="px-6 py-4 flex items-center focus:text-primary-500"
+          <inertia-link class="px-6 py-3 flex items-center focus:text-primary-500"
                         :href="route('members.show', member.id)">
             {{ member.last_name + ', ' + member.first_name }}
             <i v-if="member.deleted_at" class="material-icons flex-shrink-0 text-sm text-red-300 ml-2"
@@ -20,25 +20,25 @@
           </inertia-link>
         </td>
         <td class="border-t">
-          <inertia-link class="px-6 py-4 flex items-center focus:outline-none"
+          <inertia-link class="px-6 py-3 flex items-center focus:outline-none"
                         :href="route('members.show', member.id)" tabindex="-1">
             {{ member.total_paid }}
           </inertia-link>
         </td>
         <td class="border-t">
-          <inertia-link class="px-6 py-4 flex items-center focus:outline-none"
+          <inertia-link class="px-6 py-3 flex items-center focus:outline-none"
                         :href="route('members.show', member.id)" tabindex="-1">
             {{ member.home_phone }}
           </inertia-link>
         </td>
         <td class="border-t">
-          <inertia-link class="px-6 py-4 flex items-center focus:outline-none"
+          <inertia-link class="px-6 py-3 flex items-center focus:outline-none"
                         :href="route('members.show', member.id)" tabindex="-1">
             {{ member.mobile_phone }}
           </inertia-link>
         </td>
         <td class="border-t">
-          <inertia-link class="px-6 py-4 flex items-center focus:outline-none"
+          <inertia-link class="px-6 py-3 flex items-center focus:outline-none"
                         :href="route('members.show', member.id)" tabindex="-1">
             {{ member.email }}
           </inertia-link>
@@ -77,7 +77,7 @@
         </td>
       </tr>
       <tr v-if="members.length === 0">
-        <td class="border-t px-6 py-4" colspan="5">No members found.</td>
+        <td class="border-t px-6 py-3" colspan="5">No members found.</td>
       </tr>
     </table>
 

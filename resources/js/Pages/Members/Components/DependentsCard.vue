@@ -15,17 +15,17 @@
         <table class="w-full whitespace-no-wrap text-sm">
 
           <tr class="text-left text-xs text-gray-400">
-            <th class="px-6 py-3 font-medium">Name</th>
-            <th class="px-6 py-3 font-medium" colspan="2">Date of Birth</th>
+            <th class="px-4 py-3 font-medium">Name</th>
+            <th class="px-4 py-3 font-medium" colspan="2">Date of Birth</th>
           </tr>
 
           <tr v-for="dependent in dependents" :key="dependent.id">
 
-            <td class="border-t px-6 py-3" :title="dependent.hebrew_name">
+            <td class="border-t px-4 py-3" :title="dependent.hebrew_name">
               {{ dependent.first_name + ' ' + dependent.last_name }}
             </td>
 
-            <td class="border-t px-6 py-3">{{ formatDate(dependent.dob) }}</td>
+            <td class="border-t px-4 py-3">{{ formatDate(dependent.dob) }}</td>
 
             <td class="border-t w-px p-0">
               <div class="px-2 flex items-center text-gray-500">

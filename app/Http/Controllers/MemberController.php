@@ -27,6 +27,7 @@ class MemberController extends Controller
                     'deleted_at'
                 )
                 ->with('membership')
+                ->WithTotalPaid()
                 ->orderBy('last_name')
                 ->orderBy('first_name')
                 ->paginate()

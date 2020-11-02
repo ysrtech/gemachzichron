@@ -1,75 +1,70 @@
 <template>
   <span>
 
-      <app-form-modal :show="show" @close="$emit('close')" @submitted="submitMember">
+      <app-form-modal :show="show || subscription" @close="$emit('close')" @submitted="submitSubscription">
 
           <template #title>{{ title }}</template>
 
           <template #form>
-              <div class="grid grid-cols-6 gap-6">
 
-                  <div class="col-span-6 sm:col-span-3">
-                      <app-label for="first_name" value="First Name"/>
-                      <app-input id="first_name" v-model="form.first_name" autocomplete="..."
-                                 class="mt-1 block w-full"
-                                 type="text"/>
-                      <app-input-error :message="form.error('first_name')" class="mt-1"/>
-                  </div>
+          <div class="grid grid-cols-6 gap-6">
 
-                  <div class="col-span-6 sm:col-span-3">
-                      <app-label for="last_name" value="Last Name"/>
-                      <app-input id="last_name" v-model="form.last_name" autocomplete="..."
-                                 class="mt-1 block w-full"
-                                 type="text"/>
-                      <app-input-error :message="form.error('last_name')" class="mt-1"/>
-                  </div>
+             <div class="col-span-6 sm:col-span-3">
+                  <app-label for="type" value="Subscription Type"/>
+                  <select id="type" v-model="form.type"
+                          class="form-input rounded-md shadow-sm mt-1 block w-full">
+                    <option :value="1" :selected="subscription && subscription.type === 'Membership'">Membership</option>
+                    <option :value="2" :selected="subscription && subscription.type === 'Loan Payment'">Loan Payment</option>
+                  </select>
+                  <app-input-error :message="form.error('type')" class="mt-1"/>
+             </div>
 
-                  <div class="col-span-6 sm:col-span-3">
-                      <app-label for="hebrew_name" value="Hebrew Name"/>
-                      <app-input id="hebrew_name" v-model="form.hebrew_name" autocomplete="..."
-                                 class="mt-1 block w-full"
-                                 type="text"/>
-                      <app-input-error :message="form.error('hebrew_name')" class="mt-1"/>
-                  </div>
-
-                  <div class="col-span-6 sm:col-span-3">
-                      <app-label for="wife_name" value="Wife's Name"/>
-                      <app-input id="wife_name" v-model="form.wife_name" autocomplete="..."
-                                 class="mt-1 block w-full"
-                                 type="text"/>
-                      <app-input-error :message="form.error('wife_name')" class="mt-1"/>
-                  </div>
-
-                  <div class="col-span-6 sm:col-span-3">
-                      <app-label for="email" value="Email"/>
-                      <app-input id="email" v-model="form.email" autocomplete="..." class="mt-1 block w-full"
-                                 type="email"/>
-                      <app-input-error :message="form.error('email')" class="mt-1"/>
-                  </div>
-
-                  <div class="col-span-6 sm:col-span-3">
-                      <app-label for="home_phone" value="Home Phone"/>
-                      <app-input id="home_phone" v-model="form.home_phone" autocomplete="..." class="mt-1 block w-full"
-                                 type="text"/>
-                      <app-input-error :message="form.error('home_phone')" class="mt-1"/>
-                  </div>
-
-                  <div class="col-span-6 sm:col-span-3">
-                      <app-label for="mobile_phone" value="Cellphone"/>
-                      <app-input id="mobile_phone" v-model="form.mobile_phone" autocomplete="..."
-                                 class="mt-1 block w-full"
-                                 type="text"/>
-                      <app-input-error :message="form.error('mobile_phone')" class="mt-1"/>
-                  </div>
-
-                  <div class="col-span-6 sm:col-span-3">
-                      <app-label for="shtibel" value="Shtibel"/>
-                      <app-input id="shtibel" v-model="form.shtibel" autocomplete="..." class="mt-1 block w-full"
-                                 type="text"/>
-                      <app-input-error :message="form.error('shtibel')" class="mt-1"/>
-                  </div>
-
+              <div class="col-span-6 sm:col-span-3">
+                  <app-label for="amount" value="Amount"/>
+                  <app-input id="amount" v-model="form.amount"
+                             class="mt-1 block w-full"
+                             type="number"/>
+                  <app-input-error :message="form.error('amount')" class="mt-1"/>
               </div>
+
+              <div class="col-span-6 sm:col-span-3">
+                  <app-label for="start_date" value="Start Date"/>
+                  <app-input id="start_date" v-model="form.start_date"
+                             class="mt-1 block w-full"
+                             type="date"/>
+                  <app-input-error :message="form.error('start_date')" class="mt-1"/>
+              </div>
+
+              <div class="col-span-6 sm:col-span-3">
+                  <app-label for="recurrences" value="Recurrences"/>
+                  <app-input id="recurrences" v-model="form.recurrences"
+                             class="mt-1 block w-full"
+                             type="number"/>
+                  <app-input-error :message="form.error('recurrences')" class="mt-1"/>
+              </div>
+
+              <div class="col-span-6 sm:col-span-3">
+                  <app-label for="frequency" value="Frequency"/>
+                  <select id="frequency" v-model="form.frequency"
+                          class="form-input rounded-md shadow-sm mt-1 block w-full">
+                    <option :value="1" :selected="subscription && subscription.frequency === 'Monthly'">Monthly</option>
+                    <option :value="2" :selected="subscription && subscription.frequency === 'Bi-Monthly'">Bi-Monthly</option>
+                  </select>
+                  <app-input-error :message="form.error('frequency')" class="mt-1"/>
+             </div>
+
+
+             <div class="col-span-6 sm:col-span-3">
+                  <app-label for="process_day" value="Process Day"/>
+                  <select id="process_day" v-model="form.process_day"
+                          class="form-input rounded-md shadow-sm mt-1 block w-full">
+                    <option v-for="n in 31" :value="n" :selected="subscription && subscription.process_day == n">{{ n }}</option>
+                  </select>
+                  <app-input-error :message="form.error('process_day')" class="mt-1"/>
+             </div>
+
+          </div>
+
           </template>
 
           <template #footer>
@@ -78,7 +73,7 @@
               </app-button>
 
               <app-button :processing="form.processing" class="ml-3" color="primary" type="submit">
-                  {{ button }}
+                  Submit
               </app-button>
           </template>
       </app-form-modal>
@@ -107,46 +102,55 @@ export default {
     show: {
       default: false
     },
-    member: Object,
-    title: {
-      default: 'Create Member',
-    },
-    button: {
-      default: 'Submit',
-    }
+    subscription: Object,
+    membership: Object,
   },
 
 
   data() {
+
     return {
-      form: this.$inertia.form({
-        first_name: this.member?.first_name || '',
-        last_name: this.member?.last_name || '',
-        hebrew_name: this.member?.hebrew_name || '',
-        wife_name: this.member?.wife_name || '',
-        email: this.member?.email || '',
-        home_phone: this.member?.home_phone || '',
-        mobile_phone: this.member?.mobile_phone || '',
-        shtibel: this.member?.shtibel || '',
-      }, {
-        resetOnSuccess: false
-      })
+      title: this.subscription ? 'Edit Subscription' : 'Create Subscription',
+      form: this.$inertia.form()
     }
   },
 
   methods: {
-    submitMember() {
-      if (this.member) {
-        this.form.put(route('members.update', this.member.id).url(), {
+
+    submitSubscription() {
+      if (this.subscription) {
+        this.form.put(route('subscriptions.update', this.subscription.id).url(), {
           onSuccess: () => !this.form.hasErrors() ? this.$emit('close') : null
         })
       } else {
-        this.form.post(route('members.store').url(), {
+        this.form.post(route('memberships.subscriptions.store', this.membership.id).url(), {
           onSuccess: () => !this.form.hasErrors() ? this.$emit('close') : null
         })
       }
-
     },
-  }
+
+    resetForm() {
+      this.form = this.$inertia.form({
+        type: this.subscription?.type === 'Membership' ? 1 : (this.subscription?.type === 'Loan Payment' ? 2 : null),
+        amount:  this.subscription?.amount || null,
+        start_date:  this.subscription?.start_date || null,
+        recurrences:  this.subscription?.recurrences || null,
+        frequency:  this.subscription?.frequency === 'Monthly' ? 1 : (this.subscription?.frequency === 'Bi-Monthly' ? 2 : null),
+        process_day:  this.subscription?.process_day || null,
+      })
+    }
+  },
+
+  watch: {
+    show(val) {
+      this.resetForm()
+    },
+
+    subscription(val) {
+      this.title = this.subscription ? 'Edit Subscription' : 'Create Subscription';
+      this.resetForm();
+    }
+
+  },
 }
 </script>

@@ -24,9 +24,10 @@ class SubscriptionFactory extends Factory
         return [
             'type' => $this->faker->randomElement([Subscription::TYPE_MEMBERSHIP, Subscription::TYPE_LOAN_PAYMENT]),
             'amount' => $this->faker->numberBetween(20,500),
+            'start_date' => $this->faker->dateTimeBetween('-10 years', '+10 years'),
             'recurrences' => $this->faker->numberBetween(1,500),
             'frequency' => $this->faker->randomElement([Subscription::FREQUENCY_MONTHLY, Subscription::FREQUENCY_BIMONTHLY]),
-            'process_date' => $this->faker->numberBetween(1,28)
+            'process_day' => $this->faker->numberBetween(1,28)
         ];
     }
 }

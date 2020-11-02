@@ -1,75 +1,37 @@
 <template>
   <span>
 
-      <app-form-modal :show="show" @close="$emit('close')" @submitted="submitMember">
+      <app-form-modal :show="show" @close="$emit('close')" @submitted="submitMembership" max-width="sm">
 
           <template #title>{{ title }}</template>
 
           <template #form>
-              <div class="grid grid-cols-6 gap-6">
 
-                  <div class="col-span-6 sm:col-span-3">
-                      <app-label for="first_name" value="First Name"/>
-                      <app-input id="first_name" v-model="form.first_name" autocomplete="..."
-                                 class="mt-1 block w-full"
-                                 type="text"/>
-                      <app-input-error :message="form.error('first_name')" class="mt-1"/>
-                  </div>
-
-                  <div class="col-span-6 sm:col-span-3">
-                      <app-label for="last_name" value="Last Name"/>
-                      <app-input id="last_name" v-model="form.last_name" autocomplete="..."
-                                 class="mt-1 block w-full"
-                                 type="text"/>
-                      <app-input-error :message="form.error('last_name')" class="mt-1"/>
-                  </div>
-
-                  <div class="col-span-6 sm:col-span-3">
-                      <app-label for="hebrew_name" value="Hebrew Name"/>
-                      <app-input id="hebrew_name" v-model="form.hebrew_name" autocomplete="..."
-                                 class="mt-1 block w-full"
-                                 type="text"/>
-                      <app-input-error :message="form.error('hebrew_name')" class="mt-1"/>
-                  </div>
-
-                  <div class="col-span-6 sm:col-span-3">
-                      <app-label for="wife_name" value="Wife's Name"/>
-                      <app-input id="wife_name" v-model="form.wife_name" autocomplete="..."
-                                 class="mt-1 block w-full"
-                                 type="text"/>
-                      <app-input-error :message="form.error('wife_name')" class="mt-1"/>
-                  </div>
-
-                  <div class="col-span-6 sm:col-span-3">
-                      <app-label for="email" value="Email"/>
-                      <app-input id="email" v-model="form.email" autocomplete="..." class="mt-1 block w-full"
-                                 type="email"/>
-                      <app-input-error :message="form.error('email')" class="mt-1"/>
-                  </div>
-
-                  <div class="col-span-6 sm:col-span-3">
-                      <app-label for="home_phone" value="Home Phone"/>
-                      <app-input id="home_phone" v-model="form.home_phone" autocomplete="..." class="mt-1 block w-full"
-                                 type="text"/>
-                      <app-input-error :message="form.error('home_phone')" class="mt-1"/>
-                  </div>
-
-                  <div class="col-span-6 sm:col-span-3">
-                      <app-label for="mobile_phone" value="Cellphone"/>
-                      <app-input id="mobile_phone" v-model="form.mobile_phone" autocomplete="..."
-                                 class="mt-1 block w-full"
-                                 type="text"/>
-                      <app-input-error :message="form.error('mobile_phone')" class="mt-1"/>
-                  </div>
-
-                  <div class="col-span-6 sm:col-span-3">
-                      <app-label for="shtibel" value="Shtibel"/>
-                      <app-input id="shtibel" v-model="form.shtibel" autocomplete="..." class="mt-1 block w-full"
-                                 type="text"/>
-                      <app-input-error :message="form.error('shtibel')" class="mt-1"/>
-                  </div>
-
+             <div>
+                  <app-label for="type" value="Membership Type"/>
+                  <select id="type" v-model="form.type"
+                          class="form-input rounded-md shadow-sm mt-1 block w-full">
+                    <option :value="1" :selected="membership && membership.type === 'Membership'">Membership</option>
+                    <option :value="2" :selected="membership && membership.type === 'Pekudon'">Pekudon</option>
+                  </select>
+                  <app-input-error :message="form.error('type')" class="mt-1"/>
               </div>
+
+              <div class="my-3" v-if="form.type === 1">
+                  <app-label for="plan_type_id" value="Plan Type"/>
+                  <select id="plan_type_id" v-model="form.plan_type_id"
+                          class="form-input rounded-md shadow-sm mt-1 block w-full">
+                    <option
+                      v-for="planType of planTypes"
+                      :key="planType.id"
+                      :value="planType.id"
+                      :selected="membership && membership.plan_type_id === planType.id">
+                      {{ planType.name }}
+                    </option>
+                  </select>
+                  <app-input-error :message="form.error('plan_type_id')" class="mt-1"/>
+              </div>
+
           </template>
 
           <template #footer>
@@ -78,7 +40,7 @@
               </app-button>
 
               <app-button :processing="form.processing" class="ml-3" color="primary" type="submit">
-                  {{ button }}
+                  Submit
               </app-button>
           </template>
       </app-form-modal>
@@ -107,46 +69,49 @@ export default {
     show: {
       default: false
     },
+    membership: Object,
     member: Object,
-    title: {
-      default: 'Create Member',
-    },
-    button: {
-      default: 'Submit',
-    }
   },
 
 
   data() {
+
     return {
-      form: this.$inertia.form({
-        first_name: this.member?.first_name || '',
-        last_name: this.member?.last_name || '',
-        hebrew_name: this.member?.hebrew_name || '',
-        wife_name: this.member?.wife_name || '',
-        email: this.member?.email || '',
-        home_phone: this.member?.home_phone || '',
-        mobile_phone: this.member?.mobile_phone || '',
-        shtibel: this.member?.shtibel || '',
-      }, {
-        resetOnSuccess: false
-      })
+      planTypes: [],
+      title: this.membership ? 'Edit Membership' : 'Create Membership',
+      form: this.$inertia.form()
     }
   },
 
   methods: {
-    submitMember() {
-      if (this.member) {
-        this.form.put(route('members.update', this.member.id).url(), {
+
+    submitMembership() {
+      if (this.membership) {
+        this.form.put(route('memberships.update', this.membership.id).url(), {
           onSuccess: () => !this.form.hasErrors() ? this.$emit('close') : null
         })
       } else {
-        this.form.post(route('members.store').url(), {
+        this.form.post(route('members.memberships.store', this.member.id).url(), {
           onSuccess: () => !this.form.hasErrors() ? this.$emit('close') : null
         })
       }
-
     },
+  },
+
+  watch: {
+    show(val) {
+      this.form = this.$inertia.form({
+        type: this.membership?.type == 'Membership' ? 1 : (this.membership?.type == 'Pekudon' ? 2 : null),
+        plan_type_id: this.membership?.plan_type_id || null,
+      })
+    }
+  },
+
+  created() {
+    axios.get(route('plan-types.index').url())
+      .then(response => {
+        this.planTypes = response.data.plan_types
+      })
   }
 }
 </script>

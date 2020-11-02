@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use NumberFormatter;
 
 class Subscription extends Model
 {
@@ -15,6 +14,8 @@ class Subscription extends Model
 
     const FREQUENCY_MONTHLY = 1;
     const FREQUENCY_BIMONTHLY = 2;
+
+    protected $guarded = [];
 
     public function membership()
     {
@@ -33,10 +34,7 @@ class Subscription extends Model
     {
         return [
             self::FREQUENCY_MONTHLY => 'Monthly',
-            self::FREQUENCY_BIMONTHLY => 'Bi-monthly'
-        ][$frequency]
-            . ' - '
-            . (new NumberFormatter('en_US', NumberFormatter::ORDINAL))
-            ->format($this->process_date);
+            self::FREQUENCY_BIMONTHLY => 'Bi-Monthly'
+        ][$frequency];
     }
 }
