@@ -3,7 +3,6 @@
     <table class="w-full whitespace-no-wrap">
       <tr class="text-left text-xs text-gray-400">
         <th class="px-6 pt-6 pb-4 font-medium">Name</th>
-        <th class="px-6 pt-6 pb-4 font-medium">Total Paid</th>
         <th class="px-6 pt-6 pb-4 font-medium">Home Phone</th>
         <th class="px-6 pt-6 pb-4 font-medium">Cellphone</th>
         <th class="px-6 pt-6 pb-4 font-medium" colspan="2">Email</th>
@@ -17,12 +16,6 @@
                title="Archived member">delete</i>
             <i v-if="member.membership" class="material-icons flex-shrink-0 text-sm text-green-300 ml-2"
                title="Active Membership">verified_user</i>
-          </inertia-link>
-        </td>
-        <td class="border-t">
-          <inertia-link class="px-6 py-3 flex items-center focus:outline-none"
-                        :href="route('members.show', member.id)" tabindex="-1">
-            {{ member.total_paid }}
           </inertia-link>
         </td>
         <td class="border-t">

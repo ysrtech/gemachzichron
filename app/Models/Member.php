@@ -43,13 +43,4 @@ class Member extends Model
                 }
             });
     }
-
-
-    public function scopeWithTotalPaid($query)
-    {
-        return $query->addSelect([
-//            'total_paid' => Transaction::select(DB::raw('sum(ifnull(debit, 0) - ifnull(credit, 0))'))
-//                ->whereColumn('member_id', 'members.id')
-        ]);
-    }
 }

@@ -16,7 +16,7 @@ class MemberController extends Controller
         return Inertia::render('Members/Index', [
             'filters' => $filters,
             'members' => Member::filter($filters)
-                ->select(
+                ->select([
                     'id',
                     'first_name',
                     'last_name',
@@ -25,9 +25,8 @@ class MemberController extends Controller
                     'home_phone',
                     'mobile_phone',
                     'deleted_at'
-                )
+                ])
                 ->with('membership')
-                ->WithTotalPaid()
                 ->orderBy('last_name')
                 ->orderBy('first_name')
                 ->paginate()

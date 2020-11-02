@@ -39,4 +39,19 @@ class Membership extends Model
             self::TYPE_PEKUDON => 'Pekudon'
         ][$type];
     }
+
+    public function scopeFilter($query, array $filters)
+    {
+        return $query
+            ->when($filters['type'] ?? null, fn($query, $type) => $query->where('type', $type))
+            ->when($filters['plan_type'] ?? null, fn($query, $planType) => $query->where('plan_type_id', $planType));
+    }
+
+    public function scopeWithTotalPaid($query)
+    {
+        return $query->addSelect([
+//            'total_paid' => Transaction::select(DB::raw('sum(ifnull(debit, 0) - ifnull(credit, 0))'))
+//                ->whereColumn('member_id', 'members.id')
+        ]);
+    }
 }

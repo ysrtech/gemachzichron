@@ -18,14 +18,12 @@ Route::redirect('/', 'dashboard');
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/dashboard', Controllers\DashboardController::class)->name('dashboard');
-
     Route::apiResource('users', Controllers\UserController::class);
-
     Route::apiResource('members', Controllers\MemberController::class);
     Route::put('members/{member}/restore', [Controllers\MemberController::class, 'restore'])->name('members.restore');
     Route::apiresource('members.dependents', Controllers\DependentController::class)->shallow();
-
-    Route::apiresource('members.memberships', Controllers\MembershipController::class)->shallow();
+    Route::post(' members/{member}/memberships', [Controllers\MembershipController::class, 'store'])->name('members.memberships.store ');
+    Route::apiresource('memberships', Controllers\MembershipController::class)->except('store');
     Route::apiresource('memberships.subscriptions', Controllers\SubscriptionController::class)->shallow();
     Route::apiresource('plan-types', Controllers\PlanTypeController::class);
 });

@@ -108,6 +108,7 @@ export default {
   },
 
   created() {
+    // todo fix so it shouldn't call on every usage
     axios.get(route('plan-types.index').url())
       .then(response => {
         this.planTypes = response.data.plan_types

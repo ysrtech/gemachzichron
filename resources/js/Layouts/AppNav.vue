@@ -86,6 +86,11 @@ export default {
           icon: "people",
         },
         {
+          title: "Memberships",
+          route: "memberships.index",
+          icon: "payments",
+        },
+        {
           title: "Users",
           route: "users.index",
           icon: 'supervised_user_circle'
