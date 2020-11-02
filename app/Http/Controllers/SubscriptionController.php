@@ -2,82 +2,36 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateSubscriptionRequest;
+use App\Models\Membership;
 use App\Models\Subscription;
-use Illuminate\Http\Request;
 
 class SubscriptionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function store(UpdateSubscriptionRequest $request, Membership $membership)
     {
-        //
+        $membership->subscriptions()->create($request->validated());
+
+        return back()->with('flash', ['success' => 'Subscription created.']);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Subscription  $subscription
-     * @return \Illuminate\Http\Response
-     */
     public function show(Subscription $subscription)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Subscription  $subscription
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Subscription $subscription)
+    public function update(UpdateSubscriptionRequest $request, Subscription $subscription)
     {
-        //
+        $subscription->update($request->validated());
+
+        return back()->with('flash', ['success' => 'Subscription updated.']);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Subscription  $subscription
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Subscription $subscription)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Subscription  $subscription
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Subscription $subscription)
     {
         //

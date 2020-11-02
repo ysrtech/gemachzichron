@@ -21,7 +21,7 @@ class CreateSubscriptionsTable extends Migration
             $table->date('start_date');
             $table->integer('recurrences');
             $table->integer('frequency');
-            $table->integer('process_date');
+            $table->integer('process_day');
 //            $table->foreignId('payment_method_id')->constrained();
             $table->timestamps();
         });
