@@ -7,7 +7,7 @@
 
         <div class="px-5 py-2">
           <label class="block text-gray-700 text-sm">Membership Type:</label>
-          <select v-model="filterForm.type" class="mt-1 w-full form-select text-sm">
+          <select v-model="filterForm.type" @change="reset('plan_type')" class="mt-1 w-full form-select text-sm">
             <option :value="null">--</option>
             <option value="1">Membership</option>
             <option value="2">Pekudon</option>
@@ -141,8 +141,12 @@ export default {
     },
   },
   methods: {
-    reset() {
-      this.filterForm = mapValues(this.filterForm, () => null)
+    reset(field = null) {
+      if (field) {
+        this.filterForm[field] = null
+      } else {
+        this.filterForm = mapValues(this.filterForm, () => null)
+      }
     },
   },
 
