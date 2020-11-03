@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateMemberRequest;
 use App\Models\Member;
+use App\Services\FileExportService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -73,5 +74,29 @@ class MemberController extends Controller
         $member->restore();
 
         return back()->with('flash', ['success' => 'Member restored.']);
+    }
+
+    public function export()
+    {
+        $columns = [
+            'first_name',
+            'last_name',
+            'hebrew_name',
+            'wife_name',
+            'email',
+            'home_phone',
+            'mobile_phone',
+            'shtibel',
+        ];
+
+        $members = Member::select($columns)
+            ->get()
+            ->toArray();
+
+        return FileExportService::exportCsv(
+            $members,
+            'members.csv',
+            $columns
+        );
     }
 }

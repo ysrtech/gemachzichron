@@ -13,14 +13,23 @@
                 <option value="only">Only Archived</option>
               </select>
 
-              <!-- Todo: Other filters here -->
           </div>
         </search-filter>
 
-        <app-button @click.native="showCreateMemberModal = true">
-          <span>Create</span>
-          <span class="hidden md:inline pl-1"> Member</span>
-        </app-button>
+        <div class="flex">
+          <app-button @click.native="showCreateMemberModal = true">
+            <span>Create</span>
+            <span class="hidden md:inline pl-1"> Member</span>
+          </app-button>
+
+          <a :href="route('members.export')" target="_blank">
+            <app-button color="secondary" class="ml-2">
+              <span>Export</span>
+              <span class="hidden md:inline pl-1"> Members</span>
+            </app-button>
+          </a>
+
+        </div>
 
       </div>
 
