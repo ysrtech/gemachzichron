@@ -23,7 +23,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::apiResource('members', Controllers\MemberController::class);
     Route::put('members/{member}/restore', [Controllers\MemberController::class, 'restore'])->name('members.restore');
     Route::apiresource('members.dependents', Controllers\DependentController::class)->shallow();
-    Route::post(' members/{member}/memberships', [Controllers\MembershipController::class, 'store'])->name('members.memberships.store ');
+    Route::post('members/{member}/memberships', [Controllers\MembershipController::class, 'store'])->name('members.memberships.store');
     Route::apiresource('memberships', Controllers\MembershipController::class)->except('store');
     Route::apiresource('memberships.subscriptions', Controllers\SubscriptionController::class)->shallow();
     Route::apiresource('plan-types', Controllers\PlanTypeController::class);
