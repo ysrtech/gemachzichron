@@ -21,15 +21,4 @@ class UpdateMembershipRequest extends FormRequest
             'plan_type_id.required_if' => 'The plan type is required when membership type is Membership',
         ];
     }
-
-    public function validated()
-    {
-        $attributes = parent::validated();
-
-        if ($attributes['type'] == Membership::TYPE_PEKUDON) {
-            $attributes['plan_type_id'] = null;
-        }
-
-        return $attributes;
-    }
 }

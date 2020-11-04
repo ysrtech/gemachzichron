@@ -9,7 +9,7 @@
 
               <div class="mb-4">
                   <app-label for="first_name" value="First Name"/>
-                  <app-input id="first_name" v-model="form.first_name" autocomplete="blabla"
+                  <app-input id="first_name" v-model="form.first_name" autocomplete="off"
                              class="mt-1 block w-full"
                              type="text"/>
                   <app-input-error :message="form.error('first_name')" class="mt-1"/>
@@ -17,7 +17,7 @@
 
               <div class="my-4">
                   <app-label for="last_name" value="Last Name"/>
-                  <app-input id="last_name" v-model="form.last_name" autocomplete="blabla"
+                  <app-input id="last_name" v-model="form.last_name" autocomplete="off"
                              class="mt-1 block w-full"
                              type="text"/>
                   <app-input-error :message="form.error('last_name')" class="mt-1"/>
@@ -25,7 +25,7 @@
 
               <div class="my-4">
                   <app-label for="hebrew_name" value="Hebrew Name"/>
-                  <app-input id="hebrew_name" v-model="form.hebrew_name" autocomplete="blabla"
+                  <app-input id="hebrew_name" v-model="form.hebrew_name" autocomplete="off"
                              class="mt-1 block w-full"
                              type="text"/>
                   <app-input-error :message="form.error('hebrew_name')" class="mt-1"/>
@@ -33,7 +33,7 @@
 
               <div class="my-4">
                   <app-label for="dob" value="Date of Birth"/>
-                  <app-input id="wife_name" v-model="form.dob" autocomplete="blabla"
+                  <app-input id="wife_name" v-model="form.dob" autocomplete="off"
                              class="mt-1 block w-full"
                              type="date"/>
                   <app-input-error :message="form.error('dob')" class="mt-1"/>

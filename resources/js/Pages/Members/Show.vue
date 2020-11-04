@@ -43,10 +43,19 @@
           class="mt-6"
         />
 
+        <loans-card
+          v-if="member.membership"
+          :dependents="member.dependents"
+          :membership-id="member.membership.id"
+          :loans="member.membership.loans"
+          class="mt-6"
+        />
+
       </div>
 
       <div class="col-span-6 sm:col-span-2">
-        <dependents-card :dependents="member.dependents" :member="member"></dependents-card>
+        <dependents-card :dependents="member.dependents" :member="member"/>
+        <given-endorsements-card :givenEndorsements="member.given_endorsements" class="mt-6"/>
       </div>
 
     </div>
@@ -80,6 +89,9 @@ import MembershipCard from "./Components/MembershipCard";
 import SubscriptionsCard from "./Components/SubscriptionsCard";
 import MembershipFormModal from "./Components/MembershipFormModal";
 import SubscriptionFormModal from "./Components/SubscriptionFormModal";
+import GivenEndorsementsCard from "./Components/GivenEndorsementsCard";
+import LoansCard from "./Components/LoansCard";
+import LoanFormModal from "./Components/LoanFormModal";
 
 export default {
   name: "Show",
@@ -95,6 +107,9 @@ export default {
   },
 
   components: {
+    LoanFormModal,
+    LoansCard,
+    GivenEndorsementsCard,
     SubscriptionFormModal,
     MembershipFormModal,
     SubscriptionsCard,

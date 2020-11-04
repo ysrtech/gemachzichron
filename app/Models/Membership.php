@@ -12,10 +12,19 @@ class Membership extends Model
 {
     use HasFactory;
 
-    const TYPE_MEMBERSHIP = 1;
-    const TYPE_PEKUDON = 2;
+    const TYPE_MEMBERSHIP = 'Membership';
+    const TYPE_PEKUDON = 'Pekudon';
 
     protected $guarded = [];
+
+    public static function booted()
+    {
+        static::saving(function (Membership $membership) {
+            if ($membership->type == Membership::TYPE_PEKUDON) {
+                $membership->plan_type_id = null;
+            }
+        });
+    }
 
     public function member()
     {
@@ -32,12 +41,9 @@ class Membership extends Model
         return $this->hasMany(Subscription::class);
     }
 
-    public function getTypeAttribute($type)
+    public function loans()
     {
-        return [
-            self::TYPE_MEMBERSHIP => 'Membership',
-            self::TYPE_PEKUDON => 'Pekudon'
-        ][$type];
+        return $this->hasMany(Loan::class);
     }
 
     public function scopeFilter($query, array $filters)

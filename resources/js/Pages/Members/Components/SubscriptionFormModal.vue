@@ -137,7 +137,9 @@ export default {
         recurrences:  this.subscription?.recurrences || null,
         frequency:  this.subscription?.frequency === 'Monthly' ? 1 : (this.subscription?.frequency === 'Bi-Monthly' ? 2 : null),
         process_day:  this.subscription?.process_day || null,
-      })
+      });
+
+      this.$page.props.errorBags['default'] = [];
     }
   },
 

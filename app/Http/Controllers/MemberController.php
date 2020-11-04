@@ -47,8 +47,11 @@ class MemberController extends Controller
         $member->load([
             'dependents',
             'membership.plan_type',
-            'membership.subscriptions'
+            'membership.subscriptions',
+            'membership.loans.endorsements',
         ]);
+
+        $member->loadEndorsementsToMembers();
 
         return Inertia::render('Members/Show', [
            'member' => $member

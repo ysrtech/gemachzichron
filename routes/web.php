@@ -26,5 +26,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('members/{member}/memberships', [Controllers\MembershipController::class, 'store'])->name('members.memberships.store');
     Route::apiresource('memberships', Controllers\MembershipController::class)->except('store');
     Route::apiresource('memberships.subscriptions', Controllers\SubscriptionController::class)->shallow();
+    Route::apiresource('memberships.loans', Controllers\LoanController::class)->shallow();
     Route::apiresource('plan-types', Controllers\PlanTypeController::class);
 });

@@ -10,7 +10,7 @@
 
                   <div class="col-span-6 sm:col-span-3">
                       <app-label for="first_name" value="First Name"/>
-                      <app-input id="first_name" v-model="form.first_name" autocomplete="..."
+                      <app-input id="first_name" v-model="form.first_name" autocomplete="off"
                                  class="mt-1 block w-full"
                                  type="text"/>
                       <app-input-error :message="form.error('first_name')" class="mt-1"/>
@@ -18,7 +18,7 @@
 
                   <div class="col-span-6 sm:col-span-3">
                       <app-label for="last_name" value="Last Name"/>
-                      <app-input id="last_name" v-model="form.last_name" autocomplete="..."
+                      <app-input id="last_name" v-model="form.last_name" autocomplete="off"
                                  class="mt-1 block w-full"
                                  type="text"/>
                       <app-input-error :message="form.error('last_name')" class="mt-1"/>
@@ -26,7 +26,7 @@
 
                   <div class="col-span-6 sm:col-span-3">
                       <app-label for="hebrew_name" value="Hebrew Name"/>
-                      <app-input id="hebrew_name" v-model="form.hebrew_name" autocomplete="..."
+                      <app-input id="hebrew_name" v-model="form.hebrew_name" autocomplete="off"
                                  class="mt-1 block w-full"
                                  type="text"/>
                       <app-input-error :message="form.error('hebrew_name')" class="mt-1"/>
@@ -34,7 +34,7 @@
 
                   <div class="col-span-6 sm:col-span-3">
                       <app-label for="wife_name" value="Wife's Name"/>
-                      <app-input id="wife_name" v-model="form.wife_name" autocomplete="..."
+                      <app-input id="wife_name" v-model="form.wife_name" autocomplete="off"
                                  class="mt-1 block w-full"
                                  type="text"/>
                       <app-input-error :message="form.error('wife_name')" class="mt-1"/>
@@ -42,21 +42,21 @@
 
                   <div class="col-span-6 sm:col-span-3">
                       <app-label for="email" value="Email"/>
-                      <app-input id="email" v-model="form.email" autocomplete="..." class="mt-1 block w-full"
+                      <app-input id="email" v-model="form.email" autocomplete="off" class="mt-1 block w-full"
                                  type="email"/>
                       <app-input-error :message="form.error('email')" class="mt-1"/>
                   </div>
 
                   <div class="col-span-6 sm:col-span-3">
                       <app-label for="home_phone" value="Home Phone"/>
-                      <app-input id="home_phone" v-model="form.home_phone" autocomplete="..." class="mt-1 block w-full"
+                      <app-input id="home_phone" v-model="form.home_phone" autocomplete="off" class="mt-1 block w-full"
                                  type="text"/>
                       <app-input-error :message="form.error('home_phone')" class="mt-1"/>
                   </div>
 
                   <div class="col-span-6 sm:col-span-3">
                       <app-label for="mobile_phone" value="Cellphone"/>
-                      <app-input id="mobile_phone" v-model="form.mobile_phone" autocomplete="..."
+                      <app-input id="mobile_phone" v-model="form.mobile_phone" autocomplete="off"
                                  class="mt-1 block w-full"
                                  type="text"/>
                       <app-input-error :message="form.error('mobile_phone')" class="mt-1"/>
@@ -64,7 +64,7 @@
 
                   <div class="col-span-6 sm:col-span-3">
                       <app-label for="shtibel" value="Shtibel"/>
-                      <app-input id="shtibel" v-model="form.shtibel" autocomplete="..." class="mt-1 block w-full"
+                      <app-input id="shtibel" v-model="form.shtibel" autocomplete="off" class="mt-1 block w-full"
                                  type="text"/>
                       <app-input-error :message="form.error('shtibel')" class="mt-1"/>
                   </div>

@@ -26,6 +26,21 @@ class Member extends Model
         return $this->hasOne(Membership::class);
     }
 
+    public function given_endorsements()
+    {
+        return $this->belongsToMany(Loan::class, 'endorsement_loan');
+    }
+
+    public function loadEndorsementsToMembers()
+    {
+        // Instead of loading all columns by using load('given_endorsements.membership.member')
+        return $this->load([
+            'given_endorsements' => fn($query1) => $query1->select('membership_id')->with([
+                'membership' => fn($query2) => $query2->select('id', 'member_id')->with('member')
+            ])
+        ]);
+    }
+
     public function scopeFilter($query, array $filters)
     {
         return $query

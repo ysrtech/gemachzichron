@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMembershipsTable extends Migration
+class CreateEndorsementLoanTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,9 @@ class CreateMembershipsTable extends Migration
      */
     public function up()
     {
-        Schema::create('memberships', function (Blueprint $table) {
-            $table->id();
+        Schema::create('endorsement_loan', function (Blueprint $table) {
             $table->foreignId('member_id')->constrained();
-            $table->string('type');
-            $table->foreignId('plan_type_id')->nullable()->constrained();
-            $table->timestamps();
+            $table->foreignId('loan_id')->constrained();
         });
     }
 
@@ -29,6 +26,6 @@ class CreateMembershipsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('memberships');
+        Schema::dropIfExists('endorsement_loan');
     }
 }
