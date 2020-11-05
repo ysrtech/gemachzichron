@@ -12,11 +12,10 @@ class MemberController extends Controller
 {
     public function index(Request $request)
     {
-        $filters = $request->all('search', 'archived');
-
         return Inertia::render('Members/Index', [
-            'filters' => $filters,
-            'members' => Member::filter($filters)
+            'filters' => $request->all('search', 'archived'),
+            'members' => Member::search($request->search)
+                ->filterWithTrashed($request->archived)
                 ->select([
                     'id',
                     'first_name',

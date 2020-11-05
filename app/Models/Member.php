@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Traits\RouteBindingWithTrashed;
+use App\Models\Traits\FilterableWithTrashed;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Member extends Model
 {
-    use HasFactory, SoftDeletes, RouteBindingWithTrashed;
+    use HasFactory, SoftDeletes, FilterableWithTrashed;
 
     protected $guarded = [];
 
@@ -41,21 +41,13 @@ class Member extends Model
         ]);
     }
 
-    public function scopeFilter($query, array $filters)
+    public function scopeSearch($query, ?string $search)
     {
-        return $query
-            ->when($filters['search'] ?? null, function ($query, $search) {
+        return $query->when($search, function ($query, $search) {
                 $query->where('last_name', 'like', "{$search}%")
                     ->orWhere('first_name', 'like', "{$search}%")
                     ->orWhere('hebrew_name', 'like', "{$search}%")
                     ->orWhere('email', 'like', "{$search}%");
-            })
-            ->when($filters['archived'] ?? null, function ($query, $trashed) {
-                if ($trashed === 'with') {
-                    $query->withTrashed();
-                } elseif ($trashed === 'only') {
-                    $query->onlyTrashed();
-                }
             });
     }
 }
