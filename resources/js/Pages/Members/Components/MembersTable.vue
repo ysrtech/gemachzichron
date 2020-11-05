@@ -14,8 +14,8 @@
             {{ member.last_name + ', ' + member.first_name }}
             <i v-if="member.deleted_at" class="material-icons flex-shrink-0 text-sm text-red-300 ml-2"
                title="Archived member">delete</i>
-            <i v-if="member.membership" class="material-icons flex-shrink-0 text-sm text-green-300 ml-2"
-               title="Active Membership">verified_user</i>
+<!--            <i v-if="member.membership" class="material-icons flex-shrink-0 text-sm text-green-300 ml-2"-->
+<!--               title="Active Membership">verified_user</i>-->
           </inertia-link>
         </td>
         <td class="border-t">

@@ -26,7 +26,7 @@ class MemberController extends Controller
                     'mobile_phone',
                     'deleted_at'
                 ])
-                ->with('membership')
+//                ->with('membership')
                 ->orderBy('last_name')
                 ->orderBy('first_name')
                 ->paginate()
