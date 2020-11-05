@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Membership extends Model
 {
-    use HasFactory;
+    use HasFactory, Filterable;
 
     const TYPE_MEMBERSHIP = 'Membership';
     const TYPE_PEKUDON = 'Pekudon';
@@ -44,13 +45,6 @@ class Membership extends Model
     public function loans()
     {
         return $this->hasMany(Loan::class);
-    }
-
-    public function scopeFilter($query, array $filters)
-    {
-        return $query
-            ->when($filters['type'] ?? null, fn($query, $type) => $query->where('type', $type))
-            ->when($filters['plan_type'] ?? null, fn($query, $planType) => $query->where('plan_type_id', $planType));
     }
 
     public function scopeWithTotalPaid($query)

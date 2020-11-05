@@ -7,7 +7,7 @@
 
         <div class="px-5 py-2">
           <label class="block text-gray-700 text-sm">Membership Type:</label>
-          <select v-model="filterForm.type" @change="reset('plan_type')" class="mt-1 w-full form-select text-sm">
+          <select v-model="filterForm.type" @change="reset('plan_type_id')" class="mt-1 w-full form-select text-sm">
             <option :value="null">--</option>
             <option>Membership</option>
             <option>Pekudon</option>
@@ -16,7 +16,7 @@
 
         <div class="px-5 py-2" v-if="filterForm.type != 2">
           <label class="block text-gray-700 text-sm">Plan Types:</label>
-          <select v-model="filterForm.plan_type" class="mt-1 w-full form-select text-sm">
+          <select v-model="filterForm.plan_type_id" class="mt-1 w-full form-select text-sm">
             <option :value="null">--</option>
             <option v-for="planType of planTypes" :key="planType.id" :value="planType.id">{{ planType.name }}</option>
           </select>
@@ -127,7 +127,7 @@ export default {
         search: this.filters.search,
         archived: this.filters.archived,
         type: this.filters.type,
-        plan_type: this.filters.plan_type,
+        plan_type_id: this.filters.plan_type_id,
       },
     }
   },

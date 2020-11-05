@@ -16,10 +16,10 @@ class MembershipController extends Controller
             'filters' => $request->all('search', 'archived'),
             'members' =>  Member::filter($request->all('search', 'archived'))
                 ->select(['id', 'first_name', 'last_name'])
-                ->whereHas('membership', fn($query) => $query->filter($request->all('type', 'plan_type')))
+                ->whereHas('membership', fn($query) => $query->filter($request->all('type', 'plan_type_id')))
                 ->with(['membership' => function ($query) use ($request) {
                     $query
-                        ->filter($request->all('type', 'plan_type'))
+                        ->filter($request->all('type', 'plan_type_id'))
                         ->withTotalPaid()
                         ->with('plan_type');
                 }])
