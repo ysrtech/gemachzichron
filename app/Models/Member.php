@@ -40,7 +40,9 @@ class Member extends Model
         // Instead of loading all columns by using load('given_endorsements.membership.member')
         return $this->load([
             'given_endorsements' => fn($query1) => $query1->select('membership_id')->with([
-                'membership' => fn($query2) => $query2->select('id', 'member_id')->with('member')
+                'membership' => fn($query2) => $query2->select('id', 'member_id')->with([
+                    'member' => fn($query3) => $query3->withTrashed()
+                ])
             ])
         ]);
     }
