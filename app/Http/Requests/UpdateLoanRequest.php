@@ -14,7 +14,7 @@ class UpdateLoanRequest extends FormRequest
             'loan_date'        => 'required|date',
             'cheque_number'    => 'nullable|string',
             'application_copy' => 'nullable|file',
-//            'endorsements'     => 'array'
+            'endorsements'     => 'array'
         ];
     }
 }

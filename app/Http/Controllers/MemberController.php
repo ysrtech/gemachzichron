@@ -12,25 +12,22 @@ class MemberController extends Controller
 {
     public function index(Request $request)
     {
+        $membersQuery = Member::search($request->search)
+            ->filterWithTrashed($request->archived)
+//            ->with('membership')
+            ->orderBy('last_name')
+            ->orderBy('first_name');
+
+        if ($request->wantsJson()) {
+            return $membersQuery
+                ->when($request->limit, fn($query, $limit) => $query->limit($limit))
+                ->get()
+                ->toArray();
+        }
+
         return Inertia::render('Members/Index', [
             'filters' => $request->all('search', 'archived'),
-            'members' => Member::search($request->search)
-                ->filterWithTrashed($request->archived)
-                ->select([
-                    'id',
-                    'first_name',
-                    'last_name',
-                    'hebrew_name',
-                    'email',
-                    'home_phone',
-                    'mobile_phone',
-                    'deleted_at'
-                ])
-//                ->with('membership')
-                ->orderBy('last_name')
-                ->orderBy('first_name')
-                ->paginate()
-                ->withQueryString()
+            'members' => $membersQuery->paginate($request->limit ?? 15)->withQueryString()
         ]);
     }
 

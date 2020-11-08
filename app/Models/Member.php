@@ -16,6 +16,10 @@ class Member extends Model
 
     protected $guarded = [];
 
+    protected $appends = [
+        'full_name'
+    ];
+
     public function dependents()
     {
         return $this->hasMany(Dependent::class);
@@ -49,5 +53,10 @@ class Member extends Model
                     ->orWhere('hebrew_name', 'like', "{$search}%")
                     ->orWhere('email', 'like', "{$search}%");
             });
+    }
+
+    public function getFullNameAttribute()
+    {
+        return "{$this->first_name} {$this->last_name}";
     }
 }

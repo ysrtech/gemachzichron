@@ -47,7 +47,7 @@
                   <app-input-error :message="form.error('cheque_number')" class="mt-1"/>
               </div>
 
-              <div class="col-span-6 sm:col-span-3">
+              <div class="col-span-6">
                   <app-label for="application_copy" value="Application Copy"/>
                   <app-label for="application_copy">
                     <div class="h-10 form-input rounded-md shadow-sm mt-1 block w-full text-gray-500 font-normal">
@@ -58,9 +58,32 @@
                   <input
                     id="application_copy"
                     @change="form.application_copy = $event.target.files[0]"
-                    class="invisible h-0"
+                    class="hidden"
                     type="file"/>
              </div>
+
+             <div class="col-span-6">
+                  <app-label for="endorsements" value="Endorsements"/>
+                  <v-select
+                    class="mt-1 block w-full"
+                    multiple
+
+                    v-model="form.endorsements"
+                    :options="endorsingMembers"
+                    :reduce="endorsingMember => endorsingMember.id"
+                    label="full_name"
+                    :filterable="false"
+                    @search="onSearchMembers">
+                    <template #no-options="{ search, searching, loading }">
+                      {{
+                        search.length < 2
+                          ? 'Start typing...'
+                          : 'No members found'
+                      }}
+                    </template>
+                  </v-select>
+                  <app-input-error :message="form.error('endorsements')" class="mt-1"/>
+              </div>
 
           </div>
 
@@ -85,6 +108,7 @@ import AppFormModal from '../../../Shared/FormModal'
 import AppLabel from '../../../Shared/Label'
 import AppInput from '../../../Shared/Input'
 import AppInputError from '../../../Shared/InputError'
+import debounce from "lodash/debounce";
 
 
 export default {
@@ -110,7 +134,8 @@ export default {
   data() {
 
     return {
-      form: this.$inertia.form()
+      form: this.$inertia.form(),
+      endorsingMembers: []
     }
   },
 
@@ -131,19 +156,47 @@ export default {
 
     resetForm() {
       this.form = this.$inertia.form({
+        _method: 'post',
         dependent_id: this.loan?.dependent_id || null,
         amount:  this.loan?.amount || null,
         loan_date:  this.loan?.loan_date || null,
         cheque_number:  this.loan?.cheque_number || null,
         application_copy: null,
-        _method: 'post',
-        // endorsements: this.loan?.endorsements || [],
+        endorsements: this.loan?.endorsements.map(en => en.id) || [],
       }, {
         resetOnSuccess: true
       });
 
+      this.endorsingMembers = this.loan?.endorsements || []
+
       this.$page.props.errorBags['default'] = [];
     },
+
+    onSearchMembers(search, loading) {
+
+      if (search.length < 2) {
+        this.endorsingMembers = this.endorsingMembers.filter((member) => this.form.endorsements.includes(member.id));
+        return;
+      }
+
+      this.fetchMembers(loading, search, this);
+    },
+
+    fetchMembers: debounce(async (loading, search, vm) => {
+      loading(true);
+
+      const res = await axios.get(route('members.index'), {
+        params: {
+          limit: 5,
+          search,
+        },
+      });
+
+      vm.endorsingMembers = vm.endorsingMembers.concat(
+        res.data.filter(member => !vm.form.endorsements.includes(member.id))
+      )
+      loading(false);
+    }, 350),
   },
 
   computed: {

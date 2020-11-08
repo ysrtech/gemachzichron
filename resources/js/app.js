@@ -5,9 +5,11 @@ import { InertiaApp, plugin } from '@inertiajs/inertia-vue';
 import { InertiaForm } from 'laravel-jetstream';
 import PortalVue from 'portal-vue';
 import { InertiaProgress } from '@inertiajs/progress'
+import vSelect from "vue-select";
 
 export const EventBus = new Vue();
 
+Vue.component("v-select", vSelect);
 Vue.mixin({
   methods: {
     route,
