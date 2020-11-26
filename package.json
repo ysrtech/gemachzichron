@@ -24,9 +24,7 @@
         "resolve-url-loader": "^3.1.2",
         "tailwindcss": "^1.9.6",
         "vue": "^2.5.17",
+        "vue-select": "^3.10.8",
         "vue-template-compiler": "^2.6.10"
-    },
-    "dependencies": {
-        "vue-select": "^3.10.8"
     }
 }

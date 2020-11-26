@@ -17,7 +17,7 @@ class DependentController extends Controller
     {
         $member->dependents()->create($request->validated());
 
-        return back()->with('flash', ['success' => 'Dependent added.']);
+        return back()->snackbar('Dependent added.');
     }
 
     public function show(Dependent $dependent)
@@ -29,13 +29,17 @@ class DependentController extends Controller
     {
         $dependent->update($request->validated());
 
-        return back()->with('flash', ['success' => 'Dependent updated.']);
+        return back()->snackbar('Dependent updated.');
     }
 
     public function destroy(Dependent $dependent)
     {
+        if ($dependent->loadCount('loans')->loans_count > 0) {
+            return back()->snackbar('Cannot delete dependent that has associated loans.');
+        }
+
         $dependent->delete();
 
-        return back()->with('flash', ['success' => 'Dependent deleted.']);
+        return back()->snackbar('Dependent deleted.');
     }
 }

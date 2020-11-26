@@ -17,7 +17,7 @@ class SubscriptionController extends Controller
     {
         $membership->subscriptions()->create($request->validated());
 
-        return back()->with('flash', ['success' => 'Subscription created.']);
+        return back()->snackbar('Subscription created.');
     }
 
     public function show(Subscription $subscription)
@@ -29,7 +29,7 @@ class SubscriptionController extends Controller
     {
         $subscription->update($request->validated());
 
-        return back()->with('flash', ['success' => 'Subscription updated.']);
+        return back()->snackbar('Subscription updated.');
     }
 
     public function destroy(Subscription $subscription)

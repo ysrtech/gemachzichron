@@ -25,7 +25,7 @@ class UserController extends Controller
     {
         User::create($request->validated());
 
-        return back()->with('flash', ['success' => 'User created.']);
+        return back()->snackbar('User created.');
     }
 
     public function show(User $user)
@@ -48,7 +48,7 @@ class UserController extends Controller
 
         $user->update($attributes);
 
-        return back()->with('flash', ['success' => 'User updated.']);
+        return back()->snackbar('User updated.');
     }
 
     public function destroy(User $user)
@@ -60,6 +60,6 @@ class UserController extends Controller
 
         $user->delete();
 
-        return back()->with('flash', ['success' => 'User deleted.']);
+        return back()->snackbar('User deleted.');
     }
 }

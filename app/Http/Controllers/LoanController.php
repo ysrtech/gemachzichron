@@ -22,7 +22,7 @@ class LoanController extends Controller
 
         $loan->endorsements()->sync($request->endorsements);
 
-        return back()->with('flash', ['success' => 'Loan created.']);
+        return back()->snackbar('Loan created.');
     }
 
     public function show(Loan $loan)
@@ -38,7 +38,7 @@ class LoanController extends Controller
 
         $loan->endorsements()->sync($request->endorsements);
 
-        return back()->with('flash', ['success' => 'Loan updated.']);
+        return back()->snackbar('Loan updated.');
     }
 
     public function destroy(Loan $loan)

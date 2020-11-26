@@ -36,7 +36,7 @@ class MembershipController extends Controller
     {
         $member->membership()->create($request->validated());
 
-        return back()->with('flash', ['success' => 'Membership created.']);
+        return back()->snackbar('Membership created.');
     }
 
     public function show(Membership $membership)
@@ -48,7 +48,7 @@ class MembershipController extends Controller
     {
         $membership->update($request->validated());
 
-        return back()->with('flash', ['success' => 'Membership updated.']);
+        return back()->snackbar('Membership updated.');
     }
 
     public function destroy(Membership $membership)

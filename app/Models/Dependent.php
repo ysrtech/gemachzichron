@@ -12,8 +12,6 @@ class Dependent extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
-
     protected $casts = [
         'dob' => 'date:Y-m-d' //'date:M j, Y'
     ];
@@ -21,5 +19,10 @@ class Dependent extends Model
     public function member()
     {
         return $this->belongsTo(Member::class);
+    }
+
+    public function loans()
+    {
+        return $this->hasMany(Loan::class);
     }
 }

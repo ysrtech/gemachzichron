@@ -14,8 +14,6 @@ class Loan extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
-
     public function membership()
     {
         return $this->belongsTo(Membership::class);

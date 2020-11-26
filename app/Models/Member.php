@@ -14,8 +14,6 @@ class Member extends Model
 {
     use HasFactory, SoftDeletes, FilterableWithTrashed;
 
-    protected $guarded = [];
-
     protected $appends = [
         'full_name'
     ];
