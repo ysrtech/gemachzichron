@@ -1,8 +1,6 @@
 <template>
   <div>
 
-    <div class="px-6">
-
       <div class="mb-6 flex justify-between items-center">
         <search-filter v-model="filterForm.search" class="w-full max-w-md mr-4" @reset="reset">
           <div class="p-5">
@@ -35,7 +33,6 @@
 
       <members-table :members="members.data"></members-table>
       <pagination :links="members.links"/>
-    </div>
 
     <member-form-modal :show="showCreateMemberModal" @close="showCreateMemberModal = false" />
 

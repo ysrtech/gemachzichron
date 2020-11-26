@@ -48,7 +48,7 @@
         </div>
       </div>
 
-      <div class="flex-grow flex items-center justify-between h-16 px-4 md:px-6 lg:px-8 bg-white shadow border-b">
+      <div class="flex-grow flex items-center justify-between h-16 px-4 md:px-6 lg:px-10 bg-white shadow border-b">
 
         <h2 class="font-medium text-2xl text-gray-800 leading-tight">
           {{ header }}
@@ -104,18 +104,20 @@
     </div>
 
     <div class="md:flex md:flex-grow md:overflow-hidden">
-      <div class="hidden md:block bg-primary-800 flex-shrink-0 w-56 py-12 px-5 overflow-y-auto">
+      <div class="hidden md:block bg-primary-800 flex-shrink-0 w-56 py-12 px-3 overflow-y-auto">
         <app-nav></app-nav>
       </div>
 
       <!-- Page Content -->
       <main class="w-full md:overflow-y-auto">
-        <div class="mx-auto pt-24 md:py-10 px-3 sm:px-6 lg:px-8">
+        <div class="mx-auto pt-24 md:py-10 px-3 sm:px-6 lg:px-10">
           <slot/>
         </div>
       </main>
 
     </div>
+
+    <app-snackbar/>
 
     <!-- Modal Portal -->
     <portal-target name="modal" multiple>
@@ -129,6 +131,7 @@ import AppDropdownLink from '../Shared/DropdownLink'
 import AppNavLink from '../Shared/NavLink'
 import AppResponsiveNavLink from '../Shared/ResponsiveNavLink'
 import AppNav from "./AppNav";
+import AppSnackbar from '../Shared/Snackbar';
 import {EventBus} from "../app";
 
 export default {
@@ -138,6 +141,7 @@ export default {
     AppDropdownLink,
     AppNavLink,
     AppResponsiveNavLink,
+    AppSnackbar
   },
 
   data() {

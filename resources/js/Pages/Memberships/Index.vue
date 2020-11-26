@@ -1,6 +1,6 @@
 <template>
 
-  <div class="px-6">
+  <div>
 
     <div class="mb-6 flex items-center">
       <search-filter v-model="filterForm.search" class="w-full max-w-md mr-4" @reset="reset">
@@ -36,7 +36,7 @@
 
     <div class="bg-white rounded shadow overflow-x-auto">
       <table class="w-full whitespace-no-wrap">
-        <tr class="text-left text-xs text-gray-400">
+        <tr class="text-left text-xs text-gray-400 uppercase">
           <th class="px-6 pt-6 pb-4 font-medium">Name</th>
           <th class="px-6 pt-6 pb-4 font-medium">Membership Since</th>
           <th class="px-6 pt-6 pb-4 font-medium">Membership Type</th>

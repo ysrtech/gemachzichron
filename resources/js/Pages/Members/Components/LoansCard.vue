@@ -66,6 +66,7 @@
 
 <script>
 import LoanFormModal from "./LoanFormModal";
+import {find} from "lodash";
 
 export default {
   components: {
@@ -88,7 +89,7 @@ export default {
 
   methods: {
     dependentById(id) {
-      return _.find(this.dependents, {id:id})
+      return find(this.dependents, {id:id})
     },
 
     openInNewTab(url) {

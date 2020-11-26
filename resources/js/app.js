@@ -1,5 +1,3 @@
-require('./bootstrap');
-
 import Vue from 'vue';
 import { InertiaApp, plugin } from '@inertiajs/inertia-vue';
 import { InertiaForm } from 'laravel-jetstream';
@@ -8,6 +6,10 @@ import { InertiaProgress } from '@inertiajs/progress'
 import vSelect from "vue-select";
 
 export const EventBus = new Vue();
+
+window.axios = require('axios');
+
+window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 Vue.component("v-select", vSelect);
 Vue.mixin({
@@ -33,7 +35,7 @@ Vue.use(InertiaForm);
 Vue.use(PortalVue);
 
 InertiaProgress.init({
-  color: '#5661b3',
+  color: '#2d3748',
 })
 
 const app = document.getElementById('app');

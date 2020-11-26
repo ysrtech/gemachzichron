@@ -5,10 +5,9 @@
       preserve-state
       v-if="!item.subItems"
       class="flex items-center group py-2 px-3 my-2 transition rounded-md group focus:outline-none cursor-pointer"
-      :class="isCurrentRoute(item.route) ? 'bg-primary-600' : 'hover:bg-primary-700'"
+      :class="isCurrentRoute(item.route) ? 'bg-primary-700' : 'hover:bg-primary-900'"
       :href="route(item.route)">
-      <i class="material-icons-outlined mr-2"
-         :class="isCurrentRoute(item.route) ? 'text-white' : 'text-primary-400 group-hover:text-white'">
+      <i class="material-icons-outlined text-primary-400 mr-2">
         {{ item.icon }}
       </i>
       <div
@@ -20,7 +19,7 @@
     <inertia-link
       v-else
       class="flex items-center group py-2 px-3 my-2 transition rounded-md group focus:outline-none cursor-pointer"
-      :class="isCurrentRoute(item.route) ? 'bg-primary-600' : 'hover:bg-primary-700'"
+      :class="isCurrentRoute(item.route) ? 'bg-primary-700' : 'hover:bg-primary-900'"
       :as="!item.route ? 'div' : 'a'"
       @click.prevent="item.subItemsExpanded = !item.subItemsExpanded" href="#">
       <i class="material-icons-outlined mr-2 text-primary-400 group-hover:text-white">
@@ -47,12 +46,11 @@
           <inertia-link
             preserve-state
             class="flex items-center group py-2 px-3 my-2 transition rounded-md group focus:outline-none"
-            :class="isCurrentRoute(subItem.route) ? 'bg-primary-600' : 'hover:bg-primary-700'"
+            :class="isCurrentRoute(subItem.route) ? 'bg-primary-700' : 'hover:bg-primary-900'"
             :href="route(subItem.route)">
             <i
-              class="material-icons-outlined mr-2"
-              v-show="subItem.icon"
-              :class="isCurrentRoute(subItem.route) ? 'text-white' : 'text-primary-400 group-hover:text-white'">
+              class="material-icons-outlined text-primary-400 mr-2"
+              v-show="subItem.icon">
               {{ subItem.icon }}
             </i>
             <div
