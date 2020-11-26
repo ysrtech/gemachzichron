@@ -33,6 +33,5 @@ class AppServiceProvider extends ServiceProvider
         Model::unguard();
 
         RedirectResponse::macro('snackbar', fn(string $message = 'Success!') => $this->with("flash.snackbar", $message));
-        RedirectResponse::macro('banner', fn(string $message, string $level = 'primary') => $this->with("flash.banner.{$level}", $message));
     }
 }
