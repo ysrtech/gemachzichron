@@ -14,7 +14,7 @@
       <div class="bg-white rounded border border-gray-200 overflow-x-auto">
         <table class="w-full whitespace-no-wrap text-sm">
 
-          <tr class="text-left text-xs text-gray-400">
+          <tr class="text-left text-xs text-gray-400 uppercase">
             <th class="px-4 py-3 font-medium">Name</th>
             <th class="px-4 py-3 font-medium" colspan="2">Date of Birth</th>
           </tr>
