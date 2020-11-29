@@ -35,7 +35,7 @@ class MemberController extends Controller
     {
         Member::create($request->validated());
 
-        return back()->with('flash', ['success' => 'Member created.']);
+        return back()->snackbar('Member created.');
     }
 
     public function show(Member $member)
@@ -58,21 +58,21 @@ class MemberController extends Controller
     {
         $member->update($request->validated());
 
-        return back()->with('flash', ['success' => 'Member updated.']);
+        return back()->snackbar('Member updated.');
     }
 
     public function destroy(Member $member)
     {
         $member->delete();
 
-        return back()->with('flash', ['success' => 'Member archived.']);
+        return back()->snackbar('Member archived.');
     }
 
     public function restore(Member $member)
     {
         $member->restore();
 
-        return back()->with('flash', ['success' => 'Member restored.']);
+        return back()->snackbar('Member restored.');
     }
 
     public function export()
