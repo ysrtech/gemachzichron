@@ -33,7 +33,7 @@
 
           <div class="col-span-2">
             <div class="col-span-1 border rounded-md">
-              <div class="font-medium uppercase text-gray-400 border-b px-5 py-2">Total Paid:</div>
+              <div class="font-medium uppercase text-gray-400 border-b px-5 py-2">Total Paid</div>
               <div class="px-5 py-3 font-medium text-lg">${{ '' || 0 }}</div>
             </div>
           </div>
