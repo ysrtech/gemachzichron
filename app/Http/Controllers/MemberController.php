@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateMemberRequest;
 use App\Models\Member;
-use App\Services\FileExportService;
+use App\Services\ExportService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -92,7 +92,7 @@ class MemberController extends Controller
             ->get()
             ->toArray();
 
-        return FileExportService::exportCsv(
+        return ExportService::streamCsv(
             $members,
             'members.csv',
             $columns

@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
-class FileExportService
+class ExportService
 {
-    public static function exportCsv(array $data, string $fileName = 'file.csv', array $columnHeaders = null)
+    public static function streamCsv(array $data, string $fileName = 'file.csv', array $columnHeaders = null)
     {
         $callback = function () use ($data, $columnHeaders) {
 
