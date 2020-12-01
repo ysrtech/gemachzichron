@@ -1,6 +1,5 @@
 <?php
 
-use Database\Seeders\PlanTypeSeeder;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -18,8 +17,6 @@ class CreatePlanTypesTable extends Migration
             $table->id();
             $table->string('name');
         });
-
-        Artisan::call('db:seed', ['--class' => PlanTypeSeeder::class]);
     }
 
     /**
