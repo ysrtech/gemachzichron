@@ -67,7 +67,6 @@
                   <v-select
                     class="mt-1 block w-full"
                     multiple
-
                     v-model="form.endorsements"
                     :options="endorsingMembers"
                     :reduce="endorsingMember => endorsingMember.id"
