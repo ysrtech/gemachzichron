@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateSubscriptionRequest;
 use App\Models\Membership;
+use App\Models\PaymentMethod;
 use App\Models\Subscription;
 
 class SubscriptionController extends Controller
@@ -15,7 +16,14 @@ class SubscriptionController extends Controller
 
     public function store(UpdateSubscriptionRequest $request, Membership $membership)
     {
-        $membership->subscriptions()->create($request->validated());
+        $paymentMethod = PaymentMethod::create($request->paymentMethodAttributes());
+
+        $membership->subscriptions()->create(
+            array_merge(
+                $request->subscriptionAttributes(),
+                ['payment_method_id' => $paymentMethod->id]
+            )
+        );
 
         return back()->snackbar('Subscription created.');
     }
@@ -27,7 +35,14 @@ class SubscriptionController extends Controller
 
     public function update(UpdateSubscriptionRequest $request, Subscription $subscription)
     {
-        $subscription->update($request->validated());
+        if (!empty($request->paymentMethodAttributes())) {
+            $paymentMethod = PaymentMethod::create($request->paymentMethodAttributes());
+        }
+
+        $subscription->update(array_merge(
+            $request->subscriptionAttributes(),
+            isset($paymentMethod) ? ['payment_method_id' => $paymentMethod->id] : []
+        ));
 
         return back()->snackbar('Subscription updated.');
     }

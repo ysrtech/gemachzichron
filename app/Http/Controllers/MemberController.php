@@ -43,7 +43,7 @@ class MemberController extends Controller
         $member->load([
             'dependents',
             'membership.plan_type',
-            'membership.subscriptions',
+            'membership.subscriptions.payment_method',
             'membership.loans.endorsements',
         ]);
 
