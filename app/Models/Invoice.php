@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Exceptions\NotImplementedException;
 use App\Exceptions\FailedPaymentException;
+use App\Models\Traits\Filterable;
 use App\Services\Charge\BankChargeService;
 use App\Services\Charge\Chargeable;
 use App\Services\Charge\CreditCardChargeService;
@@ -16,7 +17,7 @@ use function Illuminate\Events\queueable;
  */
 class Invoice extends Model
 {
-    use HasFactory;
+    use HasFactory, Filterable;
 
     const DEFAULT_GEMACH_FEE = 5;
     const DEFAULT_CC_FEE_PERCENT = 0.03;
@@ -29,6 +30,10 @@ class Invoice extends Model
 
     protected $dates = [
         'payment_date'
+    ];
+
+    protected $appends = [
+        'total'
     ];
 
     protected static function booted()

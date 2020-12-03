@@ -11,7 +11,7 @@
 
              <div class="col-span-6 sm:col-span-3">
                   <app-label for="dependent_id" value="Dependent"/>
-                  <select id="dependent_id" v-model="form.dependent_id" class="form-input rounded-md shadow-sm mt-1 block w-full">
+                  <select id="dependent_id" v-model="form.dependent_id" class="form-select rounded-md shadow-sm mt-1 block w-full">
                     <option
                       v-for="dependent in dependents"
                       :key="dependent.id"
@@ -143,11 +143,11 @@ export default {
     submitLoan() {
       if (this.loan) {
         this.form._method = 'PUT';
-        this.form.post(route('loans.update', this.loan.id), {
+        this.form.post(this.$route('loans.update', this.loan.id), {
           onSuccess: () => !this.form.hasErrors() ? this.$emit('close') : null
         })
       } else {
-        this.form.post(route('memberships.loans.store', this.membershipId), {
+        this.form.post(this.$route('memberships.loans.store', this.membershipId), {
           onSuccess: () => !this.form.hasErrors() ? this.$emit('close') : null
         })
       }
@@ -184,7 +184,7 @@ export default {
     fetchMembers: debounce(async (loading, search, vm) => {
       loading(true);
 
-      const res = await axios.get(route('members.index'), {
+      const res = await axios.get(this.$route('members.index'), {
         params: {
           limit: 5,
           search,

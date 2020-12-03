@@ -8,7 +8,7 @@
 
         <!-- Logo -->
         <div class="flex-shrink-0 flex items-center">
-          <inertia-link :href="route('dashboard')">
+          <inertia-link :href="$route('dashboard')">
             <img src="/img/logo.png" alt="Logo" class="h-12 w-auto">
           </inertia-link>
         </div>
@@ -84,7 +84,7 @@
                 Manage Account
               </div>
 
-              <app-dropdown-link :href="route('profile.show')">
+              <app-dropdown-link :href="$route('profile.show')">
                 Profile
               </app-dropdown-link>
 
@@ -132,7 +132,7 @@ import AppNavLink from '../Shared/NavLink'
 import AppResponsiveNavLink from '../Shared/ResponsiveNavLink'
 import AppNav from "./AppNav";
 import AppSnackbar from '../Shared/Snackbar';
-import {EventBus} from "../app";
+import {EventBus} from "@/app";
 
 export default {
   components: {
@@ -157,7 +157,7 @@ export default {
 
   methods: {
     logout() {
-      this.$inertia.post(route('logout'));
+      this.$inertia.post(this.$route('logout'));
     },
   }
 }

@@ -3,7 +3,15 @@
 
       <app-form-modal :show="show || subscription" @close="$emit('close')" @submitted="submitSubscription">
 
-          <template #title>{{ title }}</template>
+          <template #title>
+            <div class="flex items-center justify-between">
+              <span>{{ title }}</span>
+              <inertia-link :href="$route('invoices.index', {'subscription_id': subscription ? subscription.id : ''})" class="flex items-center text-blue-600 text-sm font-medium">
+                <span class="mr-1">View Invoices</span>
+                <span class="material-icons text-lg">launch</span>
+              </inertia-link>
+            </div>
+          </template>
 
           <template #form>
 
@@ -12,7 +20,7 @@
              <div class="col-span-6 sm:col-span-3">
                   <app-label for="type" value="Subscription Type"/>
                   <select id="type" v-model="form.type"
-                          class="form-input rounded-md shadow-sm mt-1 block w-full">
+                          class="form-select rounded-md shadow-sm mt-1 block w-full">
                     <option :selected="subscription && subscription.type === 'Membership'">Membership</option>
                     <option :selected="subscription && subscription.type === 'Loan Payment'">Loan Payment</option>
                   </select>
@@ -46,7 +54,7 @@
               <div class="col-span-6 sm:col-span-3">
                   <app-label for="frequency" value="Frequency"/>
                   <select id="frequency" v-model="form.frequency"
-                          class="form-input rounded-md shadow-sm mt-1 block w-full">
+                          class="form-select rounded-md shadow-sm mt-1 block w-full">
                     <option :selected="subscription && subscription.frequency === 'Monthly'">Monthly</option>
                     <option :selected="subscription && subscription.frequency === 'Bi-Monthly'">Bi-Monthly</option>
                   </select>
@@ -71,7 +79,7 @@
               <div class="col-span-6 sm:col-span-3">
                   <app-label for="payment_method_type" value="Payment Type"/>
                   <select id="payment_method_type" v-model="form.payment_method.type"
-                          class="form-input rounded-md shadow-sm mt-1 block w-full" :required="!subscription">
+                          class="form-select rounded-md shadow-sm mt-1 block w-full" :required="!subscription">
                     <option>Credit Card</option>
                     <option>Pre-authorized Debit</option>
                     <option>Cheque</option>
@@ -226,11 +234,11 @@ export default {
       });
 
       if (this.subscription) {
-        this.form.put(route('subscriptions.update', this.subscription.id).url(), {
+        this.form.put(this.$route('subscriptions.update', this.subscription.id), {
           onSuccess: () => !this.form.hasErrors() ? this.$emit('close') : null
         })
       } else {
-        this.form.post(route('memberships.subscriptions.store', this.membership.id).url(), {
+        this.form.post(this.$route('memberships.subscriptions.store', this.membership.id), {
           onSuccess: () => !this.form.hasErrors() ? this.$emit('close') : null
         })
       }

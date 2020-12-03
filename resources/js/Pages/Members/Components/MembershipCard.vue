@@ -32,10 +32,15 @@
           </div>
 
           <div class="col-span-2">
-            <div class="col-span-1 border rounded-md">
-              <div class="font-medium uppercase text-gray-400 border-b px-5 py-2">Total Paid</div>
-              <div class="px-5 py-3 font-medium text-lg">${{ '' || 0 }}</div>
+            <div class="py-1 text-xl">
+              <span class="font-bold">Total Paid:</span>
+              <span class="font-medium">${{ membership.total_paid || 0 }}</span>
             </div>
+
+            <inertia-link :href="$route('invoices.index', {'membership_id': membership.id})" class="py-1 flex items-center text-sm font-medium text-gray-500">
+              <span class="mr-1 text-sm hover:underline">View Invoices</span>
+              <span class="material-icons text-lg">launch</span>
+            </inertia-link>
           </div>
 
         </div>

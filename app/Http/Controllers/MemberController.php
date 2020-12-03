@@ -40,12 +40,14 @@ class MemberController extends Controller
 
     public function show(Member $member)
     {
-        $member->load([
+        $member->load(['membership' => fn($query) => $query->withTotalPaid()]);
+
+        $member->loadMissing(
             'dependents',
             'membership.plan_type',
             'membership.subscriptions.payment_method',
             'membership.loans.endorsements',
-        ]);
+        );
 
         $member->loadEndorsementsToMembers();
 

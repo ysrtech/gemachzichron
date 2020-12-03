@@ -45,7 +45,7 @@
           </tr>
 
           <tr v-if="dependents.length === 0">
-            <td class="border-t px-6 py-4" colspan="4">No dependents.</td>
+            <td class="border-t px-6 py-4 text-center" colspan="4">No dependents.</td>
           </tr>
 
         </table>

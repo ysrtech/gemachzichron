@@ -28,4 +28,5 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::apiresource('memberships.subscriptions', Controllers\SubscriptionController::class)->shallow();
     Route::apiresource('memberships.loans', Controllers\LoanController::class)->shallow();
     Route::apiresource('plan-types', Controllers\PlanTypeController::class);
+    Route::apiresource('invoices', Controllers\InvoiceController::class);
 });

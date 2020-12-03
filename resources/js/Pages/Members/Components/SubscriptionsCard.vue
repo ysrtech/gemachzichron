@@ -34,7 +34,7 @@
         </tr>
 
         <tr v-if="subscriptions.length === 0">
-          <td class="border-t px-6 py-4" colspan="5">No subscriptions.</td>
+          <td class="border-t px-6 py-6 text-center" colspan="5">No subscriptions.</td>
         </tr>
 
       </table>

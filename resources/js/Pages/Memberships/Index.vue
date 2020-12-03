@@ -47,7 +47,7 @@
           <td class="border-t">
             <inertia-link
               class="px-6 py-3 flex items-center focus:text-primary-500"
-              :href="route('members.show', member.id)">
+              :href="$route('members.show', member.id)">
               {{ member.last_name + ', ' + member.first_name }}
               <i v-if="member.deleted_at"
                  class="material-icons flex-shrink-0 text-sm text-red-300 ml-2"
@@ -58,7 +58,7 @@
           <td class="border-t">
             <inertia-link
               class="px-6 py-3 flex items-center focus:outline-none"
-              :href="route('members.show', member.id)" tabindex="-1">
+              :href="$route('members.show', member.id)" tabindex="-1">
               {{ formatDate(member.membership.created_at) }}
             </inertia-link>
           </td>
@@ -66,7 +66,7 @@
           <td class="border-t">
             <inertia-link
               class="px-6 py-3 flex items-center focus:outline-none"
-              :href="route('members.show', member.id)" tabindex="-1">
+              :href="$route('members.show', member.id)" tabindex="-1">
               {{ member.membership.type }}
             </inertia-link>
           </td>
@@ -74,7 +74,7 @@
           <td class="border-t">
             <inertia-link
               class="px-6 py-3 flex items-center focus:outline-none"
-              :href="route('members.show', member.id)" tabindex="-1">
+              :href="$route('members.show', member.id)" tabindex="-1">
               {{ member.membership.plan_type ? member.membership.plan_type.name : null }}
             </inertia-link>
           </td>
@@ -82,14 +82,15 @@
           <td class="border-t">
             <inertia-link
               class="px-6 py-3 flex items-center focus:outline-none"
-              :href="route('members.show', member.id)" tabindex="-1">
+              :href="$route('members.show', member.id)" tabindex="-1">
+              <span v-if="member.membership.total_paid">$</span>
               {{ member.membership.total_paid }}
             </inertia-link>
           </td>
         </tr>
 
         <tr v-if="members.length === 0">
-          <td class="border-t px-6 py-3" colspan="5">No memberships found.</td>
+          <td class="border-t px-6 py-10 text-center" colspan="5">No memberships found.</td>
         </tr>
 
       </table>
@@ -135,7 +136,7 @@ export default {
     filterForm: {
       handler: throttle(function () {
         let query = pickBy(this.filterForm)
-        this.$inertia.replace(this.route('memberships.index', Object.keys(query).length ? query : {}))
+        this.$inertia.replace(this.$route('memberships.index', Object.keys(query).length ? query : {}))
       }, 150),
       deep: true,
     },
@@ -151,7 +152,7 @@ export default {
   },
 
   created() {
-    axios.get(route('plan-types.index').url())
+    axios.get(this.$route('plan-types.index'))
       .then(response => {
         this.planTypes = response.data.plan_types
       })

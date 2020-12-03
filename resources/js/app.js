@@ -11,10 +11,11 @@ window.axios = require('axios');
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
+Vue.prototype.$route = (...args) => route(...args).url()
+
 Vue.component("v-select", vSelect);
 Vue.mixin({
   methods: {
-    route,
     formatDate(date) {
       if (!date) {
         return '';

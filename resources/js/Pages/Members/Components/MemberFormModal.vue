@@ -137,11 +137,11 @@ export default {
   methods: {
     submitMember() {
       if (this.member) {
-        this.form.put(route('members.update', this.member.id).url(), {
+        this.form.put(this.$route('members.update', this.member.id), {
           onSuccess: () => !this.form.hasErrors() ? this.$emit('close') : null
         })
       } else {
-        this.form.post(route('members.store').url(), {
+        this.form.post(this.$route('members.store'), {
           onSuccess: () => !this.form.hasErrors() ? this.$emit('close') : null
         })
       }

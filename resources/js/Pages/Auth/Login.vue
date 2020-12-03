@@ -26,11 +26,11 @@
             </div>
 
             <div class="flex items-center justify-end mt-4">
-                <inertia-link v-if="canResetPassword" :href="route('password.request')" class="underline text-sm text-gray-600 hover:text-gray-900">
+                <inertia-link v-if="canResetPassword" :href="$route('password.request')" class="underline text-sm text-gray-600 hover:text-gray-900">
                     Forgot your password?
                 </inertia-link>
 
-                <app-button type="submit"class="ml-4" :processing="form.processing">
+                <app-button type="submit" class="ml-4" :processing="form.processing">
                     Login
                 </app-button>
             </div>
@@ -78,7 +78,7 @@
 
         methods: {
             submit() {
-                this.form.post(this.route('login'), {
+                this.form.post(this.$route('login'), {
                     onSuccess: () => {
                         this.remember = false
                     }

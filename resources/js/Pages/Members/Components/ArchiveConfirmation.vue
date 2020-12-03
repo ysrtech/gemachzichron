@@ -52,7 +52,7 @@ export default {
 
   methods: {
     deleteMember() {
-      this.form.delete(route('members.destroy', this.member.id), {
+      this.form.delete(this.$route('members.destroy', this.member.id), {
         preserveScroll: true,
         onSuccess: () => {
           if (!this.form.hasErrors()) {

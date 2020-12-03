@@ -15,7 +15,7 @@
                     Resend Verification Email
                 </app-button>
 
-                <inertia-link :href="route('logout')" method="post" class="underline text-sm text-gray-600 hover:text-gray-900">Logout</inertia-link>
+                <inertia-link :href="$route('logout')" method="post" class="underline text-sm text-gray-600 hover:text-gray-900">Logout</inertia-link>
             </div>
         </form>
     </app-authentication-card>
@@ -43,7 +43,7 @@
 
         methods: {
             submit() {
-                this.form.post(this.route('verification.send'))
+                this.form.post(this.$route('verification.send'))
             },
         },
 

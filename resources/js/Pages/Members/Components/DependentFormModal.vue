@@ -112,12 +112,12 @@ export default {
     submit() {
 
       if (this.dependent) {
-        this.form.put(route('dependents.update', this.dependent.id).url(), {
+        this.form.put(this.$route('dependents.update', this.dependent.id), {
           onSuccess: () => !this.form.hasErrors() ? this.$emit('close') : null
         })
       }
       else {
-        this.form.post(route('members.dependents.store', this.member.id).url(), {
+        this.form.post(this.$route('members.dependents.store', this.member.id), {
           onSuccess: () => !this.form.hasErrors() ? this.$emit('close') : null
         })
       }

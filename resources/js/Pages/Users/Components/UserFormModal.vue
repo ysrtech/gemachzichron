@@ -126,11 +126,11 @@ export default {
 
     submitUser() {
       if (this.user) {
-        this.form.put(route('users.update', this.user.id).url(), {
+        this.form.put(this.$route('users.update', this.user.id), {
           onSuccess: () => !this.form.hasErrors() ? this.$emit('close') : null
         })
       } else {
-        this.form.post(route('users.store').url(), {
+        this.form.post(this.$route('users.store'), {
           onSuccess: () => !this.form.hasErrors() ? this.$emit('close') : null
         })
       }

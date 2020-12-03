@@ -40,6 +40,11 @@ class Membership extends Model
         return $this->hasMany(Subscription::class);
     }
 
+    public function transactions()
+    {
+        return $this->hasManyThrough(Transaction::class, Subscription::class);
+    }
+
     public function loans()
     {
         return $this->hasMany(Loan::class);
@@ -47,9 +52,10 @@ class Membership extends Model
 
     public function scopeWithTotalPaid($query)
     {
-        return $query->addSelect([
-//            'total_paid' => Transaction::select(DB::raw('sum(ifnull(debit, 0) - ifnull(credit, 0))'))
-//                ->whereColumn('member_id', 'members.id')
-        ]);
+        return $query->withSum(['transactions as total_paid' => function ($q) {
+            return $q
+                ->where('transactions.type', Transaction::MAIN_TRANSACTION)
+                ->where('transactions.result', Transaction::RESULT_SUCCESS);
+        }], 'amount');
     }
 }

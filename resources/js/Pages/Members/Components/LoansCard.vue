@@ -46,7 +46,7 @@
         </tr>
 
         <tr v-if="loans.length === 0">
-          <td class="border-t px-6 py-4" colspan="5">No loans.</td>
+          <td class="border-t px-6 py-6 text-center" colspan="5">No loans.</td>
         </tr>
 
       </table>

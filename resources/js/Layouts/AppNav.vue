@@ -6,7 +6,7 @@
       v-if="!item.subItems"
       class="flex items-center group py-2 px-3 my-2 transition rounded-md group focus:outline-none cursor-pointer"
       :class="isCurrentRoute(item.route) ? 'bg-primary-700' : 'hover:bg-primary-900'"
-      :href="route(item.route)">
+      :href="$route(item.route)">
       <i class="material-icons-outlined text-primary-400 mr-2">
         {{ item.icon }}
       </i>
@@ -47,7 +47,7 @@
             preserve-state
             class="flex items-center group py-2 px-3 my-2 transition rounded-md group focus:outline-none"
             :class="isCurrentRoute(subItem.route) ? 'bg-primary-700' : 'hover:bg-primary-900'"
-            :href="route(subItem.route)">
+            :href="$route(subItem.route)">
             <i
               class="material-icons-outlined text-primary-400 mr-2"
               v-show="subItem.icon">
@@ -87,6 +87,11 @@ export default {
           title: "Memberships",
           route: "memberships.index",
           icon: "payments",
+        },
+        {
+          title: "Invoices",
+          route: "invoices.index",
+          icon: "receipt_long",
         },
         {
           title: "Users",

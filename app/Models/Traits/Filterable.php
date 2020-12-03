@@ -9,7 +9,7 @@ trait Filterable
     public function scopeFilter($query, array $filters)
     {
         foreach ($filters as $key => $filter) {
-            $query->when($filters[$key] ?? false, fn($query, $value) => $query->where($key, $value));
+            $query->when(isset($filters[$key]), fn($q) => $q->where($key, $filters[$key]));
         }
 
         return $query;

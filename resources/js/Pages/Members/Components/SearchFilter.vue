@@ -37,10 +37,6 @@ export default {
   },
   props: {
     value: String,
-    maxWidth: {
-      type: Number,
-      default: 500,
-    },
   },
 }
 </script>

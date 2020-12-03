@@ -10,7 +10,7 @@
         <div class="ml-2">Archived member</div>
 
         <inertia-link
-          method="put" :href="route('members.restore', member.id)"
+          method="put" :href="$route('members.restore', member.id)"
           class="font-medium hover:text-orange-700 underline ml-2">
           Restore
         </inertia-link>

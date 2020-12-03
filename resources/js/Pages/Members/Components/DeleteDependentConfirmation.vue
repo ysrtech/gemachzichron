@@ -50,7 +50,7 @@ export default {
 
   methods: {
     deleteDependent() {
-      this.form.delete(route('dependents.destroy', this.dependent.id), {
+      this.form.delete(this.$route('dependents.destroy', this.dependent.id), {
         preserveScroll: true,
         onSuccess: () => {
           if (!this.form.hasErrors()) {

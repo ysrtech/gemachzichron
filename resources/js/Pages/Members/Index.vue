@@ -20,7 +20,7 @@
             <span class="hidden md:inline pl-1"> Member</span>
           </app-button>
 
-          <a :href="route('members.export')" target="_blank">
+          <a :href="$route('members.export')" target="_blank">
             <app-button color="secondary" class="ml-2">
               <span>Export</span>
               <span class="hidden md:inline pl-1"> Members</span>
@@ -78,7 +78,7 @@ export default {
     filterForm: {
       handler: throttle(function () {
         let query = pickBy(this.filterForm)
-        this.$inertia.replace(this.route('members.index', Object.keys(query).length ? query : {}))
+        this.$inertia.replace(this.$route('members.index', Object.keys(query).length ? query : {}))
       }, 150),
       deep: true,
     },

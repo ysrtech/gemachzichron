@@ -86,7 +86,7 @@ export default {
   methods: {
     confirmDeleteUser(user) {
       if(confirm('Are you sure you want to delete ' + user.name + '?')) {
-        this.$inertia.delete(route('users.destroy', user.id))
+        this.$inertia.delete(this.$route('users.destroy', user.id))
       }
     }
   }

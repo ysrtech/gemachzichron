@@ -48,7 +48,7 @@
 
         methods: {
             submit() {
-                this.form.post(this.route('password.confirm'))
+                this.form.post(this.$route('password.confirm'))
             }
         }
     }

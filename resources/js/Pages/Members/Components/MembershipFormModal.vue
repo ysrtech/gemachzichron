@@ -10,7 +10,7 @@
              <div>
                   <app-label for="type" value="Membership Type"/>
                   <select id="type" v-model="form.type"
-                          class="form-input rounded-md shadow-sm mt-1 block w-full">
+                          class="form-select rounded-md shadow-sm mt-1 block w-full">
                     <option :selected="membership && membership.type === 'Membership'">Membership</option>
                     <option :selected="membership && membership.type === 'Pekudon'">Pekudon</option>
                   </select>
@@ -20,7 +20,7 @@
               <div class="my-3" v-if="form.type === 'Membership'">
                   <app-label for="plan_type_id" value="Plan Type"/>
                   <select id="plan_type_id" v-model="form.plan_type_id"
-                          class="form-input rounded-md shadow-sm mt-1 block w-full">
+                          class="form-select rounded-md shadow-sm mt-1 block w-full">
                     <option
                       v-for="planType of planTypes"
                       :key="planType.id"
@@ -91,11 +91,11 @@ export default {
 
     submitMembership() {
       if (this.membership) {
-        this.form.put(route('memberships.update', this.membership.id).url(), {
+        this.form.put(this.$route('memberships.update', this.membership.id), {
           onSuccess: () => !this.form.hasErrors() ? this.$emit('close') : null
         })
       } else {
-        this.form.post(route('members.memberships.store', this.member.id).url(), {
+        this.form.post(this.$route('members.memberships.store', this.member.id), {
           onSuccess: () => !this.form.hasErrors() ? this.$emit('close') : null
         })
       }
@@ -113,7 +113,7 @@ export default {
 
   created() {
     // todo fix so it shouldn't call on every usage
-    axios.get(route('plan-types.index').url())
+    axios.get(this.$route('plan-types.index'))
       .then(response => {
         this.planTypes = response.data.plan_types
       })
