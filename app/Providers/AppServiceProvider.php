@@ -3,11 +3,10 @@
 namespace App\Providers;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\ServiceProvider;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Schema;
-use Inertia\Inertia;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,6 +31,6 @@ class AppServiceProvider extends ServiceProvider
 
         Model::unguard();
 
-        RedirectResponse::macro('snackbar', fn(string $message = 'Success!') => $this->with("flash.snackbar", $message));
+        $this->app->resolving(LengthAwarePaginator::class, fn($paginator) => $paginator->appends(Request::all()));
     }
 }

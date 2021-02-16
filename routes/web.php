@@ -1,7 +1,15 @@
 <?php
 
+use App\Http\Controllers\DependentController;
+use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\LoanController;
+use App\Http\Controllers\MemberController;
+use App\Http\Controllers\MembershipController;
+use App\Http\Controllers\PlanTypeController;
+use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\UserController;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,19 +22,20 @@ use App\Http\Controllers;
 |
 */
 
-Route::redirect('/', 'dashboard');
+Route::middleware(['auth'])->group(function () {
 
-Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-    Route::get('/dashboard', Controllers\DashboardController::class)->name('dashboard');
-    Route::apiResource('users', Controllers\UserController::class);
-    Route::get('members/export', [Controllers\MemberController::class, 'export'])->name('members.export');
-    Route::apiResource('members', Controllers\MemberController::class);
-    Route::put('members/{member}/restore', [Controllers\MemberController::class, 'restore'])->name('members.restore');
-    Route::apiresource('members.dependents', Controllers\DependentController::class)->shallow();
-    Route::post('members/{member}/memberships', [Controllers\MembershipController::class, 'store'])->name('members.memberships.store');
-    Route::apiresource('memberships', Controllers\MembershipController::class)->except('store');
-    Route::apiresource('memberships.subscriptions', Controllers\SubscriptionController::class)->shallow();
-    Route::apiresource('memberships.loans', Controllers\LoanController::class)->shallow();
-    Route::apiresource('plan-types', Controllers\PlanTypeController::class);
-    Route::apiresource('invoices', Controllers\InvoiceController::class);
+    Route::redirect('/', RouteServiceProvider::HOME);
+    Route::apiResource('users', UserController::class);
+    Route::get('members/export', [MemberController::class, 'export'])->name('members.export');
+    Route::apiResource('members', MemberController::class);
+    Route::put('members/{member}/restore', [MemberController::class, 'restore'])->name('members.restore');
+    Route::apiresource('members.dependents', DependentController::class)->shallow();
+    Route::post('members/{member}/memberships', [MembershipController::class, 'store'])->name('members.memberships.store');
+    Route::apiresource('memberships', MembershipController::class)->except('store');
+    Route::apiresource('memberships.subscriptions', SubscriptionController::class)->shallow();
+    Route::apiresource('memberships.loans', LoanController::class)->shallow();
+    Route::apiresource('plan-types', PlanTypeController::class);
+    Route::apiresource('invoices', InvoiceController::class);
 });
+
+

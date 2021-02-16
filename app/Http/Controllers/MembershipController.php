@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UpdateMembershipRequest;
+use App\Http\Requests\CreateMembershipRequest;
 use App\Models\Member;
 use App\Models\Membership;
 use Illuminate\Http\Request;
@@ -16,23 +16,20 @@ class MembershipController extends Controller
             'filters' => $request->all('search', 'archived'),
             'members' =>  Member::search($request->search)
                 ->filterWithTrashed($request->archived)
-                ->select(['id', 'first_name', 'last_name'])
+                ->select(['id', 'first_name', 'last_name', 'deleted_at'])
                 ->whereHas('membership', fn($query) => $query->filter($request->all('type', 'plan_type_id')))
-                ->with(['membership' => function ($query) use ($request) {
-                    $query
-                        ->filter($request->all('type', 'plan_type_id'))
-                        ->withTotalPaid()
-                        ->with('plan_type');
-                }])
+                ->with(['membership' => fn($query) => $query->filter($request->all('type', 'plan_type_id'))
+                    ->withTotalPaid()
+                    ->with('plan_type')
+                ])
                 ->orderBy('last_name')
                 ->orderBy('first_name')
                 ->paginate()
-                ->withQueryString()
         ]);
 
     }
 
-    public function store(UpdateMembershipRequest $request, Member $member)
+    public function store(CreateMembershipRequest $request, Member $member)
     {
         $member->membership()->create($request->validated());
 
@@ -44,7 +41,7 @@ class MembershipController extends Controller
         //
     }
 
-    public function update(UpdateMembershipRequest $request, Membership $membership)
+    public function update(CreateMembershipRequest $request, Membership $membership)
     {
         $membership->update($request->validated());
 

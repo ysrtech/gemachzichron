@@ -1,68 +1,58 @@
 <template>
-    <app-authentication-card>
+  <app-auth-layout>
 
-        <div class="mb-4 text-sm text-gray-600">
-            Please enter your email address and we will email you a password reset link.
-        </div>
+    <div class="mb-4 text-sm text-gray-600">
+      Please enter your email address and we will email you a password reset link.
+    </div>
 
-        <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
-            {{ status }}
-        </div>
+    <form @submit.prevent="submit">
+      <div>
+        <app-input
+          id="email"
+          v-model="form.email"
+          :error="form.errors.email"
+          autofocus
+          label="Email"
+          required
+          type="email"
+          @input="form.clearErrors('email')"
+        />
+      </div>
 
-        <app-validation-errors class="mb-4" />
+      <div class="flex items-center justify-end mt-5">
+        <inertia-link :href="$route('login')" class="underline text-sm text-gray-600 hover:text-gray-900">
+          Back to login
+        </inertia-link>
 
-        <form @submit.prevent="submit">
-            <div>
-                <app-label for="email" value="Email" />
-                <app-input id="email" type="email" class="mt-1 block w-full" v-model="form.email" required autofocus />
-            </div>
+        <app-button :processing="form.processing" class="ml-4" type="submit">
+          Email Password Reset Link
+        </app-button>
+      </div>
 
-            <div class="flex items-center justify-end mt-4">
-
-                <inertia-link :href="$route('login')" class="underline text-sm text-gray-600 hover:text-gray-900">
-                    Back to login
-                </inertia-link>
-
-                <app-button type="submit" class="ml-4" :processing="form.processing">
-                    Email Password Reset Link
-                </app-button>
-            </div>
-        </form>
-    </app-authentication-card>
+    </form>
+  </app-auth-layout>
 </template>
 
 <script>
-    import AppAuthenticationCard from '../../Shared/AuthenticationCard'
-    import AppButton from '../../Shared/Button'
-    import AppInput from '../../Shared/Input'
-    import AppLabel from '../../Shared/Label'
-    import AppValidationErrors from '../../Shared/ValidationErrors'
+import AppAuthLayout from '@/Components/Layouts/AuthLayout'
 
-    export default {
-        components: {
-            AppAuthenticationCard,
-            AppButton,
-            AppInput,
-            AppLabel,
-            AppValidationErrors
-        },
+export default {
+  components: {
+    AppAuthLayout,
+  },
 
-        props: {
-            status: String
-        },
-
-        data() {
-            return {
-                form: this.$inertia.form({
-                    email: ''
-                })
-            }
-        },
-
-        methods: {
-            submit() {
-                this.form.post(this.$route('password.email'))
-            }
-        }
+  data() {
+    return {
+      form: this.$inertia.form({
+        email: ''
+      }),
     }
+  },
+
+  methods: {
+    submit() {
+      this.form.post(this.$route('password.email'));
+    }
+  }
+}
 </script>

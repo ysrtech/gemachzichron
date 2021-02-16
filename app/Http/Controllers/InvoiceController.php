@@ -16,14 +16,16 @@ class InvoiceController extends Controller
         $status = $request->all('status');
 
         $invoices = Invoice::filter($status)
+            ->searchByRelated($request->search, ['subscription.membership.member'])
             ->with('subscription.membership.member')
-            ->when($request->membership_id, fn($query) => $query->whereIn(
-                'subscription_id',
-                Membership::findOrFail($request->membership_id)
-                    ->subscriptions()
-                    ->pluck('subscriptions.id')
-            ))
-            ->when($request->subscription_id, fn($query) => $query->where('subscription_id', $request->subscription_id))
+            ->when(
+                $request->membership_id,
+                fn($query) => $query->whereHas('subscription', fn($q) => $q->where('membership_id', $request->membership_id))
+            )
+            ->when(
+                $request->subscription_id,
+                fn($query) => $query->where('subscription_id', $request->subscription_id)
+            )
             ->orderBy(
                 Str::after($sort, '-'),
                 Str::startsWith($sort, '-') ? 'desc' : 'asc'
@@ -31,7 +33,7 @@ class InvoiceController extends Controller
 
         return Inertia::render('Invoices/Index', [
             'filters' => $request->all('status', 'sort', 'membership_id', 'subscription_id'),
-            'invoices' => $invoices->paginate()->withQueryString()
+            'invoices' => $invoices->paginate()
         ]);
     }
 

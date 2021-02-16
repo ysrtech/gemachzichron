@@ -1,52 +1,26 @@
-import Vue from 'vue';
-import { InertiaApp, plugin } from '@inertiajs/inertia-vue';
-import { InertiaForm } from 'laravel-jetstream';
-import PortalVue from 'portal-vue';
-import { InertiaProgress } from '@inertiajs/progress'
-import vSelect from "vue-select";
+import {createApp, h} from 'vue';
+import {App, plugin} from '@inertiajs/inertia-vue3';
+import {InertiaProgress} from '@inertiajs/progress';
+import AppInput from '@/Components/UI/Input';
+import AppButton from '@/Components/UI/Button';
+import axios from "axios";
 
-export const EventBus = new Vue();
+InertiaProgress.init({color: '#075985'}) // should match a primary color
 
-window.axios = require('axios');
+const el = document.getElementById('app')
 
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-
-Vue.prototype.$route = (...args) => route(...args).url()
-
-Vue.component("v-select", vSelect);
-Vue.mixin({
-  methods: {
-    formatDate(date) {
-      if (!date) {
-        return '';
-      }
-      return new Date(date).toDateString().substr(4);
-    }
-  },
-
-  mounted() {
-    if(this.$options.header) {
-      EventBus.$emit('page-changed', this.$options.header)
-    }
-  }
+const app = createApp({
+  render: () => h(App, {
+    initialPage: JSON.parse(el.dataset.page),
+    resolveComponent: name => require(`./Pages/${name}`).default,
+  })
 })
 
-Vue.use(plugin);
-Vue.use(InertiaForm);
-Vue.use(PortalVue);
+app
+  .use(plugin)
+  .component('AppInput', AppInput)
+  .component('AppButton', AppButton)
+  .mount(el)
 
-InertiaProgress.init({
-  color: '#2d3748',
-})
-
-const app = document.getElementById('app');
-
-new Vue({
-    render: (h) =>
-        h(InertiaApp, {
-            props: {
-                initialPage: JSON.parse(app.dataset.page),
-                resolveComponent: (name) => require(`./Pages/${name}`).default,
-            },
-        }),
-}).$mount(app);
+app.config.globalProperties.$route = route
+app.config.globalProperties.$axios = axios

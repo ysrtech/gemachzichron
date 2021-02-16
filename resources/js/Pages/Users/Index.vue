@@ -1,52 +1,54 @@
 <template>
-  <div>
+  <div class="max-w-3xl mx-auto">
+    <div class="mb-6 flex justify-between items-center px-1">
 
-    <div class="px-6">
+      <app-button @click="showCreateModal = true">
+        <span>Create New User</span>
+      </app-button>
 
-      <div class="mb-6 flex justify-end items-center">
-
-        <app-button @click.native="showCreateUserModal = true">
-          <span>Create</span>
-          <span class="hidden md:inline pl-1"> User</span>
-        </app-button>
-
-      </div>
-
-      <users-table :users="users.data"></users-table>
-      <pagination :links="users.links"/>
     </div>
 
-    <user-form-modal :show="showCreateUserModal" @close="showCreateUserModal = false" />
+    <main class="flex-1 relative pb-8 z-0 overflow-y-auto mx-auto px-1">
+      <div class="flex flex-col mt-2">
+        <div class="align-middle min-w-full overflow-x-auto shadow overflow-hidden sm:rounded-lg">
+          <users-table
+            :users="users"
+            @edit-user="userToEdit = $event; showCreateModal = true"
+          />
+        </div>
+      </div>
+    </main>
 
+    <create-user-modal
+      :user="userToEdit"
+      :show="showCreateModal"
+      @close="showCreateModal = false; userToEdit = null"
+    />
   </div>
 </template>
 
 <script>
-import AppLayout from '../../Layouts/AppLayout'
-import Pagination from "../../Shared/Pagination";
-import AppButton from "../../Shared/Button"
-import UsersTable from "./Components/UsersTable";
-import UserFormModal from "./Components/UserFormModal";
+import AppLayout from "@/Components/Layouts/AppLayout";
+import UsersTable from "@/Pages/Users/Partials/UsersTable";
+import CreateUserModal from "@/Pages/Users/Partials/CreateUserModal";
 
 export default {
-  layout: AppLayout,
-  header: 'Users',
+  layout: (h, page) => h(AppLayout, {header: 'Users'}, () => page),
+
   components: {
-    UserFormModal,
+    CreateUserModal,
     UsersTable,
-    AppLayout,
-    Pagination,
-    AppButton,
-  },
-  props: {
-    users: Object,
   },
 
   data() {
     return {
-      showCreateUserModal: false,
+      showCreateModal: false,
+      userToEdit: null
     }
   },
 
+  props: {
+    users: Object,
+  },
 }
 </script>

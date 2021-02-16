@@ -1,146 +1,93 @@
 <template>
-
-  <div>
-
-    <div class="mb-6 flex items-center">
+  <div class="max-w-5xl mx-auto">
+    <div class="mb-6 flex justify-between items-center px-1">
       <search-filter v-model="filterForm.search" class="w-full max-w-md mr-4" @reset="reset">
+        <div class="p-4">
 
-        <div class="px-5 py-2">
-          <label class="block text-gray-700 text-sm">Membership Type:</label>
-          <select v-model="filterForm.type" @change="reset('plan_type_id')" class="mt-1 w-full form-select text-sm">
+          <label class="block text-gray-700 text-xs">Membership type</label>
+          <select v-model="filterForm.type" @change="reset('plan_type_id')" class="mt-1 w-full text-sm border focus:outline-none rounded p-1">
             <option :value="null">--</option>
             <option>Membership</option>
             <option>Pekudon</option>
           </select>
-        </div>
 
-        <div class="px-5 py-2" v-if="filterForm.type != 2">
-          <label class="block text-gray-700 text-sm">Plan Types:</label>
-          <select v-model="filterForm.plan_type_id" class="mt-1 w-full form-select text-sm">
-            <option :value="null">--</option>
-            <option v-for="planType of planTypes" :key="planType.id" :value="planType.id">{{ planType.name }}</option>
-          </select>
-        </div>
+          <template v-if="filterForm.type !== 'Pekudon'">
+            <label class="block text-gray-700 text-xs mt-2">Plan type</label>
+            <select v-model="filterForm.plan_type_id" class="mt-1 w-full text-sm border focus:outline-none rounded p-1">
+              <option :value="null">--</option>
+              <option v-for="planType of planTypes" :key="planType.id" :value="planType.id">{{ planType.name }}</option>
+            </select>
+          </template>
 
-        <div class="px-5 py-2">
-          <label class="block text-gray-700 text-sm">Archived:</label>
-          <select v-model="filterForm.archived" class="mt-1 w-full form-select text-sm">
-            <option :value="null">--</option>
+          <label class="block text-gray-700 text-xs mt-2">Archived</label>
+          <select v-model="filterForm.archived" class="mt-1 w-full text-sm border focus:outline-none rounded p-1">
+            <option :value="null">Without Archived</option>
             <option value="with">With Archived</option>
             <option value="only">Only Archived</option>
           </select>
+
         </div>
-
       </search-filter>
-    </div>
-
-    <div class="bg-white rounded shadow overflow-x-auto">
-      <table class="w-full whitespace-no-wrap">
-        <tr class="text-left text-xs text-gray-400 uppercase">
-          <th class="px-6 pt-6 pb-4 font-medium">Name</th>
-          <th class="px-6 pt-6 pb-4 font-medium">Membership Since</th>
-          <th class="px-6 pt-6 pb-4 font-medium">Membership Type</th>
-          <th class="px-6 pt-6 pb-4 font-medium">Plan type</th>
-          <th class="px-6 pt-6 pb-4 font-medium">Total Paid</th>
-        </tr>
-        <tr class="hover:bg-gray-100 focus-within:bg-gray-100" v-for="member in members.data" :key="member.id">
-          <td class="border-t">
-            <inertia-link
-              class="px-6 py-3 flex items-center focus:text-primary-500"
-              :href="$route('members.show', member.id)">
-              {{ member.last_name + ', ' + member.first_name }}
-              <i v-if="member.deleted_at"
-                 class="material-icons flex-shrink-0 text-sm text-red-300 ml-2"
-                 title="Archived member">delete</i>
-            </inertia-link>
-          </td>
-
-          <td class="border-t">
-            <inertia-link
-              class="px-6 py-3 flex items-center focus:outline-none"
-              :href="$route('members.show', member.id)" tabindex="-1">
-              {{ formatDate(member.membership.created_at) }}
-            </inertia-link>
-          </td>
-
-          <td class="border-t">
-            <inertia-link
-              class="px-6 py-3 flex items-center focus:outline-none"
-              :href="$route('members.show', member.id)" tabindex="-1">
-              {{ member.membership.type }}
-            </inertia-link>
-          </td>
-
-          <td class="border-t">
-            <inertia-link
-              class="px-6 py-3 flex items-center focus:outline-none"
-              :href="$route('members.show', member.id)" tabindex="-1">
-              {{ member.membership.plan_type ? member.membership.plan_type.name : null }}
-            </inertia-link>
-          </td>
-
-          <td class="border-t">
-            <inertia-link
-              class="px-6 py-3 flex items-center focus:outline-none"
-              :href="$route('members.show', member.id)" tabindex="-1">
-              <span v-if="member.membership.total_paid">$</span>
-              {{ member.membership.total_paid }}
-            </inertia-link>
-          </td>
-        </tr>
-
-        <tr v-if="members.length === 0">
-          <td class="border-t px-6 py-10 text-center" colspan="5">No memberships found.</td>
-        </tr>
-
-      </table>
 
     </div>
 
-    <pagination :links="members.links"/>
+    <main class="flex-1 relative pb-8 z-0 overflow-y-auto mx-auto px-1">
+      <div class="flex flex-col mt-2">
+        <div class="align-middle min-w-full overflow-x-auto shadow overflow-hidden sm:rounded-lg">
+          <memberships-table :members="members"/>
+        </div>
+      </div>
+    </main>
   </div>
 </template>
 
 <script>
-import AppLayout from '../../Layouts/AppLayout'
-import Pagination from "../../Shared/Pagination";
-import throttle from "lodash/throttle";
-import pickBy from "lodash/pickBy";
-import mapValues from "lodash/mapValues";
-import SearchFilter from "../Members/Components/SearchFilter";
+import AppLayout from "@/Components/Layouts/AppLayout";
+import {mapValues, pickBy, throttle} from "lodash";
+import SearchFilter from "@/Components/App/SearchFilter";
+import MembershipsTable from "@/Pages/Memberships/Partials/MembershipsTable";
 
 export default {
-  layout: AppLayout,
-  header: 'Memberships',
+  layout: (h, page) => h(AppLayout, {header: 'Memberships'}, () => page),
+
   components: {
-    SearchFilter,
-    AppLayout,
-    Pagination,
+    MembershipsTable,
+    SearchFilter
   },
-  props: {
-    members: Object,
-    filters: Object,
-  },
+
   data() {
     return {
       planTypes: [],
       filterForm: {
         search: this.filters.search,
-        archived: this.filters.archived,
         type: this.filters.type,
         plan_type_id: this.filters.plan_type_id,
+        archived: this.filters.archived,
       },
     }
   },
+
+  props: {
+    members: Object,
+    filters: Object,
+  },
+
   watch: {
     filterForm: {
       handler: throttle(function () {
         let query = pickBy(this.filterForm)
-        this.$inertia.replace(this.$route('memberships.index', Object.keys(query).length ? query : {}))
+        this.$inertia.get(
+          this.$route('memberships.index'),
+          Object.keys(query).length ? query : {},
+          {
+            preserveState: true,
+          }
+        )
       }, 150),
       deep: true,
     },
   },
+
   methods: {
     reset(field = null) {
       if (field) {
@@ -152,7 +99,7 @@ export default {
   },
 
   created() {
-    axios.get(this.$route('plan-types.index'))
+    this.$axios.get(this.$route('plan-types.index'))
       .then(response => {
         this.planTypes = response.data.plan_types
       })

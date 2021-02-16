@@ -1,88 +1,94 @@
 <template>
-  <div>
-
-      <div class="mb-6 flex justify-between items-center">
-        <search-filter v-model="filterForm.search" class="w-full max-w-md mr-4" @reset="reset">
-          <div class="p-5">
-            <label class="block text-gray-700 text-sm">Archived:</label>
-              <select v-model="filterForm.archived" class="mt-1 w-full form-select text-sm">
-                <option :value="null">Without Archived</option>
-                <option value="with">With Archived</option>
-                <option value="only">Only Archived</option>
-              </select>
-
-          </div>
-        </search-filter>
-
-        <div class="flex">
-          <app-button @click.native="showCreateMemberModal = true">
-            <span>Create</span>
-            <span class="hidden md:inline pl-1"> Member</span>
-          </app-button>
-
-          <a :href="$route('members.export')" target="_blank">
-            <app-button color="secondary" class="ml-2">
-              <span>Export</span>
-              <span class="hidden md:inline pl-1"> Members</span>
-            </app-button>
-          </a>
-
+  <div class="max-w-5xl mx-auto">
+    <div class="mb-6 flex justify-between items-center px-1">
+      <search-filter v-model="filterForm.search" class="w-full max-w-md mr-4" @reset="reset">
+        <div class="p-4">
+          <label class="block text-gray-700 text-xs">Archived:</label>
+          <select v-model="filterForm.archived" class="mt-1 w-full text-sm border focus:outline-none rounded p-1">
+            <option :value="null">Without Archived</option>
+            <option value="with">With Archived</option>
+            <option value="only">Only Archived</option>
+          </select>
         </div>
+      </search-filter>
 
+      <div class="flex space-x-3">
+        <app-button @click="showCreateModal = true">New Member</app-button>
+        <a :href="$route('members.export')" target="_blank">
+          <app-button color="secondary">Export Members</app-button>
+        </a>
       </div>
 
-      <members-table :members="members.data"></members-table>
-      <pagination :links="members.links"/>
+    </div>
 
-    <member-form-modal :show="showCreateMemberModal" @close="showCreateMemberModal = false" />
+    <main class="flex-1 relative pb-8 z-0 overflow-y-auto mx-auto px-1">
+      <div class="flex flex-col mt-2">
+        <div class="align-middle min-w-full overflow-x-auto shadow overflow-hidden sm:rounded-lg">
+          <members-table
+            :members="members"
+            @edit-member="memberToEdit = $event; showCreateModal = true"
+          />
+        </div>
+      </div>
+    </main>
 
+    <member-modal
+      :member="memberToEdit"
+      :show="showCreateModal"
+      @close="showCreateModal = false; memberToEdit = null"
+    />
   </div>
 </template>
 
 <script>
-import AppLayout from '../../Layouts/AppLayout'
-import throttle from "lodash/throttle";
-import pickBy from "lodash/pickBy";
-import mapValues from "lodash/mapValues";
-import Pagination from "../../Shared/Pagination";
-import SearchFilter from "./Components/SearchFilter";
-import AppButton from "../../Shared/Button"
-import MemberFormModal from "./Components/MemberFormModal";
-import MembersTable from "./Components/MembersTable";
+import AppLayout from "@/Components/Layouts/AppLayout";
+import {mapValues, pickBy, throttle} from "lodash";
+import SearchFilter from "@/Components/App/SearchFilter";
+import MembersTable from "@/Pages/Members/Partials/MembersTable";
+import MemberModal from "@/Pages/Members/Partials/MemberModal";
 
 export default {
-  layout: AppLayout,
-  header: 'Members',
+  layout: (h, page) => h(AppLayout, {header: 'Members'}, () => page),
+
   components: {
+    MemberModal,
     MembersTable,
-    MemberFormModal,
-    AppLayout,
-    Pagination,
-    SearchFilter,
-    AppButton,
+    SearchFilter
   },
-  props: {
-    members: Object,
-    filters: Object,
-  },
+
   data() {
     return {
-      showCreateMemberModal: false,
       filterForm: {
         search: this.filters.search,
         archived: this.filters.archived,
       },
+
+      showCreateModal: false,
+      memberToEdit: null
     }
   },
+
+  props: {
+    members: Object,
+    filters: Object,
+  },
+
   watch: {
     filterForm: {
       handler: throttle(function () {
         let query = pickBy(this.filterForm)
-        this.$inertia.replace(this.$route('members.index', Object.keys(query).length ? query : {}))
+        this.$inertia.get(
+          this.$route('members.index'),
+          Object.keys(query).length ? query : {},
+          {
+            preserveState: true,
+          }
+        )
       }, 150),
       deep: true,
     },
   },
+
   methods: {
     reset() {
       this.filterForm = mapValues(this.filterForm, () => null)

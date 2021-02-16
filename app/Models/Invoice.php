@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Exceptions\NotImplementedException;
 use App\Exceptions\FailedPaymentException;
 use App\Models\Traits\Filterable;
+use App\Models\Traits\SearchableByRelated;
 use App\Services\Charge\BankChargeService;
 use App\Services\Charge\Chargeable;
 use App\Services\Charge\CreditCardChargeService;
@@ -17,7 +18,7 @@ use function Illuminate\Events\queueable;
  */
 class Invoice extends Model
 {
-    use HasFactory, Filterable;
+    use HasFactory, Filterable, SearchableByRelated;
 
     const DEFAULT_GEMACH_FEE = 5;
     const DEFAULT_CC_FEE_PERCENT = 0.03;

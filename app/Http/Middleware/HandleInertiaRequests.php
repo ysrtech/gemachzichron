@@ -8,6 +8,14 @@ use Inertia\Middleware;
 class HandleInertiaRequests extends Middleware
 {
     /**
+     * The root template that's loaded on the first page visit.
+     *
+     * @see https://inertiajs.com/server-side-setup#root-template
+     * @var string
+     */
+    protected $rootView = 'app';
+
+    /**
      * Determines the current asset version.
      *
      * @see https://inertiajs.com/asset-versioning
@@ -30,6 +38,7 @@ class HandleInertiaRequests extends Middleware
     {
         return array_merge(parent::share($request), [
             'flash' => $request->session()->get('flash', (object) []),
+            'user' => fn() => $request->user() ? $request->user()->toArray() : null,
         ]);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UpdateDependentRequest;
+use App\Http\Requests\CreateDependentRequest;
 use App\Models\Dependent;
 use App\Models\Member;
 
@@ -13,7 +13,7 @@ class DependentController extends Controller
         //
     }
 
-    public function store(UpdateDependentRequest $request, Member $member)
+    public function store(CreateDependentRequest $request, Member $member)
     {
         $member->dependents()->create($request->validated());
 
@@ -25,7 +25,7 @@ class DependentController extends Controller
         //
     }
 
-    public function update(UpdateDependentRequest $request, Dependent $dependent)
+    public function update(CreateDependentRequest $request, Dependent $dependent)
     {
         $dependent->update($request->validated());
 
@@ -35,7 +35,11 @@ class DependentController extends Controller
     public function destroy(Dependent $dependent)
     {
         if ($dependent->loadCount('loans')->loans_count > 0) {
-            return back()->snackbar('Cannot delete dependent that has associated loans.');
+            return back()->modal([
+                'icon'    => 'error',
+                'title'   => 'Delete Dependent Failed',
+                'message' => 'You cannot delete a dependent that has associated loans.',
+            ]);
         }
 
         $dependent->delete();

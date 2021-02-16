@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\FilterableWithTrashed;
+use App\Models\Traits\Searchable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -12,11 +13,19 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Member extends Model
 {
-    use HasFactory, SoftDeletes, FilterableWithTrashed;
+    use HasFactory, SoftDeletes, Searchable, FilterableWithTrashed;
 
     protected $appends = [
         'full_name'
     ];
+
+    protected array $searchable = [
+        'last_name',
+        'first_name',
+        'hebrew_name',
+        'email'
+    ];
+
 
     public function dependents()
     {
@@ -43,16 +52,6 @@ class Member extends Model
                 ])
             ])
         ]);
-    }
-
-    public function scopeSearch($query, ?string $search)
-    {
-        return $query->when($search, function ($query, $search) {
-                $query->where('last_name', 'like', "{$search}%")
-                    ->orWhere('first_name', 'like', "{$search}%")
-                    ->orWhere('hebrew_name', 'like', "{$search}%")
-                    ->orWhere('email', 'like', "{$search}%");
-            });
     }
 
     public function getFullNameAttribute()

@@ -18,7 +18,7 @@ printf "Updating composer dependencies...\n"
 composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
 
 printf "Updating npm dependencies...\n"
-npm ci
+npm install
 
 printf "Building assets...\n"
 npm run prod

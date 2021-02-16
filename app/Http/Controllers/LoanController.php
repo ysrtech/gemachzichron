@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UpdateLoanRequest;
+use App\Http\Requests\CreateLoanRequest;
 use App\Models\Loan;
 use App\Models\Membership;
 use Illuminate\Support\Arr;
@@ -14,7 +14,7 @@ class LoanController extends Controller
         //
     }
 
-    public function store(UpdateLoanRequest $request, Membership $membership)
+    public function store(CreateLoanRequest $request, Membership $membership)
     {
         $loan = $membership->loans()->create(
             Arr::except($request->validated(), 'endorsements')
@@ -30,7 +30,7 @@ class LoanController extends Controller
         //
     }
 
-    public function update(UpdateLoanRequest $request, Loan $loan)
+    public function update(CreateLoanRequest $request, Loan $loan)
     {
         $loan->update(
             Arr::except($request->validated(), 'endorsements')

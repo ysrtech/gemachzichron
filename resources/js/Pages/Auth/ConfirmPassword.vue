@@ -1,55 +1,54 @@
 <template>
-    <app-authentication-card>
+  <app-auth-layout>
 
-        <div class="mb-4 text-sm text-gray-600">
-            This is a secure area of the application. Please confirm your password before continuing.
-        </div>
+    <div class="mb-4 text-sm text-gray-600">
+      This is a secure area of the application. Please confirm your password before continuing.
+    </div>
 
-        <app-validation-errors class="mb-4" />
+    <form @submit.prevent="submit">
+      <div>
+        <app-input
+          id="password"
+          v-model="form.password"
+          :error="form.errors.password"
+          autocomplete="current-password"
+          autofocus
+          label="Password"
+          required
+          type="password"
+          @input="form.clearErrors('password')"/>
+      </div>
 
-        <form @submit.prevent="submit">
-            <div>
-                <app-label for="password" value="Password" />
-                <app-input id="password" type="password" class="mt-1 block w-full" v-model="form.password" required autocomplete="current-password" autofocus />
-            </div>
+      <div class="flex items-center justify-end mt-5">
+        <app-button :processing="form.processing" class="ml-4" type="submit">
+          Confirm
+        </app-button>
+      </div>
 
-            <div class="flex justify-end mt-4">
-                <app-button type="submit"class="ml-4" :processing="form.processing">
-                    Confirm
-                </app-button>
-            </div>
-        </form>
-    </app-authentication-card>
+    </form>
+  </app-auth-layout>
 </template>
 
 <script>
-    import AppAuthenticationCard from '../../Shared/AuthenticationCard'
-    import AppButton from '../../Shared/Button'
-    import AppInput from '../../Shared/Input'
-    import AppLabel from '../../Shared/Label'
-    import AppValidationErrors from '../../Shared/ValidationErrors'
+import AppAuthLayout from '@/Components/Layouts/AuthLayout'
 
-    export default {
-        components: {
-            AppAuthenticationCard,
-            AppButton,
-            AppInput,
-            AppLabel,
-            AppValidationErrors
-        },
+export default {
+  components: {
+    AppAuthLayout,
+  },
 
-        data() {
-            return {
-                form: this.$inertia.form({
-                    password: '',
-                })
-            }
-        },
-
-        methods: {
-            submit() {
-                this.form.post(this.$route('password.confirm'))
-            }
-        }
+  data() {
+    return {
+      form: this.$inertia.form({
+        password: '',
+      }),
     }
+  },
+
+  methods: {
+    submit() {
+      this.form.post(this.$route('password.confirm'))
+    }
+  }
+}
 </script>

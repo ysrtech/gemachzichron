@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UpdateMemberRequest;
+use App\Http\Requests\CreateMemberRequest;
 use App\Models\Member;
 use App\Services\ExportService;
 use Illuminate\Http\Request;
@@ -14,7 +14,6 @@ class MemberController extends Controller
     {
         $membersQuery = Member::search($request->search)
             ->filterWithTrashed($request->archived)
-//            ->with('membership')
             ->orderBy('last_name')
             ->orderBy('first_name');
 
@@ -27,11 +26,11 @@ class MemberController extends Controller
 
         return Inertia::render('Members/Index', [
             'filters' => $request->all('search', 'archived'),
-            'members' => $membersQuery->paginate($request->limit ?? 15)->withQueryString()
+            'members' => $membersQuery->paginate($request->limit ?? 15)
         ]);
     }
 
-    public function store(UpdateMemberRequest $request)
+    public function store(CreateMemberRequest $request)
     {
         Member::create($request->validated());
 
@@ -51,12 +50,21 @@ class MemberController extends Controller
 
         $member->loadEndorsementsToMembers();
 
-        return Inertia::render('Members/Show', [
+        $response = Inertia::render('Members/Show', [
            'member' => $member
         ]);
+
+        if ($member->deleted_at) {
+            $response->banner(
+                'You are viewing an archived member',
+                ['level' => 'warning', 'closable' => false]
+            );
+        }
+
+        return $response;
     }
 
-    public function update(UpdateMemberRequest $request, Member $member)
+    public function update(CreateMemberRequest $request, Member $member)
     {
         $member->update($request->validated());
 

@@ -1,71 +1,84 @@
 <template>
-  <div>
+  <div class="max-w-6xl mx-auto">
+    <div class="mb-6 flex justify-between items-center px-1">
+      <search-filter v-model="filterForm.search" class="w-full max-w-md mr-4" @reset="reset">
+        <div class="p-4">
 
-    <div class="mb-6 flex justify-between items-center">
-      <search-filter class="w-full max-w-md mr-4" :filters="filterForm" @reset="reset" @status-select="updateStatus" @sort-select="updateSort" />
+          <label class="block text-gray-700 text-xs">Status</label>
+          <select v-model="filterForm.status" class="mt-1 w-full text-sm border focus:outline-none rounded p-1">
+            <option :value="null">All</option>
+            <option value="1">Paid</option>
+            <option value="0">Pending</option>
+          </select>
+
+          <label class="block text-gray-700 text-xs mt-2">Sort</label>
+          <select v-model="filterForm.sort" class="mt-1 w-full text-sm border focus:outline-none rounded p-1">
+            <option value="-created_at">Invoice Date</option>
+            <option value="-payment_date">Paid Date</option>
+          </select>
+
+        </div>
+      </search-filter>
+
     </div>
 
-    <invoices-table :invoices="invoices.data"></invoices-table>
-    <pagination :links="invoices.links"/>
+    <main class="flex-1 relative pb-8 z-0 overflow-y-auto mx-auto px-1">
+      <div class="flex flex-col mt-2">
+        <div class="align-middle min-w-full overflow-x-auto shadow overflow-hidden sm:rounded-lg">
+          <invoices-table :invoices="invoices"/>
+        </div>
+      </div>
+    </main>
 
   </div>
 </template>
 
 <script>
-import AppLayout from '../../Layouts/AppLayout'
-import throttle from "lodash/throttle";
-import pickBy from "lodash/pickBy";
-import mapValues from "lodash/mapValues";
-import Pagination from "../../Shared/Pagination";
-import SearchFilter from "./Components/SearchFilter";
-import AppButton from "../../Shared/Button"
-import InvoicesTable from "./Components/InvoicesTable";
+import AppLayout from "@/Components/Layouts/AppLayout";
+import InvoicesTable from "@/Pages/Invoices/Partials/InvoicesTable";
+import {mapValues, pickBy, throttle} from "lodash";
+import SearchFilter from "@/Components/App/SearchFilter";
 
 export default {
-  layout: AppLayout,
-  header: 'Invoices',
+  layout: (h, page) => h(AppLayout, {header: 'Invoices'}, () => page),
+
   components: {
     InvoicesTable,
-    AppLayout,
-    Pagination,
-    SearchFilter,
-    AppButton,
-  },
-  props: {
-    invoices: Object,
-    filters: Object,
+    SearchFilter
   },
 
   data() {
     return {
       filterForm: {
-        sort: this.filters['sort'],
+        search: this.filters.search,
         status: this.filters.status,
-        membership_id: this.filters.membership_id,
-        subscription_id: this.filters.subscription_id,
+        sort: this.filters.sort,
       },
     }
+  },
+
+  props: {
+    invoices: Object,
+    filters: Object,
   },
 
   watch: {
     filterForm: {
       handler: throttle(function () {
         let query = pickBy(this.filterForm)
-        this.$inertia.replace(this.$route('invoices.index', Object.keys(query).length ? query : {}))
+        this.$inertia.get(
+          this.$route('invoices.index'),
+          Object.keys(query).length ? query : {},
+          {
+            preserveState: true,
+          }
+        )
       }, 150),
       deep: true,
     },
   },
 
   methods: {
-    updateStatus(event) {
-      this.filterForm.status = event;
-    },
-
-    updateSort(event) {
-      this.filterForm.sort = event;
-    },
-
     reset() {
       this.filterForm = mapValues(this.filterForm, () => null)
     },

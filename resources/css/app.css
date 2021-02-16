@@ -1,8 +1,3 @@
-@import "icons.css";
-@import 'vue-select/dist/vue-select.css';
-@import 'vue-select.css';
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
-
-@import "button-spinner.css";

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UpdateSubscriptionRequest;
+use App\Http\Requests\CreateSubscriptionRequest;
 use App\Models\Membership;
 use App\Models\PaymentMethod;
 use App\Models\Subscription;
@@ -14,7 +14,7 @@ class SubscriptionController extends Controller
         //
     }
 
-    public function store(UpdateSubscriptionRequest $request, Membership $membership)
+    public function store(CreateSubscriptionRequest $request, Membership $membership)
     {
         $paymentMethod = PaymentMethod::create($request->paymentMethodAttributes());
 
@@ -33,7 +33,7 @@ class SubscriptionController extends Controller
         //
     }
 
-    public function update(UpdateSubscriptionRequest $request, Subscription $subscription)
+    public function update(CreateSubscriptionRequest $request, Subscription $subscription)
     {
         if (!empty($request->paymentMethodAttributes())) {
             $paymentMethod = PaymentMethod::create($request->paymentMethodAttributes());
