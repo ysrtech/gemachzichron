@@ -19,7 +19,7 @@ class CreateDependentsTable extends Migration
             $table->string('first_name');
             $table->string('last_name')->nullable();
             $table->string('hebrew_name')->nullable();
-            $table->date('dob');
+            $table->date('dob')->nullable();
             $table->timestamps();
         });
     }
