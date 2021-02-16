@@ -17,4 +17,5 @@ jobs:
           port: ${{ secrets.DEV_SERVER_PORT }}
           script: |
             cd /home/admin/web/dev.gemachhakehilos.com/gemachhakehilos
+            chmod 744 -R bin/deploy
             ./bin/deploy/master.sh
