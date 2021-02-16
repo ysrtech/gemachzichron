@@ -5,11 +5,7 @@ on:
     branches: [ master ]
 
 env:
-  SITE_PATH: /var/www/gemachhakehilos
-  PHP: php8.0
-  PHP_FPM: php8.0-fpm
-  COMPOSER: php8.0 /usr/local/bin/composer
-  ARTISAN: php8.0 artisan
+  SITE_PATH: /home/admin/web/dev.gemachhakehilos.com/gemachhakehilos
 
 jobs:
   deploy:
@@ -33,13 +29,13 @@ jobs:
           SSH_HOST: ${{ secrets.DEV_SSH_HOST }}
 
       - name: 🛑 Enter maintenece mode
-        run: ssh dev 'cd ${{ env.SITE_PATH }} && ${{ env.ARTISAN }} down'
+        run: ssh dev 'cd ${{ env.SITE_PATH }} && php artisan down'
 
       - name: 📝 Update codebase
         run: ssh dev 'cd ${{ env.SITE_PATH }} && git fetch origin master && git reset --hard origin/master'
 
       - name: 🚚 Install composer dependencies
-        run: ssh dev 'cd ${{ env.SITE_PATH }} && ${{ env.COMPOSER }} install --no-dev --no-interaction --prefer-dist --optimize-autoloader'
+        run: ssh dev 'cd ${{ env.SITE_PATH }} && composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader'
 
       - name: 🚎 Install npm dependencies
         run: ssh dev 'cd ${{ env.SITE_PATH }} && npm install'
@@ -48,16 +44,16 @@ jobs:
         run: ssh dev 'cd ${{ env.SITE_PATH }} && npm run prod'
 
       - name: 🤖 Optimize
-        run: ssh dev 'cd ${{ env.SITE_PATH }} && ${{ env.ARTISAN }} optimize:clear && ${{ env.ARTISAN }} config:cache && ${{ env.ARTISAN }} route:cache && ${{ env.ARTISAN }} view:cache'
+        run: ssh dev 'cd ${{ env.SITE_PATH }} && php artisan optimize:clear && php artisan config:cache && php artisan route:cache && php artisan view:cache'
 
-      - name: 🐘 Restart PHP
-        run: ssh dev 'echo ${{ secrets.DEV_USER_PASSWORD }} | sudo -S systemctl restart ${{ env.PHP_FPM }}'
+#      - name: 🐘 Restart PHP
+#        run: ssh dev 'echo ${{ secrets.DEV_USER_PASSWORD }} | sudo -S systemctl restart php-fpm'
 
       - name: 💩 Migrate DB
-        run: ssh dev 'cd ${{ env.SITE_PATH }} && ${{ env.ARTISAN }} migrate --force'
+        run: ssh dev 'cd ${{ env.SITE_PATH }} && php artisan migrate --force'
 
       - name: 🍃 Restart queue workers
-        run: ssh dev 'cd ${{ env.SITE_PATH }} && ${{ env.ARTISAN }} queue:restart'
+        run: ssh dev 'cd ${{ env.SITE_PATH }} && php artisan queue:restart'
 
       - name: 🚀 Going live...
-        run: ssh dev 'cd ${{ env.SITE_PATH }} && ${{ env.ARTISAN }} up'
+        run: ssh dev 'cd ${{ env.SITE_PATH }} && php artisan up'
