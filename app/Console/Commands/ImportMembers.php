@@ -2,12 +2,12 @@
 
 namespace App\Console\Commands;
 
-use DateTime;
-use Illuminate\Console\Command;
 use App\Models\Member;
 use App\Models\Membership;
-use Illuminate\Support\Str;
+use DateTime;
+use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class ImportMembers extends Command
 {
@@ -53,21 +53,21 @@ class ImportMembers extends Command
                     if (trim(strtolower($data[1])) === 'child') continue;
 
                     $member = Member::create([
-                        'id'        => $data[0],
-                        'first_name' => $data[2],
-                        'wife_name' => $data[3],
-                        'last_name'   => $data[4],
-                        'shtibel' => $data[10],
-                        'home_phone' => $data[11],
-                        'mobile_phone' => $data[12],
-                        'hebrew_name' => $data[14],
-                        'email' => $data[18],
+                        'id'           => trim($data[0]),
+                        'first_name'   => trim($data[2]),
+                        'wife_name'    => trim($data[3]),
+                        'last_name'    => trim($data[4]),
+                        'shtibel'      => trim($data[10]),
+                        'home_phone'   => trim($data[11]),
+                        'mobile_phone' => trim($data[12]),
+                        'hebrew_name'  => trim($data[14]),
+                        'email'        => trim($data[18]),
                     ]);
 
                     if (!Str::startsWith($data[1], 'non')) {
                         $member->membership()->create([
                             'plan_type_id' => 1, // TODO
-                            'type' => Membership::TYPE_MEMBERSHIP, //TODO
+                            'type'         => Membership::TYPE_MEMBERSHIP, //TODO
                         ]);
                     }
                 }
@@ -85,18 +85,18 @@ class ImportMembers extends Command
                     $member = Member::find($data[0]);
 
                     if (!$member) {
-                        $this->warn("Member with id $data[0] not found for dependent");
+                        $this->warn("Member with id $data[0] not found for dependent $data[2] $data[4]");
                         Log::error("Member with id $data[0] not found for dependent", $data);
                         continue;
                     }
 
                     $member->dependents()->create([
-                        'first_name' => $data[2],
-                        'last_name'   => $data[4],
-                        'dob' => DateTime::createFromFormat('d/m/Y', $data[20])
-                            ? DateTime::createFromFormat('d/m/Y', $data[20])->format('Y-m-d')
+                        'first_name'  => trim($data[2]),
+                        'last_name'   => trim($data[4]),
+                        'dob'         => DateTime::createFromFormat('d/m/Y', trim($data[20]))
+                            ? DateTime::createFromFormat('d/m/Y', trim($data[20]))->format('Y-m-d')
                             : null,
-                        'hebrew_name' => $data[14]
+                        'hebrew_name' => trim($data[14])
                     ]);
                 }
             }

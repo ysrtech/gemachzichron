@@ -10,8 +10,8 @@ trait InertiaHandler
 {
     protected function prepareInertiaResponse($request, Throwable $e)
     {
-        if ($e instanceof AuthenticationException) {
-            // First we will set the intended url in the session by using the
+        if ($request->inertia() && $e instanceof AuthenticationException) {
+            // First we will put the intended url in the session by using the
             // redirect guest method, but we won't actually return a redirect.
             redirect()->guest($e->redirectTo() ?? route('login'));
 
@@ -20,31 +20,30 @@ trait InertiaHandler
             return response()->json(['message' => $e->getMessage()], 401);
         }
 
+        $response = parent::render($request, $e);
+
+        if ($response->status() === 419) {
+            return back()->banner('The page expired, please try again', 'warning');
+        }
+
         if (config('app.debug')) {
-            return parent::render($request, $e);
+            return $response;
         }
 
-        $status = parent::render($request, $e)->status();
+        $messages = [
+            403 => $e->getMessage() ?: 'Forbidden',
+            404 => 'Page Not Found',
+            429 => 'Too Many Requests',
+            500 => 'Whoops, something went wrong on our servers',
+            503 => 'We are doing some maintenance, Please check back soon',
+        ];
 
-        $message = [
-                403 => "Forbidden",
-                404 => "The page you are trying to access cannot be found.",
-                419 => "The page expired, please try again.",
-                500 => "Whoops, something went wrong on our servers.",
-                503 => "We are doing some maintenance. Please check back soon.",
-            ][$status] ?? false;
-
-        if (!$message) {
-            return parent::render($request, $e);
+        if (!array_key_exists($response->status(), $messages)) {
+            return $response;
         }
 
-        if ($status >= 400 && $status < 500) {
-            return back()->snackbar($message);
-        }
-
-        return Inertia::render('Errors/Index', ['message' => $message])
+        return Inertia::render('Errors/Show', ['message' => $messages[$response->status()]])
             ->toResponse($request)
-            ->setStatusCode($status);
+            ->setStatusCode($response->status());
     }
-
 }

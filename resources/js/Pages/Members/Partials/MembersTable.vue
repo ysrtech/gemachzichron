@@ -43,7 +43,7 @@
                   <div>Edit</div>
                 </div>
               </app-dropdown-link>
-              <app-dropdown-link as="button" @click="$inertia.post($route('members.store'), member)">
+              <app-dropdown-link as="button" @click="duplicateMember(member)">
                 <div class="flex items-center">
                   <i class="material-icons-outlined mr-3 text-gray-400 text-xl">content_copy</i>
                   <div>Duplicate</div>
@@ -104,6 +104,14 @@ export default {
 
   props: {
     members: Object
+  },
+
+  methods: {
+    duplicateMember(member) {
+      ['id', 'created_at', 'updated_at', 'deleted_at'].forEach(field => delete member[field]);
+
+      this.$inertia.post(this.$route('members.store'), member)
+    }
   }
 }
 </script>

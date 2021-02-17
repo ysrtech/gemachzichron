@@ -57,7 +57,7 @@
     <loan-modal
       :show="openLoanModal"
       :loan="loanToEdit"
-      :membershipId="member.id"
+      :membershipId="member.membership.id"
       :dependents="member.dependents"
       @close="openLoanModal = false; loanToEdit = null"
     />

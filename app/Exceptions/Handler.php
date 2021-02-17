@@ -39,13 +39,9 @@ class Handler extends ExceptionHandler
             //
         });
     }
-    
+
     public function render($request, \Throwable $exception)
     {
-        if ($request->inertia()) {
-            return $this->prepareInertiaResponse($request, $exception);
-        }
-        
-        return parent::render($request, $exception);
+        return $this->prepareInertiaResponse($request, $exception);
     }
 }
