@@ -13,7 +13,7 @@
         @click="$inertia.get($route('members.show', member.id))"
         v-for="member in members.data"
         :key="member.id"
-        class="bg-white text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900 cursor-pointer">
+        class="bg-white text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900 cursor-pointer">
         <td class="px-6 py-3.5 whitespace-nowrap">
           {{ member.last_name + ', ' + member.first_name }}
           <app-badge v-if="member.deleted_at" color="red" class="ml-1">Archived Member</app-badge>

@@ -6,8 +6,6 @@
       @close="$page.props.flash.banner = null"
     />
 
-    <slot/>
-
     <app-snackbar
       v-if="snackbar"
       :options="$page.props.flash.snackbar"
@@ -25,6 +23,9 @@
       :show="showLoginModal"
       @close="showLoginModal = false;"
     />
+
+    <slot/>
+
   </div>
 </template>
 

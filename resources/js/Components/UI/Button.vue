@@ -5,7 +5,11 @@
     :type="type"
     class="inline-flex items-center px-4 py-2 border rounded-md shadow-sm hover:shadow-md focus:shadow-lg focus:outline-none  font-semibold text-xs uppercase transition ease-in-out duration-150">
 
-    <div v-if="processing" class="spinner mr-2"/>
+    <div
+      v-if="processing"
+      class="rounded-full border-2 h-4 w-4 animate-spin relative mr-2"
+      style="font-size: 10px; border-left-color: transparent"
+    />
 
     <slot/>
   </button>
@@ -45,32 +49,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.spinner, .spinner:after {
-  border-radius: 50%;
-  width: 1.5em;
-  height: 1.5em;
-}
-
-.spinner {
-  font-size: 10px;
-  position: relative;
-  text-indent: -9999em;
-  border-top: .2em solid white;
-  border-right: .2em solid white;
-  border-bottom: .2em solid white;
-  border-left: .2em solid transparent;
-  transform: translateZ(0);
-  animation: spinning 1s infinite linear;
-}
-
-@keyframes spinning {
-  0% {
-    transform: rotate(0deg)
-  }
-  100% {
-    transform: rotate(360deg)
-  }
-}
-</style>

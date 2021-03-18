@@ -12,7 +12,7 @@
       <tr
         v-for="invoice in invoices.data"
         :key="invoice.id"
-        class="bg-white text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900">
+        class="bg-white text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900">
         <td class="px-6 py-3.5 whitespace-nowrap">
           {{ invoice.subscription.membership.member.first_name + ' ' + invoice.subscription.membership.member.last_name }}
         </td>

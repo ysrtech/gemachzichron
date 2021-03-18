@@ -84,9 +84,9 @@ export default {
 
   data() {
     return {
-      styleClasses: 'shadow-sm mt-1 block w-full appearance-none text-base leading-normal bg-white border ' +
-        'border-gray-300 focus:outline-none focus:ring-2 ring-primary-600 rounded-md placeholder-gray-400 ' +
-        'py-2 px-3' + (this.error ? 'border-red-600' : '')
+      styleClasses: `shadow-sm mt-1 block w-full appearance-none text-base leading-normal bg-white
+        border focus:outline-none focus:ring-2 ring-primary-600 rounded-md placeholder-gray-400
+        py-2 px-3 ${this.error ? 'border-red-600' : 'border-gray-300'}`
     }
   },
 
