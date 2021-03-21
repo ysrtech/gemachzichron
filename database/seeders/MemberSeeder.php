@@ -19,8 +19,6 @@ class MemberSeeder extends Seeder
     public function run()
     {
         Member::factory()
-            ->times(500)
-            ->hasDependents(3, fn (array $attributes, Member $member) => ['last_name' => $member->last_name])
             ->has(
                 Membership::factory(1)
                     ->has(Subscription::factory()
@@ -36,17 +34,7 @@ class MemberSeeder extends Seeder
 //                            })
 //                        )
                     )
-                    ->has(Loan::factory()
-                            ->count(2)
-                            ->state(function (array $attributes, Membership $membership) {
-                                return ['dependent_id' => $membership->member->dependents->random()->id];
-                            })
-                    )
             )
             ->create();
-
-        $members = Member::inRandomOrder()->limit(400)->get();
-
-        Loan::each(fn($loan) => $loan->endorsements()->sync($members->random(4)));
     }
 }
