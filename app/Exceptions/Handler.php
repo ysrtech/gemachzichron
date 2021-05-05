@@ -7,6 +7,8 @@ use Throwable;
 
 class Handler extends ExceptionHandler
 {
+    use InertiaHandler;
+
     /**
      * A list of the exception types that are not reported.
      *
@@ -37,5 +39,14 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+    
+    public function render($request, \Throwable $exception)
+    {
+        if ($request->inertia()) {
+            return $this->prepareInertiaResponse($request, $exception);
+        }
+
+        return parent::render($request, $exception);
     }
 }

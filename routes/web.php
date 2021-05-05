@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::inertia('/', 'Site/Home', [
+    'laravelVersion' => Application::VERSION,
+    'phpVersion' => PHP_VERSION,
+])->name('home');
+
+Route::inertia('/dashboard', 'App/Dashboard')
+    ->middleware(['auth'])
+    ->name('dashboard');
