@@ -22,7 +22,7 @@ class AuthenticateController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(RouteServiceProvider::DASHBOARD);
+        return redirect()->intended(RouteServiceProvider::HOME);
     }
 
     public function destroy(Request $request)
@@ -33,6 +33,6 @@ class AuthenticateController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect(RouteServiceProvider::HOME);
+        return redirect('/');
     }
 }

@@ -36,6 +36,6 @@ class ConfirmPasswordController extends Controller
             return back();
         }
 
-        return redirect()->intended(RouteServiceProvider::DASHBOARD);
+        return redirect()->intended(RouteServiceProvider::HOME);
     }
 }

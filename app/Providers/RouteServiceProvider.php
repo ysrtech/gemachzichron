@@ -17,8 +17,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const DASHBOARD = '/dashboard';
-    public const HOME = '/';
+    public const HOME = '/dashboard';
 
     /**
      * The controller namespace for the application.
@@ -46,7 +45,7 @@ class RouteServiceProvider extends ServiceProvider
 
             Route::middleware('web')
                 ->group(base_path('routes/auth.php'));
-            
+
             Route::middleware('web')
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web.php'));

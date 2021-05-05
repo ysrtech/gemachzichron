@@ -22,9 +22,9 @@ class RegisterController extends Controller
         $user = User::create($request->validated());
 
         event(new Registered($user));
-        
+
         Auth::login($user);
 
-        return redirect(RouteServiceProvider::DASHBOARD);
+        return redirect(RouteServiceProvider::HOME);
     }
 }

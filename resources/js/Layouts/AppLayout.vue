@@ -28,8 +28,8 @@
 
         <!-- Logo -->
         <div>
-          <inertia-link :href="$route('home')">
-            <app-logo class="h-8 mx-auto" color-class="text-gray-300"/>
+          <inertia-link :href="$route('dashboard')">
+            <app-logo class="h-14 mx-auto" color-class="text-gray-300"/>
           </inertia-link>
         </div>
 

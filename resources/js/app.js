@@ -3,6 +3,7 @@ import {App, plugin} from '@inertiajs/inertia-vue3';
 import {InertiaProgress} from '@inertiajs/progress';
 import AppInput from '@/Components/UI/Input';
 import AppButton from '@/Components/UI/Button';
+import axios from "axios";
 
 InertiaProgress.init({color: '#075985'}) // should match a primary color
 
@@ -22,3 +23,4 @@ app
   .mount(el)
 
 app.config.globalProperties.$route = route
+app.config.globalProperties.$axios = axios

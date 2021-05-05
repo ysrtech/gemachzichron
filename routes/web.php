@@ -14,10 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::inertia('/', 'Site/Home', [
-    'laravelVersion' => Application::VERSION,
-    'phpVersion' => PHP_VERSION,
-])->name('home');
+Route::redirect('/', '/dashboard');
 
 Route::inertia('/dashboard', 'App/Dashboard')
     ->middleware(['auth'])

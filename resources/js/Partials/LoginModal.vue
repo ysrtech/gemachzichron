@@ -30,16 +30,6 @@
               required
               type="password"
               @input="form.clearErrors('password')">
-
-              <template #top-right>
-                <inertia-link
-                  :href="$route('password.request')"
-                  class="underline text-xs text-gray-600 hover:text-gray-900"
-                >
-                  Forgot your password?
-                </inertia-link>
-
-              </template>
             </app-input>
           </div>
 
@@ -55,8 +45,8 @@
         <div class="px-8 py-4 bg-gray-100 flex items-center justify-end">
 
           <div class="flex items-center justify-end">
-            <inertia-link :href="$route('register')" class="underline text-sm text-gray-600 hover:text-gray-900">
-              Don't have an account?
+            <inertia-link :href="$route('password.request')" class="underline text-sm text-gray-600 hover:text-gray-900">
+              Forgot Password?
             </inertia-link>
 
             <app-button :processing="form.processing" class="ml-4" type="submit">
