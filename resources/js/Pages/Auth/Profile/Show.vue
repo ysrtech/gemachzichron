@@ -7,9 +7,9 @@
 
     <update-password-form/>
 
-    <div class="border-t border-gray-200"></div>
+<!--    <div class="border-t border-gray-200"></div>-->
 
-    <delete-user-form/>
+<!--    <delete-user-form/>-->
 
   </div>
 </template>
