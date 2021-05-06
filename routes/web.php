@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MemberController;
 use App\Http\Controllers\UserController;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Route;
@@ -19,4 +20,6 @@ Route::redirect('/', RouteServiceProvider::HOME);
 Route::middleware(['auth'])->group(function () {
     Route::inertia('/dashboard', 'Dashboard')->name('dashboard');
     Route::apiResource('users', UserController::class);
+    Route::apiResource('members', MemberController::class);
+    Route::put('members/{member}/restore', [MemberController::class, 'restore'])->name('members.restore');
 });

@@ -64,6 +64,11 @@ export default {
           icon: "dashboard",
         },
         {
+          title: "Members",
+          route: "members.index",
+          icon: "people",
+        },
+        {
           title: "Users",
           route: "users.index",
           icon: 'supervised_user_circle'
