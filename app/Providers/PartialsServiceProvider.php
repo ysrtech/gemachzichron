@@ -37,7 +37,7 @@ class PartialsServiceProvider extends ServiceProvider
 
         /**
          * Render partial only. Persist the current page
-         * @usage Inertia::partial('Partials/SomeModal', ['someProp' => '...'], 'Dashboard')
+         * @usage Inertia::partial('Sections/SomeModal', ['someProp' => '...'], 'Dashboard')
          *
          * @param string $component the partial component
          * @param array $props partial props
@@ -60,7 +60,7 @@ class PartialsServiceProvider extends ServiceProvider
 
         /**
          * Render a new page with the partial
-         * @usage Inertia::render('Dashboard')->withPartial('@/Partials/SomeModal', ['someProp' => '...'])
+         * @usage Inertia::render('Dashboard')->withPartial('@/Sections/SomeModal', ['someProp' => '...'])
          *
          * @param string $partial the partial component
          * @param array $props partial props
@@ -72,7 +72,7 @@ class PartialsServiceProvider extends ServiceProvider
         /**
          * Redirect response with the partial (flashes partial data),
          *
-         * @usage back()->withPartial('@/Partials/SomeModal', ['someProp' => '...'])
+         * @usage back()->withPartial('@/Sections/SomeModal', ['someProp' => '...'])
          *
          * @param string $component the partial component
          * @param array $props partial props

@@ -63,11 +63,11 @@ export default {
           route: "dashboard",
           icon: "dashboard",
         },
-        // {
-        //   title: "Users",
-        //   route: "users.index",
-        //   icon: 'supervised_user_circle'
-        // },
+        {
+          title: "Users",
+          route: "users.index",
+          icon: 'supervised_user_circle'
+        },
         // {
         //   title: "Settings",
         //   icon: "settings",

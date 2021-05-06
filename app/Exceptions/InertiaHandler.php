@@ -38,12 +38,12 @@ trait InertiaHandler
             case 419:
             case 503:
                 return Inertia::partial(
-                    'Banner', ['message' => $messages[$response->status()], 'level' => 'warning'], 'Site/Home', [], $response->status()
+                    'Banner', ['message' => $messages[$response->status()], 'level' => 'warning'], 'Errors/Show', [], $response->status()
                 );
             case 500:
                 if (!config('app.debug')) {
                     return Inertia::partial(
-                        'Banner', ['message' => $messages[$response->status()], 'level' => 'danger'], 'Site/Home', [], $response->status()
+                        'Banner', ['message' => $messages[$response->status()], 'level' => 'danger'], 'Errors/Show', [], $response->status()
                     );
                 }
         }

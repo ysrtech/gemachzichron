@@ -9,7 +9,6 @@
 <script>
 export default {
   props: {
-    status: Number,
     message: String
   }
 }

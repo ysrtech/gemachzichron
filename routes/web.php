@@ -1,6 +1,7 @@
 <?php
 
-use Illuminate\Foundation\Application;
+use App\Http\Controllers\UserController;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,9 +14,9 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::redirect('/', RouteServiceProvider::HOME);
 
-Route::redirect('/', '/dashboard');
-
-Route::inertia('/dashboard', 'App/Dashboard')
-    ->middleware(['auth'])
-    ->name('dashboard');
+Route::middleware(['auth'])->group(function () {
+    Route::inertia('/dashboard', 'Dashboard')->name('dashboard');
+    Route::apiResource('users', UserController::class);
+});
