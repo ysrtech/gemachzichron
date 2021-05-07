@@ -14,7 +14,7 @@
 
       <div class="flex space-x-3">
         <app-button @click="showCreateModal = true">New Member</app-button>
-        <a :href="$route('members.export')" target="_blank">
+        <a :href="$route('members.export')" download>
           <app-button color="secondary">Export Members</app-button>
         </a>
       </div>
