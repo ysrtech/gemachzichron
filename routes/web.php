@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\MembersExportController;
 use App\Http\Controllers\UserController;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Route;
@@ -20,6 +21,7 @@ Route::redirect('/', RouteServiceProvider::HOME);
 Route::middleware(['auth'])->group(function () {
     Route::inertia('/dashboard', 'Dashboard')->name('dashboard');
     Route::apiResource('users', UserController::class);
+    Route::get('members/export', MembersExportController::class)->name('members.export');
     Route::apiResource('members', MemberController::class);
     Route::put('members/{member}/restore', [MemberController::class, 'restore'])->name('members.restore');
 });
