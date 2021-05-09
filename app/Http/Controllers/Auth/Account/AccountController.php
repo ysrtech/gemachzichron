@@ -1,24 +1,24 @@
 <?php
 
-namespace App\Http\Controllers\Auth\Profile;
+namespace App\Http\Controllers\Auth\Account;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\Profile\UpdatePasswordRequest;
-use App\Http\Requests\Auth\Profile\UpdateProfileRequest;
+use App\Http\Requests\Auth\Account\UpdatePasswordRequest;
+use App\Http\Requests\Auth\Account\UpdateAccountRequest;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 
-class ProfileController extends Controller
+class AccountController extends Controller
 {
     public function show()
     {
-        return Inertia::render('Auth/Profile/Show');
+        return Inertia::render('Auth/Account/Show');
     }
 
-    public function update(UpdateProfileRequest $request)
+    public function update(UpdateAccountRequest $request)
     {
         $request->user()->forceFill($request->validated())->save();
 
@@ -28,7 +28,7 @@ class ProfileController extends Controller
             $request->user()->sendEmailVerificationNotification();
         }
 
-        return back()->snackbar('Profile updated successfully.');
+        return back()->snackbar('Account updated successfully.');
     }
 
     public function updatePassword(UpdatePasswordRequest $request)

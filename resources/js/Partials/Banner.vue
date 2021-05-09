@@ -10,8 +10,10 @@
           <div class="pr-16 sm:text-center sm:px-16">
             <p class="font-medium text-white">
               <span>{{ message }}</span>
-              <span v-if="actionText" class="block sm:ml-2 sm:inline-block">
-                <a :href="actionUrl" class="text-white font-bold underline" target="_blank">{{ actionText }} &rarr;</a>
+              <span v-if="action" class="block sm:ml-2 sm:inline-block">
+                <button @click="doAction" class="text-white font-bold underline">
+                  {{ action.text }} &rarr;
+                </button>
               </span>
             </p>
           </div>
@@ -66,8 +68,7 @@ export default {
       type: Boolean,
       default: true,
     },
-    actionText: String,
-    actionUrl: String,
+    action: Object, // {text: String, route: String, method: String, url: String, target: String}
   },
 
   emits: ['close'],
@@ -79,6 +80,18 @@ export default {
         'bg-green-600': this.level === 'success',
         'bg-red-700': this.level === 'danger',
         'bg-yellow-600': this.level === 'warning'
+      }
+    }
+  },
+
+  methods: {
+    doAction() {
+      if (this.action?.route) {
+        this.$inertia.visit(this.action.route, {
+          method: this.action.method || 'get'
+        })
+      } else {
+        window.open(this.action.url)
       }
     }
   }

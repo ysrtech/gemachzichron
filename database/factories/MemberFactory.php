@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Member;
+use Faker\Generator;
 use Faker\Provider\he_IL\Person;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -23,9 +24,11 @@ class MemberFactory extends Factory
     public function definition()
     {
         return [
+            'title'             => $this->faker->randomElement(['Rabbi & Mrs.', 'Mr. & Mrs.', 'Rabbi & Reb.', 'Rabbi', 'Mr.', 'Mrs.', 'Reb.']),
             'first_name'        => $this->faker->firstNameMale(),
             'last_name'         => $this->faker->lastName(),
-            'hebrew_name'       => Person::firstNameMale(),
+            'hebrew_first_name' => $this->hebrewFaker()->firstNameMale(),
+            'hebrew_last_name'  => $this->hebrewFaker()->lastName(),
             'wife_name'         => $this->faker->firstNameFemale(),
             'address'           => $this->faker->streetAddress(),
             'city'              => $this->faker->randomElement(['Montreal QC', 'Outremont QC', 'Cote-Saint-Luc QC']),
@@ -35,6 +38,13 @@ class MemberFactory extends Factory
             'mobile_phone'      => $this->faker->phoneNumber(),
             'wife_mobile_phone' => $this->faker->phoneNumber(),
             'shtibel'           => $this->faker->randomElement(['Zichron YY', 'Bais Yakov', 'Avreichim', 'CSL']),
+            'father'            => $this->hebrewFaker()->name(),
+            'father_in_law'     => $this->hebrewFaker()->name(),
         ];
+    }
+
+    protected function hebrewFaker()
+    {
+        return app()->make(Generator::class, ['locale' => 'he_IL']);
     }
 }

@@ -37,8 +37,9 @@
 
       <div class="flex-grow flex items-center justify-between h-16 px-4 md:px-6 lg:px-10 bg-white shadow border-b">
 
-        <h2 class="font-medium text-2xl text-gray-800 leading-tight">
-          {{ header }}
+
+        <h2 id="header" class="font-medium text-2xl text-gray-800 leading-tight">
+          <template v-if="header">{{ header }}</template>
         </h2>
 
         <!-- Settings Dropdown -->

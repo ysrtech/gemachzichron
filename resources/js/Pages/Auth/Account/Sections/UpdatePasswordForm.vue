@@ -79,7 +79,7 @@ export default {
 
   methods: {
     updatePassword() {
-      this.form.put(this.$route('profile.password.update'), {
+      this.form.put(this.$route('account.password.update'), {
         preserveScroll: true,
         onSuccess: () => this.form.reset()
       });

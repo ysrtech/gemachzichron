@@ -8,7 +8,6 @@
       <slot name="top-right"/>
     </div>
 
-    <!-- TODO extract select into separate component-->
     <select
       v-if="type === 'select'"
       v-bind="$attrs"

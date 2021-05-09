@@ -15,9 +15,11 @@ class CreateMembersTable extends Migration
     {
         Schema::create('members', function (Blueprint $table) {
             $table->id();
+            $table->string('title')->nullable();
             $table->string('first_name')->index();
             $table->string('last_name')->index();
-            $table->string('hebrew_name')->index();
+            $table->string('hebrew_first_name')->index();
+            $table->string('hebrew_last_name')->index();
             $table->string('wife_name')->nullable();
             $table->string('address')->nullable();
             $table->string('city')->nullable();
@@ -27,6 +29,8 @@ class CreateMembersTable extends Migration
             $table->string('mobile_phone')->nullable();
             $table->string('wife_mobile_phone')->nullable();
             $table->string('shtibel')->nullable();
+            $table->string('father')->nullable();
+            $table->string('father_in_law')->nullable();
             $table->softDeletes();
             $table->timestamps();
 

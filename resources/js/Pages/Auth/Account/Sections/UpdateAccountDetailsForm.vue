@@ -2,15 +2,15 @@
   <app-section>
 
     <template #title>
-      Profile Information
+      Account Details
     </template>
 
     <template #description>
-      Update your account's profile information and email address.
+      Update your account name and email address.
     </template>
 
     <template #content>
-      <form @submit.prevent="updateProfileInformation">
+      <form @submit.prevent="updateAccountDetails">
         <div class="grid grid-cols-6 gap-6">
 
           <!-- Name -->
@@ -70,8 +70,8 @@ export default {
   },
 
   methods: {
-    updateProfileInformation() {
-      this.form.put(this.$route('profile.update'), {
+    updateAccountDetails() {
+      this.form.put(this.$route('account.update'), {
         preserveScroll: true,
       });
     },

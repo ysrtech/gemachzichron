@@ -10,9 +10,11 @@ class MembersExportController extends Controller
     public function __invoke()
     {
         $columns = [
+            'title',
             'first_name',
             'last_name',
-            'hebrew_name',
+            'hebrew_first_name',
+            'hebrew_last_name',
             'wife_name',
             'address',
             'city',
@@ -22,6 +24,8 @@ class MembersExportController extends Controller
             'mobile_phone',
             'wife_mobile_phone',
             'shtibel',
+            'father',
+            'father_in_law',
         ];
 
         return ExportService::streamCsv(

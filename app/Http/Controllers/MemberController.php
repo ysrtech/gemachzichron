@@ -11,13 +11,13 @@ class MemberController extends Controller
 {
     public function index(Request $request)
     {
-        $membersQuery = Member::search($request->search)
+        $query = Member::search($request->search)
             ->filterWithTrashed($request->archived)
             ->orderBy('last_name')
             ->orderBy('first_name');
 
         if ($request->wantsJson()) {
-            return $membersQuery
+            return $query
                 ->when($request->limit, fn($query, $limit) => $query->limit($limit))
                 ->get()
                 ->toArray();
@@ -25,22 +25,47 @@ class MemberController extends Controller
 
         return Inertia::render('Members/Index', [
             'filters' => $request->all('search', 'archived'),
-            'members' => $membersQuery->paginate($request->limit ?? 15)
+            'members' => $query->paginate($request->limit ?? 15)
         ]);
+    }
+
+    public function create()
+    {
+        return Inertia::render('Members/Edit');
     }
 
     public function store(CreateMemberRequest $request)
     {
-        Member::create($request->validated());
+        $member = Member::create($request->validated());
 
-        return back()->snackbar('Member created.');
+        return redirect()
+            ->route('members.show', $member)
+            ->snackbar('Member created.');
+    }
+
+    public function show(Member $member)
+    {
+        $response = Inertia::render('Members/Show', [
+            'member' => $member
+        ]);
+
+        return $response;
+    }
+
+    public function edit(Member $member)
+    {
+        return Inertia::render('Members/Edit', [
+            'member' => $member
+        ]);
     }
 
     public function update(CreateMemberRequest $request, Member $member)
     {
         $member->update($request->validated());
 
-        return back()->snackbar('Member updated.');
+        return redirect()
+            ->route('members.show', $member)
+            ->snackbar('Member updated.');
     }
 
     public function destroy(Member $member)

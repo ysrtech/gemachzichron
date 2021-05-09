@@ -12,9 +12,9 @@ class AccountDeletesTest extends TestCase
 
     public function test_user_cannot_delete_account_without_password_confirmation()
     {
-        $this->actingAs($user = User::factory()->create());
+        $user = $this->loginNewUser();
 
-        $this->delete('/profile');
+        $this->delete('/account');
 
         $this->assertAuthenticated();
         $this->assertNotNull($user->fresh());
@@ -22,13 +22,13 @@ class AccountDeletesTest extends TestCase
 
     public function test_user_can_delete_account_with_password_confirmation()
     {
-        $this->actingAs($user = User::factory()->create());
+        $user = $this->loginNewUser();
 
         $this->post('/confirm-password', [
             'password' => 'password'
         ]);
 
-        $response = $this->delete('/profile');
+        $response = $this->delete('/account');
 
         $response->assertRedirect('/');
         $this->assertGuest();

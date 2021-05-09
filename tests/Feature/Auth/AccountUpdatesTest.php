@@ -6,24 +6,24 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class ProfileUpdatesTest extends TestCase
+class AccountUpdatesTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_profile_page_can_be_rendered()
+    public function test_account_page_can_be_rendered()
     {
-        $this->actingAs($user = User::factory()->create());
+        $this->loginNewUser();
 
-        $response = $this->get(route('profile.show'));
+        $response = $this->get(route('account.show'));
 
         $response->assertStatus(200);
     }
 
-    public function test_user_can_update_profile_information()
+    public function test_user_can_update_account_information()
     {
-        $this->actingAs($user = User::factory()->create());
+        $user = $this->loginNewUser();
 
-        $this->put('/profile', [
+        $this->put('/account', [
             'name'  => 'Updated Name',
             'email' => 'updated-email@example.com',
         ]);
@@ -34,13 +34,13 @@ class ProfileUpdatesTest extends TestCase
 
     public function test_user_email_has_to_be_unique()
     {
-        $this->actingAs($user = User::factory()->create());
+        $this->loginNewUser();
 
         $anotherUser = User::factory()->create([
             'email' => 'another-user@example.com'
         ]);
 
-        $response = $this->put('/profile', [
+        $response = $this->put('/account', [
             'email' => $anotherUser->email,
         ]);
 
@@ -49,9 +49,9 @@ class ProfileUpdatesTest extends TestCase
 
     public function test_user_can_update_password()
     {
-        $this->actingAs($user = User::factory()->create());
+        $user = $this->loginNewUser();
 
-        $response = $this->put('/profile/password', [
+        $response = $this->put('/account/password', [
             'current_password'      => 'wrong-password',
             'password'              => 'new-password',
             'password_confirmation' => 'new-password',
@@ -59,7 +59,7 @@ class ProfileUpdatesTest extends TestCase
 
         $response->assertSessionHasErrors('current_password');
 
-        $response = $this->put('/profile/password', [
+        $response = $this->put('/account/password', [
             'current_password'      => 'password',
             'password'              => 'new-password',
             'password_confirmation' => 'not-matched',
@@ -67,7 +67,7 @@ class ProfileUpdatesTest extends TestCase
 
         $response->assertSessionHasErrors('password');
 
-        $response = $this->put('/profile/password', [
+        $response = $this->put('/account/password', [
                 'current_password'      => 'password',
                 'password'              => 'new-password',
                 'password_confirmation' => 'new-password',

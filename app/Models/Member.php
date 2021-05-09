@@ -18,7 +18,8 @@ class Member extends Model
     protected array $searchable = [
         'last_name',
         'first_name',
-        'hebrew_name',
+        'hebrew_first_name',
+        'hebrew_last_name',
         'email'
     ];
 }

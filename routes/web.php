@@ -22,6 +22,6 @@ Route::middleware(['auth'])->group(function () {
     Route::inertia('/dashboard', 'Dashboard')->name('dashboard');
     Route::apiResource('users', UserController::class);
     Route::get('members/export', MembersExportController::class)->name('members.export');
-    Route::apiResource('members', MemberController::class);
+    Route::resource('members', MemberController::class);
     Route::put('members/{member}/restore', [MemberController::class, 'restore'])->name('members.restore');
 });

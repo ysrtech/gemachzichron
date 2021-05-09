@@ -19,7 +19,7 @@
 <!--        Dashboard-->
 <!--      </app-dropdown-link>-->
 
-      <app-dropdown-link :href="$route('profile.show')">
+      <app-dropdown-link :href="$route('account.show')">
         Profile
       </app-dropdown-link>
 

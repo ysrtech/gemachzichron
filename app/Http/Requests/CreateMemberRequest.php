@@ -9,9 +9,11 @@ class CreateMemberRequest extends FormRequest
     public function rules()
     {
         return [
+            'title'             => 'nullable|string',
             'first_name'        => 'required|string',
             'last_name'         => 'required|string',
-            'hebrew_name'       => 'required|string',
+            'hebrew_first_name' => 'required|string',
+            'hebrew_last_name'  => 'required|string',
             'wife_name'         => 'nullable|string',
             'address'           => 'nullable|string',
             'city'              => 'nullable|string',
@@ -21,6 +23,8 @@ class CreateMemberRequest extends FormRequest
             'mobile_phone'      => 'nullable|string',
             'wife_mobile_phone' => 'nullable|string',
             'shtibel'           => 'nullable|string',
+            'father'            => 'nullable|string',
+            'father_in_law'     => 'nullable|string',
         ];
     }
 }

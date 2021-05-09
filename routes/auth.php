@@ -1,12 +1,12 @@
 <?php
 
+use App\Http\Controllers\Auth\Account\AccountController;
 use App\Http\Controllers\Auth\AuthenticateController;
 use App\Http\Controllers\Auth\ConfirmPasswordController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
-use App\Http\Controllers\Auth\Profile\ProfileController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
@@ -65,17 +65,17 @@ Route::post('/logout', [AuthenticateController::class, 'destroy'])
     ->middleware('auth');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/profile', [ProfileController::class, 'show'])
-        ->name('profile.show');
+    Route::get('/account', [AccountController::class, 'show'])
+        ->name('account.show');
 
-    Route::put('/profile', [ProfileController::class, 'update'])
-        ->name('profile.update');
+    Route::put('/account', [AccountController::class, 'update'])
+        ->name('account.update');
 
-    Route::delete('/profile', [ProfileController::class, 'destroy'])
+    Route::delete('/account', [AccountController::class, 'destroy'])
         ->middleware('password.confirm')
-        ->name('profile.destroy');
+        ->name('account.destroy');
 
-    Route::put('/profile/password', [ProfileController::class, 'updatePassword'])
-        ->name('profile.password.update');
+    Route::put('/account/password', [AccountController::class, 'updatePassword'])
+        ->name('account.password.update');
 
 });

@@ -39,7 +39,7 @@ export default {
     deleteUser() {
       this.renderPartial('ConfirmPassword', {
         redirectTo: {
-          url: this.$route('profile.destroy'),
+          url: this.$route('account.destroy'),
           options: {
             method: 'DELETE'
           }
