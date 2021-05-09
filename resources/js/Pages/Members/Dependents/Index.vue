@@ -53,7 +53,7 @@
           </tbody>
         </table>
       </div>
-      <dependent-form-modal
+      <dependents-form-modal
         :show="openDependentModal"
         :member-id="member.id"
         :dependent="dependentToEdit"
@@ -68,13 +68,13 @@ import MemberBase from "@/Pages/Members/MemberBase";
 import AppLayout from "@/Layouts/AppLayout";
 import {date} from "@/helpers/dates";
 import AppBadge from "@/Components/UI/Badge";
-import DependentFormModal from "@/Pages/Members/Dependents/FormModal";
+import DependentsFormModal from "@/Pages/Members/Dependents/FormModal";
 
 export default {
   layout: AppLayout,
 
   components: {
-    DependentFormModal,
+    DependentsFormModal,
     AppBadge,
     MemberBase
   },

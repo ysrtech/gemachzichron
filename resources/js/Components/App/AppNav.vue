@@ -73,14 +73,18 @@ export default {
           route: "users.index",
           icon: 'supervised_user_circle'
         },
-        // {
-        //   title: "Settings",
-        //   icon: "settings",
-        //   subItemsExpanded: false,
-        //   subItems: [
-        //
-        //   ]
-        // }
+        {
+          title: "Settings",
+          icon: "settings",
+          subItemsExpanded: false,
+          subItems: [
+            {
+              title: "Plan Types",
+              route: "plan-types.index",
+              icon: 'backup_table'
+            },
+          ]
+        },
       ],
       currentRouteName: this.$route().current()
     }
