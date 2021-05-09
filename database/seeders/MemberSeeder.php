@@ -16,6 +16,7 @@ class MemberSeeder extends Seeder
     {
         Member::factory()
             ->times(500)
+            ->hasDependents(3)
             ->create();
     }
 }

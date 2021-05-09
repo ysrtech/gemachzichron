@@ -39,7 +39,7 @@
 
 
         <h2 id="header" class="font-medium text-2xl text-gray-800 leading-tight">
-          <template v-if="header">{{ header }}</template>
+          {{ header }}
         </h2>
 
         <!-- Settings Dropdown -->

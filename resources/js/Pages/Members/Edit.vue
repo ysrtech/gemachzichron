@@ -210,8 +210,7 @@
     </form>
 
     <teleport v-if="isMounted" to="#header">
-      <template v-if="member">Edit Member - {{ this.member.first_name + ' ' + this.member.last_name }}</template>
-      <template v-else>Create New Member</template>
+      {{ header }}
     </teleport>
   </div>
 </template>
@@ -223,6 +222,7 @@ import AppInput from "@/Components/UI/Input";
 
 export default {
   components: {AppInput},
+
   layout: AppLayout,
 
   mixins: [IsMounted],
@@ -235,6 +235,15 @@ export default {
 
   props: {
     member: Object,
+  },
+
+  computed: {
+    header() {
+      if (this.member) {
+        return `Edit Member - ${this.member.first_name} ${this.member.last_name}`
+      }
+      return 'Create New Member'
+    }
   },
 
   methods: {

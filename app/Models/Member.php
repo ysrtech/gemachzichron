@@ -22,4 +22,9 @@ class Member extends Model
         'hebrew_last_name',
         'email'
     ];
+
+    public function dependents()
+    {
+        return $this->hasMany(Dependent::class);
+    }
 }

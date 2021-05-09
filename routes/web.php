@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DependentController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\MembersExportController;
 use App\Http\Controllers\UserController;
@@ -24,4 +25,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get('members/export', MembersExportController::class)->name('members.export');
     Route::resource('members', MemberController::class);
     Route::put('members/{member}/restore', [MemberController::class, 'restore'])->name('members.restore');
+    Route::apiresource('members.dependents', DependentController::class)->shallow();
 });

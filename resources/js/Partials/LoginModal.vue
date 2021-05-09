@@ -1,5 +1,5 @@
 <template>
-  <app-modal :show="show" max-width="md" @close="$emit('close')">
+  <app-modal max-width="md" @close="$emit('close')">
     <div>
 
       <div class="pb-3 pt-6 text-center text-4xl">

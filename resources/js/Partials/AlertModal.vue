@@ -1,5 +1,5 @@
 <template>
-  <app-modal :show="message" max-width="md" @close="close">
+  <app-modal max-width="md" @close="close">
     <div class="p-6">
       <div v-if="icon" :class="iconBg" class="mx-auto flex items-center justify-center h-12 w-12 rounded-full">
         <svg :class="iconColor" class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
