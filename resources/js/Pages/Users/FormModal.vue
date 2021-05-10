@@ -2,7 +2,7 @@
   <modal v-if="show" max-width="md" @close="$emit('close')">
 
     <div class="px-6 py-4 text-xl font-medium">
-      <template v-if="user">Edit User {{ user.name }}</template>
+      <template v-if="user">Edit User</template>
       <template v-else>Create New User</template>
     </div>
 

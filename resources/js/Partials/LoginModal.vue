@@ -77,18 +77,6 @@ export default {
 
   emits: ['close'],
 
-  props: {
-    show: {
-      default: false
-    }
-  },
-
-  watch: {
-    show(val) {
-      this.form.clearErrors()
-    }
-  },
-
   data() {
     return {
       form: this.$inertia.form({

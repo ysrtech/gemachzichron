@@ -13,7 +13,7 @@
       v-bind="$attrs"
       :class="{'border-red-600': !!error}"
       :value="modelValue"
-      class="select-spinner shadow-sm mt-1 block w-full appearance-none text-base leading-normal bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-1 ring-primary-600 rounded-md placeholder-gray-400 py-2 px-3"
+      class="select-spinner shadow-sm mt-1 block w-full appearance-none text-sm leading-normal bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-1 ring-primary-600 rounded-md placeholder-gray-400 py-2 px-3"
       @input="$emit('update:modelValue', $event.target.value)">
       <slot name="options"/>
     </select>
@@ -25,7 +25,7 @@
       :class="{'border-red-600': !!error}"
       :type="type"
       :value="modelValue"
-      class="shadow-sm mt-1 block w-full appearance-none text-base leading-normal bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-1 ring-primary-600 rounded-md placeholder-gray-400 py-2 px-3"
+      class="shadow-sm mt-1 block w-full appearance-none text-sm leading-normal bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-1 ring-primary-600 rounded-md placeholder-gray-400 py-2 px-3"
       @input="$emit('update:modelValue', $event.target.value)"
     >
 
