@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\PlanType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 
 class PlanTypeController extends Controller
 {
     public function index(Request $request)
     {
-        $planTypes = PlanType::all();
+        $planTypes = Cache::rememberForever('plan-types', fn() => PlanType::all());
 
         if ($request->wantsJson()) {
             return response()->json(['plan_types' => $planTypes]);
@@ -25,6 +26,8 @@ class PlanTypeController extends Controller
     {
         PlanType::create($request->validate(['name' => 'required|string']));
 
+        Cache::forget('plan-types');
+
         return back()->snackbar('Plan Type Created.');
     }
 
@@ -37,6 +40,8 @@ class PlanTypeController extends Controller
     {
         $planType->update($request->validate(['name' => 'required|string']));
 
+        Cache::forget('plan-types');
+
         return back()->snackbar('Plan Type Updated.');
     }
 
@@ -45,6 +50,8 @@ class PlanTypeController extends Controller
         // TODO Check if there are associated resources
 
         $planType->delete();
+
+        Cache::forget('plan-types');
 
         return back()->snackbar('Plan Type Deleted.');
     }

@@ -3,6 +3,7 @@
 use App\Http\Controllers\DependentController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\MembersExportController;
+use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\PlanTypeController;
 use App\Http\Controllers\UserController;
 use App\Providers\RouteServiceProvider;
@@ -27,5 +28,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('members', MemberController::class);
     Route::put('members/{member}/restore', [MemberController::class, 'restore'])->name('members.restore');
     Route::apiresource('members.dependents', DependentController::class)->shallow();
+    Route::get('members/{member}/membership', [MembershipController::class, 'show'])->name('members.membership.show');
+    Route::post('members/{member}/membership', [MembershipController::class, 'store'])->name('members.membership.store');
+    Route::apiResource('memberships', MembershipController::class)->only('index', 'update', 'destroy');
     Route::apiResource('plan-types', PlanTypeController::class);
 });

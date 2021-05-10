@@ -27,4 +27,9 @@ class Member extends Model
     {
         return $this->hasMany(Dependent::class);
     }
+
+    public function membership()
+    {
+        return $this->hasOne(Membership::class);
+    }
 }

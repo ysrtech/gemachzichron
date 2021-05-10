@@ -14,4 +14,8 @@ class PlanType extends Model
 
     public $timestamps = false;
 
+    public function memberships()
+    {
+        return $this->hasMany(Membership::class);
+    }
 }

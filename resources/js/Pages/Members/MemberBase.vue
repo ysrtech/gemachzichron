@@ -47,10 +47,10 @@ export default {
           title: 'Children',
           route: 'members.dependents.index',
         },
-        // {
-        //   title: 'Membership',
-        //   route: '',
-        // },
+        {
+          title: 'Membership',
+          route: 'members.membership.show',
+        },
         // {
         //   title: 'Subscriptions',
         //   route: '',
