@@ -55,7 +55,6 @@
 </template>
 
 <script>
-import MemberBase from "@/Pages/Members/MemberBase";
 import AppLayout from "@/Layouts/AppLayout";
 import {date} from "@/helpers/dates";
 import MembershipFormModal from "./MembershipFormModal";
@@ -67,7 +66,6 @@ export default {
   components: {
     AppBadge,
     MembershipFormModal,
-    MemberBase
   },
 
   data() {
