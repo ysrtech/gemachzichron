@@ -1,9 +1,10 @@
 <template>
   <div class="bg-white rounded-lg shadow divide-y divide-gray-200 overflow-hidden">
     <div class="p-4 sm:px-6 flex items-center justify-between">
-      <h2 class="text-lg leading-6 font-medium text-gray-900">
-        Membership
-      </h2>
+      <div class="flex space-x-2 items-baseline">
+        <h2 class="text-lg leading-6 font-medium text-gray-900">Membership</h2>
+        <app-badge v-if="member.membership?.is_active === false" color="red">Inactive</app-badge>
+      </div>
       <button
         v-if="member.membership"
         @click="openMembershipFormModal = true"
@@ -18,16 +19,16 @@
           <div>
             <dt class="text-xs font-medium text-gray-400">Membership Since</dt>
             <dd class="mt-1 text-sm text-gray-900">
-              {{ member.membership ? date(member.membership.created_at) : null }}
+              {{ date(member.membership.created_at) }}
             </dd>
           </div>
           <div>
             <dt class="text-xs font-medium text-gray-400">Membership Type</dt>
-            <dd class="mt-1 text-sm text-gray-900">{{ member.membership?.type }}</dd>
+            <dd class="mt-1 text-sm text-gray-900">{{ member.membership.type }}</dd>
           </div>
           <div>
             <dt class="text-xs font-medium text-gray-400">Plan Type</dt>
-            <dd class="mt-1 text-sm text-gray-900">{{ member.membership?.plan_type?.name || 'N/A' }}</dd>
+            <dd class="mt-1 text-sm text-gray-900">{{ member.membership.plan_type?.name || 'N/A' }}</dd>
           </div>
         </dl>
       </div>
@@ -35,7 +36,7 @@
         <div class="font-medium text-gray-400">Total Paid</div>
         <div class="text-2xl">
           <span class="text-gray-600 mr-1">$</span>
-          <span class="font-medium text-gray-900">{{ member.membership?.total_paid || '0.00' }}</span>
+          <span class="font-medium text-gray-900">{{ Number(member.membership.total_paid || 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) }}</span>
         </div>
       </div>
     </template>
@@ -58,11 +59,13 @@ import MemberBase from "@/Pages/Members/MemberBase";
 import AppLayout from "@/Layouts/AppLayout";
 import {date} from "@/helpers/dates";
 import MembershipFormModal from "./MembershipFormModal";
+import AppBadge from "@/Components/UI/Badge";
 
 export default {
   layout: AppLayout,
 
   components: {
+    AppBadge,
     MembershipFormModal,
     MemberBase
   },

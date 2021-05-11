@@ -43,6 +43,6 @@ class Loan extends Model
             Storage::delete($this->attributes['application_copy']);
         }
 
-        $this->attributes['application_copy'] = $file->store('loan_applications');
+        $this->attributes['application_copy'] = $file->storeAs('applications', "loan_$this->id.{$file->guessExtension()}");
     }
 }

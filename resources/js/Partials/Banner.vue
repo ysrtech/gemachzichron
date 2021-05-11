@@ -4,7 +4,7 @@
       leave-active-class="transition ease-in duration-300"
       leave-from-class="opacity-100"
       leave-to-class="opacity-0">
-      <div v-if="show" :class="bgColor" class="fixed w-screen top-0">
+      <div v-if="show" :class="bgColor" class="fixed w-screen top-0 z-50">
         <div class="mx-auto py-3 px-3 sm:px-6 lg:px-8 relative">
 
           <div class="pr-16 sm:text-center sm:px-16">

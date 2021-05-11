@@ -29,7 +29,7 @@
             class="bg-white text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900 cursor-pointer">
             <td class="px-6 py-3.5 whitespace-nowrap space-x-2">{{ loan.id }}</td>
             <td class="px-6 py-3.5 whitespace-nowrap">{{ date(loan.loan_date) }}</td>
-            <td class="px-6 py-3.5 whitespace-nowrap font-medium"><span class="mr-1 text-gray-500">$</span>{{ Number(loan.amount).toFixed(2) }}</td>
+            <td class="px-6 py-3.5 whitespace-nowrap font-medium"><span class="mr-1 text-gray-500">$</span>{{ Number(loan.amount).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) }}</td>
             <td class="px-6 py-3.5 whitespace-nowrap">{{ loan.cheque_number }}</td>
             <td @click.stop class="px-5 text-right whitespace-nowrap text-gray-500 space-x-2 cursor-default">
               <button

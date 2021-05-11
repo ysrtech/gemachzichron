@@ -14,7 +14,7 @@
         <table class="min-w-full divide-y divide-gray-200">
           <thead v-if="member.guarantees.length > 0">
           <tr class="bg-gray-50 text-xs text-left text-gray-400 uppercase">
-            <th v-for="title in ['ID', 'Member', 'Loan date', 'Amount']" class="px-6 py-3 font-medium">{{ title }}</th>
+            <th v-for="title in ['Loan ID', 'Member', 'Loan date', 'Amount']" class="px-6 py-3 font-medium">{{ title }}</th>
           </tr>
           </thead>
 
@@ -29,11 +29,11 @@
               {{ loan.membership.member.first_name + ' ' + loan.membership.member.last_name }}
             </td>
             <td class="px-6 py-3.5 whitespace-nowrap">{{ date(loan.loan_date) }}</td>
-            <td class="px-6 py-3.5 whitespace-nowrap font-medium"><span class="mr-1 text-gray-500">$</span>{{ Number(loan.amount).toFixed(2) }}</td>
+            <td class="px-6 py-3.5 whitespace-nowrap font-medium"><span class="mr-1 text-gray-500">$</span>{{ Number(loan.amount).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) }}</td>
           </tr>
 
           <tr v-if="member.guarantees.length === 0">
-            <td class="px-6 py-10 text-center text-gray-500" colspan="3">No Guarantees Found.</td>
+            <td class="px-6 py-10 text-center text-gray-500" colspan="3">No Guarantees Given.</td>
           </tr>
 
           </tbody>

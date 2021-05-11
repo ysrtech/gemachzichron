@@ -16,6 +16,7 @@ class CreateMembershipsTable extends Migration
         Schema::create('memberships', function (Blueprint $table) {
             $table->id();
             $table->foreignId('member_id')->constrained();
+            $table->boolean('is_active')->default(true);
             $table->string('type');
             $table->foreignId('plan_type_id')->nullable()->constrained();
             $table->timestamps();

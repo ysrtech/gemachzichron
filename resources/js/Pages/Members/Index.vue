@@ -3,8 +3,16 @@
     <div class="mb-6 flex justify-between items-center px-1">
       <search-filter v-model="filterForm.search" class="w-full max-w-md mr-4" @reset="reset">
         <div class="p-4">
-          <label class="block text-gray-700 text-xs">Archived:</label>
-          <select v-model="filterForm.archived" class="mt-1 w-full text-sm border focus:outline-none rounded p-1">
+          <label class="block text-gray-700 text-xs">Membership</label>
+          <select v-model="filterForm.membership" class="mt-1 w-full text-sm border focus:outline-none rounded p-1">
+            <option :value="null">All Members</option>
+            <option :value="true">Only With Membership</option>
+          </select>
+
+          <label class="block text-gray-700 text-xs mt-2">Archived</label>
+          <select
+            v-model="filterForm.archived"
+            class="mt-1 w-full text-sm border focus:outline-none rounded p-1">
             <option :value="null">Without Archived</option>
             <option value="with">With Archived</option>
             <option value="only">Only Archived</option>
@@ -41,8 +49,13 @@
                 v-for="member in members.data"
                 :key="member.id"
                 class="bg-white text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900 cursor-pointer">
-                <td class="px-6 py-3.5 whitespace-nowrap">
-                  {{ member.last_name + ', ' + member.first_name }}
+                <td class="px-6 py-3.5 whitespace-nowrap flex space-x-3 items-baseline">
+                  <span>{{ member.last_name + ', ' + member.first_name }}</span>
+                  <span
+                    :title="member.membership_count ? 'Active Membership' : 'No Active Membership'"
+                    class="block w-2 h-2 rounded-full"
+                    :class="member.membership_count ? 'bg-green-500' : 'bg-red-500'">
+                  </span>
                   <app-badge v-if="member.deleted_at" color="red" class="ml-1">Archived Member</app-badge>
                 </td>
                 <td class="px-6 py-3.5 whitespace-nowrap">
@@ -136,6 +149,7 @@ export default {
       filterForm: {
         search: this.filters.search,
         archived: this.filters.archived,
+        membership: this.filters.membership
       },
     }
   },

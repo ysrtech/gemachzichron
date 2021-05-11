@@ -28,6 +28,7 @@ class MembershipFactory extends Factory
         ]);
 
         return [
+            'is_active' => $this->faker->boolean(90),
             'type' => $membershipType,
             'plan_type_id' => $membershipType == Membership::TYPE_MEMBERSHIP
                 ? PlanType::inRandomOrder()->first()->id

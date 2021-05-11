@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\Traits\FilterableByRelated;
 use App\Models\Traits\FilterableWithTrashed;
 use App\Models\Traits\Searchable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -13,7 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Member extends Model
 {
-    use HasFactory, SoftDeletes, Searchable, FilterableWithTrashed;
+    use HasFactory, SoftDeletes, Searchable, FilterableWithTrashed, FilterableByRelated;
 
     protected array $searchable = [
         'last_name',

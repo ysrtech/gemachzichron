@@ -17,7 +17,7 @@ class CreateLoansTable extends Migration
             $table->id();
             $table->foreignId('membership_id')->constrained();
             $table->foreignId('dependent_id')->nullable()->constrained();
-            $table->float('amount');
+            $table->decimal('amount');
             $table->date('loan_date');
             $table->string('cheque_number')->nullable();
             $table->string('application_copy')->nullable();

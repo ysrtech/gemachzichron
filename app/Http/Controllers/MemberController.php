@@ -13,6 +13,8 @@ class MemberController extends Controller
     {
         $query = Member::search($request->search)
             ->filterWithTrashed($request->archived)
+            ->filterHasRelated($request->only('membership'))
+            ->withCount(['membership' => fn($q) => $q->where('is_active', true)])
             ->orderBy('last_name')
             ->orderBy('first_name');
 
@@ -24,7 +26,7 @@ class MemberController extends Controller
         }
 
         return Inertia::render('Members/Index', [
-            'filters' => $request->all('search', 'archived'),
+            'filters' => $request->all('search', 'archived', 'membership'),
             'members' => $query->paginate($request->limit ?? 15)
         ]);
     }

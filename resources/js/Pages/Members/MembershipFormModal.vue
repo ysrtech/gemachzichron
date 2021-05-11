@@ -7,6 +7,7 @@
 
     <form @submit.prevent="submit">
       <div class="px-6 py-4 space-y-4">
+
         <app-input
           id="type"
           v-model="form.type"
@@ -38,8 +39,12 @@
             </option>
           </template>
         </app-input>
-      </div>
 
+        <label class="flex items-center">
+          <app-checkbox v-model="form.is_active" name="is_active"/>
+          <span class="ml-2 text-sm text-gray-600">Active</span>
+        </label>
+      </div>
 
       <div class="px-6 py-3 bg-gray-100 flex items-center justify-end">
         <app-button color="secondary" @click="$emit('close')">Cancel</app-button>
@@ -51,9 +56,11 @@
 </template>
 <script>
 import Modal from "@/Components/UI/Modal";
+import AppCheckbox from "@/Components/UI/Checkbox";
 
 export default {
   components: {
+    AppCheckbox,
     Modal
   },
 
@@ -77,6 +84,7 @@ export default {
   watch: {
     show(val) {
       this.form = this.$inertia.form({
+        is_active: this.membership? this.membership.is_active : true,
         type: this.membership?.type,
         plan_type_id: this.membership?.plan_type_id,
       })

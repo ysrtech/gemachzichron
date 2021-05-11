@@ -16,6 +16,10 @@ class Membership extends Model
     const TYPE_MEMBERSHIP = 'Membership';
     const TYPE_PEKUDON = 'Pekudon';
 
+    protected $casts = [
+        'is_active' => 'boolean'
+    ];
+
     public static function booted()
     {
         static::saving(function (Membership $membership) {

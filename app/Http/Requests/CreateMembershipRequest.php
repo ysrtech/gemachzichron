@@ -10,6 +10,7 @@ class CreateMembershipRequest extends FormRequest
     public function rules()
     {
         return [
+            'is_active' => 'boolean',
             'type' => 'required|in:' . Membership::TYPE_MEMBERSHIP . ',' . Membership::TYPE_PEKUDON,
             'plan_type_id' => 'required_if:type,'.Membership::TYPE_MEMBERSHIP
         ];

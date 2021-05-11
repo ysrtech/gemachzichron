@@ -13,13 +13,14 @@
 
       <tbody class="bg-white divide-y divide-gray-200">
       <tr
-        @click="$inertia.get($route('members.membership.show', member.id))"
+        @click="$inertia.get($route('members.show', member.id))"
         v-for="member in members.data"
         :key="member.id"
         class="bg-white text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900 cursor-pointer">
-        <td class="px-6 py-3.5 whitespace-nowrap">
-          {{ member.last_name + ', ' + member.first_name }}
-          <app-badge v-if="member.deleted_at" color="red" class="ml-1">Archived Member</app-badge>
+        <td class="px-6 py-3.5 whitespace-nowrap flex space-x-1 items-baseline">
+          <span>{{ member.last_name + ', ' + member.first_name }}</span>
+          <app-badge v-if="member.deleted_at" color="red">Archived Member</app-badge>
+          <app-badge v-if="!member.membership.is_active" color="red">Inactive Membership</app-badge>
         </td>
         <td class="px-6 py-3.5 whitespace-nowrap">
           {{ member.membership.type }}

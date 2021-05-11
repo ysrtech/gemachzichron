@@ -23,7 +23,7 @@
               </inertia-link>
             </td>
             <td class="px-6 py-3.5 whitespace-nowrap">{{ date(loan.loan_date) }}</td>
-            <td class="px-6 py-3.5 whitespace-nowrap font-medium"><span class="mr-1 text-gray-500">$</span>{{ Number(loan.amount).toFixed(2) }}</td>
+            <td class="px-6 py-3.5 whitespace-nowrap font-medium"><span class="mr-1 text-gray-500">$</span>{{ Number(loan.amount).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) }}</td>
             <td class="px-6 whitespace-nowrap text-right">
               <inertia-link
                 class="material-icons-outlined focus:outline-none rounded-full p-1 hover:bg-gray-200 focus:bg-gray-300"
