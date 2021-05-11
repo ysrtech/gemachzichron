@@ -11,21 +11,41 @@
     <select
       v-if="type === 'select'"
       v-bind="$attrs"
-      :class="{'border-red-600': !!error}"
       :value="modelValue"
-      class="select-spinner shadow-sm mt-1 block w-full appearance-none text-sm leading-normal bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-1 ring-primary-600 rounded-md placeholder-gray-400 py-2 px-3"
+      :class="styleClasses"
+      class="select-spinner"
       @input="$emit('update:modelValue', $event.target.value)">
       <slot name="options"/>
     </select>
+
+    <div
+      v-else-if="type === 'div'"
+      v-bind="$attrs"
+      :class="styleClasses">
+      <slot/>
+    </div>
+
+    <template v-else-if="type === 'file'">
+      <label :for="$attrs.id">
+        <div :class="styleClasses" class="text-gray-500 cursor-text truncate">
+          {{ filename }}
+        </div>
+      </label>
+      <input
+        :id="$attrs.id"
+        class="hidden"
+        type="file"
+        @change="$emit('update:modelValue', $event.target.files[0])"
+      />
+    </template>
 
     <input
       v-else
       ref="input"
       v-bind="$attrs"
-      :class="{'border-red-600': !!error}"
       :type="type"
       :value="modelValue"
-      class="shadow-sm mt-1 block w-full appearance-none text-sm leading-normal bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-1 ring-primary-600 rounded-md placeholder-gray-400 py-2 px-3"
+      :class="styleClasses"
       @input="$emit('update:modelValue', $event.target.value)"
     >
 
@@ -58,6 +78,15 @@ export default {
     },
     type: {
       default: 'text'
+    },
+    filename: String
+  },
+
+  data() {
+    return {
+      styleClasses: `shadow-sm mt-1 block w-full appearance-none text-sm leading-normal bg-white
+        border focus:outline-none focus:ring-2 focus:ring-offset-1 ring-primary-600 rounded-md placeholder-gray-400
+        py-2 px-3 ${this.error ? 'border-red-600' : 'border-gray-300'}`
     }
   },
 

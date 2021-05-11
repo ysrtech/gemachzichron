@@ -10,8 +10,6 @@ use Illuminate\Database\Eloquent\Model;
  */
 class PlanType extends Model
 {
-    use HasFactory;
-
     public $timestamps = false;
 
     public function memberships()

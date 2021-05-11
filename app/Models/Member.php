@@ -32,4 +32,9 @@ class Member extends Model
     {
         return $this->hasOne(Membership::class);
     }
+
+    public function guarantees()
+    {
+        return $this->belongsToMany(Loan::class, 'guarantors');
+    }
 }

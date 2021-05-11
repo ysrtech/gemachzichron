@@ -60,8 +60,9 @@
     </table>
 
     <!-- Pagination -->
-    <div v-if="users.total > users.per_page"
-         class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-300 sm:px-6">
+    <div
+      v-if="users.total > users.per_page"
+      class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-300 sm:px-6">
       <app-pagination :response="users"/>
     </div>
   </div>

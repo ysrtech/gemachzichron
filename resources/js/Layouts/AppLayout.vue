@@ -44,7 +44,6 @@
 
         <!-- Settings Dropdown -->
         <div class="ml-6 flex items-center">
-<!--            <user-notifications/>-->
           <user-settings-dropdown class="ml-3 relative"/>
         </div>
       </div>
@@ -53,7 +52,7 @@
 
     <div class="md:flex md:flex-grow md:overflow-hidden">
       <div class="hidden md:block bg-gray-900 flex-shrink-0 w-52 py-6 px-3 overflow-y-auto">
-        <app-nav></app-nav>
+        <app-nav/>
       </div>
 
       <!-- Page Content -->
@@ -73,13 +72,11 @@ import AppNav from "@/Components/App/AppNav";
 import AppLogo from "@/Components/UI/Logo";
 import AppSideOverlay from "@/Components/UI/SideOverlay";
 import Partials from "@/Partials/partials";
-import UserNotifications from "@/Components/App/UserNotifications";
 import UserSettingsDropdown from "@/Components/App/UserSettingsDropdown";
 
 export default {
   components: {
     UserSettingsDropdown,
-    UserNotifications,
     Partials,
     AppSideOverlay,
     AppLogo,

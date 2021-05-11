@@ -45,11 +45,13 @@ class MemberController extends Controller
 
     public function show(Member $member)
     {
-        $response = Inertia::render('Members/Show', [
-            'member' => $member
+        return Inertia::render('Members/Show', [
+            'member' => $member->load([
+                'membership' => fn($query) => $query
+                    ->with('planType')
+                    ->withTotalPaid()
+            ])
         ]);
-
-        return $response;
     }
 
     public function edit(Member $member)

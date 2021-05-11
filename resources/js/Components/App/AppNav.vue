@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <nav>
     <template v-for="item in navItems">
 
       <component
         v-show="!item.hidden"
         :is="item.route ? 'inertia-link' : 'div'"
-        :class="isCurrentRoute(item.route) ? 'bg-gray-700 text-white' : 'hover:bg-gray-800 text-gray-300 hover:text-white'"
+        :class="[isCurrentRoute(item.route) ? 'bg-gray-700 text-white' : 'hover:bg-gray-800 text-gray-300 hover:text-white', item.class]"
         class="flex items-center group py-2 px-3 my-3 transition rounded-md focus:outline-none cursor-pointer"
         :href="item.route ? $route(item.route) : null"
         @click="item.subItems ? (item.subItemsExpanded = !item.subItemsExpanded) : $emit('close-navigation')">
@@ -49,7 +49,7 @@
 
     </template>
 
-  </div>
+  </nav>
 </template>
 
 <script>
@@ -71,8 +71,23 @@ export default {
         {
           title: "Memberships",
           route: "memberships.index",
-          icon: "payments",
+          icon: "card_membership",
         },
+        {
+          title: "Loans",
+          route: "loans.index",
+          icon: "account_balance",
+        },
+        // {
+        //   title: "Subscriptions",
+        //   route: "subscriptions.index",
+        //   icon: "subscriptions",
+        // },
+        // {
+        //   title: "Transactions",
+        //   route: "transactions.index",
+        //   icon: "payments",
+        // },
         // {
         //   title: "Invoices",
         //   route: "invoices.index",
@@ -81,7 +96,7 @@ export default {
         {
           title: "Users",
           route: "users.index",
-          icon: 'supervised_user_circle'
+          icon: 'supervised_user_circle',
         },
         // {
         //   title: "Settings",

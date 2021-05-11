@@ -22,4 +22,9 @@ class Dependent extends Model
     {
         return $this->belongsTo(Member::class);
     }
+
+    public function loans()
+    {
+        return $this->hasMany(Loan::class);
+    }
 }

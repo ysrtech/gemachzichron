@@ -36,17 +36,6 @@ class MembershipController extends Controller
         return back()->snackbar('Membership created.');
     }
 
-    public function show(Member $member)
-    {
-        return Inertia::render('Members/Membership/Show', [
-            'member' => $member->load([
-                'membership' => fn($query) => $query
-                    ->with('planType')
-                    ->withTotalPaid()
-            ])
-        ]);
-    }
-
     public function update(CreateMembershipRequest $request, Membership $membership)
     {
         $membership->update($request->validated());

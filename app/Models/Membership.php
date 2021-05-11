@@ -35,6 +35,11 @@ class Membership extends Model
         return $this->belongsTo(PlanType::class);
     }
 
+    public function loans()
+    {
+        return $this->hasMany(Loan::class);
+    }
+
     public function scopeWithTotalPaid($query)
     {
         return $query;

@@ -7,7 +7,7 @@
             Children
           </h2>
           <button
-            @click="openDependentModal = true"
+            @click="openFormModal = true"
             title="Add Child"
             class="material-icons-outlined focus:outline-none rounded-full p-1.5 text-gray-600 hover:bg-gray-200 focus:bg-gray-300">
             add
@@ -34,12 +34,12 @@
             <td class="px-6 py-3.5 whitespace-nowrap">{{ date(dependent.dob) }}</td>
             <td class="pr-5 text-right w-px whitespace-nowrap text-gray-500 space-x-2">
               <button
-                @click="openDependentModal = true; dependentToEdit = dependent"
+                @click="openFormModal = true; dependentToEdit = dependent"
                 class="material-icons-outlined focus:outline-none rounded-full p-1 hover:bg-gray-200 focus:bg-gray-300">
                 edit
               </button>
               <button
-                @click="deleteDependent(dependent)"
+                @click="$inertia.delete($route('dependents.destroy', dependent.id))"
                 class="material-icons-outlined focus:outline-none rounded-full p-1 hover:bg-gray-200 focus:bg-gray-300">
                 delete
               </button>
@@ -54,10 +54,10 @@
         </table>
       </div>
       <dependents-form-modal
-        :show="openDependentModal"
+        :show="openFormModal"
         :member-id="member.id"
         :dependent="dependentToEdit"
-        @close="openDependentModal = false; dependentToEdit = null"
+        @close="openFormModal = false; dependentToEdit = null"
       />
     </member-base>
   </div>
@@ -82,7 +82,7 @@ export default {
   data() {
     return {
       dependentToEdit: null,
-      openDependentModal: false
+      openFormModal: false
     }
   },
 
@@ -92,11 +92,6 @@ export default {
 
   methods: {
     date,
-    deleteDependent(dependent) {
-      if (confirm(`Are you sure you want to delete ${dependent?.name}?`)) {
-        this.$inertia.delete(this.$route('dependents.destroy', dependent.id))
-      }
-    }
   }
 }
 </script>
