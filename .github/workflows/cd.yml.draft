@@ -1,0 +1,59 @@
+name: CD
+
+on:
+  push:
+    branches: [ master ]
+
+env:
+  SITE_PATH: /home/admin/web/dev.gemachhakehilos.com/gemachhakehilos
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🙈 Configure SSH
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          cat >>~/.ssh/config <<END
+          Host dev
+            HostName $SSH_HOST
+            User $SSH_USER
+            IdentityFile ~/.ssh/id_ed25519
+            StrictHostKeyChecking no
+          END
+        env:
+          SSH_USER: ${{ secrets.DEV_SSH_USER }}
+          SSH_KEY: ${{ secrets.DEV_SSH_KEY }}
+          SSH_HOST: ${{ secrets.DEV_SSH_HOST }}
+
+      - name: 🛑 Enter maintenece mode
+        run: ssh dev 'cd ${{ env.SITE_PATH }} && php artisan down'
+
+      - name: 📝 Update codebase
+        run: ssh dev 'cd ${{ env.SITE_PATH }} && git fetch origin master && git reset --hard origin/master'
+
+      - name: 🚚 Install composer dependencies
+        run: ssh dev 'cd ${{ env.SITE_PATH }} && composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader'
+
+      - name: 🚎 Install npm dependencies
+        run: ssh dev 'cd ${{ env.SITE_PATH }} && npm install'
+
+      - name: 🏗 Build assets
+        run: ssh dev 'cd ${{ env.SITE_PATH }} && npm run prod'
+
+      - name: 🤖 Optimize
+        run: ssh dev 'cd ${{ env.SITE_PATH }} && php artisan optimize:clear && php artisan config:cache && php artisan route:cache && php artisan view:cache'
+
+#      - name: 🐘 Restart PHP
+#        run: ssh dev 'echo ${{ secrets.DEV_USER_PASSWORD }} | sudo -S systemctl restart php-fpm'
+
+      - name: 💩 Migrate DB
+        run: ssh dev 'cd ${{ env.SITE_PATH }} && php artisan migrate --force'
+
+      - name: 🍃 Restart queue workers
+        run: ssh dev 'cd ${{ env.SITE_PATH }} && php artisan queue:restart'
+
+      - name: 🚀 Going live...
+        run: ssh dev 'cd ${{ env.SITE_PATH }} && php artisan up'

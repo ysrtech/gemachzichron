@@ -1,0 +1,35 @@
+<template>
+  <div class="bg-white rounded-lg shadow divide-y divide-gray-200 overflow-hidden">
+    <header class="p-4 sm:px-6 flex items-center justify-between" v-if="header">
+      <div>
+        <div class="flex space-x-2 items-baseline">
+          <h2 class="text-lg leading-6 font-medium text-gray-900" v-html="title"></h2>
+          <app-badge v-if="badge" :color="badge.color">{{ badge.text }}</app-badge>
+        </div>
+        <p v-if="description" class="mt-1 text-sm text-gray-700">{{ description }}</p>
+      </div>
+      <div>
+        <slot name="actions"/>
+      </div>
+    </header>
+    <slot name="content"/>
+  </div>
+</template>
+<script>
+import AppBadge from "@/Components/UI/Badge";
+export default {
+  components: {
+    AppBadge
+  },
+
+  props: {
+    header: {
+      type: Boolean,
+      default: true
+    },
+    title: String,
+    badge: Object,
+    description: String,
+  }
+}
+</script>

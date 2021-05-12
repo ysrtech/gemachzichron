@@ -4,8 +4,10 @@ namespace App\Console\Commands;
 
 use App\Models\Member;
 use App\Models\Membership;
+use App\Services\MembersImportService;
 use DateTime;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
@@ -16,7 +18,7 @@ class ImportMembers extends Command
      *
      * @var string
      */
-    protected $signature = 'import:members {filename}';
+    protected $signature = 'import:members {filename} {--memberships=} {--children=} {--loans=}';
 
     /**
      * The console command description.
@@ -32,76 +34,51 @@ class ImportMembers extends Command
      */
     public function handle()
     {
-        $filename = $this->argument('filename');
+        $this->comment('Importing members...');
+        MembersImportService::importMembers($this->getFilePath($this->argument('filename')));
+        $this->info('Finished Importing members');
+        $this->newLine();
 
+        if ($memberships = ($this->option('memberships') ?? $this->ask('Please enter filename for memberships (or empty to skip) then [ENTER]'))) {
+            Cache::forget('plan-types');
+            $this->callSilently('db:seed', ['class' => 'PlanTypeSeeder']);
+            $this->comment('Importing memberships...');
+            MembersImportService::importMemberships(
+                $this->getFilePath($memberships)
+            );
+            $this->info('Finished Importing memberships');
+            $this->newLine();
+        }
+
+        if ($children = ($this->option('children') ?? $this->ask('Please enter filename for children (or empty to skip) then [ENTER]'))) {
+            $this->comment('Importing children...');
+            MembersImportService::importChildren(
+                $this->getFilePath($children)
+            );
+            $this->info('Finished Importing children');
+            $this->newLine();
+        }
+
+        if ($loans = ($this->option('loans') ?? $this->ask('Please enter filename for loans (or empty to skip) then [ENTER]'))) {
+            $this->comment('Importing loans...');
+            MembersImportService::importLoans(
+                $this->getFilePath($loans)
+            );
+            $this->info('Finished Importing loans');
+            $this->newLine();
+        }
+
+        $this->info('Done');
+    }
+
+    private function getFilePath($filename) {
         $filepath = storage_path("imports/$filename");
 
         if (!file_exists($filepath)) {
-            $this->error('file ' . $filepath . ' does not exist');
+            $this->error("file $filepath does not exist");
             exit();
         }
 
-        $handle = fopen($filepath, "r");
-
-        if ($handle !== false) {
-
-            $firstLine = fgetcsv($handle, 1000); // header line
-
-            while (($data = fgetcsv($handle, 1000)) !== false) {
-                if (is_array($data)) {
-
-                    if (trim(strtolower($data[1])) === 'child') continue;
-
-                    $member = Member::create([
-                        'id'           => trim($data[0]),
-                        'first_name'   => trim($data[2]),
-                        'wife_name'    => trim($data[3]),
-                        'last_name'    => trim($data[4]),
-                        'shtibel'      => trim($data[10]),
-                        'home_phone'   => trim($data[11]),
-                        'mobile_phone' => trim($data[12]),
-                        'hebrew_name'  => trim($data[14]),
-                        'email'        => trim($data[18]),
-                    ]);
-
-                    if (!Str::startsWith($data[1], 'non')) {
-                        $member->membership()->create([
-                            'plan_type_id' => 1, // TODO
-                            'type'         => Membership::TYPE_MEMBERSHIP, //TODO
-                        ]);
-                    }
-                }
-            }
-
-            rewind($handle);
-
-            $firstLine = fgetcsv($handle, 1000); // header line
-
-            while (($data = fgetcsv($handle, 1000)) !== false) {
-                if (is_array($data)) {
-
-                    if (trim(strtolower($data[1])) !== 'child') continue;
-
-                    $member = Member::find($data[0]);
-
-                    if (!$member) {
-                        $this->warn("Member with id $data[0] not found for dependent $data[2] $data[4]");
-                        Log::error("Member with id $data[0] not found for dependent", $data);
-                        continue;
-                    }
-
-                    $member->dependents()->create([
-                        'first_name'  => trim($data[2]),
-                        'last_name'   => trim($data[4]),
-                        'dob'         => DateTime::createFromFormat('d/m/Y', trim($data[20]))
-                            ? DateTime::createFromFormat('d/m/Y', trim($data[20]))->format('Y-m-d')
-                            : null,
-                        'hebrew_name' => trim($data[14])
-                    ]);
-                }
-            }
-
-            fclose($handle);
-        }
+        return $filepath;
     }
 }
