@@ -1,6 +1,7 @@
 <template>
-  <div>
-      <div class="max-w-3xl mx-auto bg-white rounded-lg shadow divide-y divide-gray-200 overflow-hidden">
+  <div class="max-w-3xl mx-auto">
+    <app-panel :header="false">
+      <template #content>
         <table class="min-w-full divide-y divide-gray-200">
           <thead v-if="loans.total > 0">
           <tr class="bg-gray-50 text-xs text-left text-gray-400 uppercase">
@@ -47,8 +48,8 @@
           class="bg-white px-4 py-3 flex items-center justify-around border-t border-gray-300 sm:px-6">
           <links-pagination :links="loans.links"/>
         </div>
-      </div>
-
+      </template>
+    </app-panel>
   </div>
 </template>
 
@@ -57,11 +58,13 @@ import AppLayout from "@/Layouts/AppLayout";
 import {date} from "@/helpers/dates";
 import LinksPagination from "@/Components/App/LinksPagination";
 import Money from "@/Components/UI/Money";
+import AppPanel from "@/Components/UI/Panel";
 
 export default {
   layout: (h, page) => h(AppLayout, {header: 'Loans'}, () => page),
 
   components: {
+    AppPanel,
     Money,
     LinksPagination
   },

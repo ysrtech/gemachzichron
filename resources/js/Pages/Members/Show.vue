@@ -3,11 +3,8 @@
     <member-base :member="member">
       <div class="max-w-5xl mx-auto sm:grid grid-cols-3 gap-6">
         <div class="col-span-2">
-          <div class="bg-white rounded-lg shadow divide-y divide-gray-200">
-            <div class="p-4 sm:px-6 flex items-center justify-between">
-              <h2 class="text-lg leading-6 font-medium text-gray-900">
-                Personal details
-              </h2>
+          <app-panel title="Personal details">
+            <template #actions>
               <div class="space-x-1">
                 <inertia-link
                   :href="$route('members.edit', member.id)"
@@ -30,27 +27,29 @@
                   unarchive
                 </button>
               </div>
-            </div>
-            <div class="px-4 py-5 sm:px-6">
-              <dl class="grid grid-cols-2 gap-x-4 gap-y-8">
-                <key-value label="First Name" :value="member.first_name"/>
-                <key-value label="Last Name" :value="member.last_name"/>
-                <key-value label="Hebrew First Name" :value="member.hebrew_first_name"/>
-                <key-value label="Hebrew Last Name" :value="member.hebrew_last_name"/>
-                <key-value label="Home Phone" :value="member.home_phone"/>
-                <key-value label="Cellphone" :value="member.mobile_phone"/>
-                <key-value label="Wife's Name" :value="member.wife_name"/>
-                <key-value label="Wife's Cellphone" :value="member.wife_mobile_phone"/>
-                <key-value label="Email" :value="member.email"/>
-                <key-value label="Address">
-                  {{member.address}}<br>{{member.city}} {{member.postal_code}}
-                </key-value>
-                <key-value label="Father" :value="member.father"/>
-                <key-value label="Father In Law" :value="member.father_in_law"/>
-                <key-value label="Shtibel" :value="member.shtibel"/>
-              </dl>
-            </div>
-          </div>
+            </template>
+            <template #content>
+              <div class="px-4 py-5 sm:px-6">
+                <dl class="grid grid-cols-2 gap-x-4 gap-y-8">
+                  <key-value label="First Name" :value="member.first_name"/>
+                  <key-value label="Last Name" :value="member.last_name"/>
+                  <key-value label="Hebrew First Name" :value="member.hebrew_first_name"/>
+                  <key-value label="Hebrew Last Name" :value="member.hebrew_last_name"/>
+                  <key-value label="Home Phone" :value="member.home_phone"/>
+                  <key-value label="Cellphone" :value="member.mobile_phone"/>
+                  <key-value label="Wife's Name" :value="member.wife_name"/>
+                  <key-value label="Wife's Cellphone" :value="member.wife_mobile_phone"/>
+                  <key-value label="Email" :value="member.email"/>
+                  <key-value label="Address">
+                    {{member.address}}<br>{{member.city}} {{member.postal_code}}
+                  </key-value>
+                  <key-value label="Father" :value="member.father"/>
+                  <key-value label="Father In Law" :value="member.father_in_law"/>
+                  <key-value label="Shtibel" :value="member.shtibel"/>
+                </dl>
+              </div>
+            </template>
+          </app-panel>
         </div>
         <div class="col-span-1 space-y-6">
           <membership-section :member="member"/>
@@ -72,9 +71,11 @@ import MemberBase from "@/Pages/Members/MemberBase";
 import MembershipSection from "@/Pages/Members/MembershipSection";
 import CommentsSection from "@/Components/App/CommentsSection";
 import KeyValue from "@/Components/UI/KeyValue";
+import AppPanel from "@/Components/UI/Panel";
 
 export default {
   components: {
+    AppPanel,
     KeyValue,
     CommentsSection,
     MembershipSection,
