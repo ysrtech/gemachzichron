@@ -33,66 +33,33 @@
             </div>
             <div class="px-4 py-5 sm:px-6">
               <dl class="grid grid-cols-2 gap-x-4 gap-y-8">
-                <div>
-                  <dt class="text-xs font-medium text-gray-400">First Name</dt>
-                  <dd class="mt-1 text-sm text-gray-900">{{ member.first_name }}</dd>
-                </div>
-                <div>
-                  <dt class="text-xs font-medium text-gray-400">Last Name</dt>
-                  <dd class="mt-1 text-sm text-gray-900">{{ member.last_name }}</dd>
-                </div>
-                <div>
-                  <dt class="text-xs font-medium text-gray-400">Hebrew First Name</dt>
-                  <dd class="mt-1 text-sm text-gray-900">{{ member.hebrew_first_name }}</dd>
-                </div>
-                <div>
-                  <dt class="text-xs font-medium text-gray-400">Hebrew Last Name</dt>
-                  <dd class="mt-1 text-sm text-gray-900">{{ member.hebrew_last_name }}</dd>
-                </div>
-                <div>
-                  <dt class="text-xs font-medium text-gray-400">Home Phone</dt>
-                  <dd class="mt-1 text-sm text-gray-900">{{ member.home_phone }}</dd>
-                </div>
-                <div>
-                  <dt class="text-xs font-medium text-gray-400">Cellphone</dt>
-                  <dd class="mt-1 text-sm text-gray-900">{{ member.mobile_phone }}</dd>
-                </div>
-                <div>
-                  <dt class="text-xs font-medium text-gray-400">Wife's Name</dt>
-                  <dd class="mt-1 text-sm text-gray-900">{{ member.wife_name }}</dd>
-                </div>
-                <div>
-                  <dt class="text-xs font-medium text-gray-400">Wife's Cellphone</dt>
-                  <dd class="mt-1 text-sm text-gray-900">{{ member.wife_mobile_phone }}</dd>
-                </div>
-                <div>
-                  <dt class="text-xs font-medium text-gray-400">Email</dt>
-                  <dd class="mt-1 text-sm text-gray-900">{{ member.email }}</dd>
-                </div>
-                <div>
-                  <dt class="text-xs font-medium text-gray-400">Address</dt>
-                  <dd class="mt-1 text-sm text-gray-900">
-                    {{ member.address }}<br>{{ member.city }} {{ member.postal_code }}
-                  </dd>
-                </div>
-                <div>
-                  <dt class="text-xs font-medium text-gray-400">Father</dt>
-                  <dd class="mt-1 text-sm text-gray-900">{{ member.father }}</dd>
-                </div>
-                <div>
-                  <dt class="text-xs font-medium text-gray-400">Father In Law</dt>
-                  <dd class="mt-1 text-sm text-gray-900">{{ member.father_in_law }}</dd>
-                </div>
-                <div>
-                  <dt class="text-xs font-medium text-gray-400">Shtibel</dt>
-                  <dd class="mt-1 text-sm text-gray-900">{{ member.shtibel }}</dd>
-                </div>
+                <key-value label="First Name" :value="member.first_name"/>
+                <key-value label="Last Name" :value="member.last_name"/>
+                <key-value label="Hebrew First Name" :value="member.hebrew_first_name"/>
+                <key-value label="Hebrew Last Name" :value="member.hebrew_last_name"/>
+                <key-value label="Home Phone" :value="member.home_phone"/>
+                <key-value label="Cellphone" :value="member.mobile_phone"/>
+                <key-value label="Wife's Name" :value="member.wife_name"/>
+                <key-value label="Wife's Cellphone" :value="member.wife_mobile_phone"/>
+                <key-value label="Email" :value="member.email"/>
+                <key-value label="Address">
+                  {{member.address}}<br>{{member.city}} {{member.postal_code}}
+                </key-value>
+                <key-value label="Father" :value="member.father"/>
+                <key-value label="Father In Law" :value="member.father_in_law"/>
+                <key-value label="Shtibel" :value="member.shtibel"/>
               </dl>
             </div>
           </div>
         </div>
-        <div class="col-span-1">
+        <div class="col-span-1 space-y-6">
           <membership-section :member="member"/>
+          <comments-section
+            v-if="member.membership"
+            :comments="member.membership.comments"
+            :commentable-id="member.membership.id"
+            commentable-type="membership"
+          />
         </div>
       </div>
     </member-base>
@@ -102,11 +69,14 @@
 <script>
 import AppLayout from "@/Layouts/AppLayout";
 import MemberBase from "@/Pages/Members/MemberBase";
-import MembershipFormModal from "@/Pages/Members/MembershipFormModal";
 import MembershipSection from "@/Pages/Members/MembershipSection";
+import CommentsSection from "@/Components/App/CommentsSection";
+import KeyValue from "@/Components/UI/KeyValue";
 
 export default {
   components: {
+    KeyValue,
+    CommentsSection,
     MembershipSection,
     MemberBase
   },

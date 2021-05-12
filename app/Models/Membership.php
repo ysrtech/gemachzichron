@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\Commentable;
 use App\Models\Traits\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Membership extends Model
 {
-    use HasFactory, Filterable;
+    use HasFactory, Filterable, Commentable;
 
     const TYPE_MEMBERSHIP = 'Membership';
     const TYPE_PEKUDON = 'Pekudon';

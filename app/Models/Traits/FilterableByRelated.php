@@ -16,7 +16,11 @@ trait FilterableByRelated
     public function scopeFilterHasRelated($query, array $filters)
     {
         foreach ($filters as $key => $filter) {
-            $query->when(filter_var($filter, FILTER_VALIDATE_BOOLEAN), fn($q) => $q->has($key));
+            $query->when(
+                filter_var($filter, FILTER_VALIDATE_BOOLEAN),
+                fn($q) => $q->has($key),
+                fn($q) => $q->doesntHave($key)
+            );
         }
 
         return $query;

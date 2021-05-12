@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\Filterable;
 use App\Models\Traits\FilterableByRelated;
 use App\Models\Traits\FilterableWithTrashed;
 use App\Models\Traits\Searchable;

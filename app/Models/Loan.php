@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\Commentable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
@@ -12,7 +13,7 @@ use Illuminate\Support\Facades\Storage;
  */
 class Loan extends Model
 {
-    use HasFactory;
+    use HasFactory, Commentable;
 
     public function membership()
     {

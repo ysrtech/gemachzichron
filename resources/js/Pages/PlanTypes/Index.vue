@@ -3,7 +3,7 @@
     <div class="mb-6 flex justify-between items-center px-1">
 
       <app-button @click="openFormModal = true">
-        <span>Create New Plan Types</span>
+        <span>Create New Plan Type</span>
       </app-button>
 
     </div>

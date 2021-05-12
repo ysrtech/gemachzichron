@@ -20,7 +20,7 @@
         <td class="px-6 py-3.5 whitespace-nowrap flex space-x-1 items-baseline">
           <span>{{ member.last_name + ', ' + member.first_name }}</span>
           <app-badge v-if="member.deleted_at" color="red">Archived Member</app-badge>
-          <app-badge v-if="!member.membership.is_active" color="red">Inactive Membership</app-badge>
+          <app-badge v-if="member.membership?.is_active === false" color="red">Inactive Membership</app-badge>
         </td>
         <td class="px-6 py-3.5 whitespace-nowrap">
           {{ member.membership.type }}

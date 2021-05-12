@@ -9,9 +9,14 @@ trait Filterable
     public function scopeFilter($query, array $filters)
     {
         foreach ($filters as $key => $filter) {
-            $query->when(isset($filters[$key]), fn($q) => $q->where($key, $filters[$key]));
+            $query->where($key, $filter);
         }
+    }
 
-        return $query;
+    public function scopeFilterBoolean($query, array $filters)
+    {
+        foreach ($filters as $key => $filter) {
+            $query->where($key, filter_var($filter, FILTER_VALIDATE_BOOLEAN));
+        }
     }
 }

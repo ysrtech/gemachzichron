@@ -7,6 +7,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -35,5 +36,16 @@ class AppServiceProvider extends ServiceProvider
             LengthAwarePaginator::class,
             fn($paginator) => $paginator->appends(Request::all())
         );
+
+        Str::macro('model', function (string $model) {
+            $model = (string) Str::of($model)
+                ->singular()
+                ->studly()
+                ->start('App\Models\\');
+
+            abort_unless(class_exists($model), 404, "class $model does not exist");
+
+            return $model;
+        });
     }
 }

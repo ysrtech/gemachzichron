@@ -7,6 +7,7 @@ use App\Models\Membership;
 use App\Services\MembersImportService;
 use DateTime;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
@@ -39,6 +40,7 @@ class ImportMembers extends Command
         $this->newLine();
 
         if ($memberships = ($this->option('memberships') ?? $this->ask('Please enter filename for memberships (or empty to skip) then [ENTER]'))) {
+            Cache::forget('plan-types');
             $this->callSilently('db:seed', ['class' => 'PlanTypeSeeder']);
             $this->comment('Importing memberships...');
             MembersImportService::importMemberships(

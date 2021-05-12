@@ -57,7 +57,13 @@ class LoanController extends Controller
     public function show(Loan $loan)
     {
         return Inertia::render('Loans/Show', [
-            'loan' => $loan->load('membership.member:id,first_name,last_name', 'dependent:id,name')
+            'loan' => $loan->load([
+                'membership.member:id,first_name,last_name',
+                'membership.member.dependents:id,member_id,name',
+                'dependent:id,name',
+                'guarantors:id,first_name,last_name',
+                'comments'
+            ]),
         ]);
     }
 

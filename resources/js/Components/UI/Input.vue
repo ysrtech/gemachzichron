@@ -18,6 +18,14 @@
       <slot name="options"/>
     </select>
 
+    <textarea
+      v-else-if="type === 'textarea'"
+      v-bind="$attrs"
+      :value="modelValue"
+      :class="styleClasses"
+      @input="$emit('update:modelValue', $event.target.value)"
+    ></textarea>
+
     <div
       v-else-if="type === 'div'"
       v-bind="$attrs"

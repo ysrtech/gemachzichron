@@ -13,12 +13,17 @@ class MembershipController extends Controller
     public function index(Request $request)
     {
         return Inertia::render('Memberships/Index', [
-            'filters' => $request->all('search', 'archived'),
+            'filters' => $request->all('search', 'archived', 'type', 'plan_type_id', 'is_active'),
             'members' =>  Member::search($request->search)
                 ->filterWithTrashed($request->archived)
                 ->select(['id', 'first_name', 'last_name', 'deleted_at'])
-                ->whereHas('membership', fn($query) => $query->filter($request->all('type', 'plan_type_id')))
-                ->with(['membership' => fn($query) => $query->filter($request->all('type', 'plan_type_id'))
+                ->whereHas('membership', fn($query) => $query
+                    ->filter($request->only('type', 'plan_type_id'))
+                    ->filterBoolean($request->only('is_active'))
+                )
+                ->with(['membership' => fn($query) => $query
+                    ->filter($request->only('type', 'plan_type_id'))
+                    ->filterBoolean($request->only('is_active'))
                     ->withTotalPaid()
                     ->with('planType')
                 ])

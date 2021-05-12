@@ -2,35 +2,33 @@
   <div class="max-w-5xl mx-auto">
     <div class="mb-6 flex justify-between items-center px-1">
       <search-filter v-model="filterForm.search" class="w-full max-w-md mr-4" @reset="reset">
-        <div class="p-4">
+        <div class="p-4 space-y-4">
 
-          <label class="block text-gray-700 text-xs">Membership type</label>
-          <select
-            v-model="filterForm.type" @change="reset('plan_type_id')"
-            class="mt-1 w-full text-sm border focus:outline-none rounded p-1">
-            <option :value="null">--</option>
-            <option>Membership</option>
-            <option>Pekudon</option>
-          </select>
+          <search-filter-select
+            v-model="filterForm.type"
+            @change="reset('plan_type_id')"
+            label="Membership type"
+            :options="{'--': null, Membership: 'Membership', Pekudon: 'Pekudon'}"
+          />
 
-          <template v-if="filterForm.type !== 'Pekudon'">
-            <label class="block text-gray-700 text-xs mt-2">Plan type</label>
-            <select
-              v-model="filterForm.plan_type_id"
-              class="mt-1 w-full text-sm border focus:outline-none rounded p-1">
-              <option :value="null">--</option>
-              <option v-for="planType of planTypes" :key="planType.id" :value="planType.id">{{ planType.name }}</option>
-            </select>
-          </template>
+          <search-filter-select
+            v-if="filterForm.type !== 'Pekudon'"
+            v-model="filterForm.plan_type_id"
+            label="Plan type"
+            :options="planTypes.reduce((option, type) => ({...option, [type.name]: type.id}) ,{'--': null})"
+          />
 
-          <label class="block text-gray-700 text-xs mt-2">Archived</label>
-          <select
+          <search-filter-select
+            v-model="filterForm.is_active"
+            label="Active Membership"
+            :options="{'--': null, 'Only Active': 'true', 'Only Inactive': 'false'}"
+          />
+
+          <search-filter-select
             v-model="filterForm.archived"
-            class="mt-1 w-full text-sm border focus:outline-none rounded p-1">
-            <option :value="null">Without Archived</option>
-            <option value="with">With Archived</option>
-            <option value="only">Only Archived</option>
-          </select>
+            label="Archived Member"
+            :options="{'Without Archived': null, 'With Archived': 'with', 'Only Archived': 'only'}"
+          />
 
         </div>
       </search-filter>
@@ -52,11 +50,13 @@ import AppLayout from "@/Layouts/AppLayout";
 import {mapValues, pickBy, throttle} from "lodash";
 import SearchFilter from "@/Components/App/SearchFilter";
 import MembershipsTable from "./MembershipsTable";
+import SearchFilterSelect from "@/Components/App/SearchFilterSelect";
 
 export default {
   layout: (h, page) => h(AppLayout, {header: 'Memberships'}, () => page),
 
   components: {
+    SearchFilterSelect,
     MembershipsTable,
     SearchFilter
   },
@@ -69,6 +69,7 @@ export default {
         type: this.filters.type,
         plan_type_id: this.filters.plan_type_id,
         archived: this.filters.archived,
+        is_active: this.filters.is_active,
       },
     }
   },

@@ -16,20 +16,9 @@
     <template v-if="member.membership">
       <div class="px-4 py-5 sm:px-6">
         <dl class="space-y-8">
-          <div>
-            <dt class="text-xs font-medium text-gray-400">Membership Since</dt>
-            <dd class="mt-1 text-sm text-gray-900">
-              {{ date(member.membership.created_at) }}
-            </dd>
-          </div>
-          <div>
-            <dt class="text-xs font-medium text-gray-400">Membership Type</dt>
-            <dd class="mt-1 text-sm text-gray-900">{{ member.membership.type }}</dd>
-          </div>
-          <div>
-            <dt class="text-xs font-medium text-gray-400">Plan Type</dt>
-            <dd class="mt-1 text-sm text-gray-900">{{ member.membership.plan_type?.name || 'N/A' }}</dd>
-          </div>
+          <key-value label="Membership Since" :value="date(member.membership.created_at)"/>
+          <key-value label="Membership Type" :value="member.membership.type"/>
+          <key-value label="Plan Type" :value="member.membership.plan_type?.name || 'N/A'"/>
         </dl>
       </div>
       <div class="px-4 py-5 sm:px-6 flex justify-between items-center">
@@ -59,11 +48,13 @@ import AppLayout from "@/Layouts/AppLayout";
 import {date} from "@/helpers/dates";
 import MembershipFormModal from "./MembershipFormModal";
 import AppBadge from "@/Components/UI/Badge";
+import KeyValue from "@/Components/UI/KeyValue";
 
 export default {
   layout: AppLayout,
 
   components: {
+    KeyValue,
     AppBadge,
     MembershipFormModal,
   },

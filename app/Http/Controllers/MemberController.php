@@ -50,7 +50,7 @@ class MemberController extends Controller
         return Inertia::render('Members/Show', [
             'member' => $member->load([
                 'membership' => fn($query) => $query
-                    ->with('planType')
+                    ->with('planType', 'comments')
                     ->withTotalPaid()
             ])
         ]);

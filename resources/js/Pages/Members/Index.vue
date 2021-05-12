@@ -3,20 +3,19 @@
     <div class="mb-6 flex justify-between items-center px-1">
       <search-filter v-model="filterForm.search" class="w-full max-w-md mr-4" @reset="reset">
         <div class="p-4">
-          <label class="block text-gray-700 text-xs">Membership</label>
-          <select v-model="filterForm.membership" class="mt-1 w-full text-sm border focus:outline-none rounded p-1">
-            <option :value="null">All Members</option>
-            <option :value="true">Only With Membership</option>
-          </select>
 
-          <label class="block text-gray-700 text-xs mt-2">Archived</label>
-          <select
+          <search-filter-select
+            v-model="filterForm.membership"
+            label="Membership"
+            :options="{'All Members': null, 'Only With Membership': 'true', 'Only Without Membership': 'false'}"
+          />
+
+          <search-filter-select
             v-model="filterForm.archived"
-            class="mt-1 w-full text-sm border focus:outline-none rounded p-1">
-            <option :value="null">Without Archived</option>
-            <option value="with">With Archived</option>
-            <option value="only">Only Archived</option>
-          </select>
+            label="Archived"
+            :options="{'Without Archived': null, 'With Archived': 'with', 'Only Archived': 'only'}"
+          />
+
         </div>
       </search-filter>
 
@@ -132,11 +131,13 @@ import AppBadge from "@/Components/UI/Badge";
 import AppPagination from "@/Components/App/Pagination";
 import AppDropdownLink from "@/Components/UI/DropdownLink";
 import AppDropdown from "@/Components/UI/Dropdown";
+import SearchFilterSelect from "@/Components/App/SearchFilterSelect";
 
 export default {
   layout: (h, page) => h(AppLayout, {header: 'Members'}, () => page),
 
   components: {
+    SearchFilterSelect,
     SearchFilter,
     AppBadge,
     AppPagination,

@@ -78,9 +78,9 @@ class MembersImportService
                     ]
                 );
 
-//                if (!empty($comments = trim($data[$headers->search('Comments')]))) {
-//                    $membership->comments()->create(['content' => $comments]);
-//                }
+                if (!empty($comments = trim($data[$headers->search('Comments')]))) {
+                    $membership->comments()->create(['content' => $comments]);
+                }
             }
         }
     }
@@ -135,9 +135,13 @@ class MembersImportService
                         ->toArray()
                 );
 
-//                if (!empty($comments = trim($data[$headers->search('Comments')]))) {
-//                    $loan->comments()->create(['content' => $comments]);
-//                }
+                if (!empty($paymentStart = trim($data[$headers->search('Payment Start')]))) {
+                    $loan->comments()->create(['content' => 'Payments Start: ' . $paymentStart]);
+                }
+
+                if (!empty($comments = trim($data[$headers->search('Comments')]))) {
+                    $loan->comments()->create(['content' => $comments]);
+                }
             }
         }
     }
