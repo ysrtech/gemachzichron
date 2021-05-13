@@ -13,6 +13,7 @@
       </nav>
     </div>
     <slot/>
+
     <teleport v-if="isMounted" to="#header">
       {{ member.first_name + ' ' + member.last_name }}
       <app-badge color="red" v-if="member.deleted_at">Archived Member</app-badge>
@@ -43,10 +44,6 @@ export default {
           title: 'Details',
           route: 'members.show',
         },
-        // {
-        //   title: 'Membership',
-        //   route: 'members.membership.show',
-        // },
         // {
         //   title: 'Subscriptions',
         //   route: '',
