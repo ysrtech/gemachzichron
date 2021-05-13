@@ -11,9 +11,9 @@ class PlanTypeSeeder extends Seeder
         ['name' => 'Regular Member'],
         ['name' => '18'],
         ['name' => 'Horues Shu'],
-        ['name' => 'New'],
-        ['name' => '5 Year Plan'],
-        ['name' => '7 Year Plan'],
+//        ['name' => 'New'],
+//        ['name' => '5 Year Plan'],
+//        ['name' => '7 Year Plan'],
     ];
 
     /**

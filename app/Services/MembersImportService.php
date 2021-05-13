@@ -62,11 +62,13 @@ class MembersImportService
             'HS'            => PlanType::firstWhere('name', 'Horues Shu')->id,
             'Member'        => PlanType::firstWhere('name', 'Regular Member')->id,
             'Former Member' => PlanType::firstWhere('name', 'Regular Member')->id,
-            'NEW'           => PlanType::firstWhere('name', 'New')->id,
+//            'NEW'           => PlanType::firstWhere('name', 'New')->id,
         ];
 
         while (($data = fgetcsv($handle, 1000)) !== false) {
             if (is_array($data)) {
+
+                if (trim($data[$headers->search('Membership Type')]) == 'NEW') continue;
 
                 $membership = Membership::updateOrCreate(
                     [
