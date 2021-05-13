@@ -53,9 +53,9 @@
                 <td class="px-6 py-3.5 whitespace-nowrap flex space-x-3 items-baseline">
                   <span>{{ member.last_name + ', ' + member.first_name }}</span>
                   <span
-                    :title="member.membership_count ? 'Active Membership' : 'No Active Membership'"
+                    :title="member.has_active_membership ? 'Active Membership' : 'No Active Membership'"
                     class="block w-2 h-2 rounded-full"
-                    :class="member.membership_count ? 'bg-green-500' : 'bg-red-500'">
+                    :class="member.has_active_membership ? 'bg-green-500' : 'bg-red-500'">
                   </span>
                   <app-badge v-if="member.deleted_at" color="red" class="ml-1">Archived Member</app-badge>
                 </td>

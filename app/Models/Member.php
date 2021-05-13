@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Traits\Filterable;
 use App\Models\Traits\FilterableByRelated;
 use App\Models\Traits\FilterableWithTrashed;
 use App\Models\Traits\Searchable;
@@ -39,5 +38,41 @@ class Member extends Model
     public function guarantees()
     {
         return $this->belongsToMany(Loan::class, 'guarantors');
+    }
+
+    public function scopeWithHasMembership(Builder $query)
+    {
+        $query->addSelect([
+            'has_membership' => Membership::select('id')
+                ->whereColumn('member_id', 'members.id')
+                ->limit(1)
+        ]);
+    }
+
+    public function scopeWithHasActiveMembership(Builder $query)
+    {
+        $query->addSelect([
+            'has_active_membership' => Membership::select('is_active')
+                ->whereColumn('member_id', 'members.id')
+                ->limit(1)
+        ]);
+    }
+
+    public function getHasMembershipAttribute($value)
+    {
+        if (array_key_exists('has_membership', $this->attributes)) {
+            return (bool) $value;
+        }
+
+        return !is_null($this->loadMissing('membership')->membership);
+    }
+
+    public function getHasActiveMembershipAttribute($value)
+    {
+        if (array_key_exists('has_active_membership', $this->attributes)) {
+            return (bool) $value;
+        }
+
+        return $this->membership ? $this->membership->is_active : false;
     }
 }

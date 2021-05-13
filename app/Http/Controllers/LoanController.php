@@ -35,7 +35,7 @@ class LoanController extends Controller
             'dependents'
         ]);
 
-        if (!$member->membership) {
+        if (!$member->has_membership) {
             return back()->withPartial('AlertModal', [
                 'icon'    => 'error',
                 'title'   => 'Cannot access loans',

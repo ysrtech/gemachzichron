@@ -14,7 +14,7 @@ class MemberController extends Controller
         $query = Member::search($request->search)
             ->filterWithTrashed($request->archived)
             ->filterHasRelated($request->only('membership'))
-            ->withCount(['membership' => fn($q) => $q->where('is_active', true)])
+            ->withHasActiveMembership()
             ->orderBy('last_name')
             ->orderBy('first_name');
 
