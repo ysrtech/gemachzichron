@@ -10,7 +10,7 @@ use Carbon\Exceptions\InvalidFormatException;
 use Exception;
 use Illuminate\Support\Str;
 
-class MembersImportService
+class CsvImportService
 {
     public static function importMembers($filename)
     {

@@ -4,9 +4,9 @@ namespace App\Services;
 
 use Illuminate\Support\Collection;
 
-class ExportService
+class CsvExportService
 {
-    public static function streamCsv(Collection $data, string $fileName = 'file.csv', array $columnHeaders = null)
+    public static function stream(Collection $data, string $fileName = 'file.csv', array $columnHeaders = null)
     {
         $callback = function () use ($data, $columnHeaders) {
 

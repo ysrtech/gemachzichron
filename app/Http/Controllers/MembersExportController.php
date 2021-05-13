@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Member;
-use App\Services\ExportService;
+use App\Services\CsvExportService;
 
 class MembersExportController extends Controller
 {
@@ -28,7 +28,7 @@ class MembersExportController extends Controller
             'father_in_law',
         ];
 
-        return ExportService::streamCsv(
+        return CsvExportService::stream(
             Member::toBase()->select($columns)->get(),
             'members.csv',
             $columns

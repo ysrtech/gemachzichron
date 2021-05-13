@@ -2,14 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Member;
-use App\Models\Membership;
-use App\Services\MembersImportService;
-use DateTime;
+use App\Services\CsvImportService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
 
 class ImportMembers extends Command
 {
@@ -26,16 +21,11 @@ class ImportMembers extends Command
      * @var string
      */
     protected $description = 'Import members from csv file in ./storage/imports';
-
-    /**
-     * Execute the console command.
-     *
-     * @return int
-     */
+    
     public function handle()
     {
         $this->comment('Importing members...');
-        MembersImportService::importMembers($this->getFilePath($this->argument('filename')));
+        CsvImportService::importMembers($this->getFilePath($this->argument('filename')));
         $this->info('Finished Importing members');
         $this->newLine();
 
@@ -43,7 +33,7 @@ class ImportMembers extends Command
             Cache::forget('plan-types');
             $this->callSilently('db:seed', ['class' => 'PlanTypeSeeder']);
             $this->comment('Importing memberships...');
-            MembersImportService::importMemberships(
+            CsvImportService::importMemberships(
                 $this->getFilePath($memberships)
             );
             $this->info('Finished Importing memberships');
@@ -52,7 +42,7 @@ class ImportMembers extends Command
 
         if ($children = ($this->option('children') ?? $this->ask('Please enter filename for children (or empty to skip) then [ENTER]'))) {
             $this->comment('Importing children...');
-            MembersImportService::importChildren(
+            CsvImportService::importChildren(
                 $this->getFilePath($children)
             );
             $this->info('Finished Importing children');
@@ -61,7 +51,7 @@ class ImportMembers extends Command
 
         if ($loans = ($this->option('loans') ?? $this->ask('Please enter filename for loans (or empty to skip) then [ENTER]'))) {
             $this->comment('Importing loans...');
-            MembersImportService::importLoans(
+            CsvImportService::importLoans(
                 $this->getFilePath($loans)
             );
             $this->info('Finished Importing loans');
