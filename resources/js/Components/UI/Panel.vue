@@ -1,6 +1,6 @@
 <template>
   <div class="bg-white rounded-lg shadow divide-y divide-gray-200 overflow-hidden">
-    <header class="p-4 sm:px-6 flex items-center justify-between" v-if="header">
+    <header class="p-4 sm:px-6 flex items-center justify-between" v-if="title || description || !!$slots.actions">
       <div>
         <div class="flex space-x-2 items-baseline">
           <h2 class="text-lg leading-6 font-medium text-gray-900" v-html="title"></h2>
@@ -23,10 +23,6 @@ export default {
   },
 
   props: {
-    header: {
-      type: Boolean,
-      default: true
-    },
     title: String,
     badge: Object,
     description: String,
