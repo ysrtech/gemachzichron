@@ -6,18 +6,23 @@ use App\Http\Requests\CreateLoanRequest;
 use App\Models\Loan;
 use App\Models\Member;
 use App\Models\Membership;
+use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Inertia\Inertia;
 
 class LoanController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         return Inertia::render('Loans/Index', [
-            'loans' => Loan::with([
-                'membership:id,member_id',
-                'membership.member' => fn($q) => $q->select(['id', 'first_name', 'last_name', 'deleted_at'])->withTrashed(),
-            ])
+            'filters' => $request->all('search', 'amount', 'from_date', 'to_date'),
+            'loans' => Loan::searchByRelated($request->search, ['membership.member'])
+                ->filter($request->only('amount'))
+                ->filterBetweenDates('loan_date', $request->from_date, $request->to_date)
+                ->with([
+                    'membership:id,member_id',
+                    'membership.member' => fn($q) => $q->select(['id', 'first_name', 'last_name', 'deleted_at'])->withTrashed(),
+                ])
                 ->orderBy('loan_date', 'desc')
                 ->paginate()
         ]);

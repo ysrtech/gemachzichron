@@ -4,28 +4,32 @@
       <search-filter v-model="filterForm.search" class="w-full max-w-md mr-4" @reset="reset">
         <div class="p-4 space-y-4">
 
-          <search-filter-select
+          <search-filter-field
             v-model="filterForm.type"
             @change="reset('plan_type_id')"
+            type="select"
             label="Membership type"
             :options="{'--': null, Membership: 'Membership', Pekudon: 'Pekudon'}"
           />
 
-          <search-filter-select
+          <search-filter-field
             v-if="filterForm.type !== 'Pekudon'"
             v-model="filterForm.plan_type_id"
+            type="select"
             label="Plan type"
             :options="planTypes.reduce((option, type) => ({...option, [type.name]: type.id}) ,{'--': null})"
           />
 
-          <search-filter-select
+          <search-filter-field
             v-model="filterForm.is_active"
+            type="select"
             label="Active Membership"
             :options="{'--': null, 'Only Active': 'true', 'Only Inactive': 'false'}"
           />
 
-          <search-filter-select
+          <search-filter-field
             v-model="filterForm.archived"
+            type="select"
             label="Archived Member"
             :options="{'Without Archived': null, 'With Archived': 'with', 'Only Archived': 'only'}"
           />
@@ -47,19 +51,21 @@
 
 <script>
 import AppLayout from "@/Layouts/AppLayout";
-import {mapValues, pickBy, throttle} from "lodash";
 import SearchFilter from "@/Components/App/SearchFilter";
 import MembershipsTable from "./MembershipsTable";
-import SearchFilterSelect from "@/Components/App/SearchFilterSelect";
+import SearchFilterField from "@/Components/App/SearchFilterField";
+import HasFilters from "@/Mixins/HasFilters";
 
 export default {
   layout: (h, page) => h(AppLayout, {header: 'Memberships'}, () => page),
 
   components: {
-    SearchFilterSelect,
+    SearchFilterField,
     MembershipsTable,
     SearchFilter
   },
+
+  mixins: [HasFilters],
 
   data() {
     return {
@@ -77,32 +83,6 @@ export default {
   props: {
     members: Object,
     filters: Object,
-  },
-
-  watch: {
-    filterForm: {
-      handler: throttle(function () {
-        let query = pickBy(this.filterForm)
-        this.$inertia.get(
-          this.$route('memberships.index'),
-          Object.keys(query).length ? query : {},
-          {
-            preserveState: true,
-          }
-        )
-      }, 150),
-      deep: true,
-    },
-  },
-
-  methods: {
-    reset(field = null) {
-      if (field) {
-        this.filterForm[field] = null
-      } else {
-        this.filterForm = mapValues(this.filterForm, () => null)
-      }
-    },
   },
 
   created() {

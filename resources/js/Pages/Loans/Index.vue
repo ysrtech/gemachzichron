@@ -1,6 +1,30 @@
 <template>
   <div class="max-w-3xl mx-auto">
-    <app-panel :header="false">
+    <search-filter v-model="filterForm.search" class="w-full max-w-md mb-6" placeholder="Search By Member..." @reset="reset">
+      <div class="p-4 space-y-4">
+
+        <search-filter-field
+          v-model="filterForm.amount"
+          type="number"
+          label="Amount"
+        />
+
+        <search-filter-field
+          v-model="filterForm.from_date"
+          type="date"
+          label="From Date"
+        />
+
+        <search-filter-field
+          v-model="filterForm.to_date"
+          type="date"
+          label="To Date"
+        />
+
+      </div>
+    </search-filter>
+
+    <app-panel>
       <template #content>
         <table class="min-w-full divide-y divide-gray-200">
           <thead v-if="loans.total > 0">
@@ -59,18 +83,37 @@ import {date} from "@/helpers/dates";
 import LinksPagination from "@/Components/App/LinksPagination";
 import Money from "@/Components/UI/Money";
 import AppPanel from "@/Components/UI/Panel";
+import SearchFilter from "@/Components/App/SearchFilter";
+import SearchFilterField from "@/Components/App/SearchFilterField";
+import HasFilters from "@/Mixins/HasFilters";
 
 export default {
   layout: (h, page) => h(AppLayout, {header: 'Loans'}, () => page),
 
   components: {
+    SearchFilterField,
+    SearchFilter,
     AppPanel,
     Money,
     LinksPagination
   },
 
+  data() {
+    return {
+      filterForm: {
+        search: this.filters.search,
+        amount: this.filters.amount,
+        from_date: this.filters.from_date,
+        to_date: this.filters.to_date,
+      }
+    }
+  },
+
+  mixins: [HasFilters],
+
   props: {
     loans: Object,
+    filters: Object,
   },
 
   methods: {

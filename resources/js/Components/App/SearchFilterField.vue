@@ -1,12 +1,23 @@
 <template>
   <div>
     <label class="block text-gray-700 text-xs">{{ label }}</label>
+
     <select
+      v-if="type === 'select'"
       class="mt-1 w-full text-sm border focus:outline-none rounded p-1"
       :value="modelValue"
       @input="$emit('update:modelValue', $event.target.value)">
       <option v-for="(value, key) in options" :value="value">{{ key }}</option>
     </select>
+
+    <input
+      v-else
+      :type="type"
+      class="mt-1 w-full text-sm border focus:outline-none rounded p-1"
+      :value="modelValue"
+      :placeholder="placeholder"
+      @input="$emit('update:modelValue', $event.target.value)">
+
   </div>
 </template>
 
@@ -14,7 +25,12 @@
 export default {
   props: {
     label: String,
+    type: {
+      type: String,
+      default: 'select'
+    },
     options: Object,
+    placeholder: String,
     modelValue: {
       default: null
     },

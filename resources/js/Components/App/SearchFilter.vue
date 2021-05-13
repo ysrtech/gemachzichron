@@ -20,7 +20,7 @@
         autocomplete="off"
         class="rounded-r-md shadow-sm w-full relative px-6 focus:outline-none focus:ring-2 ring-primary-700 bg-white"
         name="search"
-        placeholder="Search…"
+        :placeholder="placeholder"
         type="text"
         @input="$emit('update:modelValue', $event.target.value)"
       >
@@ -44,6 +44,10 @@ export default {
 
   props: {
     modelValue: String,
+    placeholder: {
+      type: String,
+      default: 'Search...'
+    }
   },
 }
 </script>

@@ -2,16 +2,18 @@
   <div class="max-w-5xl mx-auto">
     <div class="mb-6 flex justify-between items-center px-1">
       <search-filter v-model="filterForm.search" class="w-full max-w-md mr-4" @reset="reset">
-        <div class="p-4">
+        <div class="p-4 space-y-4">
 
-          <search-filter-select
+          <search-filter-field
             v-model="filterForm.membership"
+            type="select"
             label="Membership"
             :options="{'All Members': null, 'Only With Membership': 'true', 'Only Without Membership': 'false'}"
           />
 
-          <search-filter-select
+          <search-filter-field
             v-model="filterForm.archived"
+            type="select"
             label="Archived"
             :options="{'Without Archived': null, 'With Archived': 'with', 'Only Archived': 'only'}"
           />
@@ -125,19 +127,19 @@
 
 <script>
 import AppLayout from "@/Layouts/AppLayout";
-import {mapValues, pickBy, throttle} from "lodash";
 import SearchFilter from "@/Components/App/SearchFilter";
 import AppBadge from "@/Components/UI/Badge";
 import AppPagination from "@/Components/App/Pagination";
 import AppDropdownLink from "@/Components/UI/DropdownLink";
 import AppDropdown from "@/Components/UI/Dropdown";
-import SearchFilterSelect from "@/Components/App/SearchFilterSelect";
+import SearchFilterField from "@/Components/App/SearchFilterField";
+import HasFilters from "@/Mixins/HasFilters";
 
 export default {
   layout: (h, page) => h(AppLayout, {header: 'Members'}, () => page),
 
   components: {
-    SearchFilterSelect,
+    SearchFilterField,
     SearchFilter,
     AppBadge,
     AppPagination,
@@ -155,36 +157,15 @@ export default {
     }
   },
 
+  mixins: [HasFilters],
+
   props: {
     members: Object,
     filters: Object,
   },
 
-  watch: {
-    filterForm: {
-      handler: throttle(function () {
-        let query = pickBy(this.filterForm)
-        this.$inertia.get(
-          this.$route('members.index'),
-          Object.keys(query).length ? query : {},
-          {
-            preserveState: true,
-            preserveScroll: true,
-          }
-        )
-      }, 150),
-      deep: true,
-    },
-  },
-
   methods: {
-    reset() {
-      this.filterForm = mapValues(this.filterForm, () => null)
-    },
-
     duplicateMember(member) {
-      ['id', 'created_at', 'updated_at', 'deleted_at'].forEach(field => delete member[field]);
-
       this.$inertia.post(this.$route('members.store'), member)
     }
   },

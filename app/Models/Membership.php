@@ -23,6 +23,10 @@ class Membership extends Model
 
     public static function booted()
     {
+//        static::creating(function(Membership $membership) {
+//            $membership->id = $membership->member_id;
+//        });
+
         static::saving(function (Membership $membership) {
             if ($membership->type == Membership::TYPE_PEKUDON) {
                 $membership->plan_type_id = null;

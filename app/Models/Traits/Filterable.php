@@ -19,4 +19,15 @@ trait Filterable
             $query->where($key, filter_var($filter, FILTER_VALIDATE_BOOLEAN));
         }
     }
+
+    public function scopeFilterBetweenDates($query, string $column, ?string $startDate, ?string $endDate)
+    {
+        if ($startDate) {
+            $query->whereDate($column, '>=', $startDate);
+        }
+
+        if ($endDate) {
+            $query->whereDate($column, '<=', $endDate);
+        }
+    }
 }
