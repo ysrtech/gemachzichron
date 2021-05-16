@@ -16,7 +16,9 @@ class MemberGuaranteesController extends Controller
         ]);
 
         return Inertia::render('Members/Guarantees/Index', [
-            'member' => $member->only(['id', 'first_name', 'last_name', 'deleted_at', 'guarantees'])
+            'member' => $member
+                ->append('has_membership')
+                ->only(['id', 'first_name', 'last_name', 'has_membership', 'deleted_at', 'guarantees'])
         ]);
     }
 }

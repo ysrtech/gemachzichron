@@ -35,16 +35,10 @@ class LoanController extends Controller
             'dependents'
         ]);
 
-        if (!$member->has_membership) {
-            return back()->withPartial('AlertModal', [
-                'icon'    => 'error',
-                'title'   => 'Cannot access loans',
-                'message' => "No membership found for $member->first_name $member->last_name"
-            ]);
-        }
-
         return Inertia::render('Members/Loans/Index', [
-            'member' => $member->only(['id', 'first_name', 'last_name', 'deleted_at', 'membership', 'dependents'])
+            'member' => $member
+                ->append('has_membership')
+                ->only(['id', 'first_name', 'last_name', 'has_membership', 'deleted_at', 'membership', 'dependents'])
         ]);
     }
 

@@ -6,6 +6,7 @@
           v-for="tab in tabs"
           :key="tab.title"
           :href="$route(tab.route, {member: member.id})"
+          v-show="tab.show"
           class="whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-sm"
           :class="[$route().current(tab.route) ? 'border-primary-500 text-primary-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300']">
           {{ tab.title }}
@@ -43,30 +44,32 @@ export default {
         {
           title: 'Details',
           route: 'members.show',
+          show: true,
         },
         // {
         //   title: 'Subscriptions',
-        //   route: '',
+        //   route: 'member.subscriptions.index',
+        //   show: this.member.has_membership
         // },
         // {
         //   title: 'Transactions',
-        //   route: '',
-        // },
-        // {
-        //   title: 'Invoices',
-        //   route: '',
+        //   route: 'member.transactions.index',
+        //   show: this.member.has_membership
         // },
         {
           title: 'Loans',
           route: 'members.loans.index',
+          show: this.member.has_membership
         },
         {
           title: 'Children',
           route: 'members.dependents.index',
+          show: true,
         },
         {
           title: 'Guarantees',
           route: 'members.guarantees.index',
+          show: true,
         },
       ]
     }

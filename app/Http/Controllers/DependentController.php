@@ -15,7 +15,9 @@ class DependentController extends Controller
         $member->load(['dependents' => fn($q) => $q->orderBy('dob')]);
 
         return Inertia::render('Members/Dependents/Index', [
-            'member' => $member->only(['id', 'first_name', 'last_name', 'deleted_at', 'dependents'])
+            'member' => $member
+                ->append('has_membership')
+                ->only(['id', 'first_name', 'last_name', 'has_membership', 'deleted_at', 'dependents'])
         ]);
     }
 
