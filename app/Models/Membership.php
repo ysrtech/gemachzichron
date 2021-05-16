@@ -49,6 +49,11 @@ class Membership extends Model
         return $this->hasMany(Loan::class);
     }
 
+    public function subscriptions()
+    {
+        return $this->hasMany(Subscription::class);
+    }
+
     public function scopeWithTotalPaid($query)
     {
         return $query;

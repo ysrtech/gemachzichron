@@ -21,7 +21,7 @@ class ImportMembers extends Command
      * @var string
      */
     protected $description = 'Import members from csv file in ./storage/imports';
-    
+
     public function handle()
     {
         $this->comment('Importing members...');
