@@ -16,14 +16,19 @@ class CreateSubscriptionsTable extends Migration
         Schema::create('subscriptions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('membership_id')->constrained();
+            $table->string('gateway');
+            $table->string('gateway_identifier')->nullable();
             $table->string('type');
             $table->float('amount');
             $table->date('start_date');
             $table->integer('installments')->nullable();
             $table->string('frequency');
+            $table->text('comment')->nullable();
+            $table->float('membership_fee')->default(0);
+            $table->float('processing_fee')->default(0);
+            $table->float('decline_fee')->default(0);
             $table->boolean('active')->default(true);
-            $table->string('gateway');
-            $table->string('gateway_reference');
+            $table->text('data')->nullable();
             $table->timestamps();
         });
     }

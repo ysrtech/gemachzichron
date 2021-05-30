@@ -76,6 +76,17 @@
           </app-input>
         </div>
 
+        <div class="col-span-2">
+          <app-input
+            id="comment"
+            v-model="form.comment"
+            :error="form.errors.comment"
+            label="Comments"
+            type="textarea"
+            @input="form.clearErrors('comment')"
+          />
+        </div>
+
         <div class="col-span-2 relative">
           <app-dropdown width="full" align="left" :close-on-click="false">
             <template #trigger>
@@ -175,6 +186,7 @@ export default {
         cheque_number:  this.loan?.cheque_number || null,
         application_copy: null,
         guarantors: this.loan?.guarantors || [],
+        comment: this.loan?.comment || null,
       })
     },
 

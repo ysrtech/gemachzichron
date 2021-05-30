@@ -26,8 +26,6 @@ class PlanTypeController extends Controller
     {
         PlanType::create($request->validate(['name' => 'required|string']));
 
-        Cache::forget('plan-types');
-
         return back()->snackbar('Plan Type Created.');
     }
 
@@ -40,8 +38,6 @@ class PlanTypeController extends Controller
     {
         $planType->update($request->validate(['name' => 'required|string']));
 
-        Cache::forget('plan-types');
-
         return back()->snackbar('Plan Type Updated.');
     }
 
@@ -50,8 +46,6 @@ class PlanTypeController extends Controller
         // TODO Check if there are associated resources
 
         $planType->delete();
-
-        Cache::forget('plan-types');
 
         return back()->snackbar('Plan Type Deleted.');
     }

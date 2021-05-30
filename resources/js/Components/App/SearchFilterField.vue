@@ -7,7 +7,9 @@
       class="mt-1 w-full text-sm border focus:outline-none rounded p-1"
       :value="modelValue"
       @input="$emit('update:modelValue', $event.target.value)">
-      <option v-for="(value, key) in options" :value="value">{{ key }}</option>
+      <option v-for="(value, key) in options" :value="value" :key="key">
+        {{ Array.isArray(options) ? value : key }}
+      </option>
     </select>
 
     <input

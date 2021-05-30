@@ -8,7 +8,7 @@
         </div>
         <p v-if="description" class="mt-1 text-sm text-gray-700">{{ description }}</p>
       </div>
-      <div>
+      <div class="-my-2">
         <slot name="actions"/>
       </div>
     </header>

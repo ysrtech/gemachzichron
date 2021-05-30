@@ -52,7 +52,7 @@ class MemberController extends Controller
                 ->append('has_membership')
                 ->load([
                     'membership' => fn($query) => $query
-                        ->with('planType', 'comments')
+                        ->with('planType', 'notes')
                         ->withTotalPaid()
                 ])
         ]);

@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use App\Models\Traits\Commentable;
+use App\Models\Traits\Noteable;
 use App\Models\Traits\Filterable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Membership extends Model
 {
-    use HasFactory, Filterable, Commentable;
+    use HasFactory, Filterable, Noteable;
 
     const TYPE_MEMBERSHIP = 'Membership';
     const TYPE_PEKUDON = 'Pekudon';
@@ -54,8 +55,22 @@ class Membership extends Model
         return $this->hasMany(Subscription::class);
     }
 
-    public function scopeWithTotalPaid($query)
+    public function transactions()
     {
-        return $query;
+        return $this->hasMany(Transaction::class);
+    }
+
+    public function paymentMethods()
+    {
+        return $this->hasMany(PaymentMethod::class);
+    }
+
+    public function scopeWithTotalPaid(Builder $query)
+    {
+        return $query->addSelect([
+            'total_paid' => Transaction::selectRaw('SUM(amount)')
+                ->whereColumn('membership_id', 'memberships.id')
+                ->where('type', Transaction::TYPE_MAIN_TRANSACTION)
+        ]);
     }
 }

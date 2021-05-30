@@ -14,13 +14,9 @@
           :error="form.errors.type"
           label="Membership Type"
           type="select"
+          :options="MEMBERSHIP_TYPES"
           @input="form.clearErrors('type')"
-        >
-          <template #options>
-            <option>Membership</option>
-            <option>Pekudon</option>
-          </template>
-        </app-input>
+        />
 
         <app-input
           v-if="form.type === 'Membership'"
@@ -57,6 +53,7 @@
 <script>
 import Modal from "@/Components/UI/Modal";
 import AppCheckbox from "@/Components/UI/Checkbox";
+import {MEMBERSHIP_TYPES} from "@/config/memberships";
 
 export default {
   components: {
@@ -66,6 +63,7 @@ export default {
 
   data() {
     return {
+      MEMBERSHIP_TYPES,
       planTypes: [],
       form: this.$inertia.form(),
     }
@@ -99,7 +97,8 @@ export default {
         })
       } else {
         this.form.post(this.$route('members.membership.store', this.memberId), {
-          onSuccess: () => this.$emit('close')
+          onSuccess: () => this.$emit('close'),
+          preserveState: false,
         })
       }
     },

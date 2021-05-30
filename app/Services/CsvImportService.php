@@ -5,49 +5,31 @@ namespace App\Services;
 use App\Models\Member;
 use App\Models\Membership;
 use App\Models\PlanType;
+use App\Models\Subscription;
 use Carbon\Carbon;
 use Carbon\Exceptions\InvalidFormatException;
 use Exception;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class CsvImportService
 {
     public static function importMembers($filename)
     {
-        /**
-         * Headers:
-         *
-         * Id
-         * Title
-         * First Name
-         * Wife Name
-         * Last Name
-         * City
-         * Address
-         * Postal Code
-         * Home Phone
-         * Mobile Phone
-         * Wife Mobile Phone
-         * Shtibel
-         * Hebrew First Name
-         * Hebrew Last Name
-         * Father
-         * Father In Law
-         * Email
-         */
         $handle = self::handle($filename);
 
-        $headers = self::headers($handle, $filename, true);
+        $headers = self::headers($handle, $filename);
 
-        while (($data = fgetcsv($handle, 1000)) !== false) {
-            if (is_array($data)) {
+        while (($row = fgetcsv($handle, 1000)) !== false) {
 
-                $member = Member::findOrNew($data[$headers->search('id')]);
+            if (!is_array($row)) continue;
 
-                collect($headers)->each(fn($header, $key) => $member->$header = $data[$key]);
+            $member = Member::findOrNew($row[$headers->search('id')]);
 
-                $member->save();
-            }
+            collect($headers)->each(fn($header, $key) => $member->$header = $row[$key]);
+
+            $member->save();
         }
     }
 
@@ -58,31 +40,30 @@ class CsvImportService
         $headers = self::headers($handle, $filename);
 
         $planTypes = [
-            '18'            => PlanType::firstWhere('name', '18')->id,
-            'HS'            => PlanType::firstWhere('name', 'Horues Shu')->id,
-            'Member'        => PlanType::firstWhere('name', 'Regular Member')->id,
-            'Former Member' => PlanType::firstWhere('name', 'Regular Member')->id,
-//            'NEW'           => PlanType::firstWhere('name', 'New')->id,
+            '18'            => PlanType::firstOrCreate(['name' => '18'])->id,
+            'HS'            => PlanType::firstOrCreate(['name' => 'Horues Shu'])->id,
+            'Member'        => PlanType::firstOrCreate(['name' => 'Regular Member'])->id,
+            'Former Member' => PlanType::firstOrCreate(['name' => 'Former Member'])->id,
         ];
 
-        while (($data = fgetcsv($handle, 1000)) !== false) {
-            if (is_array($data)) {
+        while (($row = fgetcsv($handle, 1000)) !== false) {
 
-                if (trim($data[$headers->search('Membership Type')]) == 'NEW') continue;
+            if (!is_array($row)) continue;
 
-                $membership = Membership::updateOrCreate(
-                    [
-                        'member_id' => trim($data[$headers->search('ID')])
-                    ], [
-                        'type'         => Membership::TYPE_MEMBERSHIP,
-                        'plan_type_id' => $planTypes[trim($data[$headers->search('Membership Type')])],
-                        'is_active'    => strtolower(trim($data[$headers->search('Is Active')])) == 'yes'
-                    ]
-                );
+            if (trim($row[$headers->search('Membership Type')]) == 'NEW') continue;
 
-                if (!empty($comments = trim($data[$headers->search('Comments')]))) {
-                    $membership->comments()->create(['content' => $comments]);
-                }
+            $membership = Membership::updateOrCreate(
+                [
+                    'member_id' => trim($row[$headers->search('ID')])
+                ], [
+                    'type'         => Membership::TYPE_MEMBERSHIP,
+                    'plan_type_id' => $planTypes[trim($row[$headers->search('Membership Type')])],
+                    'is_active'    => strtolower(trim($row[$headers->search('Is Active')])) == 'yes'
+                ]
+            );
+
+            if (!empty($notes = trim($row[$headers->search('Comments')]))) {
+                $membership->notes()->create(['content' => $notes]);
             }
         }
     }
@@ -93,22 +74,25 @@ class CsvImportService
 
         $headers = self::headers($handle, $filename);
 
-        while (($data = fgetcsv($handle, 1000)) !== false) {
-            if (is_array($data)) {
+        while (($row = fgetcsv($handle, 1000)) !== false) {
 
-                $member = Member::findOrFail(trim($data[$headers->search('ID')]));
+            if (!is_array($row)) continue;
 
-                try {
-                    $dob = Carbon::parse(trim($data[$headers->search('DOB')]));
-                } catch (InvalidFormatException $exception) {}
+            $member = Member::findOrFail(trim($row[$headers->search('ID')]));
 
-                $member->dependents()->updateOrCreate([
-                    'name' => trim($data[$headers->search('Name')]),
-                    'dob'  => $dob ?? null,
-                ], [
-                    'is_married' => strtolower(trim($data[$headers->search('Is Married')])) == 'yes'
-                ]);
+            try {
+                $dob = Carbon::parse(trim($row[$headers->search('DOB')]));
+            } catch (InvalidFormatException $exception) {
+                $dob = null;
             }
+
+            $member->dependents()->updateOrCreate([
+                'name' => trim($row[$headers->search('Name')]),
+                'dob'  => $dob,
+            ], [
+                'is_married' => strtolower(trim($row[$headers->search('Is Married')])) == 'yes'
+            ]);
+
         }
     }
 
@@ -118,33 +102,120 @@ class CsvImportService
 
         $headers = self::headers($handle, $filename);
 
-        while (($data = fgetcsv($handle, 1000)) !== false) {
-            if (is_array($data)) {
+        while (($row = fgetcsv($handle, 1000)) !== false) {
 
-                $membership = Member::findOrFail(trim($data[$headers->search('ID')]))->membership;
+            if (!is_array($row)) continue;
 
-                $loan = $membership->loans()->updateOrCreate([
-                    'cheque_number' => trim($data[$headers->search('Check Numbers')]),
-                ], [
-                    'loan_date' => Carbon::parse(trim($data[$headers->search('Loan Date')])),
-                    'amount'    => Str::of($data[$headers->search('Loan Amount')])->trim()->replace(['$', ','], ''),
+            $member = Member::findOrFail(trim($row[$headers->search('ID')]));
+            $membership = $member->membership;
+
+            if (!$membership) {
+                Log::warning("[IMPORT LOANS (CSV)] No membership for member #$member->id creating membership...");
+                $membership = $member->membership()->create([
+                    'type'         => Membership::TYPE_MEMBERSHIP,
+                    'plan_type_id' => 1
                 ]);
-
-                $loan->guarantors()->sync(
-                    collect($data)
-                        ->only(array_keys($headers->filter(fn($header) => Str::startsWith($header, 'Guarantor'))->all()))
-                        ->filter()
-                        ->toArray()
-                );
-
-                if (!empty($paymentStart = trim($data[$headers->search('Payment Start')]))) {
-                    $loan->comments()->create(['content' => 'Payments Start: ' . $paymentStart]);
-                }
-
-                if (!empty($comments = trim($data[$headers->search('Comments')]))) {
-                    $loan->comments()->create(['content' => $comments]);
-                }
             }
+
+            $loan = $membership->loans()->updateOrCreate([
+                'cheque_number' => trim($row[$headers->search('Check Numbers')]),
+            ], [
+                'loan_date' => Carbon::parse(trim($row[$headers->search('Loan Date')])),
+                'amount'    => Str::of($row[$headers->search('Loan Amount')])->trim()->replace(['$', ','], ''),
+                'comment' => trim($row[$headers->search('Comments')]) .
+                    (!empty($paymentStart = trim($row[$headers->search('Payment Start')]))
+                        ? '.\nPayment Start: ' . $paymentStart
+                        : null)
+            ]);
+
+            $loan->guarantors()->sync(
+                collect($row)
+                    ->only(array_keys($headers->filter(fn($header) => Str::startsWith($header, 'Guarantor'))->all()))
+                    ->filter()
+                    ->toArray()
+            );
+        }
+    }
+
+    public static function importRotessaCustomers($filename)
+    {
+        $handle = self::handle($filename);
+
+        $headers = self::headers($handle, $filename);
+
+        while (($row = fgetcsv($handle, 1000)) !== false) {
+            if (!is_array($row)) continue;
+
+            $member = Member::findOrFail(trim($row[$headers->search('Gemach ID')]));
+
+            $membership = $member->membership;
+
+            if (!$membership) {
+                Log::warning("[IMPORT ROTESSA CUSTOMERS (CSV)] No membership for member #$member->id creating membership...");
+                $membership = $member->membership()->create([
+                    'type'         => Membership::TYPE_MEMBERSHIP,
+                    'plan_type_id' => 1
+                ]);
+            }
+
+            $membership->update(['created_at' => trim($row[$headers->search('created_at')])]);
+
+            $paymentMethod = $membership->paymentMethods()->firstOrNew([
+                'gateway'            => 'Rotessa',
+                'gateway_identifier' => trim($row[$headers->search('ID')])
+            ]);
+
+            $paymentMethod->data = [
+                'Identifier'    => trim($row[$headers->search('identifier')]),
+                'Customer Type' => trim($row[$headers->search('customer_type')]),
+                'Bank Name'     => trim($row[$headers->search('bank_name')]),
+            ];
+
+            $paymentMethod->save();
+        }
+    }
+
+    public static function importRotessaSchedules($filename)
+    {
+        $handle = self::handle($filename);
+
+        $headers = self::headers($handle, $filename);
+
+        while (($row = fgetcsv($handle, 1000)) !== false) {
+            if (!is_array($row)) continue;
+
+            $membership = Membership::whereHas(
+                'paymentMethods',
+                fn($q) => $q
+                    ->where('gateway', 'Rotessa')
+                    ->where('gateway_identifier', trim($row[$headers->search('customer_id')]))
+            )->firstOrFail();
+
+            $membership->subscriptions()->updateOrCreate([
+                'gateway'            => 'Rotessa',
+                'gateway_identifier' => trim($row[$headers->search('id')])
+            ], [
+                'type'           => trim($row[$headers->search('Type')]) == 'Loan Payment'
+                    ? Subscription::TYPE_LOAN_PAYMENT
+                    : Subscription::TYPE_MEMBERSHIP,
+                'amount'         => trim($row[$headers->search('amount')]),
+                'start_date'     => Carbon::parse(trim($row[$headers->search('process_date')]))->toDateString(),
+                'installments'   => trim($row[$headers->search('installments')]) ?: null,
+                'frequency'      => [
+                    'Once'              => Subscription::FREQUENCY_ONCE,
+                    'Monthly'           => Subscription::FREQUENCY_MONTHLY,
+                    'Every Other Month' => Subscription::FREQUENCY_BIMONTHLY,
+                    'Yearly'            => Subscription::FREQUENCY_YEARLY,
+                ][trim($row[$headers->search('frequency')])],
+                'membership_fee' => Str::after(trim($row[$headers->search('Membership Fees')]), '$') ?: 0,
+                'processing_fee' => trim($row[$headers->search('CC Fees')]) ?: 0,
+                'decline_fee'        => trim($row[$headers->search('Late Fees')]) ?: 0,
+                'active'         => (boolean)trim($row[$headers->search('active')]),
+                'comment'        => trim($row[$headers->search('comment')]),
+            ])->update([
+                // update amount to exclude fees
+                'amount' => DB::raw('amount - membership_fee - processing_fee - decline_fee')
+            ]);
         }
     }
 
@@ -159,13 +230,14 @@ class CsvImportService
         return $handle;
     }
 
-    private static function headers($handle, $filename, $snakeCase = false)
+    private static function headers($handle, $filename)
     {
-        $headers = collect(fgetcsv($handle, 1000))
-            ->filter()
-            ->map(fn($header) => $snakeCase ? Str::snake($header) : $header);
+        $headers = collect(fgetcsv($handle, 1000))->filter();
 
-        throw_if($headers->isEmpty(), Exception::class, "No header row in $filename file");
+        if ($headers->isEmpty()) {
+            fclose($handle);
+            throw new Exception("No header row in $filename file");
+        }
 
         return $headers;
     }

@@ -15,6 +15,9 @@
       :class="styleClasses"
       class="select-spinner"
       @input="$emit('update:modelValue', $event.target.value)">
+      <option v-for="(value, key) in options" :value="value" :key="key">
+        {{ Array.isArray(options) ? value : key }}
+      </option>
       <slot name="options"/>
     </select>
 
@@ -86,6 +89,10 @@ export default {
     },
     type: {
       default: 'text'
+    },
+    options: {
+      type: [Object, Array],
+      default: [],
     },
     filename: String
   },

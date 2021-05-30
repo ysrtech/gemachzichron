@@ -21,6 +21,7 @@ class CreateLoansTable extends Migration
             $table->date('loan_date');
             $table->string('cheque_number')->nullable();
             $table->string('application_copy')->nullable();
+            $table->text('comment')->nullable();
             $table->timestamps();
         });
     }

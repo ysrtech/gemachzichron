@@ -30,6 +30,9 @@
                   <i class="material-icons-outlined ml-0.5 text-lg transform translate-y-1">launch</i>
                 </a>
               </key-value>
+              <key-value label="Comments">
+                <pre class="font-sans">{{loan.comment}}</pre>
+              </key-value>
             </dl>
           </div>
         </template>
@@ -64,12 +67,6 @@
           </div>
         </template>
       </app-panel>
-
-      <comments-section
-        commentable-type="loan"
-        :commentable-id="loan.id"
-        :comments="loan.comments"
-      />
     </div>
   </div>
 </template>
@@ -78,7 +75,6 @@
 import AppLayout from "@/Layouts/AppLayout";
 import KeyValue from "@/Components/UI/KeyValue";
 import LoanFormModal from "@/Pages/Loans/FormModal";
-import CommentsSection from "@/Components/App/CommentsSection";
 import Money from "@/Components/UI/Money";
 import {date} from "@/helpers/dates";
 import AppPanel from "@/Components/UI/Panel";
@@ -89,7 +85,6 @@ export default {
   components: {
     AppPanel,
     Money,
-    CommentsSection,
     KeyValue,
     LoanFormModal
   },

@@ -74,20 +74,20 @@ export default {
           icon: "card_membership",
         },
         {
+          title: "Subscriptions",
+          route: "subscriptions.index",
+          icon: "subscriptions",
+        },
+        {
+          title: "Transactions",
+          route: "transactions.index",
+          icon: "payments",
+        },
+        {
           title: "Loans",
           route: "loans.index",
           icon: "account_balance",
         },
-        // {
-        //   title: "Subscriptions",
-        //   route: "subscriptions.index",
-        //   icon: "subscriptions",
-        // },
-        // {
-        //   title: "Transactions",
-        //   route: "transactions.index",
-        //   icon: "payments",
-        // },
         // {
         //   title: "Invoices",
         //   route: "invoices.index",

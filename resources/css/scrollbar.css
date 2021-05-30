@@ -1,0 +1,23 @@
+.scrollbar-w-2::-webkit-scrollbar {
+    @apply w-2
+}
+
+.scrollbar-w-2::-webkit-scrollbar-thumb {
+    @apply w-2
+}
+
+.scrollbar-gray-100::-webkit-scrollbar {
+    @apply bg-gray-100
+}
+
+.scrollbar-thumb-gray-200::-webkit-scrollbar-thumb {
+    @apply bg-gray-200
+}
+
+.hover\:scrollbar-thumb-gray-300::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-300;
+}
+
+.scrollbar-thumb-rounded-full::-webkit-scrollbar-thumb {
+    @apply rounded-full
+}

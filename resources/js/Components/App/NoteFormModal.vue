@@ -2,7 +2,7 @@
   <modal v-if="show" max-width="sm" @close="$emit('close')">
 
     <div class="px-6 py-4 text-xl font-medium">
-      {{ comment ? 'Edit Comment' : 'Add Comment'}}
+      {{ note ? 'Edit Note' : 'Add Note'}}
     </div>
 
     <form @submit.prevent="submit">
@@ -42,9 +42,9 @@ export default {
 
   props: {
     show: Boolean,
-    comment: Object,
-    commentableType: String,
-    commentableId: [String, Number]
+    note: Object,
+    noteableType: String,
+    noteableId: [String, Number]
   },
 
   emits: ['close'],
@@ -52,7 +52,7 @@ export default {
   watch: {
     show(val) {
       this.form = this.$inertia.form({
-        content: this.comment?.content,
+        content: this.note?.content,
       })
 
       // if (val) {
@@ -63,13 +63,13 @@ export default {
 
   methods: {
     submit() {
-      if (this.comment) {
-        this.form.put(this.$route('comments.update', this.comment.id), {
+      if (this.note) {
+        this.form.put(this.$route('notes.update', this.note.id), {
           preserveScroll: true,
           onSuccess: () => this.$emit('close')
         })
       } else {
-        this.form.post(this.$route('comments.store', {commentableType: this.commentableType, commentableId: this.commentableId}), {
+        this.form.post(this.$route('notes.store', {noteableType: this.noteableType, noteableId: this.noteableId}), {
           preserveScroll: true,
           onSuccess: () => this.$emit('close')
         })

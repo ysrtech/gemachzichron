@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\MemberUpdated;
 use App\Models\Traits\FilterableByRelated;
 use App\Models\Traits\FilterableWithTrashed;
 use App\Models\Traits\Searchable;
@@ -24,6 +25,13 @@ class Member extends Model
         'hebrew_last_name',
         'email'
     ];
+
+    protected static function booted()
+    {
+        static::updated(function (Member $member) {
+            MemberUpdated::dispatch($member);
+        });
+    }
 
     public function dependents()
     {

@@ -53,12 +53,12 @@
         </div>
         <div class="col-span-1 space-y-6">
           <membership-section :member="member"/>
-          <comments-section
-            v-if="member.membership"
-            :comments="member.membership.comments"
-            :commentable-id="member.membership.id"
-            commentable-type="membership"
-          />
+<!--          <notes-section-->
+<!--            v-if="member.membership"-->
+<!--            :notes="member.membership.notes"-->
+<!--            :noteable-id="member.membership.id"-->
+<!--            noteable-type="membership"-->
+<!--          />-->
         </div>
       </div>
     </member-base>
@@ -69,7 +69,7 @@
 import AppLayout from "@/Layouts/AppLayout";
 import MemberBase from "@/Pages/Members/MemberBase";
 import MembershipSection from "@/Pages/Members/MembershipSection";
-import CommentsSection from "@/Components/App/CommentsSection";
+import NotesSection from "@/Components/App/NotesSection";
 import KeyValue from "@/Components/UI/KeyValue";
 import AppPanel from "@/Components/UI/Panel";
 
@@ -77,7 +77,7 @@ export default {
   components: {
     AppPanel,
     KeyValue,
-    CommentsSection,
+    NotesSection,
     MembershipSection,
     MemberBase
   },

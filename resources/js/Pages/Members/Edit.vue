@@ -11,13 +11,9 @@
             :error="form.errors.title"
             label="Title"
             type="select"
-            @input="form.clearErrors('title')">
-            <template #options>
-              <option v-for="title in ['Rabbi & Mrs.', 'Mr. & Mrs.', 'Rabbi & Reb.', 'Rabbi', 'Mr.', 'Mrs.', 'Reb.']">
-                {{ title }}
-              </option>
-            </template>
-          </app-input>
+            :options="['Rabbi & Mrs.', 'Mr. & Mrs.', 'Rabbi & Reb.', 'Rabbi', 'Mr.', 'Mrs.', 'Reb.']"
+            @input="form.clearErrors('title')"
+          />
         </div>
 
         <div class="col-span-4">

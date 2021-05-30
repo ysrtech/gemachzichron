@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Traits\Commentable;
 use App\Models\Traits\Filterable;
 use App\Models\Traits\SearchableByRelated;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,7 +14,7 @@ use Illuminate\Support\Facades\Storage;
  */
 class Loan extends Model
 {
-    use HasFactory, Commentable, SearchableByRelated, Filterable;
+    use HasFactory, SearchableByRelated, Filterable;
 
     public function membership()
     {

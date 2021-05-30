@@ -61,7 +61,6 @@ class LoanController extends Controller
                 'membership.member.dependents:id,member_id,name',
                 'dependent:id,name',
                 'guarantors:id,first_name,last_name',
-                'comments'
             ]),
         ]);
     }

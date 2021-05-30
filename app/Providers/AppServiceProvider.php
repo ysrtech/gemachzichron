@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Gateways\Factory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Request;
@@ -18,7 +19,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton('gateway', fn() => new Factory());
     }
 
     /**

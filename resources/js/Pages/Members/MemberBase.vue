@@ -46,19 +46,24 @@ export default {
           route: 'members.show',
           show: true,
         },
-        // {
-        //   title: 'Subscriptions',
-        //   route: 'member.subscriptions.index',
-        //   show: this.member.has_membership
-        // },
-        // {
-        //   title: 'Transactions',
-        //   route: 'member.transactions.index',
-        //   show: this.member.has_membership
-        // },
+        {
+          title: 'Subscriptions',
+          route: 'members.subscriptions.index',
+          show: this.member.has_membership
+        },
+        {
+          title: 'Transactions',
+          route: 'members.transactions.index',
+          show: this.member.has_membership
+        },
         {
           title: 'Loans',
           route: 'members.loans.index',
+          show: this.member.has_membership
+        },
+        {
+          title: 'Payment Methods',
+          route: 'members.payment-methods.index',
           show: this.member.has_membership
         },
         {

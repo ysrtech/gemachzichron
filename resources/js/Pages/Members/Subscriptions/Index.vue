@@ -1,0 +1,56 @@
+<template>
+  <div>
+    <member-base :member="member">
+      <div class="max-w-6xl mx-auto">
+        <app-panel title="Subscriptions">
+          <template #actions>
+            <button
+              @click="openFormModal = true"
+              title="Add New Subscription"
+              class="material-icons-outlined focus:outline-none rounded-full p-1.5 text-gray-600 hover:bg-gray-200 focus:bg-gray-300">
+              add
+            </button>
+          </template>
+          <template #content>
+            <subscriptions-table :subscriptions="member.membership?.subscriptions"/>
+          </template>
+        </app-panel>
+      </div>
+      <subscriptions-form-modal
+        :show="openFormModal"
+        :member="member"
+        :membership-id="member.membership?.id"
+        @close="openFormModal = false"
+      />
+    </member-base>
+  </div>
+</template>
+
+<script>
+import MemberBase from "@/Pages/Members/MemberBase";
+import AppLayout from "@/Layouts/AppLayout";
+import SubscriptionsFormModal from "@/Pages/Subscriptions/FormModal";
+import AppPanel from "@/Components/UI/Panel";
+import SubscriptionsTable from "@/Pages/Subscriptions/SubscriptionsTable";
+
+export default {
+  layout: AppLayout,
+
+  components: {
+    SubscriptionsTable,
+    AppPanel,
+    SubscriptionsFormModal,
+    MemberBase
+  },
+
+  data() {
+    return {
+      openFormModal: false,
+    }
+  },
+
+  props: {
+    member: Object,
+  },
+}
+</script>

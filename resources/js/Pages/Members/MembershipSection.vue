@@ -17,8 +17,9 @@
           <div class="px-4 py-5 sm:px-6">
             <dl class="space-y-8">
               <key-value label="Membership Since" :value="date(member.membership.created_at)"/>
-              <key-value label="Membership Type" :value="member.membership.type"/>
-              <key-value label="Plan Type" :value="member.membership.plan_type?.name || 'N/A'"/>
+              <key-value label="Membership Type">
+                {{ member.membership.type }} <span v-if="member.membership.plan_type">({{ member.membership.plan_type.name }})</span>
+              </key-value>
             </dl>
           </div>
           <div class="px-4 py-5 sm:px-6 flex justify-between items-center">
@@ -49,7 +50,6 @@
 </template>
 
 <script>
-import AppLayout from "@/Layouts/AppLayout";
 import {date} from "@/helpers/dates";
 import MembershipFormModal from "./MembershipFormModal";
 import AppBadge from "@/Components/UI/Badge";
@@ -58,7 +58,6 @@ import Money from "@/Components/UI/Money";
 import AppPanel from "@/Components/UI/Panel";
 
 export default {
-  layout: AppLayout,
 
   components: {
     AppPanel,
@@ -70,7 +69,7 @@ export default {
 
   data() {
     return {
-      openMembershipFormModal: false
+      openMembershipFormModal: false,
     }
   },
 

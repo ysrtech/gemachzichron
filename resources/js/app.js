@@ -16,11 +16,11 @@ const app = createApp({
   })
 })
 
+app.config.globalProperties.$route = route
+app.config.globalProperties.$axios = axios
+
 app
   .use(plugin)
   .component('AppInput', AppInput)
   .component('AppButton', AppButton)
   .mount(el)
-
-app.config.globalProperties.$route = route
-app.config.globalProperties.$axios = axios

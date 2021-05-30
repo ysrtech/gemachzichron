@@ -1,0 +1,22 @@
+import {AVAILABLE_GATEWAYS} from "@/config/gateways";
+
+export const SUBSCRIPTION_TYPES = {
+  Membership: 'Membership',
+  'Loan Payment': 'Loan Payment'
+}
+
+export const SUBSCRIPTION_FREQUENCIES = {
+  Once: 'Once',
+  Weekly: 'Weekly',
+  'Bi-Weekly': 'Bi-Weekly',
+  Monthly: 'Monthly',
+  'Bi-Monthly': 'Bi-Monthly',
+  'Every 3 months': 'Every 3 months',
+  'Every 6 months': 'Every 6 months',
+  Yearly: 'Yearly',
+}
+
+export const DEFUALT_SUPSCRIPTION_FEES = {
+  membershipFee: (membershipAmount) => (membershipAmount / 24).toFixed(2),
+  processingFee: (gateway, amount) => gateway === AVAILABLE_GATEWAYS.Cardknox ? (amount * 0.03).toFixed(2) : 0,
+}

@@ -19,9 +19,13 @@
                     leave-active-class="ease-in duration-200"
                     leave-from-class="opacity-100 translate-y-0 sm:scale-100"
                     leave-to-class="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
-          <div v-if="show" :class="maxWidthClass" v-bind="$attrs"
-               class="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full">
-            <slot></slot>
+          <div
+            v-if="show"
+            :class="maxWidthClass"
+            v-bind="$attrs"
+            class="scrollbar-w-2 scrollbar-thumb-gray-200 hover:scrollbar-thumb-gray-300 scrollbar-thumb-rounded-full
+             bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full max-h-screen overflow-y-auto">
+            <slot/>
           </div>
         </transition>
       </div>
@@ -85,6 +89,7 @@ export default {
         'lg': 'sm:max-w-lg',
         'xl': 'sm:max-w-xl',
         '2xl': 'sm:max-w-2xl',
+        '3xl': 'sm:max-w-3xl',
       }[this.maxWidth]
     }
   }

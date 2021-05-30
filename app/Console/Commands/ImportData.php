@@ -6,32 +6,40 @@ use App\Services\CsvImportService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
 
-class ImportMembers extends Command
+class ImportData extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'import:members {filename} {--memberships=} {--children=} {--loans=}';
+    protected $signature = 'import:data
+         {--members=}
+         {--memberships=}
+         {--children=}
+         {--loans=}
+         {--rotessaCustomers=}
+         {--rotessaSchedules=}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Import members from csv file in ./storage/imports';
+    protected $description = 'Import data from csv file in ./storage/imports';
 
     public function handle()
     {
-        $this->comment('Importing members...');
-        CsvImportService::importMembers($this->getFilePath($this->argument('filename')));
-        $this->info('Finished Importing members');
-        $this->newLine();
+        if ($members = ($this->option('members') ?? $this->ask('Please enter filename for members (or empty to skip) then [ENTER]'))) {
+            $this->comment('Importing members...');
+            CsvImportService::importMembers(
+                $this->getFilePath($members)
+            );
+            $this->info('Finished Importing members');
+            $this->newLine();
+        }
 
         if ($memberships = ($this->option('memberships') ?? $this->ask('Please enter filename for memberships (or empty to skip) then [ENTER]'))) {
-            Cache::forget('plan-types');
-            $this->callSilently('db:seed', ['class' => 'PlanTypeSeeder']);
             $this->comment('Importing memberships...');
             CsvImportService::importMemberships(
                 $this->getFilePath($memberships)
@@ -58,10 +66,29 @@ class ImportMembers extends Command
             $this->newLine();
         }
 
+        if ($rotessaCustomers = ($this->option('rotessaCustomers') ?? $this->ask('Please enter filename for Rotessa customers (or empty to skip) then [ENTER]'))) {
+            $this->comment('Importing Rotessa customers...');
+            CsvImportService::importRotessaCustomers(
+                $this->getFilePath($rotessaCustomers)
+            );
+            $this->info('Finished Importing Rotessa customers');
+            $this->newLine();
+        }
+
+        if ($rotessaSchedules = ($this->option('rotessaSchedules') ?? $this->ask('Please enter filename for Rotessa schedules (or empty to skip) then [ENTER]'))) {
+            $this->comment('Importing Rotessa schedules...');
+            CsvImportService::importRotessaSchedules(
+                $this->getFilePath($rotessaSchedules)
+            );
+            $this->info('Finished Importing Rotessa schedules');
+            $this->newLine();
+        }
+
         $this->info('Done');
     }
 
-    private function getFilePath($filename) {
+    private function getFilePath($filename)
+    {
         $filepath = storage_path("imports/$filename");
 
         if (!file_exists($filepath)) {

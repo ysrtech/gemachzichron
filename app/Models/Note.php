@@ -7,19 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 /**
- * @mixin IdeHelperComment
+ * @mixin IdeHelperNote
  */
-class Comment extends Model
+class Note extends Model
 {
     use HasFactory;
 
-    public function commentable()
+    public function noteable()
     {
         return $this->morphTo();
     }
 
-    public static function fromCommentableInstance(string $type, $id)
+    public static function fromNoteableInstance(string $type, $id)
     {
-        return Str::model($type)::findOrFail($id)->comments();
+        return Str::model($type)::findOrFail($id)->notes();
     }
 }

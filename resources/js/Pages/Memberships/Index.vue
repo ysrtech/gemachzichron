@@ -9,22 +9,22 @@
             @change="reset('plan_type_id')"
             type="select"
             label="Membership type"
-            :options="{'--': null, Membership: 'Membership', Pekudon: 'Pekudon'}"
+            :options="Object.assign({'All': null}, MEMBERSHIP_TYPES)"
           />
 
           <search-filter-field
-            v-if="filterForm.type !== 'Pekudon'"
+            v-if="filterForm.type !== MEMBERSHIP_TYPES.Pekudon"
             v-model="filterForm.plan_type_id"
             type="select"
             label="Plan type"
-            :options="planTypes.reduce((option, type) => ({...option, [type.name]: type.id}) ,{'--': null})"
+            :options="planTypes.reduce((option, type) => ({...option, [type.name]: type.id}) ,{'All': null})"
           />
 
           <search-filter-field
             v-model="filterForm.is_active"
             type="select"
             label="Active Membership"
-            :options="{'--': null, 'Only Active': 'true', 'Only Inactive': 'false'}"
+            :options="{'All': null, 'Only Active': 'true', 'Only Inactive': 'false'}"
           />
 
           <search-filter-field
@@ -55,6 +55,7 @@ import SearchFilter from "@/Components/App/SearchFilter";
 import MembershipsTable from "./MembershipsTable";
 import SearchFilterField from "@/Components/App/SearchFilterField";
 import HasFilters from "@/Mixins/HasFilters";
+import {MEMBERSHIP_TYPES} from "@/config/memberships";
 
 export default {
   layout: (h, page) => h(AppLayout, {header: 'Memberships'}, () => page),
@@ -69,6 +70,7 @@ export default {
 
   data() {
     return {
+      MEMBERSHIP_TYPES,
       planTypes: [],
       filterForm: {
         search: this.filters.search,
