@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Loan;
 use App\Models\Member;
-use App\Models\Membership;
 use Illuminate\Database\Seeder;
 
 class MemberSeeder extends Seeder
@@ -19,11 +18,9 @@ class MemberSeeder extends Seeder
         Member::factory()
             ->times(500)
             ->hasDependents(3)
-            ->has(Membership::factory(1)
-                ->has(Loan::factory()
-                    ->count(2)
-                    ->state(fn(array $attributes, Membership $membership) => ['dependent_id' => $membership->member->dependents->random()->id])
-                )
+            ->has(Loan::factory()
+                ->count(2)
+                ->state(fn(array $attributes, Member $member) => ['dependent_id' => $member->dependents->random()->id])
             )
             ->create();
 

@@ -38,7 +38,7 @@
                     edit
                   </button>
                   <button
-                    @click="$inertia.delete($route('dependents.destroy', dependent.id))"
+                    @click="$inertia.delete($route('dependents.destroy', dependent.id), {preserveScroll: true})"
                     class="material-icons-outlined focus:outline-none rounded-full p-1 hover:bg-gray-200 focus:bg-gray-300">
                     delete
                   </button>

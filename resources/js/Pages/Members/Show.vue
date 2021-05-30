@@ -55,8 +55,8 @@
           <membership-section :member="member"/>
 <!--          <notes-section-->
 <!--            v-if="member.membership"-->
-<!--            :notes="member.membership.notes"-->
-<!--            :noteable-id="member.membership.id"-->
+<!--            :notes="member.notes"-->
+<!--            :noteable-id="member.id"-->
 <!--            noteable-type="membership"-->
 <!--          />-->
         </div>

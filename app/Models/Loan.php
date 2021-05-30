@@ -16,9 +16,9 @@ class Loan extends Model
 {
     use HasFactory, SearchableByRelated, Filterable;
 
-    public function membership()
+    public function member()
     {
-        return $this->belongsTo(Membership::class);
+        return $this->belongsTo(Member::class);
     }
 
     public function dependent()

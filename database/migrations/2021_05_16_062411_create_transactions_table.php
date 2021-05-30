@@ -16,7 +16,7 @@ class CreateTransactionsTable extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('subscription_id')->constrained();
-            $table->foreignId('membership_id')->constrained();
+            $table->foreignId('member_id')->constrained();
             $table->string('gateway');
             $table->string('gateway_identifier')->nullable();
             $table->string('type');

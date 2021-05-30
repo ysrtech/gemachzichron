@@ -12,14 +12,13 @@
             </button>
           </template>
           <template #content>
-            <subscriptions-table :subscriptions="member.membership?.subscriptions"/>
+            <subscriptions-table :subscriptions="member.subscriptions"/>
           </template>
         </app-panel>
       </div>
       <subscriptions-form-modal
         :show="openFormModal"
         :member="member"
-        :membership-id="member.membership?.id"
         @close="openFormModal = false"
       />
     </member-base>

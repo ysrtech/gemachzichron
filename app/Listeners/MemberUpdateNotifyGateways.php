@@ -29,8 +29,7 @@ class MemberUpdateNotifyGateways implements ShouldQueue
     public function handle(MemberUpdated $event)
     {
         $event->member
-            ->load('membership.paymentMethods')
-            ->membership
+            ->load('paymentMethods')
             ->paymentMethods
             ->each(function ($paymentMethod) {
                 try {

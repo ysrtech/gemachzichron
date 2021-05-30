@@ -13,7 +13,7 @@
           </template>
           <template #content>
             <table class="min-w-full divide-y divide-gray-200">
-              <thead v-if="member.membership?.loans.length > 0">
+              <thead v-if="member.loans.length > 0">
               <tr class="bg-gray-50 text-xs text-left text-gray-400 uppercase">
                 <th v-for="title in ['ID', 'Loan date', 'Amount', 'Cheque Number', '']" class="px-6 py-3 font-medium">
                   {{ title }}
@@ -24,7 +24,7 @@
               <tbody class="bg-white divide-y divide-gray-200">
               <tr
                 @click="$inertia.get($route('loans.show', loan.id))"
-                v-for="loan in member.membership.loans"
+                v-for="loan in member.loans"
                 :key="loan.id"
                 class="bg-white text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900 cursor-pointer">
                 <td class="px-6 py-3.5 whitespace-nowrap space-x-2">{{ loan.id }}</td>
@@ -42,18 +42,24 @@
                 </td>
               </tr>
 
-              <tr v-if="!member.membership?.loans.length > 0">
-                <td class="px-6 py-10 text-center text-gray-500" colspan="3">No Loans Found.</td>
+              <tr v-if="member.loans.length === 0">
+                <td class="px-6 py-10 text-center text-gray-500" colspan="5">No Loans Found.</td>
               </tr>
 
               </tbody>
             </table>
+
+            <div v-if="member.loans.length > 0" class="px-6 py-5 text-gray-500 w-full flex">
+              <span class="flex-1">Loans Total:</span>
+              <span class="flex-1" title="Excluding Fees">Total Paid:</span>
+            </div>
+
           </template>
         </app-panel>
       </div>
       <loans-form-modal
         :show="openFormModal"
-        :membership-id="member.membership?.id"
+        :member-id="member.id"
         :dependents="member.dependents"
         :loan="loanToEdit"
         @close="openFormModal = false; loanToEdit = null"

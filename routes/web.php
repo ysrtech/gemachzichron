@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\MemberDependentController;
+use App\Http\Controllers\MemberLoanController;
+use App\Http\Controllers\MemberPaymentMethodController;
+use App\Http\Controllers\MemberTransactionController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\DependentController;
 use App\Http\Controllers\PaymentMethodController;
@@ -39,36 +43,38 @@ Route::middleware(['auth'])->group(function () {
     Route::put('members/{member}/restore', [MemberController::class, 'restore'])->name('members.restore');
 
     // Memberships
-    Route::post('members/{member}/membership', [MembershipController::class, 'store'])->name('members.membership.store');
-    Route::apiResource('memberships', MembershipController::class)->only('index', 'update', 'destroy');
+    Route::get('memberships', [MembershipController::class, 'index'])->name('memberships.index');
 
     // Loans
-    Route::get('members/{member}/loans', [LoanController::class, 'indexForMember'])->name('members.loans.index');
+    Route::get('members/{member}/loans', [MemberLoanController::class, 'index'])->name('members.loans.index');
+    Route::post('members/{member}/loans', [MemberLoanController::class, 'store'])->name('members.loans.store');
     Route::apiResource('loans', LoanController::class)->except('store');
-    Route::post('memberships/{membership}/loans', [LoanController::class, 'store'])->name('memberships.loans.store');
 
     // Subscriptions
-    Route::get('members/{member}/subscriptions', [SubscriptionController::class, 'indexForMember'])->name('members.subscriptions.index');
+    Route::get('members/{member}/subscriptions', [SubscriptionController::class, 'index'])->name('members.subscriptions.index');
+    Route::post('members/{member}/subscriptions', [SubscriptionController::class, 'store'])->name('members.subscriptions.store');
     Route::apiResource('subscriptions', SubscriptionController::class)->except('store');
-    Route::post('memberships/{membership}/subscriptions', [SubscriptionController::class, 'store'])->name('memberships.subscriptions.store');
 
     // Transactions
-    Route::get('members/{member}/transactions', [TransactionController::class, 'indexForMember'])->name('members.transactions.index');
+    Route::get('members/{member}/transactions', [MemberTransactionController::class, 'index'])->name('members.transactions.index');
+    Route::post('members/{member}/transactions', [MemberTransactionController::class, 'store'])->name('members.transactions.store');
     Route::apiResource('transactions', TransactionController::class)->except('store');
-    Route::post('memberships/{membership}/transactions', [TransactionController::class, 'store'])->name('memberships.transactions.store');
 
     // Guarantees
     Route::get('members/{member}/guarantees', [MemberGuaranteesController::class, 'index'])->name('members.guarantees.index');
 
-    // PaymentMethods
-    Route::get('members/{member}/payment-methods', [PaymentMethodController::class, 'index'])->name('members.payment-methods.index');
-    Route::post('memberships/{membership}/payment-methods',[PaymentMethodController::class, 'store'])->name('memberships.payment-methods.store');
+    // Payment Methods
+    Route::get('members/{member}/payment-methods', [MemberPaymentMethodController::class, 'index'])->name('members.payment-methods.index');
+    Route::post('members/{member}/payment-methods',[MemberPaymentMethodController::class, 'store'])->name('members.payment-methods.store');
     Route::put('payment-methods/{paymentMethod}', [PaymentMethodController::class, 'update'])->name('payment-methods.update');
 
-    // Children
-    Route::apiresource('members.dependents', DependentController::class)->shallow();
+    // Dependents
+    Route::get('members/{member}/dependents', [MemberDependentController::class, 'index'])->name('members.dependents.index');
+    Route::post('members/{member}/dependents', [MemberDependentController::class, 'store'])->name('members.dependents.store');
+    Route::put('dependents/{dependent}', [DependentController::class, 'update'])->name('dependents.update');
+    Route::delete('dependents/{dependent}', [DependentController::class, 'destroy'])->name('dependents.destroy');
 
-    // Comments
+    // Notes
     Route::post('notes/{noteableType}/{noteableId}', [NoteController::class, 'store'])->name('notes.store');
     Route::put('notes/{note}', [NoteController::class, 'update'])->name('notes.update');
     Route::delete('notes/{note}', [NoteController::class, 'destroy'])->name('notes.destroy');

@@ -156,7 +156,7 @@ export default {
 
   props: {
     show: Boolean,
-    membershipId: Number,
+    memberId: Number,
     loan: Object,
     dependents: Array
   },
@@ -193,7 +193,7 @@ export default {
     submit() {
       let route = this.loan
         ? this.$route('loans.update', this.loan.id)
-        : this.$route('memberships.loans.store', this.membershipId)
+        : this.$route('members.loans.store', this.memberId)
       this.form
         .transform((data) => ({
           ...data,
@@ -201,7 +201,8 @@ export default {
           _method: this.loan ? 'put' : 'post',
         }))
         .post(route, {
-          onSuccess: () => this.$emit('close')
+          onSuccess: () => this.$emit('close'),
+          preserveState: 'errors'
         })
     },
 

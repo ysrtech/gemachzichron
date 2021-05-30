@@ -5,7 +5,7 @@
       <thead>
       <tr class="bg-gray-50 text-xs text-left text-gray-400 uppercase">
         <th
-          v-for="title in ['Member', 'Membership Type', 'Plan Type', 'Membership Since', 'Total Paid']"
+          v-for="title in ['Member', 'Membership Type', 'Plan Type', 'Membership Since', 'Total Paid Membership']"
           class="px-6 py-3 font-medium">{{ title }}
         </th>
       </tr>
@@ -18,22 +18,24 @@
         :key="member.id"
         class="bg-white text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900 cursor-pointer">
         <td class="px-6 py-3.5 whitespace-nowrap flex space-x-1 items-baseline">
-          <span>{{ member.last_name + ', ' + member.first_name }}</span>
+          <span class="font-medium">{{ member.last_name + ', ' + member.first_name }}</span>
           <app-badge v-if="member.deleted_at" color="red">Archived Member</app-badge>
           <app-badge v-if="member.membership?.is_active === false" color="red">Inactive Membership</app-badge>
         </td>
         <td class="px-6 py-3.5 whitespace-nowrap">
-          {{ member.membership.type }}
+          {{ member.membership_type }}
         </td>
         <td class="px-6 py-3.5 whitespace-nowrap">
-          {{ member.membership.plan_type?.name }}
+          {{ member.plan_type?.name }}
         </td>
         <td class="px-6 py-3.5 whitespace-nowrap">
-          {{ date(member.membership.created_at) }}
+          {{ date(member.membership_since) }}
         </td>
         <td class="px-6 py-3.5 whitespace-nowrap">
-          <span v-if="member.membership.total_paid">$</span>
-          {{ member.membership.total_paid }}
+          <money
+            :amount="member.membership_payments_total || 0"
+            class="font-medium"
+            currency-sign-class="font-normal text-gray-600 mr-1"/>
         </td>
       </tr>
 
@@ -59,9 +61,11 @@ import AppDropdownLink from "@/Components/UI/DropdownLink";
 import AppPagination from "@/Components/App/Pagination";
 import AppBadge from "@/Components/UI/Badge";
 import {date} from "@/helpers/dates";
+import Money from "@/Components/UI/Money";
 
 export default {
   components: {
+    Money,
     AppBadge,
     AppPagination,
     AppDropdownLink,

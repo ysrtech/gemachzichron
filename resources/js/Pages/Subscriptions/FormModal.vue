@@ -180,7 +180,6 @@ export default {
 
   props: {
     show: Boolean,
-    membershipId: Number,
     subscription: Object,
     member: {
       type: Object,
@@ -255,7 +254,7 @@ export default {
         )
       } else {
         this.form.post(
-          this.$route('memberships.subscriptions.store', this.membershipId),
+          this.$route('members.subscriptions.store', this.member.id),
           options
         )
       }

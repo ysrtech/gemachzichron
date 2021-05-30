@@ -2,24 +2,24 @@
   <modal v-if="show" max-width="sm" @close="$emit('close')">
 
     <div class="px-6 py-4 text-xl font-medium">
-      {{ membership ? 'Edit Membership' : 'Create Membership'}}
+      {{ member.membership_since ? 'Edit Membership' : 'Create Membership'}}
     </div>
 
     <form @submit.prevent="submit">
       <div class="px-6 py-4 space-y-4">
 
         <app-input
-          id="type"
-          v-model="form.type"
-          :error="form.errors.type"
+          id="membership_type"
+          v-model="form.membership_type"
+          :error="form.errors.membership_type"
           label="Membership Type"
           type="select"
           :options="MEMBERSHIP_TYPES"
-          @input="form.clearErrors('type')"
+          @input="form.clearErrors('membership_type')"
         />
 
         <app-input
-          v-if="form.type === 'Membership'"
+          v-show="form.membership_type === MEMBERSHIP_TYPES.Membership"
           id="plan_type_id"
           v-model="form.plan_type_id"
           :error="form.errors.plan_type_id"
@@ -37,7 +37,7 @@
         </app-input>
 
         <label class="flex items-center">
-          <app-checkbox v-model="form.is_active" name="is_active"/>
+          <app-checkbox v-model="form.active_membership" name="active_membership"/>
           <span class="ml-2 text-sm text-gray-600">Active</span>
         </label>
       </div>
@@ -71,8 +71,7 @@ export default {
 
   props: {
     show: Boolean,
-    memberId: Number,
-    membership: Object,
+    member: Object,
   },
 
   emits: [
@@ -82,26 +81,20 @@ export default {
   watch: {
     show(val) {
       this.form = this.$inertia.form({
-        is_active: this.membership? this.membership.is_active : true,
-        type: this.membership?.type,
-        plan_type_id: this.membership?.plan_type_id,
+        active_membership: this.member.membership_since? this.member.active_membership : true,
+        membership_type: this.member?.membership_type,
+        plan_type_id: this.member?.plan_type_id,
       })
     }
   },
 
   methods: {
     submit() {
-      if (this.membership) {
-        this.form.put(this.$route('memberships.update', this.membership.id), {
-          onSuccess: () => this.$emit('close')
-        })
-      } else {
-        this.form.post(this.$route('members.membership.store', this.memberId), {
-          onSuccess: () => this.$emit('close'),
-          preserveState: false,
-        })
-      }
-    },
+      this.form.put(this.$route('members.update', this.member.id), {
+        onSuccess: () => this.$emit('close'),
+        preserveState: 'errors',
+      })
+    }
   },
 
   created() {

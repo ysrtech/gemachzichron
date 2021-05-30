@@ -46,9 +46,9 @@ class Subscription extends Model
         'total_transaction'
     ];
 
-    public function membership()
+    public function member()
     {
-        return $this->belongsTo(Membership::class);
+        return $this->belongsTo(Member::class);
     }
 
     public function getTotalTransactionAttribute()

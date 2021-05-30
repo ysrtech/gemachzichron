@@ -14,7 +14,7 @@ class CreatePaymentMethodRequest extends FormRequest
             'gateway' => [
                 'required',
                 Rule::in(Gateway::all()),
-                Rule::unique('payment_methods')->where('membership_id', $this->route('membership.id')),
+                Rule::unique('payment_methods')->where('member_id', $this->route('member.id')),
             ],
             'bank_name' => 'nullable|string',
             'transit_number' => 'required_if:gateway,Rotessa',

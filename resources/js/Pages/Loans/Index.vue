@@ -42,8 +42,8 @@
             <td class="px-6 py-3.5 whitespace-nowrap space-x-2 font-medium">
               <inertia-link
                 class="font-medium hover:text-gray-900 hover:underline"
-                :href="$route('members.show', loan.membership.member.id)">
-                {{ loan.membership.member.first_name + ' ' + loan.membership.member.last_name }}
+                :href="$route('members.show', loan.member.id)">
+                {{ loan.member.first_name + ' ' + loan.member.last_name }}
               </inertia-link>
             </td>
             <td class="px-6 py-3.5 whitespace-nowrap">{{ date(loan.loan_date) }}</td>

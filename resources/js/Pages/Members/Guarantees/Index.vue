@@ -19,7 +19,7 @@
                 class="bg-white text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900 cursor-pointer">
                 <td class="px-6 py-3.5 whitespace-nowrap space-x-2">{{ loan.id }}</td>
                 <td class="px-6 py-3.5 whitespace-nowrap space-x-2 font-medium">
-                  {{ loan.membership.member.first_name + ' ' + loan.membership.member.last_name }}
+                  {{ loan.member.first_name + ' ' + loan.member.last_name }}
                 </td>
                 <td class="px-6 py-3.5 whitespace-nowrap">{{ date(loan.loan_date) }}</td>
                 <td class="px-6 py-3.5 whitespace-nowrap font-medium">

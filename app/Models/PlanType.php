@@ -19,8 +19,8 @@ class PlanType extends Model
         static::deleted(fn($planType) => Cache::forget('plan-types'));
     }
 
-    public function memberships()
+    public function members()
     {
-        return $this->hasMany(Membership::class);
+        return $this->hasMany(Member::class);
     }
 }

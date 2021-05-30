@@ -14,8 +14,8 @@
           <div class="px-4 py-5 sm:px-6">
             <dl class="space-y-8">
               <key-value label="Member">
-                <inertia-link class="hover:underline font-medium" :href="$route('members.show', loan.membership.member.id)">
-                  {{ loan.membership.member.first_name }} {{ loan.membership.member.last_name }}
+                <inertia-link class="hover:underline font-medium" :href="$route('members.show', loan.member.id)">
+                  {{ loan.member.first_name }} {{ loan.member.last_name }}
                 </inertia-link>
               </key-value>
               <key-value label="Loan date" :value="date(loan.loan_date)"/>
@@ -42,7 +42,7 @@
         :show="openFormModal"
         :loan="loan"
         @close="openFormModal = false"
-        :dependents="loan.membership.member.dependents"
+        :dependents="loan.member.dependents"
       />
     </div>
 

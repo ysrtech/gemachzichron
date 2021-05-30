@@ -68,6 +68,7 @@
     </form>
   </modal>
 </template>
+
 <script>
 import Modal from "@/Components/UI/Modal";
 import {AVAILABLE_GATEWAYS} from "@/config/gateways";
@@ -86,7 +87,7 @@ export default {
 
   props: {
     show: Boolean,
-    membership: Object,
+    member: Object,
     paymentMethod: Object,
   },
 
@@ -100,7 +101,7 @@ export default {
       this.form.gateway = val
     },
 
-    show(val) {
+    show() {
       this.form = this.freshForm()
     },
   },
@@ -109,7 +110,7 @@ export default {
     freshForm() {
       return this.$inertia.form({
         gateway: this.paymentMethod?.gateway,
-        bank_name: this.paymentMethod?.data.bank_name,
+        bank_name: this.paymentMethod?.data?.bank_name,
         transit_number: '',
         institution_number: '',
         account_number: '',
@@ -122,7 +123,7 @@ export default {
           onSuccess: () => this.$emit('close')
         })
       } else {
-        this.form.post(this.$route('memberships.payment-methods.store', this.membership?.id), {
+        this.form.post(this.$route('members.payment-methods.store', this.member?.id), {
           onSuccess: () => this.$emit('close')
         })
       }

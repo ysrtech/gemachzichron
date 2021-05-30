@@ -2,10 +2,10 @@
   <div>
     <app-panel
       title="Membership"
-      :badge="member.membership?.is_active === false ? {color: 'red', text: 'Inactive'} : null">
+      :badge="member.active_membership === false ? {color: 'red', text: 'Inactive'} : null">
       <template #actions>
         <button
-          v-if="member.membership"
+          v-if="member.membership_since"
           @click="openMembershipFormModal = true"
           title="Edit Membership"
           class="material-icons-outlined focus:outline-none rounded-full p-1.5 text-gray-600 hover:bg-gray-200 focus:bg-gray-300">
@@ -13,20 +13,20 @@
         </button>
       </template>
       <template #content>
-        <template v-if="member.membership">
+        <template v-if="member.membership_since">
           <div class="px-4 py-5 sm:px-6">
             <dl class="space-y-8">
-              <key-value label="Membership Since" :value="date(member.membership.created_at)"/>
+              <key-value label="Membership Since" :value="date(member.membership_since)"/>
               <key-value label="Membership Type">
-                {{ member.membership.type }} <span v-if="member.membership.plan_type">({{ member.membership.plan_type.name }})</span>
+                {{ member.membership_type }} <span v-if="member.plan_type">({{ member.plan_type.name }})</span>
               </key-value>
             </dl>
           </div>
-          <div class="px-4 py-5 sm:px-6 flex justify-between items-center">
+          <div class="px-4 py-5 sm:px-6 flex justify-between items-center" title="Membership payments only, Excluding Fees">
             <div class="font-medium text-gray-400">Total Paid</div>
             <div class="text-2xl">
               <money
-                :amount="member.membership.total_paid || 0"
+                :amount="member.membership_payments_total || 0"
                 class="font-medium text-gray-900"
                 currency-sign-class="font-normal text-gray-600 mr-1"/>
             </div>
@@ -42,8 +42,7 @@
 
     <membership-form-modal
       :show="openMembershipFormModal"
-      :member-id="member.id"
-      :membership="member.membership"
+      :member="member"
       @close="openMembershipFormModal = false"
     />
   </div>

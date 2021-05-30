@@ -3,8 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\Member;
+use App\Models\PlanType;
 use Faker\Generator;
-use Faker\Provider\he_IL\Person;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class MemberFactory extends Factory
@@ -23,6 +23,13 @@ class MemberFactory extends Factory
      */
     public function definition()
     {
+        $membership = $this->faker->boolean();
+
+        $membershipType = $this->faker->randomElement([
+            Member::TYPE_MEMBERSHIP,
+            Member::TYPE_PEKUDON
+        ]);
+
         return [
             'title'             => $this->faker->randomElement(['Rabbi & Mrs.', 'Mr. & Mrs.', 'Rabbi & Reb.', 'Rabbi', 'Mr.', 'Mrs.', 'Reb.']),
             'first_name'        => $this->faker->firstNameMale(),
@@ -40,6 +47,13 @@ class MemberFactory extends Factory
             'shtibel'           => $this->faker->randomElement(['Zichron YY', 'Bais Yakov', 'Avreichim', 'CSL']),
             'father'            => $this->hebrewFaker()->name(),
             'father_in_law'     => $this->hebrewFaker()->name(),
+
+            'member_since' => $membership ? $this->faker->date() : null,
+            'active_membership' => $membership ? $this->faker->boolean(95) : null,
+            'membership_type' => $membership ? $membershipType : null,
+            'plan_type_id' => ($membership && $membershipType == Member::TYPE_MEMBERSHIP)
+                ? PlanType::inRandomOrder()->first()->id
+                : null
         ];
     }
 

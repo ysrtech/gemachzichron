@@ -5,7 +5,7 @@
         <div class="p-4 space-y-4">
 
           <search-filter-field
-            v-model="filterForm.type"
+            v-model="filterForm.membership_type"
             @change="reset('plan_type_id')"
             type="select"
             label="Membership type"
@@ -21,7 +21,7 @@
           />
 
           <search-filter-field
-            v-model="filterForm.is_active"
+            v-model="filterForm.active_membership"
             type="select"
             label="Active Membership"
             :options="{'All': null, 'Only Active': 'true', 'Only Inactive': 'false'}"
@@ -74,10 +74,10 @@ export default {
       planTypes: [],
       filterForm: {
         search: this.filters.search,
-        type: this.filters.type,
+        membership_type: this.filters.membership_type,
         plan_type_id: this.filters.plan_type_id,
         archived: this.filters.archived,
-        is_active: this.filters.is_active,
+        active_membership: this.filters.active_membership,
       },
     }
   },

@@ -15,7 +15,7 @@ class CreatePaymentMethodsTable extends Migration
     {
         Schema::create('payment_methods', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('membership_id')->constrained();
+            $table->foreignId('member_id')->constrained();
             $table->string('gateway');
             $table->string('gateway_identifier');
             $table->json('data')->nullable();

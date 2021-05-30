@@ -4,35 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateDependentRequest;
 use App\Models\Dependent;
-use App\Models\Member;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
 
 class DependentController extends Controller
 {
-    public function index(Member $member)
-    {
-        $member->load(['dependents' => fn($q) => $q->orderBy('dob')]);
-
-        return Inertia::render('Members/Dependents/Index', [
-            'member' => $member
-                ->append('has_membership')
-                ->only(['id', 'first_name', 'last_name', 'has_membership', 'deleted_at', 'dependents'])
-        ]);
-    }
-
-    public function store(CreateDependentRequest $request, Member $member)
-    {
-        $member->dependents()->create($request->validated());
-
-        return back()->snackbar('Child added.');
-    }
-
-    public function show(Dependent $dependent)
-    {
-        //
-    }
-
     public function update(CreateDependentRequest $request, Dependent $dependent)
     {
         $dependent->update($request->validated());

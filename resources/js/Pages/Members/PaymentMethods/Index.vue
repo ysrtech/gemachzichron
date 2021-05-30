@@ -12,8 +12,8 @@
             </button>
           </template>
           <template #content>
-            <div class="p-6 grid grid-cols-3" v-if="member.membership?.payment_methods.length > 0">
-              <app-panel class="bg-gray-50" v-for="paymentMethod in member.membership.payment_methods" :title="paymentMethod.gateway">
+            <div class="p-6 grid grid-cols-3" v-if="member.payment_methods.length > 0">
+              <app-panel class="bg-gray-50" v-for="paymentMethod in member.payment_methods" :title="paymentMethod.gateway">
                 <template #actions>
                   <button
                     @click="openFormModal = true; paymentMethodToEdit = paymentMethod"
@@ -43,7 +43,7 @@
       <payment-methods-form-modal
         :show="openFormModal"
         :paymentMethod="paymentMethodToEdit"
-        :membership="member.membership"
+        :member="member"
         @close="openFormModal = false; paymentMethodToEdit = null"
       />
     </member-base>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateMemberRequest;
+use App\Http\Requests\UpdateMemberRequest;
 use App\Models\Member;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -13,8 +14,7 @@ class MemberController extends Controller
     {
         $query = Member::search($request->search)
             ->filterWithTrashed($request->archived)
-            ->filterHasRelated($request->only('membership'))
-            ->withHasActiveMembership()
+            ->filterIsNotNull($request->only('membership_since'))
             ->orderBy('last_name')
             ->orderBy('first_name');
 
@@ -26,7 +26,7 @@ class MemberController extends Controller
         }
 
         return Inertia::render('Members/Index', [
-            'filters' => $request->all('search', 'archived', 'membership'),
+            'filters' => $request->all('search', 'archived', 'membership_since'),
             'members' => $query->paginate($request->limit ?? 15)
         ]);
     }
@@ -49,12 +49,8 @@ class MemberController extends Controller
     {
         return Inertia::render('Members/Show', [
             'member' => $member
-                ->append('has_membership')
-                ->load([
-                    'membership' => fn($query) => $query
-                        ->with('planType', 'notes')
-                        ->withTotalPaid()
-                ])
+                ->load('planType')
+                ->append('membership_payments_total')
         ]);
     }
 
@@ -65,7 +61,7 @@ class MemberController extends Controller
         ]);
     }
 
-    public function update(CreateMemberRequest $request, Member $member)
+    public function update(UpdateMemberRequest $request, Member $member)
     {
         $member->update($request->validated());
 

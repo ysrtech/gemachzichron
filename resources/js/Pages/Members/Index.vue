@@ -5,7 +5,7 @@
         <div class="p-4 space-y-4">
 
           <search-filter-field
-            v-model="filterForm.membership"
+            v-model="filterForm.membership_since"
             type="select"
             label="Membership"
             :options="{'All Members': null, 'Only With Membership': 'true', 'Only Without Membership': 'false'}"
@@ -53,9 +53,9 @@
                 <td class="px-6 py-3.5 whitespace-nowrap flex space-x-3 items-baseline">
                   <span>{{ member.last_name + ', ' + member.first_name }}</span>
                   <span
-                    :title="member.has_active_membership ? 'Active Membership' : 'No Active Membership'"
+                    :title="member.active_membership ? 'Active Membership' : 'No Active Membership'"
                     class="block w-2 h-2 rounded-full"
-                    :class="member.has_active_membership ? 'bg-green-500' : 'bg-red-500'">
+                    :class="member.active_membership ? 'bg-green-500' : 'bg-red-500'">
                   </span>
                   <app-badge v-if="member.deleted_at" color="red" class="ml-1">Archived Member</app-badge>
                 </td>
@@ -152,7 +152,7 @@ export default {
       filterForm: {
         search: this.filters.search,
         archived: this.filters.archived,
-        membership: this.filters.membership
+        membership_since: this.filters.membership_since
       },
     }
   },

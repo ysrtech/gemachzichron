@@ -5,9 +5,8 @@ namespace App\Gateways\Rotessa;
 use App\Gateways\AbstractGateway;
 use App\Gateways\Rotessa\Formatters\CustomerToPaymentMethod;
 use App\Gateways\Rotessa\Formatters\ScheduleToSubscription;
-use App\Models\Membership;
+use App\Models\Member;
 use App\Models\PaymentMethod;
-use App\Models\Subscription;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Log;
 
@@ -36,34 +35,34 @@ class Gateway extends AbstractGateway
         return config('gateways.rotessa.name');
     }
 
-    public function createCustomer(Membership $membership, array $data): array
+    public function createCustomer(Member $member, array $data): array
     {
-        Log::info("[ROTESSA] creating customer (Member #{$membership->member->id})", $data);
+        Log::info("[ROTESSA] creating customer (Member #$member->id)", $data);
 
         $response = $this->httpRequest->post('customers', [
-            'custom_identifier'  => $membership->member->id,
-            'email'              => $membership->member->email,
-            'name'               => "{$membership->member->first_name} {$membership->member->last_name}",
+            'custom_identifier'  => $member->id,
+            'email'              => $member->email,
+            'name'               => "{$member->first_name} {$member->last_name}",
             'bank_name'          => $data['bank_name'] ?? null,
             'transit_number'     => $data['transit_number'] ?? null,
             'institution_number' => $data['institution_number'] ?? null,
             'account_number'     => $data['account_number'] ?? null,
             'address'            => [
-                'address_1'     => $membership->member->address,
-                'city'          => $membership->member->city,
+                'address_1'     => $member->address,
+                'city'          => $member->city,
                 'province_code' => 'QC',
-                'postal_code'   => $membership->member->postal_code,
+                'postal_code'   => $member->postal_code,
             ]
         ])->throw();
 
-        Log::info("[ROTESSA] created customer (Member #{$membership->member->id})", $response->collect()->toArray());
+        Log::info("[ROTESSA] created customer (Member #$member->id)", $response->collect()->toArray());
 
         return $this->setFormatter(new CustomerToPaymentMethod())->format($response);
     }
 
     public function updateCustomer(PaymentMethod $paymentMethod, array $data): array
     {
-        $paymentMethod->load('membership.member');
+        $paymentMethod->load('member');
 
         $attributes =  collect($data)
             ->only([
@@ -74,31 +73,31 @@ class Gateway extends AbstractGateway
             ])
             ->filter()
             ->merge([
-                'email'   => $paymentMethod->membership->member->email,
-                'name'    => "{$paymentMethod->membership->member->first_name} {$paymentMethod->membership->member->last_name}",
+                'email'   => $paymentMethod->member->email,
+                'name'    => "{$paymentMethod->member->first_name} {$paymentMethod->member->last_name}",
                 'address' => [
-                    'address_1'     => $paymentMethod->membership->member->address,
-                    'city'          => $paymentMethod->membership->member->city,
+                    'address_1'     => $paymentMethod->member->address,
+                    'city'          => $paymentMethod->member->city,
                     'province_code' => 'QC',
-                    'postal_code'   => $paymentMethod->membership->member->postal_code,
+                    'postal_code'   => $paymentMethod->member->postal_code,
                 ]
             ])
             ->toArray();
 
-        Log::info("[ROTESSA] updating customer (Member #{$paymentMethod->membership->member->id})", $data);
+        Log::info("[ROTESSA] updating customer (Member #{$paymentMethod->member->id})", $data);
 
         $response = $this->httpRequest
             ->patch("customers/$paymentMethod->gateway_identifier", $attributes)
             ->throw();
 
-        Log::info("[ROTESSA] updated customer (Member #{$paymentMethod->membership->member->id})", $response->collect()->toArray());
+        Log::info("[ROTESSA] updated customer (Member #{$paymentMethod->member->id})", $response->collect()->toArray());
 
         return $this->setFormatter(new CustomerToPaymentMethod())->format($response);
     }
 
-    public function getCustomer(Membership $membership, $formatter = CustomerToPaymentMethod::class)
+    public function getCustomer(Member $member, $formatter = CustomerToPaymentMethod::class)
     {
-        $paymentMethod = $membership->paymentMethods()
+        $paymentMethod = $member->paymentMethods()
             ->where('gateway', $this->getName())
             ->firstOrFail();
 
@@ -151,20 +150,20 @@ class Gateway extends AbstractGateway
         return $this->setFormatter(new ScheduleToSubscription)->format($response);
     }
 
-//    public function getCustomerTransactions(Membership $membership, $query = null)
+//    public function getCustomerTransactions(Member $member, $query = null)
 //    {
-//        $paymentMethod = $membership->paymentMethods()->where('gateway', $this->getName())->first();
+//        $paymentMethod = $member->paymentMethods()->where('gateway', $this->getName())->first();
 //
 //        if (!$paymentMethod) {
-//            Log::warning("[ROTESSA] Membership $membership->id is not connected to Rotessa");
+//            Log::warning("[ROTESSA] Member $member->id is not connected to Rotessa");
 //            return;
 //        }
 //
 //        $response = $this->httpRequest->get("customers/$paymentMethod->gateway_identifier", $query);
 //
 //        collect($response->collect()->get('financial_transactions'))
-//            ->each(function ($responseTransaction) use ($membership) {
-//                $transaction = $membership->transactions()
+//            ->each(function ($responseTransaction) use ($member) {
+//                $transaction = $member->transactions()
 //                    ->where('gateway', $this->getName())
 //                    ->where('gateway_identifier', $responseTransaction['id'])
 //                    ->first();
@@ -173,7 +172,7 @@ class Gateway extends AbstractGateway
 //                    return; // no status updates
 //                }
 //
-//                $subscription = $membership->subscriptions()
+//                $subscription = $member->subscriptions()
 //                    ->where('gateway', $this->getName())
 //                    ->where('gateway_identifier', $responseTransaction['transaction_schedule_id'])
 //                    ->first();

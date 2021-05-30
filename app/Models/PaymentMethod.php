@@ -17,8 +17,8 @@ class PaymentMethod extends Model
         'data' => 'array'
     ];
 
-    public function membership()
+    public function member()
     {
-        return $this->belongsTo(Membership::class);
+        return $this->belongsTo(Member::class);
     }
 }

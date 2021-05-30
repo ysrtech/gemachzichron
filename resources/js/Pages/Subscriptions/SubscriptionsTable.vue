@@ -26,8 +26,8 @@
           <inertia-link
             @click.stop
             class="font-medium hover:text-gray-900 hover:underline"
-            :href="$route('members.show', subscription.membership.member.id)">
-            {{ subscription.membership.member.first_name + ' ' + subscription.membership.member.last_name }}
+            :href="$route('members.show', subscription.member.id)">
+            {{ subscription.member.first_name + ' ' + subscription.member.last_name }}
           </inertia-link>
         </td>
         <td class="px-6 py-3.5 whitespace-nowrap">

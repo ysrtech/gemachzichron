@@ -2,7 +2,7 @@
 
 namespace App\Contracts;
 
-use App\Models\Membership;
+use App\Models\Member;
 use App\Models\PaymentMethod;
 
 interface Gateway
@@ -13,7 +13,7 @@ interface Gateway
      * @throws \App\Exceptions\NotImplementedException
      * @return \JetBrains\PhpStorm\ArrayShape(['gateway' => 'string', 'gateway_identifier' => 'string', 'data' => 'array']
      */
-    public function createCustomer(Membership $membership, array $data): array;
+    public function createCustomer(Member $member, array $data): array;
 
     /**
      * @throws \App\Exceptions\NotImplementedException

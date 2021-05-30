@@ -15,7 +15,7 @@ class CreateSubscriptionsTable extends Migration
     {
         Schema::create('subscriptions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('membership_id')->constrained();
+            $table->foreignId('member_id')->constrained();
             $table->string('gateway');
             $table->string('gateway_identifier')->nullable();
             $table->string('type');

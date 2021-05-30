@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CreateMembershipRequest;
 use App\Models\Member;
-use App\Models\Membership;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -13,43 +11,20 @@ class MembershipController extends Controller
     public function index(Request $request)
     {
         return Inertia::render('Memberships/Index', [
-            'filters' => $request->all('search', 'archived', 'type', 'plan_type_id', 'is_active'),
+            'filters' => $request->all('search', 'archived', 'membership_type', 'plan_type_id', 'active_membership'),
             'members' =>  Member::search($request->search)
                 ->filterWithTrashed($request->archived)
-                ->select(['id', 'first_name', 'last_name', 'deleted_at'])
-                ->whereHas('membership', fn($query) => $query
-                    ->filter($request->only('type', 'plan_type_id'))
-                    ->filterBoolean($request->only('is_active'))
-                )
-                ->with(['membership' => fn($query) => $query
-                    ->filter($request->only('type', 'plan_type_id'))
-                    ->filterBoolean($request->only('is_active'))
-                    ->withTotalPaid()
-                    ->with('planType')
+                ->filter($request->only('membership_type', 'plan_type_id'))
+                ->filterBoolean($request->only('active_membership'))
+                ->select([
+                    'id', 'first_name', 'last_name', 'membership_since', 'active_membership', 'membership_type', 'plan_type_id', 'deleted_at'
                 ])
+                ->whereNotNull('membership_since')
+                ->withMembershipPaymentsTotal()
+                ->with('planType')
                 ->orderBy('last_name')
                 ->orderBy('first_name')
                 ->paginate()
         ]);
-
-    }
-
-    public function store(CreateMembershipRequest $request, Member $member)
-    {
-        $member->membership()->create($request->validated());
-
-        return back()->snackbar('Membership created.');
-    }
-
-    public function update(CreateMembershipRequest $request, Membership $membership)
-    {
-        $membership->update($request->validated());
-
-        return back()->snackbar('Membership updated.');
-    }
-
-    public function destroy(Membership $membership)
-    {
-        //
     }
 }

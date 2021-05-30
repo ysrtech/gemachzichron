@@ -31,6 +31,12 @@ class CreateMembersTable extends Migration
             $table->string('shtibel')->nullable();
             $table->string('father')->nullable();
             $table->string('father_in_law')->nullable();
+
+            $table->date('membership_since')->nullable();
+            $table->boolean('active_membership')->nullable();
+            $table->string('membership_type')->nullable();
+            $table->foreignId('plan_type_id')->nullable()->constrained();
+
             $table->softDeletes();
             $table->timestamps();
 
