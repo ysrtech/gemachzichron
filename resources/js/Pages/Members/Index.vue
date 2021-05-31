@@ -168,8 +168,20 @@ export default {
 
   methods: {
     duplicateMember(member) {
-      // todo filter which fields should be duplicated
-      // this.$inertia.post(this.$route('members.store'), member)
+      const  duplicateValues = [
+        'title', 'first_name', 'last_name', 'hebrew_first_name', 'hebrew_last_name',
+        'wife_name', 'address', 'city', 'postal_code', 'email', 'home_phone',
+        'mobile_phone', 'wife_mobile_phone', 'shtibel', 'father', 'father_in_law'
+      ];
+
+      const newMember = Object.keys(member)
+        .filter(key => duplicateValues.includes(key))
+        .reduce((obj, key) => {
+          obj[key] = member[key];
+          return obj;
+        }, {});
+
+      this.$inertia.post(this.$route('members.store'), newMember)
     }
   },
 }
