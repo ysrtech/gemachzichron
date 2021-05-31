@@ -6,7 +6,7 @@
           <template #actions>
             <button
               @click="openFormModal = true"
-              title="Add New Loan"
+              v-tippy="{ content: 'Add New Loan' }"
               class="material-icons-outlined focus:outline-none rounded-full p-1.5 text-gray-600 hover:bg-gray-200 focus:bg-gray-300">
               add
             </button>
@@ -51,7 +51,7 @@
 
             <div v-if="member.loans.length > 0" class="px-6 py-5 text-gray-500 w-full flex">
               <span class="flex-1">Loans Total:</span>
-              <span class="flex-1" title="Excluding Fees">Total Paid:</span>
+              <span class="flex-1" v-tippy="{ content: 'Excluding Fees' }">Total Paid:</span>
             </div>
 
           </template>

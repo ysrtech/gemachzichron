@@ -1,11 +1,11 @@
 <template>
   <div class="max-w-4xl mx-auto grid sm:grid-cols-3 gap-6">
     <div class="col-span-2">
-      <app-panel :title='`Loan <span class="text-gray-700">#</span>${loan.id}`'>
+      <app-panel title='Loan Details'>
         <template #actions>
           <button
             @click="openFormModal = true"
-            title="Edit Loan"
+            v-tippy="{ content: 'Edit Loan' }"
             class="material-icons-outlined focus:outline-none rounded-full p-1.5 text-gray-600 hover:bg-gray-200 focus:bg-gray-300">
             edit
           </button>
@@ -51,7 +51,7 @@
         <template #actions>
           <button
             @click="openFormModal = true"
-            title="Edit Guarantors"
+            v-tippy="{ content: 'Edit Guarantors' }"
             class="material-icons-outlined focus:outline-none rounded-full p-1.5 text-gray-600 hover:bg-gray-200 focus:bg-gray-300">
             edit
           </button>
@@ -68,6 +68,9 @@
         </template>
       </app-panel>
     </div>
+    <teleport v-if="isMounted" to="#header">
+      Loan <span class="text-gray-500">#</span>{{ loan.id }}
+    </teleport>
   </div>
 </template>
 
@@ -78,9 +81,10 @@ import LoanFormModal from "@/Pages/Loans/FormModal";
 import Money from "@/Components/UI/Money";
 import {date} from "@/helpers/dates";
 import AppPanel from "@/Components/UI/Panel";
+import IsMounted from "@/Mixins/IsMounted";
 
 export default {
-  layout: (h, page) => h(AppLayout, {header: 'Loans'}, () => page),
+  layout: AppLayout,
 
   components: {
     AppPanel,
@@ -88,6 +92,8 @@ export default {
     KeyValue,
     LoanFormModal
   },
+
+  mixins: [IsMounted],
 
   data() {
     return {

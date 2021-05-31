@@ -110,7 +110,7 @@ export default {
     freshForm() {
       return this.$inertia.form({
         gateway: this.paymentMethod?.gateway,
-        bank_name: this.paymentMethod?.data?.bank_name,
+        bank_name: this.paymentMethod?.data.bank_name,
         transit_number: '',
         institution_number: '',
         account_number: '',

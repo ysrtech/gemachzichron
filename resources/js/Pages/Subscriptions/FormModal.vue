@@ -159,7 +159,7 @@
 
 <script>
 import Modal from "@/Components/UI/Modal";
-import {DEFUALT_SUPSCRIPTION_FEES, SUBSCRIPTION_FREQUENCIES, SUBSCRIPTION_TYPES} from "@/config/subscriptions";
+import {DEFAULT_SUBSCRIPTION_FEES, SUBSCRIPTION_FREQUENCIES, SUBSCRIPTION_TYPES} from "@/config/subscriptions";
 import {AVAILABLE_GATEWAYS} from "@/config/gateways";
 import Money from "@/Components/UI/Money";
 
@@ -198,16 +198,16 @@ export default {
 
     'form.gateway'(val) {
       if (this.form.processing_fee === undefined) {
-        this.form.processing_fee = DEFUALT_SUPSCRIPTION_FEES.processingFee(val, Number(this.form.amount || 0) + Number(this.form.membership_fee || 0))
+        this.form.processing_fee = DEFAULT_SUBSCRIPTION_FEES.processingFee(val, Number(this.form.amount || 0) + Number(this.form.membership_fee || 0))
       }
     },
 
     'form.amount'(val) {
       if (this.form.membership_fee === undefined) {
-        this.form.membership_fee = DEFUALT_SUPSCRIPTION_FEES.membershipFee(val)
+        this.form.membership_fee = DEFAULT_SUBSCRIPTION_FEES.membershipFee(val)
       }
 
-      this.form.processing_fee = DEFUALT_SUPSCRIPTION_FEES.processingFee(this.form.gateway, Number(val) + Number(this.form.membership_fee))
+      this.form.processing_fee = DEFAULT_SUBSCRIPTION_FEES.processingFee(this.form.gateway, Number(val) + Number(this.form.membership_fee))
     },
 
     'form.frequency'(newVal, oldVal) {

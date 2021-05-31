@@ -31,7 +31,7 @@
           </inertia-link>
         </td>
         <td class="px-6 py-3.5 whitespace-nowrap">
-          <money :amount="subscription.total_transaction"/>
+          <money :amount="subscription.transaction_total"/>
         </td>
         <td class="px-6 py-3.5 whitespace-nowrap">
           <app-badge color="gray">{{ subscription.frequency }}</app-badge>

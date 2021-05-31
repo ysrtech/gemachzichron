@@ -4,7 +4,7 @@
       <div>
         <div class="flex space-x-2 items-baseline">
           <h2 class="text-lg leading-6 font-medium text-gray-900" v-html="title"></h2>
-          <app-badge v-if="badge" :color="badge.color">{{ badge.text }}</app-badge>
+          <app-badge v-if="badge" :color="badge.color" :uppercase="badge.uppercase">{{ badge.text }}</app-badge>
         </div>
         <p v-if="description" class="mt-1 text-sm text-gray-700">{{ description }}</p>
       </div>

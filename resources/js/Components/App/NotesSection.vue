@@ -3,7 +3,7 @@
     <template #actions>
       <button
         @click="openFormModal = true"
-        title="Add Note"
+        v-tippy="{ content: 'Add Note' }"
         class="material-icons-outlined focus:outline-none rounded-full p-1.5 text-gray-600 hover:bg-gray-200 focus:bg-gray-300">
         add
       </button>

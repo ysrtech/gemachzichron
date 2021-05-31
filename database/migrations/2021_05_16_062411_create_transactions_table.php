@@ -23,7 +23,7 @@ class CreateTransactionsTable extends Migration
             $table->decimal('amount');
             $table->integer('status');
             $table->date('process_date')->nullable();
-            $table->text('data')->nullable();
+            $table->json('data')->default('{}');
             $table->timestamps();
         });
     }

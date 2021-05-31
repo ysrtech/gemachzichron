@@ -22,7 +22,9 @@ class SubscriptionController extends Controller
 
     public function show(Subscription $subscription)
     {
-        //
+        return Inertia::render('Subscriptions/Show', [
+            'subscription' => $subscription->load('member:id,first_name,last_name')
+        ]);
     }
 
     public function update(Request $request, Subscription $subscription)

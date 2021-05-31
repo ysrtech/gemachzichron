@@ -22,10 +22,12 @@ trait Filterable
         }
     }
 
-    public function scopeFilterIsNotNull(Builder $query, array $filters)
+    public function scopeFilterNull(Builder $query, array $filters)
     {
         foreach ($filters as $key => $filter) {
-            $query->whereNotNull($key, $filter);
+            filter_var($filter, FILTER_VALIDATE_BOOLEAN)
+                ? $query->whereNotNull($key)
+                : $query->whereNull($key);
         }
     }
 

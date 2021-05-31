@@ -1,40 +1,41 @@
 <template>
   <div class="max-w-5xl mx-auto">
     <div class="mb-6 flex justify-between items-center px-1">
-      <search-filter v-model="filterForm.search" class="w-full max-w-md mr-4" @reset="reset">
-        <div class="p-4 space-y-4">
+      <search-filter
+        v-model="filterForm.search"
+        :applied-filters-length="appliedFiltersLength"
+        class="w-full max-w-md mr-4"
+        @reset="reset">
 
-          <search-filter-field
-            v-model="filterForm.membership_type"
-            @change="reset('plan_type_id')"
-            type="select"
-            label="Membership type"
-            :options="Object.assign({'All': null}, MEMBERSHIP_TYPES)"
-          />
+        <search-filter-field
+          v-model="filterForm.membership_type"
+          @change="reset('plan_type_id')"
+          type="select"
+          label="Membership type"
+          :options="Object.assign({'All': null}, MEMBERSHIP_TYPES)"
+        />
 
-          <search-filter-field
-            v-if="filterForm.type !== MEMBERSHIP_TYPES.Pekudon"
-            v-model="filterForm.plan_type_id"
-            type="select"
-            label="Plan type"
-            :options="planTypes.reduce((option, type) => ({...option, [type.name]: type.id}) ,{'All': null})"
-          />
+        <search-filter-field
+          v-if="filterForm.type !== MEMBERSHIP_TYPES.Pekudon"
+          v-model="filterForm.plan_type_id"
+          type="select"
+          label="Plan type"
+          :options="planTypes.reduce((option, type) => ({...option, [type.name]: type.id}) ,{'All': null})"
+        />
 
-          <search-filter-field
-            v-model="filterForm.active_membership"
-            type="select"
-            label="Active Membership"
-            :options="{'All': null, 'Only Active': 'true', 'Only Inactive': 'false'}"
-          />
+        <search-filter-field
+          v-model="filterForm.active_membership"
+          type="select"
+          label="Active Membership"
+          :options="{'All': null, 'Only Active': 'true', 'Only Inactive': 'false'}"
+        />
 
-          <search-filter-field
-            v-model="filterForm.archived"
-            type="select"
-            label="Archived Member"
-            :options="{'Without Archived': null, 'With Archived': 'with', 'Only Archived': 'only'}"
-          />
-
-        </div>
+        <search-filter-field
+          v-model="filterForm.archived"
+          type="select"
+          label="Archived Member"
+          :options="{'Without Archived': null, 'With Archived': 'with', 'Only Archived': 'only'}"
+        />
       </search-filter>
 
     </div>

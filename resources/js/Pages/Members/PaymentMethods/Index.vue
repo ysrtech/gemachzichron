@@ -6,7 +6,7 @@
           <template #actions>
             <button
               @click="openFormModal = true"
-              title="Add New Payment Method"
+              v-tippy="{ content: 'Add New Payment Method' }"
               class="material-icons-outlined focus:outline-none rounded-full p-1.5 text-gray-600 hover:bg-gray-200 focus:bg-gray-300">
               add
             </button>
@@ -17,7 +17,7 @@
                 <template #actions>
                   <button
                     @click="openFormModal = true; paymentMethodToEdit = paymentMethod"
-                    title="Edit"
+                    v-tippy="{ content: 'Edit Payment Method' }"
                     class="material-icons-outlined focus:outline-none rounded-full p-1.5 text-gray-600 hover:bg-gray-200 focus:bg-gray-300">
                     edit
                   </button>
@@ -27,7 +27,7 @@
                     <dl class="space-y-4">
                       <key-value label="ID" :value="paymentMethod.gateway_identifier"/>
                       <template v-for="(data, key) in paymentMethod.data">
-                        <key-value v-if="data" :label="key" :value="data"/>
+                        <key-value v-if="data" :label="key.replace('_', ' ')" :value="data"/>
                       </template>
                     </dl>
                   </div>

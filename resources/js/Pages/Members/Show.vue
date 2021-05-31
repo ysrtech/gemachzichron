@@ -8,20 +8,20 @@
               <div class="space-x-1">
                 <inertia-link
                   :href="$route('members.edit', member.id)"
-                  title="Edit Member details"
+                  v-tippy="{ content: 'Edit Member details' }"
                   class="material-icons-outlined focus:outline-none rounded-full p-1.5 text-gray-600 hover:bg-gray-200 focus:bg-gray-300">
                   edit
                 </inertia-link>
                 <button
                   v-if="!member.deleted_at"
-                  title="Archive Member"
+                  v-tippy="{ content: 'Archive Member' }"
                   class="material-icons-outlined focus:outline-none rounded-full p-1.5 text-gray-600 hover:bg-gray-200 focus:bg-gray-300"
                   @click="$inertia.delete($route('members.destroy', member.id))">
                   delete
                 </button>
                 <button
                   v-else
-                  title="Restore Member"
+                  v-tippy="{ content: 'Restore Member' }"
                   class="material-icons-outlined focus:outline-none rounded-full p-1.5 text-gray-600 hover:bg-gray-200 focus:bg-gray-300"
                   @click="$inertia.put($route('members.restore', member.id))">
                   unarchive

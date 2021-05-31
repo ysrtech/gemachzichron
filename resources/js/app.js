@@ -1,6 +1,8 @@
 import {createApp, h} from 'vue';
 import {App, plugin} from '@inertiajs/inertia-vue3';
 import {InertiaProgress} from '@inertiajs/progress';
+import VueTippy from 'vue-tippy';
+import 'tippy.js/dist/tippy.css';
 import AppInput from '@/Components/UI/Input';
 import AppButton from '@/Components/UI/Button';
 import axios from "axios";
@@ -21,6 +23,7 @@ app.config.globalProperties.$axios = axios
 
 app
   .use(plugin)
+  .use(VueTippy)
   .component('AppInput', AppInput)
   .component('AppButton', AppButton)
   .mount(el)

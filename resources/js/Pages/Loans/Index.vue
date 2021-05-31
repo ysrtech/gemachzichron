@@ -1,27 +1,29 @@
 <template>
   <div class="max-w-3xl mx-auto">
-    <search-filter v-model="filterForm.search" class="w-full max-w-md mb-6" placeholder="Search By Member..." @reset="reset">
-      <div class="p-4 space-y-4">
+    <search-filter
+      v-model="filterForm.search"
+      :applied-filters-length="appliedFiltersLength"
+      class="w-full max-w-md mb-6"
+      placeholder="Search By Member..."
+      @reset="reset">
 
-        <search-filter-field
-          v-model="filterForm.amount"
-          type="number"
-          label="Amount"
-        />
+      <search-filter-field
+        v-model="filterForm.amount"
+        type="number"
+        label="Amount"
+      />
 
-        <search-filter-field
-          v-model="filterForm.from_date"
-          type="date"
-          label="From Date"
-        />
+      <search-filter-field
+        v-model="filterForm.from_date"
+        type="date"
+        label="From Date"
+      />
 
-        <search-filter-field
-          v-model="filterForm.to_date"
-          type="date"
-          label="To Date"
-        />
-
-      </div>
+      <search-filter-field
+        v-model="filterForm.to_date"
+        type="date"
+        label="To Date"
+      />
     </search-filter>
 
     <app-panel>

@@ -1,36 +1,38 @@
 <template>
   <div class="max-w-7xl mx-auto">
-    <search-filter v-model="filterForm.search" class="w-full max-w-md mb-6" placeholder="Search By Member..." @reset="reset">
-      <div class="p-4 space-y-4">
+    <search-filter
+      v-model="filterForm.search"
+      :applied-filters-length="appliedFiltersLength"
+      class="w-full max-w-md mb-6"
+      placeholder="Search By Member..."
+      @reset="reset">
 
-        <search-filter-field
-          v-model="filterForm.amount"
-          type="number"
-          label="Amount"
-        />
+      <search-filter-field
+        v-model="filterForm.amount"
+        type="number"
+        label="Amount"
+      />
 
-        <search-filter-field
-          v-model="filterForm.type"
-          type="select"
-          label="Type"
-          :options="Object.assign({'All': null}, SUBSCRIPTION_TYPES)"
-        />
+      <search-filter-field
+        v-model="filterForm.type"
+        type="select"
+        label="Type"
+        :options="Object.assign({'All': null}, SUBSCRIPTION_TYPES)"
+      />
 
-        <search-filter-field
-          v-model="filterForm.active"
-          type="select"
-          label="Status"
-          :options="{'All': null, 'Active': '1', 'Inactive': '0'}"
-        />
+      <search-filter-field
+        v-model="filterForm.active"
+        type="select"
+        label="Status"
+        :options="{'All': null, 'Active': '1', 'Inactive': '0'}"
+      />
 
-        <search-filter-field
-          v-model="filterForm.gateway"
-          type="select"
-          label="Gateway"
-          :options="Object.assign({'All': null}, AVAILABLE_GATEWAYS)"
-        />
-
-      </div>
+      <search-filter-field
+        v-model="filterForm.gateway"
+        type="select"
+        label="Gateway"
+        :options="Object.assign({'All': null}, AVAILABLE_GATEWAYS)"
+      />
     </search-filter>
 
     <app-panel class="overflow-x-auto">

@@ -7,7 +7,7 @@
         <button
           v-if="member.membership_since"
           @click="openMembershipFormModal = true"
-          title="Edit Membership"
+          v-tippy="{ content: 'Edit Membership' }"
           class="material-icons-outlined focus:outline-none rounded-full p-1.5 text-gray-600 hover:bg-gray-200 focus:bg-gray-300">
           edit
         </button>
@@ -22,8 +22,8 @@
               </key-value>
             </dl>
           </div>
-          <div class="px-4 py-5 sm:px-6 flex justify-between items-center" title="Membership payments only, Excluding Fees">
-            <div class="font-medium text-gray-400">Total Paid</div>
+          <div class="px-4 py-5 sm:px-6 flex justify-between items-center">
+            <div class="font-medium text-gray-400" v-tippy="{ content: 'Membership payments only, Excluding Fees' }">Total Paid</div>
             <div class="text-2xl">
               <money
                 :amount="member.membership_payments_total || 0"

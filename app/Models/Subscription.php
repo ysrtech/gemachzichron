@@ -43,7 +43,7 @@ class Subscription extends Model
     ];
 
     protected $appends = [
-        'total_transaction'
+        'transaction_total'
     ];
 
     public function member()
@@ -51,7 +51,12 @@ class Subscription extends Model
         return $this->belongsTo(Member::class);
     }
 
-    public function getTotalTransactionAttribute()
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
+
+    public function getTransactionTotalAttribute()
     {
         return $this->amount + $this->membership_fee + $this->processing_fee + $this->decline_fee;
     }

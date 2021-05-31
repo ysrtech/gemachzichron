@@ -10,12 +10,24 @@
     @apply bg-gray-100
 }
 
+.scrollbar-gray-900::-webkit-scrollbar {
+    @apply bg-gray-900
+}
+
 .scrollbar-thumb-gray-200::-webkit-scrollbar-thumb {
     @apply bg-gray-200
 }
 
+.scrollbar-thumb-gray-400::-webkit-scrollbar-thumb {
+    @apply bg-gray-400
+}
+
 .hover\:scrollbar-thumb-gray-300::-webkit-scrollbar-thumb:hover {
     @apply bg-gray-300;
+}
+
+.hover\:scrollbar-thumb-gray-500::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-500;
 }
 
 .scrollbar-thumb-rounded-full::-webkit-scrollbar-thumb {

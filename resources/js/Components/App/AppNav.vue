@@ -1,15 +1,15 @@
 <template>
   <nav>
     <template v-for="item in navItems">
-
-      <component
+      <hr v-if="item.divider" class="border-gray-500">
+      <component v-else
         v-show="!item.hidden"
         :is="item.route ? 'inertia-link' : 'div'"
         :class="[isCurrentRoute(item.route) ? 'bg-gray-700 text-white' : 'hover:bg-gray-800 text-gray-300 hover:text-white', item.class]"
-        class="flex items-center group py-2 px-3 my-3 transition rounded-md focus:outline-none cursor-pointer"
+        class="flex items-center group py-2 px-3 m-3 transition rounded-md focus:outline-none cursor-pointer"
         :href="item.route ? $route(item.route) : null"
         @click="item.subItems ? (item.subItemsExpanded = !item.subItemsExpanded) : $emit('close-navigation')">
-        <i :class="{'text-primary-500': isCurrentRoute(item.route)}" class="material-icons-outlined mr-3">
+        <i :class="{'text-primary-500': isCurrentRoute(item.route)}" class="material-icons-outlined mr-3 text-xl">
           {{ item.icon }}
         </i>
         <div>
@@ -20,32 +20,32 @@
         </div>
       </component>
 
-      <transition
-        enter-active-class="transition ease-out duration-300"
-        enter-from-class="transform scale-y-0"
-        enter-to-class="transform origin-top scale-y-100"
-        leave-active-class="transition ease-in duration-200"
-        leave-from-class="transform scale-y-100"
-        leave-to-class="transform origin-top scale-y-0">
+<!--      <transition-->
+<!--        enter-active-class="transition ease-out duration-300"-->
+<!--        enter-from-class="transform scale-y-0"-->
+<!--        enter-to-class="transform origin-top scale-y-100"-->
+<!--        leave-active-class="transition ease-in duration-200"-->
+<!--        leave-from-class="transform scale-y-100"-->
+<!--        leave-to-class="transform origin-top scale-y-0">-->
 
-        <div v-if="item.subItemsExpanded">
-          <template v-for="subItem in item.subItems">
-            <inertia-link
-              v-show="!subItem.hidden"
-              :class="isCurrentRoute(subItem.route) ? 'bg-gray-700 text-white' : 'hover:bg-gray-800 text-gray-300 hover:text-white'"
-              :href="$route(subItem.route)"
-              class="flex items-center group py-2 px-3 my-3 transition rounded-md focus:outline-none cursor-pointer"
-              @click="$emit('close-navigation')">
-              <i :class="{'text-primary-500': isCurrentRoute(subItem.route)}" class="material-icons-outlined mr-3">
-                {{ subItem.icon }}
-              </i>
-              <div>
-                {{ subItem.title }}
-              </div>
-            </inertia-link>
-          </template>
-        </div>
-      </transition>
+<!--        <div v-if="item.subItemsExpanded">-->
+<!--          <template v-for="subItem in item.subItems">-->
+<!--            <inertia-link-->
+<!--              v-show="!subItem.hidden"-->
+<!--              :class="isCurrentRoute(subItem.route) ? 'bg-gray-700 text-white' : 'hover:bg-gray-800 text-gray-300 hover:text-white'"-->
+<!--              :href="$route(subItem.route)"-->
+<!--              class="flex items-center group py-2 px-3 m-3 transition rounded-md focus:outline-none cursor-pointer"-->
+<!--              @click="$emit('close-navigation')">-->
+<!--              <i :class="{'text-primary-500': isCurrentRoute(subItem.route)}" class="material-icons-outlined mr-3 text-xl">-->
+<!--                {{ subItem.icon }}-->
+<!--              </i>-->
+<!--              <div>-->
+<!--                {{ subItem.title }}-->
+<!--              </div>-->
+<!--            </inertia-link>-->
+<!--          </template>-->
+<!--        </div>-->
+<!--      </transition>-->
 
     </template>
 
@@ -88,28 +88,30 @@ export default {
           route: "loans.index",
           icon: "account_balance",
         },
-        // {
-        //   title: "Invoices",
-        //   route: "invoices.index",
-        //   icon: "receipt_long",
-        // },
+        { divider: true },
+        {
+          title: "Data Export",
+          route: "export.index",
+          icon: 'download',
+        },
         {
           title: "Users",
           route: "users.index",
           icon: 'supervised_user_circle',
         },
-        // {
-        //   title: "Settings",
-        //   icon: "settings",
-        //   subItemsExpanded: false,
-        //   subItems: [
-        //     {
-        //       title: "Plan Types",
-        //       route: "plan-types.index",
-        //       icon: 'backup_table'
-        //     },
-        //   ]
-        // },
+      //   { divider: true },
+      //   {
+      //     title: "Settings",
+      //     icon: "settings",
+      //     subItemsExpanded: false,
+      //     subItems: [
+      //       {
+      //         title: "Plan Types",
+      //         route: "plan-types.index",
+      //         icon: 'backup_table'
+      //       },
+      //     ]
+      //   },
       ],
       currentRouteName: this.$route().current()
     }

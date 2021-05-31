@@ -14,7 +14,7 @@ class MemberController extends Controller
     {
         $query = Member::search($request->search)
             ->filterWithTrashed($request->archived)
-            ->filterIsNotNull($request->only('membership_since'))
+            ->filterNull($request->only('membership_since'))
             ->orderBy('last_name')
             ->orderBy('first_name');
 

@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\DataExportController;
 use App\Http\Controllers\MemberDependentController;
 use App\Http\Controllers\MemberLoanController;
 use App\Http\Controllers\MemberPaymentMethodController;
+use App\Http\Controllers\MemberSubscriptionController;
 use App\Http\Controllers\MemberTransactionController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\DependentController;
@@ -10,7 +12,6 @@ use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\LoanController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\MemberGuaranteesController;
-use App\Http\Controllers\MembersExportController;
 use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\PlanTypeController;
 use App\Http\Controllers\SubscriptionController;
@@ -38,7 +39,6 @@ Route::middleware(['auth'])->group(function () {
     Route::apiResource('users', UserController::class);
 
     // Members
-    Route::get('members/export', MembersExportController::class)->name('members.export');
     Route::resource('members', MemberController::class);
     Route::put('members/{member}/restore', [MemberController::class, 'restore'])->name('members.restore');
 
@@ -51,8 +51,8 @@ Route::middleware(['auth'])->group(function () {
     Route::apiResource('loans', LoanController::class)->except('store');
 
     // Subscriptions
-    Route::get('members/{member}/subscriptions', [SubscriptionController::class, 'index'])->name('members.subscriptions.index');
-    Route::post('members/{member}/subscriptions', [SubscriptionController::class, 'store'])->name('members.subscriptions.store');
+    Route::get('members/{member}/subscriptions', [MemberSubscriptionController::class, 'index'])->name('members.subscriptions.index');
+    Route::post('members/{member}/subscriptions', [MemberSubscriptionController::class, 'store'])->name('members.subscriptions.store');
     Route::apiResource('subscriptions', SubscriptionController::class)->except('store');
 
     // Transactions
@@ -81,4 +81,8 @@ Route::middleware(['auth'])->group(function () {
 
     // Plan Types
     Route::apiResource('plan-types', PlanTypeController::class);
+
+    // Exports
+    Route::get('export', [DataExportController::class, 'index'])->name('export.index');
+    Route::get('export/{model}', [DataExportController::class, 'show'])->name('export.show');
 });

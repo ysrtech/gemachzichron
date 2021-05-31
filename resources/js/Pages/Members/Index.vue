@@ -1,31 +1,33 @@
 <template>
   <div class="max-w-5xl mx-auto">
     <div class="mb-6 flex justify-between items-center px-1">
-      <search-filter v-model="filterForm.search" class="w-full max-w-md mr-4" @reset="reset">
-        <div class="p-4 space-y-4">
+      <search-filter
+        v-model="filterForm.search"
+        :applied-filters-length="appliedFiltersLength"
+        class="w-full max-w-md mr-4"
+        @reset="reset">
 
-          <search-filter-field
-            v-model="filterForm.membership_since"
-            type="select"
-            label="Membership"
-            :options="{'All Members': null, 'Only With Membership': 'true', 'Only Without Membership': 'false'}"
-          />
+        <search-filter-field
+          v-model="filterForm.membership_since"
+          type="select"
+          label="Membership"
+          :options="{'All Members': null, 'Only With Membership': 'true', 'Only Without Membership': 'false'}"
+        />
 
-          <search-filter-field
-            v-model="filterForm.archived"
-            type="select"
-            label="Archived"
-            :options="{'Without Archived': null, 'With Archived': 'with', 'Only Archived': 'only'}"
-          />
-
-        </div>
-      </search-filter>
+        <search-filter-field
+          v-model="filterForm.archived"
+          type="select"
+          label="Archived"
+          :options="{'Without Archived': null, 'With Archived': 'with', 'Only Archived': 'only'}"
+        />
+     </search-filter>
 
       <div class="flex space-x-3">
         <inertia-link :href="$route('members.create')">
           <app-button>New Member</app-button>
         </inertia-link>
-        <a :href="$route('members.export')" download>
+        <a :href="$route('export.show', {model: 'member'})" download>
+        <!-- TODO designate a separate page for exports (exports.index)-->
           <app-button color="secondary">Export Members</app-button>
         </a>
       </div>
@@ -53,7 +55,7 @@
                 <td class="px-6 py-3.5 whitespace-nowrap flex space-x-3 items-baseline">
                   <span>{{ member.last_name + ', ' + member.first_name }}</span>
                   <span
-                    :title="member.active_membership ? 'Active Membership' : 'No Active Membership'"
+                    v-tippy="{ content: member.active_membership ? 'Active Membership' : 'No Active Membership' }"
                     class="block w-2 h-2 rounded-full"
                     :class="member.active_membership ? 'bg-green-500' : 'bg-red-500'">
                   </span>
@@ -166,7 +168,8 @@ export default {
 
   methods: {
     duplicateMember(member) {
-      this.$inertia.post(this.$route('members.store'), member)
+      // todo filter which fields should be duplicated
+      // this.$inertia.post(this.$route('members.store'), member)
     }
   },
 }

@@ -49,22 +49,22 @@ export default {
         {
           title: 'Subscriptions',
           route: 'members.subscriptions.index',
-          show: !!this.member.membership_since
+          show: this.member.membership_since
         },
         {
           title: 'Transactions',
           route: 'members.transactions.index',
-          show: !!this.member.membership_since
+          show: this.member.membership_since
         },
         {
           title: 'Loans',
           route: 'members.loans.index',
-          show: !!this.member.membership_since
+          show: this.member.membership_since
         },
         {
           title: 'Payment Methods',
           route: 'members.payment-methods.index',
-          show: !!this.member.membership_since
+          show: this.member.membership_since
         },
         {
           title: 'Children',

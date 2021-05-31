@@ -1,4 +1,5 @@
 import {AVAILABLE_GATEWAYS} from "@/config/gateways";
+import {MEMBERSHIP_TYPES} from "@/config/memberships";
 
 export const SUBSCRIPTION_TYPES = {
   Membership: 'Membership',
@@ -16,7 +17,7 @@ export const SUBSCRIPTION_FREQUENCIES = {
   Yearly: 'Yearly',
 }
 
-export const DEFUALT_SUPSCRIPTION_FEES = {
-  membershipFee: (membershipAmount) => (membershipAmount / 24).toFixed(2),
+export const DEFAULT_SUBSCRIPTION_FEES = {
+  membershipFee: (membershipType, membershipAmount) => membershipType === MEMBERSHIP_TYPES.Membership ? (membershipAmount / 24).toFixed(2) : 0,
   processingFee: (gateway, amount) => gateway === AVAILABLE_GATEWAYS.Cardknox ? (amount * 0.03).toFixed(2) : 0,
 }

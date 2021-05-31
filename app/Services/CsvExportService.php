@@ -24,7 +24,7 @@ class CsvExportService
         $headers = [
             "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
             "Content-type"        => "text/csv",
-            "Content-Disposition" => "attachment; filename={$fileName}",
+            "Content-Disposition" => "attachment; filename=$fileName",
             "Expires"             => "0",
             "Pragma"              => "no-cache",
         ];

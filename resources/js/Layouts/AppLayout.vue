@@ -51,7 +51,9 @@
     </div>
 
     <div class="md:flex md:flex-grow md:overflow-hidden">
-      <div class="hidden md:block bg-gray-900 flex-shrink-0 w-52 py-6 px-3 overflow-y-auto">
+      <div
+        class="hidden md:block bg-gray-900 flex-shrink-0 w-52 py-6 overflow-y-auto scrollbar-thumb-rounded-full
+         scrollbar-thumb-gray-400 hover:scrollbar-thumb-gray-500 scrollbar-w-2 scrollbar-gray-900">
         <app-nav/>
       </div>
 
