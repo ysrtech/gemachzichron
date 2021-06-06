@@ -36,9 +36,9 @@
                   <key-value label="Hebrew First Name" :value="member.hebrew_first_name"/>
                   <key-value label="Hebrew Last Name" :value="member.hebrew_last_name"/>
                   <key-value label="Home Phone" :value="member.home_phone"/>
-                  <key-value label="Cellphone" :value="member.mobile_phone"/>
+                  <key-value label="Cellphone" :value="member.cell_phone"/>
                   <key-value label="Wife's Name" :value="member.wife_name"/>
-                  <key-value label="Wife's Cellphone" :value="member.wife_mobile_phone"/>
+                  <key-value label="Wife's Cellphone" :value="member.wife_cell_phone"/>
                   <key-value label="Email" :value="member.email"/>
                   <key-value label="Address">
                     {{member.address}}<br>{{member.city}} {{member.postal_code}}
@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import AppLayout from "@/Layouts/AppLayout";
+import AppLayout from "@/Layouts/PersistentAppLayout";
 import MemberBase from "@/Pages/Members/MemberBase";
 import MembershipSection from "@/Pages/Members/MembershipSection";
 import NotesSection from "@/Components/App/NotesSection";

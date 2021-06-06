@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import AppLayout from "@/Layouts/AppLayout";
+import AppLayout from "@/Layouts/PersistentAppLayout";
 import SearchFilter from "@/Components/App/SearchFilter";
 import MembershipsTable from "./MembershipsTable";
 import SearchFilterField from "@/Components/App/SearchFilterField";
@@ -59,7 +59,7 @@ import HasFilters from "@/Mixins/HasFilters";
 import {MEMBERSHIP_TYPES} from "@/config/memberships";
 
 export default {
-  layout: (h, page) => h(AppLayout, {header: 'Memberships'}, () => page),
+  layout: (h, page) => h(AppLayout, {title: 'Memberships'}, () => page),
 
   components: {
     SearchFilterField,

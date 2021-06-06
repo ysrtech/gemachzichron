@@ -115,7 +115,7 @@ class CsvImportService
                 'amount'    => Str::of($row[$headers->search('Loan Amount')])->trim()->replace(['$', ','], ''),
                 'comment'   => trim($row[$headers->search('Comments')]) .
                     (!empty($paymentStart = trim($row[$headers->search('Payment Start')]))
-                        ? '.\nPayment Start: ' . $paymentStart
+                        ? ".\nPayment Start: " . $paymentStart
                         : null)
             ]);
 
@@ -203,6 +203,7 @@ class CsvImportService
                 'decline_fee'    => trim($row[$headers->search('Late Fees')]) ?: 0,
                 'active'         => (boolean)trim($row[$headers->search('active')]),
                 'comment'        => trim($row[$headers->search('comment')]),
+                'data'           => ['next_process_date' => trim($row[$headers->search('next_process_date')])]
             ])->update([
                 // update amount to exclude fees
                 'amount' => DB::raw('amount - membership_fee - processing_fee - decline_fee')

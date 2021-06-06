@@ -52,7 +52,7 @@
 
 <script>
 import MemberBase from "@/Pages/Members/MemberBase";
-import AppLayout from "@/Layouts/AppLayout";
+import AppLayout from "@/Layouts/PersistentAppLayout";
 import PaymentMethodsFormModal from "./FormModal";
 import AppPanel from "@/Components/UI/Panel";
 import Money from "@/Components/UI/Money";

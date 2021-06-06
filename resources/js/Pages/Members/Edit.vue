@@ -128,23 +128,23 @@
 
         <div class="col-span-3">
           <app-input
-            id="mobile_phone"
-            v-model="form.mobile_phone"
-            :error="form.errors.mobile_phone"
+            id="cell_phone"
+            v-model="form.cell_phone"
+            :error="form.errors.cell_phone"
             label="Cellphone"
             type="text"
-            @input="form.clearErrors('mobile_phone')"
+            @input="form.clearErrors('cell_phone')"
           />
         </div>
 
         <div class="col-span-3">
           <app-input
-            id="wife_mobile_phone"
-            v-model="form.wife_mobile_phone"
-            :error="form.errors.wife_mobile_phone"
+            id="wife_cell_phone"
+            v-model="form.wife_cell_phone"
+            :error="form.errors.wife_cell_phone"
             label="Wife's Cellphone"
             type="text"
-            @input="form.clearErrors('wife_mobile_phone')"
+            @input="form.clearErrors('wife_cell_phone')"
           />
         </div>
 
@@ -195,7 +195,7 @@
 </template>
 
 <script>
-import AppLayout from "@/Layouts/AppLayout";
+import AppLayout from "@/Layouts/PersistentAppLayout";
 import IsMounted from "@/Mixins/IsMounted";
 import AppInput from "@/Components/UI/Input";
 
@@ -239,8 +239,8 @@ export default {
         postal_code: this.member?.postal_code || '',
         email: this.member?.email || '',
         home_phone: this.member?.home_phone || '',
-        mobile_phone: this.member?.mobile_phone || '',
-        wife_mobile_phone: this.member?.wife_mobile_phone || '',
+        cell_phone: this.member?.cell_phone || '',
+        wife_cell_phone: this.member?.wife_cell_phone || '',
         shtibel: this.member?.shtibel || '',
         father: this.member?.father || '',
         father_in_law: this.member?.father_in_law || '',

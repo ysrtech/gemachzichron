@@ -56,7 +56,7 @@
                     <money class="font-medium" :amount="subscription.processing_fee"/>
                   </li>
                   <li v-show="subscription.decline_fee" class="px-4 py-2 flex items-center justify-between">
-                    <span class="flex-1">Declined Transaction Fee</span>
+                    <span class="flex-1" title="Previous declined transactions">Decline Fees</span>
                     <money class="font-medium" :amount="subscription.decline_fee"/>
                   </li>
                   <hr>
@@ -85,7 +85,7 @@
 </template>
 
 <script>
-import AppLayout from "@/Layouts/AppLayout";
+import AppLayout from "@/Layouts/PersistentAppLayout";
 import IsMounted from "@/Mixins/IsMounted";
 import AppPanel from "@/Components/UI/Panel";
 import KeyValue from "@/Components/UI/KeyValue";

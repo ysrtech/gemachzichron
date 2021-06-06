@@ -48,10 +48,16 @@
 
               </tbody>
             </table>
-
+            <hr>
             <div v-if="member.loans.length > 0" class="px-6 py-5 text-gray-500 w-full flex">
-              <span class="flex-1">Loans Total:</span>
-              <span class="flex-1" v-tippy="{ content: 'Excluding Fees' }">Total Paid:</span>
+              <span class="flex-1 flex space-x-2">
+                <span class="font-medium" >Total:</span>
+                <money :amount="member.loans_sum_amount"/>
+              </span>
+              <span class="flex-1 flex space-x-2" title="Exluding Fees">
+                <span class="font-medium" >Total Paid:</span>
+                <money :amount="member.loan_payments_total"/>
+              </span>
             </div>
 
           </template>
@@ -70,7 +76,7 @@
 
 <script>
 import MemberBase from "@/Pages/Members/MemberBase";
-import AppLayout from "@/Layouts/AppLayout";
+import AppLayout from "@/Layouts/PersistentAppLayout";
 import {date} from "@/helpers/dates";
 import LoansFormModal from "@/Pages/Loans/FormModal";
 import AppPanel from "@/Components/UI/Panel";

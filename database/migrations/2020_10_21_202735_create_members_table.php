@@ -26,8 +26,8 @@ class CreateMembersTable extends Migration
             $table->string('postal_code')->nullable();
             $table->string('email')->nullable()->index();
             $table->string('home_phone')->nullable();
-            $table->string('mobile_phone')->nullable();
-            $table->string('wife_mobile_phone')->nullable();
+            $table->string('cell_phone')->nullable();
+            $table->string('wife_cell_phone')->nullable();
             $table->string('shtibel')->nullable();
             $table->string('father')->nullable();
             $table->string('father_in_law')->nullable();

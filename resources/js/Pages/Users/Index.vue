@@ -27,12 +27,12 @@
 </template>
 
 <script>
-import AppLayout from "@/Layouts/AppLayout";
+import AppLayout from "@/Layouts/PersistentAppLayout";
 import UsersTable from "./UsersTable";
 import UserFormModal from "./FormModal";
 
 export default {
-  layout: (h, page) => h(AppLayout, {header: 'Users'}, () => page),
+  layout: (h, page) => h(AppLayout, {title: 'Users'}, () => page),
 
   components: {
     UserFormModal,

@@ -50,7 +50,9 @@ class Member extends Model
         });
 
         static::updated(function (Member $member) {
-            MemberUpdated::dispatch($member);
+            if ($member->isDirty('first_name', 'last_name', 'email', 'address', 'city', 'postal_code', 'home_phone', 'cell_phone')) {
+                MemberUpdated::dispatch($member);
+            }
         });
     }
 

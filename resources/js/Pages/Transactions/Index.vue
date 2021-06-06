@@ -14,34 +14,60 @@
       />
 
       <search-filter-field
-        v-model="filterForm.type"
-        type="select"
-        label="Type"
-        :options="Object.assign({'All': null}, SUBSCRIPTION_TYPES)"
+        v-model="filterForm.subscription_id"
+        type="number"
+        label="Subscription ID"
       />
 
       <search-filter-field
-        v-model="filterForm.active"
+        v-model="filterForm.status"
         type="select"
         label="Status"
-        :options="{'All': null, 'Active': '1', 'Inactive': '0'}"
+        :options="TRANSACTION_STATUSES"
+      />
+
+      <search-filter-field
+        v-model="filterForm.type"
+        type="select"
+        label="Type"
+        :options="TRANSACTION_TYPES"
       />
 
       <search-filter-field
         v-model="filterForm.gateway"
         type="select"
         label="Gateway"
-        :options="Object.assign({'All': null}, AVAILABLE_GATEWAYS)"
+        :options="AVAILABLE_GATEWAYS"
+      />
+
+      <search-filter-field
+        v-model="filterForm.gateway_identifier"
+        type="text"
+        label="Gateway ID"
+      />
+
+      <search-filter-field
+        v-model="filterForm.from_date"
+        type="date"
+        label="From Date"
+      />
+
+      <search-filter-field
+        v-model="filterForm.to_date"
+        type="date"
+        label="To Date"
       />
     </search-filter>
 
-    <app-panel class="overflow-x-auto">
+    <app-panel>
       <template #content>
-        <subscriptions-table :subscriptions="subscriptions.data" show-member/>
+        <transactions-table :transactions="transactions.data"/>
+
+        <div v-if="transactions.total === 0" class="px-6 py-10 text-center text-gray-500">No Transactions Found.</div>
 
         <!-- Pagination -->
         <div class="bg-white px-4 py-3 flex items-center justify-around border-t border-gray-300 sm:px-6">
-          <links-pagination :links="subscriptions.links"/>
+          <links-pagination :links="transactions.links"/>
         </div>
       </template>
     </app-panel>
@@ -55,19 +81,19 @@ import AppPanel from "@/Components/UI/Panel";
 import SearchFilter from "@/Components/App/SearchFilter";
 import SearchFilterField from "@/Components/App/SearchFilterField";
 import HasFilters from "@/Mixins/HasFilters";
+import {TRANSACTION_STATUSES, TRANSACTION_TYPES} from "@/config/transactions";
 import {AVAILABLE_GATEWAYS} from "@/config/gateways";
-import {SUBSCRIPTION_TYPES} from "@/config/subscriptions";
-import SubscriptionsTable from "@/Pages/Subscriptions/SubscriptionsTable";
+import TransactionsTable from "@/Pages/Transactions/TransactionsTable";
 
 export default {
-  layout: (h, page) => h(AppLayout, {title: 'Subscriptions'}, () => page),
+  layout: (h, page) => h(AppLayout, {title: 'Transactions'}, () => page),
 
   components: {
-    SubscriptionsTable,
+    TransactionsTable,
     SearchFilterField,
     SearchFilter,
     AppPanel,
-    LinksPagination,
+    LinksPagination
   },
 
   data() {
@@ -75,19 +101,24 @@ export default {
       filterForm: {
         search: this.filters.search,
         amount: this.filters.amount,
+        subscription_id: this.filters.subscription_id,
+        status: this.filters.status,
         type: this.filters.type,
-        active: this.filters.active,
         gateway: this.filters.gateway,
+        gateway_identifier: this.filters.gateway_identifier,
+        from_date: this.filters.from_date,
+        to_date: this.filters.to_date,
       },
+      TRANSACTION_STATUSES,
+      TRANSACTION_TYPES,
       AVAILABLE_GATEWAYS,
-      SUBSCRIPTION_TYPES,
     }
   },
 
   mixins: [HasFilters],
 
   props: {
-    subscriptions: Object,
+    transactions: Object,
     filters: Object,
   },
 }

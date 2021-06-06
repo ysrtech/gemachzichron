@@ -15,13 +15,13 @@
 </template>
 
 <script>
-import AppLayout from '@/Layouts/AppLayout'
+import AppLayout from '@/Layouts/PersistentAppLayout'
 import DeleteUserForm from './Sections/DeleteUserForm'
 import UpdatePasswordForm from './Sections/UpdatePasswordForm'
 import UpdateAccountDetailsForm from './Sections/UpdateAccountDetailsForm'
 
 export default {
-  layout: (h, page) => h(AppLayout, {header: 'Account'}, () => page),
+  layout: (h, page) => h(AppLayout, {title: 'Account'}, () => page),
 
   components: {
     DeleteUserForm,

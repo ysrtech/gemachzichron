@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataExportController;
 use App\Http\Controllers\MemberDependentController;
 use App\Http\Controllers\MemberLoanController;
@@ -33,7 +34,7 @@ use Illuminate\Support\Facades\Route;
 Route::redirect('/', RouteServiceProvider::HOME);
 
 Route::middleware(['auth'])->group(function () {
-    Route::inertia('/dashboard', 'Dashboard')->name('dashboard');
+    Route::get('dashboard', DashboardController::class)->name('dashboard');
 
     // Users
     Route::apiResource('users', UserController::class);

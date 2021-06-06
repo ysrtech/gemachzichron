@@ -5,7 +5,7 @@
       <thead>
       <tr class="bg-gray-50 text-xs text-left text-gray-400 uppercase">
         <th
-          v-for="title in ['Member', 'Membership Type', 'Plan Type', 'Membership Since', 'Total Paid Membership']"
+          v-for="title in ['Member', 'Membership Type', 'Plan Type', 'Membership Since', 'Total Paid']"
           class="px-6 py-3 font-medium">{{ title }}
         </th>
       </tr>

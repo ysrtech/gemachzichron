@@ -66,7 +66,7 @@
 
 <script>
 import MemberBase from "@/Pages/Members/MemberBase";
-import AppLayout from "@/Layouts/AppLayout";
+import AppLayout from "@/Layouts/PersistentAppLayout";
 import {date} from "@/helpers/dates";
 import AppBadge from "@/Components/UI/Badge";
 import DependentsFormModal from "@/Pages/Members/Dependents/FormModal";

@@ -2,20 +2,28 @@
 
 namespace App\Gateways\Rotessa;
 
+use App\Exceptions\MissingSubscriptionException;
+use App\Exceptions\NotImplementedException;
 use App\Gateways\AbstractGateway;
-use App\Gateways\Rotessa\Formatters\CustomerToPaymentMethod;
-use App\Gateways\Rotessa\Formatters\ScheduleToSubscription;
+use App\Gateways\Rotessa\Formatters\RotessaCustomerToPaymentMethod;
+use App\Gateways\Rotessa\Formatters\RotessaScheduleToSubscription;
+use App\Gateways\Rotessa\Formatters\RotessaTransactionToBaseTransaction;
 use App\Models\Member;
 use App\Models\PaymentMethod;
+use App\Models\Subscription;
 use App\Models\Transaction;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\LazyCollection;
 
 class Gateway extends AbstractGateway
 {
     protected array $transactionStatuses = [
-        'Approved' => Transaction::STATUS_SUCCESS,
-        'Pending'  => Transaction::STATUS_PENDING,
-        'Declined' => Transaction::STATUS_FAIL,
+        'Approved'   => Transaction::STATUS_SUCCESS,
+        'Pending'    => Transaction::STATUS_PENDING,
+        'Declined'   => Transaction::STATUS_FAIL,
+        'Chargeback' => Transaction::STATUS_FAIL,
     ];
 
     public function __construct()
@@ -47,6 +55,8 @@ class Gateway extends AbstractGateway
             'transit_number'     => $data['transit_number'] ?? null,
             'institution_number' => $data['institution_number'] ?? null,
             'account_number'     => $data['account_number'] ?? null,
+            'home_phone'         => $member->home_phone,
+            'cell_phone'         => $member->cell_phone,
             'address'            => [
                 'address_1'     => $member->address,
                 'city'          => $member->city,
@@ -57,14 +67,14 @@ class Gateway extends AbstractGateway
 
         Log::info("[ROTESSA] created customer (Member #$member->id)", $response->collect()->toArray());
 
-        return $this->setFormatter(new CustomerToPaymentMethod())->format($response);
+        return $this->setFormatter(new RotessaCustomerToPaymentMethod())->format($response);
     }
 
     public function updateCustomer(PaymentMethod $paymentMethod, array $data): array
     {
         $paymentMethod->load('member');
 
-        $attributes =  collect($data)
+        $attributes = collect($data)
             ->only([
                 'bank_name',
                 'transit_number',
@@ -75,6 +85,8 @@ class Gateway extends AbstractGateway
             ->merge([
                 'email'   => $paymentMethod->member->email,
                 'name'    => "{$paymentMethod->member->first_name} {$paymentMethod->member->last_name}",
+                'home_phone' => $paymentMethod->member->home_phone,
+                'cell_phone' => $paymentMethod->member->cell_phone,
                 'address' => [
                     'address_1'     => $paymentMethod->member->address,
                     'city'          => $paymentMethod->member->city,
@@ -92,10 +104,10 @@ class Gateway extends AbstractGateway
 
         Log::info("[ROTESSA] updated customer (Member #{$paymentMethod->member->id})", $response->collect()->toArray());
 
-        return $this->setFormatter(new CustomerToPaymentMethod())->format($response);
+        return $this->setFormatter(new RotessaCustomerToPaymentMethod())->format($response);
     }
 
-    public function getCustomer(Member $member, $formatter = CustomerToPaymentMethod::class)
+    public function getCustomer(Member $member, $formatter = RotessaCustomerToPaymentMethod::class)
     {
         $paymentMethod = $member->paymentMethods()
             ->where('gateway', $this->getName())
@@ -106,7 +118,7 @@ class Gateway extends AbstractGateway
         return $this->setFormatter(new $formatter())->format($response);
     }
 
-    public function getCustomerByCustomIdentifier($customIdentifier, $formatter = CustomerToPaymentMethod::class)
+    public function getCustomerByCustomIdentifier($customIdentifier, $formatter = RotessaCustomerToPaymentMethod::class)
     {
         $response = $this->httpRequest->post(
             "customers/show_with_custom_identifier",
@@ -116,7 +128,7 @@ class Gateway extends AbstractGateway
         return $this->setFormatter(new $formatter())->format($response);
     }
 
-    public function getCustomers($query = null, $formatter = CustomerToPaymentMethod::class)
+    public function getCustomers($query = null, $formatter = RotessaCustomerToPaymentMethod::class)
     {
         $response = $this->httpRequest->get('customers', $query);
 
@@ -129,25 +141,101 @@ class Gateway extends AbstractGateway
     {
         $response = $this->httpRequest->get("customers/$paymentMethod->gateway_identifier", $query);
 
-        $this->setFormatter(new ScheduleToSubscription);
+        $this->setFormatter(new RotessaScheduleToSubscription);
 
-        return collect($response->collect()
-            ->get('transaction_schedules'))
+        return $response->collect('transaction_schedules')
             ->map(fn($schedule) => $this->format($schedule));
     }
 
     public function createSchedule(PaymentMethod $paymentMethod, array $data): array
     {
         $response = $this->httpRequest->post('transaction_schedules', [
-            'customer_id' => $paymentMethod->gateway_identifier,
-            'amount' => $data['amount'],
-            'frequency' => Frequencies::$toRotessaFrequencies[$data['frequency']],
+            'customer_id'  => $paymentMethod->gateway_identifier,
+            'amount'       => $data['amount'],
+            'frequency'    => Frequencies::$toRotessaFrequencies[$data['frequency']],
             'installments' => $data['installments'],
             'process_date' => $data['start_date'],
-            'comment' => $data['comment']
+            'comment'      => $data['comment']
         ])->throw();
 
-        return $this->setFormatter(new ScheduleToSubscription)->format($response);
+        return $this->setFormatter(new RotessaScheduleToSubscription)->format($response);
+    }
+
+    public function updateSchedule(Subscription $subscription, array $data): array
+    {
+        throw new NotImplementedException('Not implemented yet');
+    }
+
+    public function getCustomerTransactions(PaymentMethod $paymentMethod, $query = null): Collection
+    {
+        $response = $this->httpRequest->get("customers/$paymentMethod->gateway_identifier", $query)->throw();
+
+        $this->setFormatter(new RotessaTransactionToBaseTransaction);
+
+        return $response->collect('financial_transactions')
+            ->map(function ($transaction) {
+                try {
+                    return $this->format($transaction);
+                } catch (MissingSubscriptionException $exception) {
+                    return null;
+                }
+            })
+            ->filter();
+    }
+
+    /**
+     */
+    public function getTransactions(Carbon $startDate, ?Carbon $endDate = null, $query = []): Collection
+    {
+        $response = $this->httpRequest->get('transaction_report', array_merge([
+            'start_date' => $startDate->toDateString(),
+            'end_date'   => ($endDate ?? now())->toDateString()
+        ], $query))->throw();
+
+        $this->setFormatter(new RotessaTransactionToBaseTransaction);
+
+        return $response->collect()
+            ->map(function ($transaction) {
+                try {
+                    return $this->format($transaction);
+                } catch (MissingSubscriptionException $exception) {
+                    return null;
+                }
+            })
+            ->filter();
+    }
+
+    public function getTransactionsLazy(Carbon $startDate, ?Carbon $endDate = null, $query = []): LazyCollection
+    {
+        $this->setFormatter(new RotessaTransactionToBaseTransaction);
+
+        return LazyCollection::make(function () use ($query, $startDate) {
+            $page = 1;
+            do {
+                $response = $this->httpRequest->get('transaction_report', array_merge([
+                    'start_date' => $startDate->toDateString(),
+                    'end_date'   => ($endDate ?? now())->toDateString(),
+                    'page'       => $page++
+                ], $query))
+                    ->throw()
+                    ->collect()
+                    ->map(function ($transaction) {
+                        try {
+                            return $this->format($transaction);
+                        } catch (MissingSubscriptionException $exception) {
+                            return null;
+                        }
+                    })
+                    ->filter();
+
+                foreach ($response as $data) {
+                    yield $data;
+                }
+
+                sleep(2);
+
+            } while ($response->isNotEmpty());
+        });
     }
 
 //    public function getCustomerTransactions(Member $member, $query = null)

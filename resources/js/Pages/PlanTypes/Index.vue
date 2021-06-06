@@ -45,11 +45,11 @@
 </template>
 
 <script>
-import AppLayout from "@/Layouts/AppLayout";
+import AppLayout from "@/Layouts/PersistentAppLayout";
 import PlanTypesFormModal from "./FormModal";
 
 export default {
-  layout: (h, page) => h(AppLayout, {header: 'Plan Types'}, () => page),
+  layout: (h, page) => h(AppLayout, {title: 'Plan Types'}, () => page),
 
   components: {
     PlanTypesFormModal,

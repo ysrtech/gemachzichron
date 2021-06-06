@@ -8,10 +8,20 @@ use Inertia\Inertia;
 
 class TransactionController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return Inertia::render('Tranmsactions/Index', [
-           'transactions' => Transaction::paginate()
+        return Inertia::render('Transactions/Index', [
+           'filters' => $request->all([
+               'search', 'amount', 'subscription_id', 'status', 'type',
+               'gateway', 'gateway_identifier', 'from_date', 'to_date'
+           ]),
+           'transactions' => Transaction::searchByRelated($request->search, ['member'])
+               ->filter($request->only('amount', 'subscription_id', 'status', 'type', 'gateway', 'gateway_identifier'))
+               ->filterBetweenDates('process_date', $request->from_date, $request->to_date)
+               ->with(['member' => fn($q) => $q->select(['id', 'first_name', 'last_name', 'deleted_at'])->withTrashed()])
+               ->orderByDesc('process_date')
+               ->orderByDesc('id')
+               ->paginate()
         ]);
     }
 

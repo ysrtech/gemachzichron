@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import AppLayout from "@/Layouts/AppLayout";
+import AppLayout from "@/Layouts/PersistentAppLayout";
 import AppBadge from "@/Components/UI/Badge";
 import IsMounted from "@/Mixins/IsMounted";
 

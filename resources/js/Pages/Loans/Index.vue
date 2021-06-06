@@ -30,19 +30,23 @@
       <template #content>
         <table class="min-w-full divide-y divide-gray-200">
           <thead v-if="loans.total > 0">
-          <tr class="bg-gray-50 text-xs text-left text-gray-400 uppercase">
-            <th v-for="title in ['ID', 'Member', 'Loan date', 'Amount', '']" class="px-6 py-3 font-medium">{{ title }}</th>
+          <tr
+            class="bg-gray-50 text-xs text-left text-gray-400 uppercase">
+            <th v-for="title in ['ID', 'Member', 'Loan date', 'Amount']" class="px-6 py-3 font-medium">{{ title }}</th>
           </tr>
           </thead>
 
           <tbody class="bg-white divide-y divide-gray-200">
-          <tr
+          <inertia-link
+            as="tr"
+            :href="$route('loans.show', loan.id)"
             v-for="loan in loans.data"
             :key="loan.id"
-            class="bg-white text-sm text-gray-700">
+            class="bg-white text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900 cursor-pointer">
             <td class="px-6 py-3.5 whitespace-nowrap space-x-2">{{ loan.id }}</td>
             <td class="px-6 py-3.5 whitespace-nowrap space-x-2 font-medium">
               <inertia-link
+                @click.stop
                 class="font-medium hover:text-gray-900 hover:underline"
                 :href="$route('members.show', loan.member.id)">
                 {{ loan.member.first_name + ' ' + loan.member.last_name }}
@@ -52,14 +56,7 @@
             <td class="px-6 py-3.5 whitespace-nowrap font-medium">
               <money :amount="loan.amount"/>
             </td>
-            <td class="px-6 whitespace-nowrap text-right">
-              <inertia-link
-                class="material-icons-outlined focus:outline-none rounded-full p-1 hover:bg-gray-200 focus:bg-gray-300"
-                :href="$route('loans.show', loan.id)">
-                launch
-              </inertia-link>
-            </td>
-          </tr>
+          </inertia-link>
 
           <tr v-if="loans.total === 0">
             <td class="px-6 py-10 text-center text-gray-500" colspan="3">No Loans Found.</td>
@@ -80,7 +77,7 @@
 </template>
 
 <script>
-import AppLayout from "@/Layouts/AppLayout";
+import AppLayout from "@/Layouts/PersistentAppLayout";
 import {date} from "@/helpers/dates";
 import LinksPagination from "@/Components/App/LinksPagination";
 import Money from "@/Components/UI/Money";
@@ -90,7 +87,7 @@ import SearchFilterField from "@/Components/App/SearchFilterField";
 import HasFilters from "@/Mixins/HasFilters";
 
 export default {
-  layout: (h, page) => h(AppLayout, {header: 'Loans'}, () => page),
+  layout: (h, page) => h(AppLayout, {title: 'Loans'}, () => page),
 
   components: {
     SearchFilterField,

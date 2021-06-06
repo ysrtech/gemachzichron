@@ -1,5 +1,6 @@
 <template>
   <div class="md:h-screen md:flex md:flex-col bg-gray-100">
+    <inertia-head :title="title ? `${title} - ${APP_NAME}` : APP_NAME"/>
 
     <div class="flex justify-between h-16 flex-wrap">
 
@@ -39,7 +40,7 @@
 
 
         <h2 id="header" class="font-medium text-2xl text-gray-800 leading-tight">
-          {{ header }}
+          {{ title }}
         </h2>
 
         <!-- Settings Dropdown -->
@@ -75,6 +76,8 @@ import AppLogo from "@/Components/UI/Logo";
 import AppSideOverlay from "@/Components/UI/SideOverlay";
 import Partials from "@/Partials/partials";
 import UserSettingsDropdown from "@/Components/App/UserSettingsDropdown";
+import {APP_NAME} from "@/config/app";
+import {Inertia} from "@inertiajs/inertia";
 
 export default {
   components: {
@@ -86,16 +89,14 @@ export default {
   },
 
   props: {
-    header: {
-      type: String,
-      default: ''
-    }
+    title:  String,
   },
 
   data() {
     return {
+      APP_NAME,
       showOverlayNavigation: false,
     }
-  }
+  },
 }
 </script>

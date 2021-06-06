@@ -15,7 +15,7 @@ class MemberLoanController extends Controller
             'member' => $member
                 ->load([
                     'loans' => fn($q) => $q->with('guarantors:id,first_name,last_name')->orderBy('loan_date', 'desc'),
-                    'dependents'
+                    'dependents:member_id,id,name'
                 ])
                 ->loadSum('loans', 'amount')
                 ->append('loan_payments_total')

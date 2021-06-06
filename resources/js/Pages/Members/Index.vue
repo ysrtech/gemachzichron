@@ -20,17 +20,11 @@
           label="Archived"
           :options="{'Without Archived': null, 'With Archived': 'with', 'Only Archived': 'only'}"
         />
-     </search-filter>
+      </search-filter>
 
-      <div class="flex space-x-3">
-        <inertia-link :href="$route('members.create')">
-          <app-button>New Member</app-button>
-        </inertia-link>
-        <a :href="$route('export.show', {model: 'member'})" download>
-        <!-- TODO designate a separate page for exports (exports.index)-->
-          <app-button color="secondary">Export Members</app-button>
-        </a>
-      </div>
+      <inertia-link :href="$route('members.create')">
+        <app-button>New Member</app-button>
+      </inertia-link>
 
     </div>
 
@@ -65,7 +59,7 @@
                   {{ member.home_phone }}
                 </td>
                 <td class="px-6 py-3.5 whitespace-nowrap">
-                  {{ member.mobile_phone }}
+                  {{ member.cell_phone }}
                 </td>
                 <td class="px-6 py-3.5 whitespace-nowrap">
                   {{ member.email }}
@@ -128,7 +122,7 @@
 </template>
 
 <script>
-import AppLayout from "@/Layouts/AppLayout";
+import AppLayout from "@/Layouts/PersistentAppLayout";
 import SearchFilter from "@/Components/App/SearchFilter";
 import AppBadge from "@/Components/UI/Badge";
 import AppPagination from "@/Components/App/Pagination";
@@ -138,7 +132,7 @@ import SearchFilterField from "@/Components/App/SearchFilterField";
 import HasFilters from "@/Mixins/HasFilters";
 
 export default {
-  layout: (h, page) => h(AppLayout, {header: 'Members'}, () => page),
+  layout: (h, page) => h(AppLayout, {title: 'Members'}, () => page),
 
   components: {
     SearchFilterField,
@@ -171,7 +165,7 @@ export default {
       const  duplicateValues = [
         'title', 'first_name', 'last_name', 'hebrew_first_name', 'hebrew_last_name',
         'wife_name', 'address', 'city', 'postal_code', 'email', 'home_phone',
-        'mobile_phone', 'wife_mobile_phone', 'shtibel', 'father', 'father_in_law'
+        'cell_phone', 'wife_cell_phone', 'shtibel', 'father', 'father_in_law'
       ];
 
       const newMember = Object.keys(member)

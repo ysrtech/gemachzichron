@@ -1,5 +1,6 @@
 <template>
   <div class="min-h-screen flex flex-col justify-center items-center pt-0 bg-gray-100">
+    <inertia-head :title="title ? `${title} - ${APP_NAME}` : APP_NAME"/>
     <div class="w-full sm:max-w-md px-6 py-4 sm:bg-white sm:shadow-md overflow-hidden sm:rounded-lg">
       <inertia-link href="/">
         <app-logo class="h-24 mx-auto my-5"/>
@@ -13,11 +14,22 @@
 <script>
 import AppLogo from "@/Components/UI/Logo";
 import Partials from "@/Partials/partials";
+import {APP_NAME} from "@/config/app";
 
 export default {
   components: {
     Partials,
     AppLogo,
+  },
+
+  props: {
+    title: String,
+  },
+
+  data() {
+    return {
+      APP_NAME
+    }
   }
 }
 </script>
