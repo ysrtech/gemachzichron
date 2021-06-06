@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white rounded-lg shadow divide-y divide-gray-200 overflow-hidden">
+  <div class="bg-white rounded-lg shadow divide-y divide-gray-200 overflow-hidden overflow-x-auto">
     <header class="p-4 sm:px-6 flex items-center justify-between" v-if="title || description || !!$slots.actions">
       <div>
         <div class="flex space-x-2 items-baseline">

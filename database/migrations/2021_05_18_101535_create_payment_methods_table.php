@@ -18,7 +18,7 @@ class CreatePaymentMethodsTable extends Migration
             $table->foreignId('member_id')->constrained();
             $table->string('gateway');
             $table->string('gateway_identifier');
-            $table->text('data')->nullable();
+            $table->text('gateway_data')->nullable();
             $table->timestamps();
         });
     }

@@ -45,7 +45,7 @@
       </td>
       <td class="px-6 py-3.5 whitespace-nowrap">
         <app-badge
-          v-tippy="{content: formattedGatewayData(transaction.data, transaction.gateway_identifier), allowHTML: true}"
+          v-tippy="{content: formattedGatewayData(transaction.gateway_data), allowHTML: true}"
           :color="GATEWAY_BADGE_COLORS[transaction.gateway]">
           {{ transaction.gateway }}
         </app-badge>
@@ -102,12 +102,14 @@ export default {
 
   methods: {
     date,
-    formattedGatewayData(data, id) {
-      let formatted = `<tr><td>id:</td><td class="text-right">${id}</td></tr>`
+    formattedGatewayData(data) {
+      let formatted = '<table>'
       Object.keys(data).forEach(key => {
-        formatted += `<tr><td>${key}:</td><td class="text-right">${data[key]}</td></tr>`
+        formatted += `<tr><td>${key.replaceAll('_', ' ')}: </td><td class="text-right">${data[key]}</td></tr>`
       })
-      return `<table>${formatted}</table>`
+      formatted += '</table>'
+
+      return formatted
     }
   }
 }

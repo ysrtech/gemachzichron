@@ -24,8 +24,7 @@
             <key-value label="Gateway">
               <app-badge
                 :color="GATEWAY_BADGE_COLORS[subscription.gateway]"
-                uppercase
-                v-tippy="{ content: `ID: ${subscription.gateway_identifier}` }">
+                v-tippy="{content: formattedGatewayData(subscription.gateway_data), allowHTML: true}">
                 {{subscription.gateway}}
               </app-badge>
             </key-value>
@@ -118,7 +117,16 @@ export default {
   },
 
   methods: {
-    date
+    date,
+    formattedGatewayData(data) {
+      let formatted = '<table>'
+      Object.keys(data).forEach(key => {
+        formatted += `<tr><td>${key.replace('_', ' ')}: </td><td class="text-right">${data[key]}</td></tr>`
+      })
+      formatted += '</table>'
+
+      return formatted
+    }
   },
 }
 </script>

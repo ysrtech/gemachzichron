@@ -62,7 +62,7 @@ class PullTransactions implements ShouldQueue
                     'status',
                     'comment',
                     'error_message',
-                    'data',
+                    'gateway_data',
                 ]);
 
                 if ($gatewayTransaction['status'] == Transaction::STATUS_SUCCESS) {

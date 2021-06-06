@@ -14,7 +14,7 @@ class PaymentMethod extends Model
     use HasFactory;
 
     protected $casts = [
-        'data' => 'array'
+        'gateway_data' => 'array'
     ];
 
     public function member()

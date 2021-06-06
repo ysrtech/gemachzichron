@@ -28,7 +28,8 @@ class CreateSubscriptionsTable extends Migration
             $table->float('processing_fee')->default(0);
             $table->float('decline_fee')->default(0);
             $table->boolean('active')->default(true);
-            $table->text('data')->nullable();
+            $table->text('gateway_data')->nullable();
+            $table->foreignId('resolves_transaction')->nullable();
             $table->timestamps();
         });
     }

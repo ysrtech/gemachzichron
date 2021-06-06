@@ -14,8 +14,16 @@ class RotessaCustomerToPaymentMethod implements Formatter
         return [
             'gateway'            => config('gateways.rotessa.name'),
             'gateway_identifier' => $output['id'],
-            'data'               => $output->collect()
-                ->only(['account_number', 'bank_name', 'customer_type', 'identifier', 'institution_number', 'transit_number',])
+            'gateway_data'       => $output->collect()
+                ->only([
+                    'id',
+                    'account_number',
+                    'bank_name',
+                    'customer_type',
+                    'identifier',
+                    'institution_number',
+                    'transit_number'
+                ])
                 ->map(function ($value, $key) {
                     if (!in_array($key, ['account_number', 'transit_number', 'institution_number',])) {
                         return $value;

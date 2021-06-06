@@ -15,7 +15,7 @@ interface Gateway
 
     /**
      * @throws \App\Exceptions\NotImplementedException
-     * @returns array of PaymentMethod attributes i.e. ['gateway' => 'string', 'gateway_identifier' => 'string', 'data' => 'array']
+     * @returns array of PaymentMethod attributes i.e. ['gateway' => 'string', 'gateway_identifier' => 'string', 'gateway_data' => 'array']
      */
     public function createCustomer(Member $member, array $data): array;
 

@@ -22,13 +22,13 @@ class Transaction extends Model
     const STATUS_RESOLVED = 4; // fail resolved
 
     const TYPE_BASE_TRANSACTION = 'Base Transaction'; // original full amount
-    const TYPE_MAIN_TRANSACTION = 'Main Transaction'; // base amount after splitting
+    const TYPE_MAIN_TRANSACTION = 'Main Transaction'; // amount after splitting
     const TYPE_MEMBERSHIP_FEE = 'Membership Fee';
     const TYPE_PROCESSING_FEE = 'Processing Fee';
     const TYPE_DECLINE_FEE = 'Decline Fees';
 
     protected $casts = [
-        'data' => 'array'
+        'gateway_data' => 'array'
     ];
 
     public function subscription()

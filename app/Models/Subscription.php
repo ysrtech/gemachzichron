@@ -39,7 +39,7 @@ class Subscription extends Model
 
     protected $casts = [
         'active' => 'boolean',
-        'data'   => 'array',
+        'gateway_data'   => 'array',
     ];
 
     protected $appends = [

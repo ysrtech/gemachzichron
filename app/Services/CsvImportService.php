@@ -156,10 +156,11 @@ class CsvImportService
                 'gateway_identifier' => trim($row[$headers->search('ID')])
             ]);
 
-            $paymentMethod->data = [
-                'Identifier'    => trim($row[$headers->search('identifier')]),
-                'Customer Type' => trim($row[$headers->search('customer_type')]),
-                'Bank Name'     => trim($row[$headers->search('bank_name')]),
+            $paymentMethod->gateway_data = [
+                'id'            => trim($row[$headers->search('ID')]),
+                'identifier'    => trim($row[$headers->search('identifier')]),
+                'customer_type' => trim($row[$headers->search('customer_type')]),
+                'bank_name'     => trim($row[$headers->search('bank_name')]),
             ];
 
             $paymentMethod->save();
@@ -203,7 +204,10 @@ class CsvImportService
                 'decline_fee'    => trim($row[$headers->search('Late Fees')]) ?: 0,
                 'active'         => (boolean)trim($row[$headers->search('active')]),
                 'comment'        => trim($row[$headers->search('comment')]),
-                'data'           => ['next_process_date' => trim($row[$headers->search('next_process_date')])]
+                'gateway_data'   => [
+                    'id' => trim($row[$headers->search('id')]),
+                    'next_process_date' => trim($row[$headers->search('next_process_date')])
+                ]
             ])->update([
                 // update amount to exclude fees
                 'amount' => DB::raw('amount - membership_fee - processing_fee - decline_fee')

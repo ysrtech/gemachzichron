@@ -70,7 +70,6 @@ export default {
   components: {
     AppPanel,
     KeyValue,
-    NotesSection,
     MembershipSection,
     MemberBase
   },

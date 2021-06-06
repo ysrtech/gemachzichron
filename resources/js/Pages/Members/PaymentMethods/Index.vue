@@ -25,8 +25,7 @@
                 <template #content>
                   <div class="px-4 py-5 sm:px-6">
                     <dl class="space-y-4">
-                      <key-value label="ID" :value="paymentMethod.gateway_identifier"/>
-                      <template v-for="(data, key) in paymentMethod.data">
+                      <template v-for="(data, key) in paymentMethod.gateway_data">
                         <key-value v-if="data" :label="key.replace('_', ' ')" :value="data"/>
                       </template>
                     </dl>

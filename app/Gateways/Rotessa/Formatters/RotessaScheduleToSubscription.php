@@ -7,6 +7,7 @@ namespace App\Gateways\Rotessa\Formatters;
 use App\Contracts\Formatter;
 use App\Gateways\Rotessa\Frequencies;
 use App\Models\Subscription;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 class RotessaScheduleToSubscription implements Formatter
@@ -23,7 +24,7 @@ class RotessaScheduleToSubscription implements Formatter
             'frequency'          => Frequencies::$fromRotessaFrequencies[$output['frequency']],
             'active'             => $output['active'],
             'comment'            => $output['comment'],
-            'data'               => ['next_process_date' => $output['next_process_date']]
+            'gateway_data'       => Arr::only($output, ['id', 'next_process_date'])
         ];
     }
 }

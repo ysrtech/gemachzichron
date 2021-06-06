@@ -25,7 +25,8 @@ class CreateTransactionsTable extends Migration
             $table->string('error_message')->nullable();
             $table->date('process_date')->nullable();
             $table->text('comment')->nullable();
-            $table->text('data')->nullable();
+            $table->text('gateway_data')->nullable();
+            $table->foreignId('resolved_with_subscription')->nullable();
             $table->timestamps();
         });
     }
