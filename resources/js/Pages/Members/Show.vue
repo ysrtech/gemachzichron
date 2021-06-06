@@ -53,12 +53,6 @@
         </div>
         <div class="col-span-1 space-y-6">
           <membership-section :member="member"/>
-<!--          <notes-section-->
-<!--            v-if="member.membership"-->
-<!--            :notes="member.notes"-->
-<!--            :noteable-id="member.id"-->
-<!--            noteable-type="membership"-->
-<!--          />-->
         </div>
       </div>
     </member-base>
@@ -69,7 +63,6 @@
 import AppLayout from "@/Layouts/PersistentAppLayout";
 import MemberBase from "@/Pages/Members/MemberBase";
 import MembershipSection from "@/Pages/Members/MembershipSection";
-import NotesSection from "@/Components/App/NotesSection";
 import KeyValue from "@/Components/UI/KeyValue";
 import AppPanel from "@/Components/UI/Panel";
 

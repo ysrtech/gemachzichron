@@ -75,11 +75,6 @@ Route::middleware(['auth'])->group(function () {
     Route::put('dependents/{dependent}', [DependentController::class, 'update'])->name('dependents.update');
     Route::delete('dependents/{dependent}', [DependentController::class, 'destroy'])->name('dependents.destroy');
 
-    // Notes
-    Route::post('notes/{noteableType}/{noteableId}', [NoteController::class, 'store'])->name('notes.store');
-    Route::put('notes/{note}', [NoteController::class, 'update'])->name('notes.update');
-    Route::delete('notes/{note}', [NoteController::class, 'destroy'])->name('notes.destroy');
-
     // Plan Types
     Route::apiResource('plan-types', PlanTypeController::class);
 
