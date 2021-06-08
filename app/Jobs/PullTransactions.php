@@ -61,7 +61,7 @@ class PullTransactions implements ShouldQueue
                     'process_date',
                     'status',
                     'comment',
-                    'error_message',
+                    'status_message',
                     'gateway_data',
                 ]);
 

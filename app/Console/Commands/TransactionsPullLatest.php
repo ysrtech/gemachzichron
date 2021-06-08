@@ -13,7 +13,7 @@ class TransactionsPullLatest extends Command
      *
      * @var string
      */
-    protected $signature = 'transactions:pull:latest {gateway} {startDate} {endDate=today}';
+    protected $signature = 'transactions:pull {gateway} {startDate} {endDate=today}';
 
     /**
      * The console command description.

@@ -25,9 +25,6 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('transactions:pull rotessa "one week ago"')->daily();
-        $schedule->command('transactions:pull rotessa "one week ago"')->daily();
-        $schedule->command('transactions:pull rotessa "one week ago"')->daily();
-        $schedule->command('transactions:pull rotessa "one week ago"')->daily();
     }
 
     /**

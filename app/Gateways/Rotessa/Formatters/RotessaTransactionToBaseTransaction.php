@@ -36,8 +36,8 @@ class RotessaTransactionToBaseTransaction implements Formatter
             'member_id' => $this->subscription->member_id,
             'type' => Transaction::TYPE_BASE_TRANSACTION,
             'comment' => $output['comment'],
-            'error_message' => $output['status_reason'],
-            'gateway_data' => Arr::only($output->json(), [
+            'status_message' => $output['status_reason'],
+            'gateway_data' => Arr::only(is_array($output) ? $output : $output->json(), [
                 'id',
                 'transaction_schedule_id',
                 'institution_number',

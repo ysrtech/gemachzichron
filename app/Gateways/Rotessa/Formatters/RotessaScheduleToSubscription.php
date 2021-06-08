@@ -23,7 +23,7 @@ class RotessaScheduleToSubscription implements Formatter
             'frequency'          => Frequencies::$fromRotessaFrequencies[$output['frequency']],
             'active'             => $output['active'],
             'comment'            => $output['comment'],
-            'gateway_data'       => Arr::only($output->json(), [
+            'gateway_data'       => Arr::only(is_array($output) ? $output : $output->json(), [
                 'id',
                 'amount',
                 'next_process_date'
