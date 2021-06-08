@@ -55,8 +55,8 @@ class SubscriptionController extends Controller
 
         $gateway->getScheduleTransactions($subscription)->each(function ($gTransaction) {
             $transaction = Transaction::firstOrNew([
-                'gateway' => $gTransaction->gateway,
-                'gateway_identifier' => $gTransaction->gateway_identifier
+                'gateway' => $gTransaction['gateway'],
+                'gateway_identifier' => $gTransaction['gateway_identifier']
             ]);
 
             if ($transaction->type !== Transaction::TYPE_BASE_TRANSACTION) return;
