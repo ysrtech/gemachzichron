@@ -20,14 +20,24 @@ class CreateSubscriptionRequest extends FormRequest
             'type'                 => ['required', Rule::in([Subscription::TYPE_MEMBERSHIP, Subscription::TYPE_LOAN_PAYMENT])],
             'gateway'              => ['required', Rule::in(Gateway::all())],
             'amount'               => ['required', 'numeric', 'min:1'],
-            'start_date'           => ['date', 'after:today'],
+            'start_date'           => ['required', 'date', 'after:today'],
             'installments'         => ['nullable', 'integer'],
             'frequency'            => ['required', Rule::in(Subscription::$frequencies)],
             'comment'              => ['nullable'],
-            'membership_fee'       => ['required', 'numeric'],
+            'membership_fee'       => ['nullable', 'numeric'],
             'processing_fee'       => ['nullable', 'numeric'],
             'decline_fee'          => ['nullable', 'numeric'],
             'resolves_transaction' => ['nullable', 'numeric']
         ];
+    }
+
+    public function withTransactionTotal()
+    {
+        return array_merge($this->validated(), [
+            'transaction_total' => $this->get('amount')
+                + $this->get('membership_fee')
+                + $this->get('processing_fee')
+                + $this->get('decline_fee')
+        ]);
     }
 }

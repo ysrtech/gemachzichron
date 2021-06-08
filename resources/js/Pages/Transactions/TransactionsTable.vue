@@ -2,30 +2,36 @@
   <table class="min-w-full divide-y divide-gray-200">
     <thead>
     <tr class="bg-gray-50 text-xs text-left text-gray-400 uppercase">
-      <th
-        v-for="title in ['ID', 'Member', 'Subscription ID', 'Amount', 'Procees Date', 'Status', 'Type', 'Gateway', '']"
-        class="px-6 py-3 font-medium">{{ title }}
-      </th>
+      <th class="px-6 py-3 font-medium">ID</th>
+      <th class="px-6 py-3 font-medium" v-if="showMember">Member</th>
+      <th class="px-6 py-3 font-medium">Subscription ID</th>
+      <th class="px-6 py-3 font-medium">Amount</th>
+      <th class="px-6 py-3 font-medium">Process Date</th>
+      <th class="px-6 py-3 font-medium">Status</th>
+      <th class="px-6 py-3 font-medium">Type</th>
+      <th class="px-6 py-3 font-medium">Gateway</th>
+      <th class="px-6 py-3 font-medium"></th>
     </tr>
     </thead>
 
     <tbody class="bg-white divide-y divide-gray-200">
-    <inertia-link
-      as="tr"
-      :href="$route('transactions.show', transaction.id)"
-      v-for="transaction in transactions"
-      :key="transaction.id"
-      class="bg-white text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900 cursor-pointer">
+    <tr v-for="transaction in transactions" :key="transaction.id"
+        class="bg-white text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900">
       <td class="px-6 py-3.5 whitespace-nowrap space-x-2">{{ transaction.id }}</td>
-      <td class="px-6 py-3.5 whitespace-nowrap space-x-2 font-medium">
+      <td v-if="showMember" class="px-6 py-3.5 whitespace-nowrap space-x-2 font-medium">
         <inertia-link
-          @click.stop
           class="font-medium hover:text-gray-900 hover:underline"
           :href="$route('members.show', transaction.member.id)">
           {{ transaction.member.first_name + ' ' + transaction.member.last_name }}
         </inertia-link>
       </td>
-      <td class="px-6 py-3.5 whitespace-nowrap">{{ transaction.subscription_id }}</td>
+      <td class="px-6 py-3.5 whitespace-nowrap">
+        <inertia-link
+          class="hover:text-gray-900 hover:underline"
+          :href="$route('subscriptions.show', transaction.subscription_id)">
+          {{ transaction.subscription_id }}
+        </inertia-link>
+      </td>
       <td class="px-6 py-3.5 whitespace-nowrap font-medium">
         <money :amount="transaction.amount"/>
       </td>
@@ -61,7 +67,7 @@
           v-show="transaction.status === TRANSACTION_STATUSES.Fail"
           v-tippy="{content: 'Resolve (create new subscription)'}"
           class="material-icons-outlined focus:outline-none rounded-full p-1 hover:bg-gray-200 focus:bg-gray-300">
-          refresh
+          add_task
         </button>
         <button
           v-show="transaction.status === TRANSACTION_STATUSES.Pending
@@ -71,7 +77,7 @@
           price_check
         </button>
       </td>
-    </inertia-link>
+    </tr>
 
     </tbody>
   </table>
@@ -88,7 +94,11 @@ import {AVAILABLE_GATEWAYS, GATEWAY_BADGE_COLORS} from "@/config/gateways";
 export default {
   components: {AppBadge, Money},
   props: {
-    transactions: Array
+    transactions: Array,
+    showMember: {
+      type: Boolean,
+      default: false
+    }
   },
 
   data() {
@@ -103,13 +113,9 @@ export default {
   methods: {
     date,
     formattedGatewayData(data) {
-      let formatted = '<table>'
-      Object.keys(data).forEach(key => {
-        formatted += `<tr><td>${key.replaceAll('_', ' ')}: </td><td class="text-right">${data[key]}</td></tr>`
-      })
-      formatted += '</table>'
-
-      return formatted
+      return `<table>${Object.keys(data).reduce((accumulator, key) => {
+        return accumulator + `<tr><td>${key.replaceAll('_', ' ')}: </td><td class="text-right">${data[key]}</td></tr>`
+      }, '')}</table>`
     }
   }
 }

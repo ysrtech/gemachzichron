@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import AppLayout from "@/Layouts/PersistentAppLayout";
+import AppLayout from "@/Layouts/AppLayout";
 import SearchFilter from "@/Components/App/SearchFilter";
 import MembershipsTable from "./MembershipsTable";
 import SearchFilterField from "@/Components/App/SearchFilterField";

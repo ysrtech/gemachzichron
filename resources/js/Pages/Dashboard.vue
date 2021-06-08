@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import AppLayout from '@/Layouts/PersistentAppLayout'
+import AppLayout from '@/Layouts/AppLayout'
 import {TRANSACTION_STATUSES} from '@/config/transactions';
 import {AVAILABLE_GATEWAYS} from "@/config/gateways";
 import {currentDate} from "@/helpers/dates";

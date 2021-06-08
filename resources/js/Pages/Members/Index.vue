@@ -122,7 +122,7 @@
 </template>
 
 <script>
-import AppLayout from "@/Layouts/PersistentAppLayout";
+import AppLayout from "@/Layouts/AppLayout";
 import SearchFilter from "@/Components/App/SearchFilter";
 import AppBadge from "@/Components/UI/Badge";
 import AppPagination from "@/Components/App/Pagination";

@@ -61,7 +61,7 @@
 
     <app-panel>
       <template #content>
-        <transactions-table :transactions="transactions.data"/>
+        <transactions-table :transactions="transactions.data" show-member/>
 
         <div v-if="transactions.total === 0" class="px-6 py-10 text-center text-gray-500">No Transactions Found.</div>
 
@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import AppLayout from "@/Layouts/PersistentAppLayout";
+import AppLayout from "@/Layouts/AppLayout";
 import LinksPagination from "@/Components/App/LinksPagination";
 import AppPanel from "@/Components/UI/Panel";
 import SearchFilter from "@/Components/App/SearchFilter";

@@ -11,6 +11,7 @@
         <th class="px-6 py-3 font-medium">Start Date</th>
         <th class="px-6 py-3 font-medium">Gateway</th>
         <th class="px-6 py-3 font-medium">Status</th>
+        <th class="px-6 py-3 font-medium"></th>
       </tr>
       </thead>
 
@@ -46,6 +47,9 @@
           <app-badge v-show="subscription.active" color="green">Active</app-badge>
           <app-badge v-show="!subscription.active" color="red">Inactive</app-badge>
         </td>
+        <td class="px-3 py-3.5 whitespace-nowrap flex items-center space-x-2" @click.stop>
+          <refresh-button :subscription-id="subscription.id"/>
+        </td>
       </inertia-link>
 
       <tr v-if="subscriptions.length === 0">
@@ -61,9 +65,11 @@ import AppBadge from "@/Components/UI/Badge";
 import Money from "@/Components/UI/Money";
 import {GATEWAY_BADGE_COLORS} from "@/config/gateways";
 import {date} from "@/helpers/dates";
+import RefreshButton from "@/Pages/Subscriptions/RefreshButton";
 
 export default {
   components: {
+    RefreshButton,
     Money,
     AppBadge
   },

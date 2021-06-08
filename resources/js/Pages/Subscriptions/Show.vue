@@ -5,6 +5,7 @@
       text: subscription.active ? 'Active' : 'Inactive',
     }">
       <template #actions>
+        <refresh-button :subscription-id="subscription.id" class="p-1.5"/>
         <button
           v-tippy="{ content: 'Edit Subscription' }"
           @click="openFormModal = true"
@@ -84,7 +85,7 @@
 </template>
 
 <script>
-import AppLayout from "@/Layouts/PersistentAppLayout";
+import AppLayout from "@/Layouts/AppLayout";
 import IsMounted from "@/Mixins/IsMounted";
 import AppPanel from "@/Components/UI/Panel";
 import KeyValue from "@/Components/UI/KeyValue";
@@ -92,6 +93,7 @@ import AppBadge from "@/Components/UI/Badge";
 import {GATEWAY_BADGE_COLORS} from "@/config/gateways";
 import {date} from "@/helpers/dates";
 import Money from "@/Components/UI/Money";
+import RefreshButton from "@/Pages/Subscriptions/RefreshButton";
 
 export default {
   layout: AppLayout,
@@ -99,6 +101,7 @@ export default {
   mixins: [IsMounted],
 
   components: {
+    RefreshButton,
     Money,
     AppBadge,
     KeyValue,
@@ -119,13 +122,9 @@ export default {
   methods: {
     date,
     formattedGatewayData(data) {
-      let formatted = '<table>'
-      Object.keys(data).forEach(key => {
-        formatted += `<tr><td>${key.replace('_', ' ')}: </td><td class="text-right">${data[key]}</td></tr>`
-      })
-      formatted += '</table>'
-
-      return formatted
+      return `<table>${Object.keys(data).reduce((accumulator, key) => {
+        return accumulator + `<tr><td>${key.replaceAll('_', ' ')}: </td><td class="text-right">${data[key]}</td></tr>`
+      }, '')}</table>`
     }
   },
 }

@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import AppLayout from "@/Layouts/PersistentAppLayout";
+import AppLayout from "@/Layouts/AppLayout";
 import KeyValue from "@/Components/UI/KeyValue";
 import LoanFormModal from "@/Pages/Loans/FormModal";
 import Money from "@/Components/UI/Money";

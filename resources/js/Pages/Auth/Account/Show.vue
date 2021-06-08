@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import AppLayout from '@/Layouts/PersistentAppLayout'
+import AppLayout from '@/Layouts/AppLayout'
 import DeleteUserForm from './Sections/DeleteUserForm'
 import UpdatePasswordForm from './Sections/UpdatePasswordForm'
 import UpdateAccountDetailsForm from './Sections/UpdateAccountDetailsForm'

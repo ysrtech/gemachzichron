@@ -25,23 +25,29 @@ class MemberSubscriptionController extends Controller
             $member->subscriptions()->create($request->validated());
         } else {
             /** @var PaymentMethod $paymentMethod */
-            $paymentMethod = $member->paymentMethods()
-                ->where('gateway', $request->gateway)
-                ->first();
+            $paymentMethod = $member
+                ->paymentMethods()
+                ->firstWhere('gateway', $request->gateway);
 
             if (!$paymentMethod) {
                 throw ValidationException::withMessages(['gateway' => 'Member does not have a payment method set up with this gateway']);
             }
 
             try {
-                $gatewaySubscription = Gateway::initialize($paymentMethod->gateway)
-                    ->createSchedule($paymentMethod, $request->toArray());
+                $gatewaySubscription = Gateway::initialize($paymentMethod->gateway)->createSchedule(
+                    $paymentMethod,
+                    $request->withTransactionTotal()
+                );
             } catch (NotImplementedException $exception) {
                 throw ValidationException::withMessages(['gateway' => 'This payment methods gateway does not support creating subscriptions']);
             }
 
-            $member->subscriptions()
-                ->create(array_merge($request->validated(), $gatewaySubscription));
+            $member->subscriptions()->create(
+                collect($request->validated())
+                    ->merge($gatewaySubscription)
+                    ->filter(fn($el) => !is_null($el))
+                    ->toArray()
+            );
         }
 
         return back()->snackbar('Subscription created successfully');

@@ -195,7 +195,7 @@
 </template>
 
 <script>
-import AppLayout from "@/Layouts/PersistentAppLayout";
+import AppLayout from "@/Layouts/AppLayout";
 import IsMounted from "@/Mixins/IsMounted";
 import AppInput from "@/Components/UI/Input";
 

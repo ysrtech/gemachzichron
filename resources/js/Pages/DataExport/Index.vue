@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import AppLayout from "@/Layouts/PersistentAppLayout";
+import AppLayout from "@/Layouts/AppLayout";
 
 export default {
   layout: (h, page) => h(AppLayout, {title: 'Data Export'}, () => page),

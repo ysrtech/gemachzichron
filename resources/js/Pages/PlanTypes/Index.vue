@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import AppLayout from "@/Layouts/PersistentAppLayout";
+import AppLayout from "@/Layouts/AppLayout";
 import PlanTypesFormModal from "./FormModal";
 
 export default {

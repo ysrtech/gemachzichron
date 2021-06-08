@@ -27,7 +27,7 @@
 
 <script>
 import MemberBase from "@/Pages/Members/MemberBase";
-import AppLayout from "@/Layouts/PersistentAppLayout";
+import AppLayout from "@/Layouts/AppLayout";
 import SubscriptionsFormModal from "@/Pages/Subscriptions/FormModal";
 import AppPanel from "@/Components/UI/Panel";
 import SubscriptionsTable from "@/Pages/Subscriptions/SubscriptionsTable";

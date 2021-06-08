@@ -55,6 +55,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('members/{member}/subscriptions', [MemberSubscriptionController::class, 'index'])->name('members.subscriptions.index');
     Route::post('members/{member}/subscriptions', [MemberSubscriptionController::class, 'store'])->name('members.subscriptions.store');
     Route::apiResource('subscriptions', SubscriptionController::class)->except('store');
+    Route::post('subscriptions/{subscription}', [SubscriptionController::class, 'refresh'])->name('subscriptions.refresh');
 
     // Transactions
     Route::get('members/{member}/transactions', [MemberTransactionController::class, 'index'])->name('members.transactions.index');

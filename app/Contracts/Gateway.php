@@ -37,6 +37,10 @@ interface Gateway
      */
     public function updateSchedule(Subscription $subscription, array $data): array;
 
+    public function getSchedule(Subscription $subscription, array $query = []): array;
+
+    public function getScheduleTransactions(Subscription $subscription, array $query = []): Collection;
+
     /**
      * @throws \App\Exceptions\NotImplementedException
      * @returns Collection of array of Transaction attributes

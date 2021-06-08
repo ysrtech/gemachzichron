@@ -93,12 +93,11 @@ class Member extends Model
 
     public function scopeWithMembershipPaymentsTotal(Builder $query)
     {
-        return $query->addSelect([
-            'membership_payments_total' => Transaction::selectRaw('SUM(amount)')
+        return $query->withSum([
+            'transactions as membership_payments_total' => fn($q) => $q
                 ->whereHas('subscription', fn($q) => $q->where('type', Subscription::TYPE_MEMBERSHIP))
-                ->whereColumn('member_id', 'members.id')
                 ->where('type', Transaction::TYPE_MAIN_TRANSACTION)
-        ]);
+        ], 'amount');
     }
 
     public function getMembershipPaymentsTotalAttribute()
@@ -115,12 +114,11 @@ class Member extends Model
 
     public function scopeWithLoanPaymentsTotal(Builder $query)
     {
-        return $query->addSelect([
-            'loan_payments_total' => Transaction::selectRaw('SUM(amount)')
+        return $query->withSum([
+            'transactions as loan_payments_total' => fn($q) => $q
                 ->whereHas('subscription', fn($q) => $q->where('type', Subscription::TYPE_LOAN_PAYMENT))
-                ->whereColumn('member_id', 'members.id')
                 ->where('type', Transaction::TYPE_MAIN_TRANSACTION)
-        ]);
+        ], 'amount');
     }
 
     public function getLoanPaymentsTotalAttribute()

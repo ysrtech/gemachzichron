@@ -25,7 +25,9 @@ trait InertiaHandler
             404 => 'Page Not Found',
             419 => 'The page expired, please try again',
             429 => 'Too Many Requests',
-            500 => $e instanceof RequestException ? $e->getMessage() : 'Whoops, something went wrong on our servers',
+            500 => $e instanceof RequestException || $e instanceof DataMismatchException
+                ? $e->getMessage()
+                : 'Whoops, something went wrong on our servers',
             503 => 'We are doing some maintenance, Please check back soon',
         ];
 

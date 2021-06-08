@@ -77,7 +77,7 @@
 </template>
 
 <script>
-import AppLayout from "@/Layouts/PersistentAppLayout";
+import AppLayout from "@/Layouts/AppLayout";
 import {date} from "@/helpers/dates";
 import LinksPagination from "@/Components/App/LinksPagination";
 import Money from "@/Components/UI/Money";

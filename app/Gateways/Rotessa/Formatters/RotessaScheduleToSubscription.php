@@ -18,13 +18,16 @@ class RotessaScheduleToSubscription implements Formatter
             'gateway'            => config('gateways.rotessa.name'),
             'gateway_identifier' => $output['id'],
             'type'               => Str::contains($output['comment'], 'loan') ? Subscription::TYPE_LOAN_PAYMENT : Subscription::TYPE_MEMBERSHIP,
-            'amount'             => $output['amount'],
             'start_date'         => $output['process_date'],
             'installments'       => $output['installments'],
             'frequency'          => Frequencies::$fromRotessaFrequencies[$output['frequency']],
             'active'             => $output['active'],
             'comment'            => $output['comment'],
-            'gateway_data'       => Arr::only($output, ['id', 'next_process_date'])
+            'gateway_data'       => Arr::only($output->json(), [
+                'id',
+                'amount',
+                'next_process_date'
+            ])
         ];
     }
 }

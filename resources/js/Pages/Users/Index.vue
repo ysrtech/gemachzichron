@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import AppLayout from "@/Layouts/PersistentAppLayout";
+import AppLayout from "@/Layouts/AppLayout";
 import UsersTable from "./UsersTable";
 import UserFormModal from "./FormModal";
 

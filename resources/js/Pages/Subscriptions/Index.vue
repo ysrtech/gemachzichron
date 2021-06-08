@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import AppLayout from "@/Layouts/PersistentAppLayout";
+import AppLayout from "@/Layouts/AppLayout";
 import LinksPagination from "@/Components/App/LinksPagination";
 import AppPanel from "@/Components/UI/Panel";
 import SearchFilter from "@/Components/App/SearchFilter";

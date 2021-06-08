@@ -151,7 +151,7 @@ class Gateway extends AbstractGateway
     {
         $response = $this->httpRequest->post('transaction_schedules', [
             'customer_id'  => $paymentMethod->gateway_identifier,
-            'amount'       => $data['amount'],
+            'amount'       => $data['transaction_total'],
             'frequency'    => Frequencies::$toRotessaFrequencies[$data['frequency']],
             'installments' => $data['installments'],
             'process_date' => $data['start_date'],
@@ -164,6 +164,27 @@ class Gateway extends AbstractGateway
     public function updateSchedule(Subscription $subscription, array $data): array
     {
         throw new NotImplementedException('Not implemented yet');
+    }
+
+    public function getSchedule(Subscription $subscription, array $query = []): array
+    {
+        $response = $this->httpRequest
+            ->get("transaction_schedules/$subscription->gateway_identifier", $query)
+            ->throw();
+
+        return $this->setFormatter(new RotessaScheduleToSubscription)->format($response);
+    }
+
+    public function getScheduleTransactions(Subscription $subscription, array $query = []): Collection
+    {
+        $response = $this->httpRequest
+            ->get("transaction_schedules/$subscription->gateway_identifier", $query)
+            ->throw();
+
+        $this->setFormatter(new RotessaTransactionToBaseTransaction);
+
+        return $response->collect('financial_transactions')
+            ->map(fn($transaction) => $this->format($transaction));
     }
 
     public function getCustomerTransactions(PaymentMethod $paymentMethod, $query = null): Collection
