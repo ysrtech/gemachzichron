@@ -72,4 +72,6 @@ class PullTransactions implements ShouldQueue
                 }
             });
     }
+
+    public $timeout = 500;
 }
