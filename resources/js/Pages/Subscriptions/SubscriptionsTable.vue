@@ -41,7 +41,11 @@
         <td class="px-6 py-3.5 whitespace-nowrap">{{ subscription.type }}</td>
         <td class="px-6 py-3.5 whitespace-nowrap">{{ date(subscription.start_date) }}</td>
         <td class="px-6 py-3.5 whitespace-nowrap">
-          <app-badge :color="GATEWAY_BADGE_COLORS[subscription.gateway]">{{ subscription.gateway }}</app-badge>
+          <app-badge
+            :color="GATEWAY_BADGE_COLORS[subscription.gateway]"
+            v-tippy="{content: formattedGatewayData(subscription.gateway_data), allowHTML: true}">
+            {{ subscription.gateway }}
+          </app-badge>
         </td>
         <td class="px-6 py-3.5 whitespace-nowrap">
           <app-badge v-show="subscription.active" color="green">Active</app-badge>
@@ -92,7 +96,12 @@ export default {
   },
 
   methods: {
-    date
+    date,
+    formattedGatewayData(data) {
+      return `<table>${Object.keys(data).reduce((accumulator, key) => {
+        return accumulator + `<tr><td>${key.replaceAll('_', ' ')}: </td><td class="text-right">${data[key]}</td></tr>`
+      }, '')}</table>`
+    }
   }
 }
 </script>

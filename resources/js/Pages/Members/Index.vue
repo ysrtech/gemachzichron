@@ -74,25 +74,25 @@
                     </template>
 
                     <template #content>
-                      <app-dropdown-link as="button" @click="$inertia.get($route('members.edit', member.id))">
+                      <app-dropdown-link :href="$route('members.edit', member.id)">
                         <div class="flex items-center">
                           <i class="material-icons-outlined mr-3 text-gray-400 text-xl">edit</i>
                           <div>Edit</div>
                         </div>
                       </app-dropdown-link>
-                      <app-dropdown-link as="button" @click="duplicateMember(member)">
+                      <app-dropdown-link as="button" href="#" @click.prevent="duplicateMember(member)">
                         <div class="flex items-center">
                           <i class="material-icons-outlined mr-3 text-gray-400 text-xl">content_copy</i>
                           <div>Duplicate</div>
                         </div>
                       </app-dropdown-link>
-                      <app-dropdown-link as="button" @click="$inertia.delete($route('members.destroy', member.id))" v-if="!member.deleted_at">
+                      <app-dropdown-link as="button" :href="$route('members.destroy', member.id)" method="delete" v-if="!member.deleted_at">
                         <div class="flex items-center">
                           <i class="material-icons-outlined mr-3 text-gray-400 text-xl">archive</i>
                           <div>Archive</div>
                         </div>
                       </app-dropdown-link>
-                      <app-dropdown-link as="button" @click="$inertia.put($route('members.restore', member.id))" v-else>
+                      <app-dropdown-link as="button" :href="$route('members.restore', member.id)" method="put" v-else>
                         <div class="flex items-center">
                           <i class="material-icons-outlined mr-3 text-gray-400 text-xl">unarchive</i>
                           <div>Restore</div>

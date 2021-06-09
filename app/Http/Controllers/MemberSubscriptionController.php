@@ -6,7 +6,6 @@ use App\Exceptions\NotImplementedException;
 use App\Facades\Gateway;
 use App\Http\Requests\CreateSubscriptionRequest;
 use App\Models\Member;
-use App\Models\PaymentMethod;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 
@@ -15,40 +14,33 @@ class MemberSubscriptionController extends Controller
     public function index(Member $member)
     {
         return Inertia::render('Members/Subscriptions/Index', [
-            'member' => $member->load('subscriptions')
+            'member' => $member->load('subscriptions', 'paymentMethods:id,member_id,gateway')
         ]);
     }
 
     public function store(CreateSubscriptionRequest $request, Member $member)
     {
-        if ($request->gateway == config('gateways.manual.name')) {
-            $member->subscriptions()->create($request->validated());
-        } else {
-            /** @var PaymentMethod $paymentMethod */
-            $paymentMethod = $member
-                ->paymentMethods()
-                ->firstWhere('gateway', $request->gateway);
+        if ($request->gateway != config('gateways.manual.name')) {
 
-            if (!$paymentMethod) {
+            if (!$paymentMethod = $member->paymentMethods()->firstWhere('gateway', $request->gateway)) {
                 throw ValidationException::withMessages(['gateway' => 'Member does not have a payment method set up with this gateway']);
             }
 
             try {
-                $gatewaySubscription = Gateway::initialize($paymentMethod->gateway)->createSchedule(
-                    $paymentMethod,
-                    $request->withTransactionTotal()
+                $request->merge(
+                    Gateway::initialize($paymentMethod->gateway)->createSchedule(
+                        $paymentMethod,
+                        $request->withTransactionTotal()
+                    )
                 );
             } catch (NotImplementedException $exception) {
                 throw ValidationException::withMessages(['gateway' => 'This payment methods gateway does not support creating subscriptions']);
             }
-
-            $member->subscriptions()->create(
-                collect($request->validated())
-                    ->merge($gatewaySubscription)
-                    ->filter(fn($el) => !is_null($el))
-                    ->toArray()
-            );
         }
+
+        $member->subscriptions()->create(
+            array_filter($request->input(), fn($el) => !is_null($el))
+        );
 
         return back()->snackbar('Subscription created successfully');
     }

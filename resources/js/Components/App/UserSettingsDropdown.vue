@@ -20,14 +20,12 @@
 <!--      </app-dropdown-link>-->
 
       <app-dropdown-link :href="$route('account.show')">
-        Profile
+        Account
       </app-dropdown-link>
 
-      <form @submit.prevent="$inertia.post($route('logout'))">
-        <app-dropdown-link as="button">
-          Logout
-        </app-dropdown-link>
-      </form>
+      <app-dropdown-link as="button" :href="$route('logout')" method="post">
+        Logout
+      </app-dropdown-link>
     </template>
   </app-dropdown>
 </template>

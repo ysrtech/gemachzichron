@@ -28,9 +28,14 @@
             :error="form.errors.gateway"
             label="Payment Method"
             type="select"
-            @update:model-value="form.clearErrors('gateway')"
-            :options="AVAILABLE_GATEWAYS"
-          />
+            @update:model-value="form.clearErrors('gateway')">
+            <template #options>
+              <option v-for="paymentMethod in member.payment_methods" :key="paymentMethod.id">
+                {{ paymentMethod.gateway }}
+              </option>
+<!--              <option>{{ AVAILABLE_GATEWAYS.Manual }}</option>-->
+            </template>
+          </app-input>
         </div>
 
         <div class="sm:col-span-6">
