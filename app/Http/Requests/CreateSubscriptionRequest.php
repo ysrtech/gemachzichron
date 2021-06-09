@@ -9,6 +9,15 @@ use Illuminate\Validation\Rule;
 
 class CreateSubscriptionRequest extends FormRequest
 {
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'membership_fee' => $this->get('membership_fee') ?? 0,
+            'processing_fee' => $this->get('processing_fee') ?? 0,
+            'decline_fee' => $this->get('decline_fee') ?? 0,
+        ]);
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -24,9 +33,9 @@ class CreateSubscriptionRequest extends FormRequest
             'installments'         => ['nullable', 'integer'],
             'frequency'            => ['required', Rule::in(Subscription::$frequencies)],
             'comment'              => ['nullable'],
-            'membership_fee'       => ['nullable', 'numeric'],
-            'processing_fee'       => ['nullable', 'numeric'],
-            'decline_fee'          => ['nullable', 'numeric'],
+            'membership_fee'       => ['required', 'numeric'],
+            'processing_fee'       => ['required', 'numeric'],
+            'decline_fee'          => ['required', 'numeric'],
             'resolves_transaction' => ['nullable', 'numeric']
         ];
     }

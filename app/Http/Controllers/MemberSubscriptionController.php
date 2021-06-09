@@ -38,9 +38,7 @@ class MemberSubscriptionController extends Controller
             }
         }
 
-        $member->subscriptions()->create(
-            array_filter($request->input(), fn($el) => !is_null($el))
-        );
+        $member->subscriptions()->create($request->all());
 
         return back()->snackbar('Subscription created successfully');
     }
