@@ -12,7 +12,7 @@
             </button>
           </template>
           <template #content>
-            <div class="p-6 grid grid-cols-3" v-if="member.payment_methods.length > 0">
+            <div class="p-6 grid grid-cols-3 gap-6" v-if="member.payment_methods.length > 0">
               <app-panel class="bg-gray-50" v-for="paymentMethod in member.payment_methods" :title="paymentMethod.gateway">
                 <template #actions>
                   <button

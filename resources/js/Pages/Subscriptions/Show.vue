@@ -1,6 +1,6 @@
 <template>
   <div class="max-w-2xl mx-auto">
-    <app-panel title="Subscription Details" :badge="{
+    <app-panel :title="`Subscription #${subscription.id}`" :badge="{
       color: subscription.active ? 'green' : 'red',
       text: subscription.active ? 'Active' : 'Inactive',
     }">
@@ -66,27 +66,16 @@
                   </li>
                 </ul>
               </dd>
-<!--              <table class="w-1/2">-->
-<!--                <tr><td>Amount:</td><td><money :amount="subscription.amount"/></td></tr>-->
-<!--                <tr><td>Membership Fee:</td><td><money :amount="subscription.membership_fee"/></td></tr>-->
-<!--                <tr v-show="subscription.processing_fee"><td>Processing Fee:</td><td><money :amount="subscription.processing_fee"/></td></tr>-->
-<!--                <tr v-show="subscription.decline_fee"><td>Processing Fee:</td><td><money :amount="subscription.decline_fee"/></td></tr>-->
-<!--                <tr class="border-t"><td>Total:</td><td><money :amount="subscription.transaction_total"/></td></tr>-->
-<!--              </table>-->
             </div>
           </dl>
         </div>
       </template>
     </app-panel>
-    <teleport v-if="isMounted" to="#header">
-      Subscription <span class="text-gray-500">#</span>{{ subscription.id }}
-    </teleport>
   </div>
 </template>
 
 <script>
 import AppLayout from "@/Layouts/AppLayout";
-import IsMounted from "@/Mixins/IsMounted";
 import AppPanel from "@/Components/UI/Panel";
 import KeyValue from "@/Components/UI/KeyValue";
 import AppBadge from "@/Components/UI/Badge";
@@ -96,9 +85,7 @@ import Money from "@/Components/UI/Money";
 import RefreshButton from "@/Pages/Subscriptions/RefreshButton";
 
 export default {
-  layout: AppLayout,
-
-  mixins: [IsMounted],
+  layout: (h, page) => h(AppLayout, {title: 'Subscriptions'}, () => page),
 
   components: {
     RefreshButton,

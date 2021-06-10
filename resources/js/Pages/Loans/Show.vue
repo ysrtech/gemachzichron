@@ -1,7 +1,6 @@
 <template>
-  <div class="max-w-4xl mx-auto grid sm:grid-cols-3 gap-6">
-    <div class="col-span-2">
-      <app-panel title='Loan Details'>
+  <div class="max-w-xl mx-auto">
+      <app-panel :title='`Loan #${loan.id}`'>
         <template #actions>
           <button
             @click="openFormModal = true"
@@ -33,6 +32,20 @@
               <key-value label="Comments">
                 <pre class="font-sans">{{loan.comment}}</pre>
               </key-value>
+              <key-value label="Guarantors">
+                <div class="border rounded-md p-2">
+                  <app-badge
+                    v-for="guarantor in loan.guarantors"
+                    color="darkGray"
+                    class="m-1 cursor-pointer hover:bg-gray-800"
+                    @click="$route('members.show', guarantor.id)">
+                    {{ guarantor.first_name }} {{ guarantor.last_name }}
+                  </app-badge>
+                  <div v-show="loan.guarantors.length === 0" class="py-2 text-center text-gray-500">
+                    No Guarantors
+                  </div>
+                </div>
+              </key-value>
             </dl>
           </div>
         </template>
@@ -44,33 +57,6 @@
         @close="openFormModal = false"
         :dependents="loan.member.dependents"
       />
-    </div>
-
-    <div class="col-span-1 space-y-6">
-      <app-panel title="Guarantors">
-        <template #actions>
-          <button
-            @click="openFormModal = true"
-            v-tippy="{ content: 'Edit Guarantors' }"
-            class="material-icons-outlined focus:outline-none rounded-full p-1.5 text-gray-600 hover:bg-gray-200 focus:bg-gray-300">
-            edit
-          </button>
-        </template>
-        <template #content>
-          <div class="p-4 sm:px-6 flex justify-between items-start" v-for="guarantor in loan.guarantors">
-            <inertia-link :href="$route('members.show', guarantor.id)" class="text-gray-700 text-sm hover:underline">
-              {{ guarantor.first_name }} {{ guarantor.last_name }}
-            </inertia-link>
-          </div>
-          <div class="px-4 py-10 sm:px-6 text-gray-400 text-center" v-show="loan.guarantors.length === 0">
-            No Guarantors
-          </div>
-        </template>
-      </app-panel>
-    </div>
-    <teleport v-if="isMounted" to="#header">
-      Loan <span class="text-gray-500">#</span>{{ loan.id }}
-    </teleport>
   </div>
 </template>
 
@@ -81,19 +67,18 @@ import LoanFormModal from "@/Pages/Loans/FormModal";
 import Money from "@/Components/UI/Money";
 import {date} from "@/helpers/dates";
 import AppPanel from "@/Components/UI/Panel";
-import IsMounted from "@/Mixins/IsMounted";
+import AppBadge from "@/Components/UI/Badge";
 
 export default {
-  layout: AppLayout,
+  layout: (h, page) => h(AppLayout, {title: 'Loans'}, () => page),
 
   components: {
+    AppBadge,
     AppPanel,
     Money,
     KeyValue,
     LoanFormModal
   },
-
-  mixins: [IsMounted],
 
   data() {
     return {
