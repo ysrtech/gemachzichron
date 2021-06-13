@@ -204,8 +204,6 @@ class Gateway extends AbstractGateway
             ->filter();
     }
 
-    /**
-     */
     public function getTransactions(Carbon $startDate, ?Carbon $endDate = null, $query = []): Collection
     {
         $response = $this->httpRequest->get('transaction_report', array_merge([
@@ -259,49 +257,4 @@ class Gateway extends AbstractGateway
         });
     }
 
-//    public function getCustomerTransactions(Member $member, $query = null)
-//    {
-//        $paymentMethod = $member->paymentMethods()->where('gateway', $this->getName())->first();
-//
-//        if (!$paymentMethod) {
-//            Log::warning("[ROTESSA] Member $member->id is not connected to Rotessa");
-//            return;
-//        }
-//
-//        $response = $this->httpRequest->get("customers/$paymentMethod->gateway_identifier", $query);
-//
-//        collect($response->collect()->get('financial_transactions'))
-//            ->each(function ($responseTransaction) use ($member) {
-//                $transaction = $member->transactions()
-//                    ->where('gateway', $this->getName())
-//                    ->where('gateway_identifier', $responseTransaction['id'])
-//                    ->first();
-//
-//                if ($transaction && $this->transactionStatuses[$responseTransaction['status']] == $transaction->status) {
-//                    return; // no status updates
-//                }
-//
-//                $subscription = $member->subscriptions()
-//                    ->where('gateway', $this->getName())
-//                    ->where('gateway_identifier', $responseTransaction['transaction_schedule_id'])
-//                    ->first();
-//
-//                if (!$subscription) {
-//                    Log::warning("[ROTESSA] No subscription for Rotessa Schedule {$responseTransaction['transaction_schedule_id']}");
-//                    return;
-//                }
-//
-//                switch ($this->transactionStatuses[$responseTransaction['status']]) {
-//                    case Transaction::STATUS_SUCCESS:
-//                        Transaction::splitBaseTransaction([], $transaction);
-//                        break;
-//                    case Transaction::STATUS_PENDING:
-//                        Transaction::createPendingTransaction([], $transaction);
-//                        break;
-//                    case Transaction::STATUS_FAIL:
-//                        Transaction::failTransaction([], $transaction);
-//                        break;
-//                }
-//            });
-//    }
 }
