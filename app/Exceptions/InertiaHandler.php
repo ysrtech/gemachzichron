@@ -15,7 +15,7 @@ trait InertiaHandler
             // Put the intended url in the session
             redirect()->guest($e->redirectTo() ?? route('login'));
 
-            return Inertia::partial('LoginModal', [], 'Auth/Login', [], 401);
+            return Inertia::flash('login_modal', [], 'Auth/Login', [], 401);
         }
 
         $response = parent::render($request, $e);
@@ -40,13 +40,13 @@ trait InertiaHandler
                     ->setStatusCode($response->status());
             case 419:
             case 503:
-                return Inertia::partial(
-                    'Banner', ['message' => $messages[$response->status()], 'level' => 'warning'], 'Errors/Show', [], $response->status()
+                return Inertia::flash(
+                    'banner', ['message' => $messages[$response->status()], 'level' => 'warning'], 'Errors/Show', [], $response->status()
                 );
             case 500:
                 if (!config('app.debug')) {
-                    return Inertia::partial(
-                        'Banner', ['message' => $messages[$response->status()], 'level' => 'danger'], 'Errors/Show', [], $response->status()
+                    return Inertia::flash(
+                        'banner', ['message' => $messages[$response->status()], 'level' => 'danger'], 'Errors/Show', [], $response->status()
                     );
                 }
         }

@@ -19,7 +19,7 @@ class DependentController extends Controller
     {
         if ($dependent->loans->isNotEmpty()) {
             if (!$request->boolean('confirm')) {
-                return back()->withPartial('AlertModal', [
+                return back()->alert([
                     'icon'         => 'error',
                     'title'        => 'Delete Child Failed',
                     'message'      => "You cannot delete a child with associated loans.<br>
@@ -37,7 +37,7 @@ class DependentController extends Controller
         }
 
         if (!$request->boolean('confirm')) {
-            return back()->withPartial('AlertModal', [
+            return back()->alert([
                 'icon'         => 'error',
                 'title'        => 'Are you sure?',
                 'message'      => "Are you sure you want to delete <strong>$dependent->name</strong>?",

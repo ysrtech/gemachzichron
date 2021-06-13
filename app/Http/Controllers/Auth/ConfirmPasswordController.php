@@ -13,7 +13,7 @@ class ConfirmPasswordController extends Controller
     public function show(Request $request)
     {
         if ($request->inertia()) {
-            return back()->withPartial('ConfirmPassword');
+            return back()->confirmPassword();
         }
 
         return Inertia::render('Auth/ConfirmPassword');
@@ -25,7 +25,7 @@ class ConfirmPasswordController extends Controller
             'email' => $request->user()->email,
             'password' => $request->password,
         ])) {
-            return back()->withErrors([
+            return back()->confirmPassword()->withErrors([
                 'password' => __('auth.password')
             ]);
         }
