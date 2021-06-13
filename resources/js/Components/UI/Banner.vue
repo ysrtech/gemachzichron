@@ -23,7 +23,7 @@
               aria-label="Dismiss"
               class="flex p-2 rounded-full focus:outline-none transition ease-in-out duration-150 hover:bg-gray-600 focus:bg-gray-900 hover:bg-opacity-40"
               type="button"
-              @click.prevent="close">
+              @click="$emit('close')">
               <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
               </svg>
@@ -37,28 +37,12 @@
 </template>
 
 <script>
-import {ref} from "vue";
-
 export default {
 
   name: 'AppBanner',
 
-  setup(props, {emit}) {
-
-    const show = ref(true) // for transition purposes
-
-    const close = () => {
-      show.value = false
-      setTimeout(() => emit('close'), 300)
-    }
-
-    return {
-      show,
-      close,
-    }
-  },
-
   props: {
+    show: Boolean,
     message: String,
     level: {
       type: String, // 'primary' | 'success' | 'danger' | 'warning'

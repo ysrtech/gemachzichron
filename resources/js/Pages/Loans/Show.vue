@@ -67,13 +67,11 @@ import LoanFormModal from "@/Pages/Loans/FormModal";
 import Money from "@/Components/UI/Money";
 import {date} from "@/helpers/dates";
 import AppPanel from "@/Components/UI/Panel";
-import AppBadge from "@/Components/UI/Badge";
 
 export default {
   layout: (h, page) => h(AppLayout, {title: 'Loans'}, () => page),
 
   components: {
-    AppBadge,
     AppPanel,
     Money,
     KeyValue,

@@ -24,12 +24,9 @@
 
 <script>
 import AppLayout from "@/Layouts/AppLayout";
-import AppBadge from "@/Components/UI/Badge";
 import IsMounted from "@/Mixins/IsMounted";
 
 export default {
-  components: {AppBadge},
-
   layout: AppLayout,
 
   mixins: [IsMounted],

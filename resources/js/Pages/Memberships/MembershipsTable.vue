@@ -59,14 +59,12 @@
 import AppDropdown from "@/Components/UI/Dropdown";
 import AppDropdownLink from "@/Components/UI/DropdownLink";
 import AppPagination from "@/Components/App/Pagination";
-import AppBadge from "@/Components/UI/Badge";
 import {date} from "@/helpers/dates";
 import Money from "@/Components/UI/Money";
 
 export default {
   components: {
     Money,
-    AppBadge,
     AppPagination,
     AppDropdownLink,
     AppDropdown

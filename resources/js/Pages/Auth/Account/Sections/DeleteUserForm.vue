@@ -26,24 +26,16 @@
 
 <script>
 import AppSection from './Section'
-import RendersPartials from "@/Mixins/RendersPartials";
 
 export default {
   components: {
     AppSection,
   },
 
-  mixins: [RendersPartials],
-
   methods: {
     deleteUser() {
-      this.renderPartial('ConfirmPassword', {
-        redirectTo: {
-          url: this.$route('account.destroy'),
-          options: {
-            method: 'DELETE'
-          }
-        }
+      this.$inertia.delete(this.$route('account.destroy'), {
+        preserveScroll: true,
       })
     },
   },

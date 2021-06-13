@@ -40,11 +40,9 @@
 
 <script>
 import AppDropdown from "@/Components/UI/Dropdown"
-import AppBadge from "@/Components/UI/Badge";
 
 export default {
   components: {
-    AppBadge,
     AppDropdown
   },
 

@@ -66,7 +66,11 @@
       </main>
     </div>
 
-    <partials/>
+    <app-snackbar :show="showSnackbar" :message="$page.props.flash.snackbar?.message" @close="showSnackbar = false"/>
+    <app-banner :show="showBanner" v-bind="$page.props.flash.banner" @close="showBanner = false"/>
+    <alert-modal :show="showAlertModal" v-bind="$page.props.flash.alert_modal" @close="showAlertModal = false"/>
+    <login-modal :show="showLoginModal" @close="showLoginModal = false"/>
+    <confirm-password-modal :show="showConfirmPasswordModal" v-bind="$page.props.flash.confirm_password_modal" @close="showConfirmPasswordModal = false"/>
   </div>
 </template>
 
@@ -74,15 +78,22 @@
 import AppNav from "@/Components/App/AppNav";
 import AppLogo from "@/Components/UI/Logo";
 import AppSideOverlay from "@/Components/UI/SideOverlay";
-import Partials from "@/Partials/partials";
 import UserSettingsDropdown from "@/Components/App/UserSettingsDropdown";
 import {APP_NAME} from "@/config/app";
-import {Inertia} from "@inertiajs/inertia";
+import AppSnackbar from "@/Components/UI/Snackbar";
+import AppBanner from "@/Components/UI/Banner";
+import AlertModal from "@/Components/App/AlertModal";
+import LoginModal from "@/Components/App/LoginModal";
+import ConfirmPasswordModal from "@/Components/App/ConfirmPasswordModal";
 
 export default {
   components: {
+    ConfirmPasswordModal,
+    LoginModal,
+    AlertModal,
+    AppBanner,
+    AppSnackbar,
     UserSettingsDropdown,
-    Partials,
     AppSideOverlay,
     AppLogo,
     AppNav
@@ -96,7 +107,49 @@ export default {
     return {
       APP_NAME,
       showOverlayNavigation: false,
+      showSnackbar: false,
+      showBanner: false,
+      showAlertModal: false,
+      showLoginModal: false,
+      showConfirmPasswordModal: false,
     }
+  },
+
+  watch: {
+    '$page.props.flash.snackbar'(snackbar) {
+      if (snackbar) {
+        this.showSnackbar = true
+        setTimeout(() => this.showSnackbar = false, snackbar?.timeout || 300)
+      } else {
+        this.showSnackbar = false
+      }
+    },
+
+    '$page.props.flash.banner'(banner) {
+      this.showBanner = !!banner;
+    },
+
+    '$page.props.flash.alert_modal'(alertModal) {
+      this.showAlertModal = !!alertModal;
+    },
+
+    '$page.props.flash.login_modal'(loginModal) {
+      this.showLoginModal = !!loginModal;
+    },
+
+    '$page.props.flash.confirm_password_modal'(confirmPassword_Modal) {
+      this.showConfirmPasswordModal = !!confirmPassword_Modal;
+    },
+  },
+
+  created() {
+    // render the flash component only - preserve current page (e.g. when returning Inertia::flash(...))
+    this.$inertia.on('invalid', (event) => {
+      if (event.detail.response.data?.flash) {
+        event.preventDefault()
+        this.$page.props.flash = event.detail.response.data.flash
+      }
+    })
   },
 }
 </script>

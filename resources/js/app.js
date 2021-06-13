@@ -5,6 +5,7 @@ import VueTippy from 'vue-tippy';
 import 'tippy.js/dist/tippy.css';
 import AppInput from '@/Components/UI/Input';
 import AppButton from '@/Components/UI/Button';
+import AppBadge from '@/Components/UI/Badge';
 import axios from "axios";
 
 InertiaProgress.init({color: '#075985'}) // should match a primary color
@@ -20,6 +21,7 @@ createInertiaApp({
       .use(VueTippy)
       .component('AppInput', AppInput)
       .component('AppButton', AppButton)
+      .component('AppBadge', AppBadge)
       .mount(el)
   },
 })

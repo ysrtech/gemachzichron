@@ -1,6 +1,6 @@
 <template>
-  <app-modal max-width="md" @close="close">
-    <div class="p-6">
+  <app-modal v-if="show" max-width="md" @close="close">
+    <div class="p-6" >
       <div v-if="icon" :class="iconBg" class="mx-auto flex items-center justify-center h-12 w-12 rounded-full">
         <svg :class="iconColor" class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path :d="iconData" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
@@ -44,6 +44,7 @@ export default {
   },
 
   props: {
+    show: Boolean,
     icon: String, /* 'success' | 'error' */
     title: String,
     message: String,

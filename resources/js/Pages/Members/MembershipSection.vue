@@ -51,7 +51,6 @@
 <script>
 import {date} from "@/helpers/dates";
 import MembershipFormModal from "./MembershipFormModal";
-import AppBadge from "@/Components/UI/Badge";
 import KeyValue from "@/Components/UI/KeyValue";
 import Money from "@/Components/UI/Money";
 import AppPanel from "@/Components/UI/Panel";
@@ -62,7 +61,6 @@ export default {
     AppPanel,
     Money,
     KeyValue,
-    AppBadge,
     MembershipFormModal,
   },
 

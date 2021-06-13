@@ -136,11 +136,9 @@
 import Modal from "@/Components/UI/Modal";
 import AppCheckbox from "@/Components/UI/Checkbox";
 import AppDropdown from "@/Components/UI/Dropdown";
-import AppBadge from "@/Components/UI/Badge";
 
 export default {
   components: {
-    AppBadge,
     AppDropdown,
     AppCheckbox,
     Modal

@@ -65,7 +65,6 @@
 </template>
 
 <script>
-import AppBadge from "@/Components/UI/Badge";
 import Money from "@/Components/UI/Money";
 import {GATEWAY_BADGE_COLORS} from "@/config/gateways";
 import {date} from "@/helpers/dates";
@@ -75,7 +74,6 @@ export default {
   components: {
     RefreshButton,
     Money,
-    AppBadge
   },
 
   props: {

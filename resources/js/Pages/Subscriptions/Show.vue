@@ -78,7 +78,6 @@
 import AppLayout from "@/Layouts/AppLayout";
 import AppPanel from "@/Components/UI/Panel";
 import KeyValue from "@/Components/UI/KeyValue";
-import AppBadge from "@/Components/UI/Badge";
 import {GATEWAY_BADGE_COLORS} from "@/config/gateways";
 import {date} from "@/helpers/dates";
 import Money from "@/Components/UI/Money";
@@ -90,7 +89,6 @@ export default {
   components: {
     RefreshButton,
     Money,
-    AppBadge,
     KeyValue,
     AppPanel,
   },

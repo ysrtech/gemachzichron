@@ -16,11 +16,7 @@
   </div>
 </template>
 <script>
-import AppBadge from "@/Components/UI/Badge";
 export default {
-  components: {
-    AppBadge
-  },
 
   props: {
     title: String,

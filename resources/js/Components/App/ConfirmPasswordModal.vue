@@ -1,5 +1,5 @@
 <template>
-  <modal :closeable="true" max-width="md" @close="close">
+  <modal v-if="show" :closeable="true" max-width="md" @close="close">
     <form @submit.prevent="submit">
       <div class="px-6 py-4">
         <div class="text-lg font-medium">
@@ -51,6 +51,7 @@ export default {
   ],
 
   props: {
+    show: Boolean,
     redirectTo: {
       type: [String, Object],
       default: null
@@ -66,8 +67,13 @@ export default {
     }
   },
 
-  mounted() {
-    setTimeout(() => this.$refs.password.focus(), 600)
+  watch: {
+    show(val) {
+      if (val) {
+        setTimeout(() => this.$refs.password.focus(), 600)
+
+      }
+    }
   },
 
   methods: {

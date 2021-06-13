@@ -124,7 +124,6 @@
 <script>
 import AppLayout from "@/Layouts/AppLayout";
 import SearchFilter from "@/Components/App/SearchFilter";
-import AppBadge from "@/Components/UI/Badge";
 import AppPagination from "@/Components/App/Pagination";
 import AppDropdownLink from "@/Components/UI/DropdownLink";
 import AppDropdown from "@/Components/UI/Dropdown";
@@ -137,7 +136,6 @@ export default {
   components: {
     SearchFilterField,
     SearchFilter,
-    AppBadge,
     AppPagination,
     AppDropdownLink,
     AppDropdown

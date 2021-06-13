@@ -87,14 +87,17 @@
 
 <script>
 import Money from "@/Components/UI/Money";
-import AppBadge from "@/Components/UI/Badge";
 import {date} from "@/helpers/dates";
 import {TRANSACTION_STATUS_COLORS, TRANSACTION_STATUSES} from "@/config/transactions";
 import {AVAILABLE_GATEWAYS, GATEWAY_BADGE_COLORS} from "@/config/gateways";
 import SubscriptionFormModal from "@/Pages/Subscriptions/FormModal";
 
 export default {
-  components: {SubscriptionFormModal, AppBadge, Money},
+  components: {
+    SubscriptionFormModal,
+    Money
+  },
+
   props: {
     transactions: Array,
     showMember: {

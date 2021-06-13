@@ -1,5 +1,5 @@
 <template>
-  <app-modal max-width="md" @close="$emit('close')">
+  <app-modal v-if="show" max-width="md" @close="$emit('close')">
     <div>
 
       <div class="pb-3 pt-6 text-center text-4xl">
@@ -73,6 +73,10 @@ export default {
   components: {
     AppModal,
     AppCheckbox
+  },
+
+  props: {
+    show: false
   },
 
   emits: ['close'],

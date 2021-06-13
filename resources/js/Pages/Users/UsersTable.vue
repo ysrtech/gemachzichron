@@ -30,7 +30,7 @@
 
           <button
             class="material-icons-outlined focus:outline-none rounded-full p-1 text-gray-500 hover:text-gray-700 hover:bg-gray-200 focus:bg-gray-300"
-            @click="renderPartial('AlertModal', {
+            @click="$page.props.flash.alert_modal = {
               icon: 'error',
               title: 'Delete User',
               message: `<div class='text-justify'>
@@ -46,7 +46,7 @@
                 method: 'DELETE'
               },
               closeButton: { text: 'Cancel', color: 'secondary' },
-            })">
+            }">
             delete
           </button>
         </td>
@@ -72,20 +72,13 @@
 import AppDropdown from "@/Components/UI/Dropdown";
 import AppDropdownLink from "@/Components/UI/DropdownLink";
 import AppPagination from "@/Components/App/Pagination";
-import AlertModal from "@/Partials/AlertModal";
-import AppBadge from "@/Components/UI/Badge";
-import RendersPartials from "@/Mixins/RendersPartials";
 
 export default {
   components: {
-    AppBadge,
-    AlertModal,
     AppPagination,
     AppDropdownLink,
     AppDropdown
   },
-
-  mixins: [RendersPartials],
 
   emits: ['edit-user'],
 
