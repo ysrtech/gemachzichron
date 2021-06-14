@@ -57,7 +57,7 @@ import SearchFilterField from "@/Components/App/SearchFilterField";
 import HasFilters from "@/Mixins/HasFilters";
 import {AVAILABLE_GATEWAYS} from "@/config/gateways";
 import {SUBSCRIPTION_TYPES} from "@/config/subscriptions";
-import SubscriptionsTable from "@/Pages/Subscriptions/SubscriptionsTable";
+import SubscriptionsTable from "@/Components/App/Subscriptions/SubscriptionsTable";
 
 export default {
   layout: (h, page) => h(AppLayout, {title: 'Subscriptions'}, () => page),

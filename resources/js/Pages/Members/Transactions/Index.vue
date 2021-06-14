@@ -17,7 +17,7 @@
 import MemberBase from "@/Pages/Members/MemberBase";
 import AppLayout from "@/Layouts/AppLayout";
 import AppPanel from "@/Components/UI/Panel";
-import TransactionsTable from "@/Pages/Transactions/TransactionsTable"
+import TransactionsTable from "@/Components/App/Transactions/TransactionsTable"
 
 export default {
   layout: AppLayout,

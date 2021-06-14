@@ -90,7 +90,7 @@ import Money from "@/Components/UI/Money";
 import {date} from "@/helpers/dates";
 import {TRANSACTION_STATUS_COLORS, TRANSACTION_STATUSES} from "@/config/transactions";
 import {AVAILABLE_GATEWAYS, GATEWAY_BADGE_COLORS} from "@/config/gateways";
-import SubscriptionFormModal from "@/Pages/Subscriptions/FormModal";
+import SubscriptionFormModal from "@/Components/App/Subscriptions/FormModal";
 
 export default {
   components: {

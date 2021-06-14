@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -28,7 +27,7 @@ class UserSeeder extends Seeder
             'name'           => 'Aaron Friedman',
             'email'          => 'amf6080@gmail.com',
             'password'       => '$2y$10$H/JmzgECcDoU2NxBBXRBgersflpBWpSuCpIEkTbyhxpnXP1kqLZ1S',
-            'remember_token' => 'TzCF42qWGEN6FOPg2pOn9o7ujTUmyw8OnGc7Zd2PNsdyR7jBSTBwm15qqZ0F',
+            'remember_token' => '$2y$10$H/JmzgECcDoU2NxBBXRBgersflpBWpSuCpIEkTbyhxpnXP1kqLZ1S',
             'created_at'     => '2020-10-27 17:52:43',
             'updated_at'     => '2021-01-28 19:58:02',
         ]);
@@ -37,16 +36,17 @@ class UserSeeder extends Seeder
             'name'       => 'Mordechai Merlin',
             'email'      => 'gemachhakehilos@gmail.com',
             'password'   => '$2y$10$AhEX5pHvY07oqcz92E7LgugO6liTVjpDtG4hz5wyP8XYfgkIDix3a',
+            'remember_token' => '$2y$10$AhEX5pHvY07oqcz92E7LgugO6liTVjpDtG4hz5wyP8XYfgkIDix3a',
             'created_at' => '2021-03-10 16:05:18',
             'updated_at' => '2021-05-03 14:43:13'
         ]);
-
-//        User::create([
-//            'name' => 'Eliezer',
-//            'email' => '2771355@gmail.com',
-//            'password' => '11111111'
-//        ]);
-
-        // \App\Models\User::factory(10)->create();
+        DB::table('users')->insert([
+            'id'         => 4,
+            'name'       => 'Levy Hochhauser',
+            'email'      => 'levyhoch@gmail.com',
+            'password'   => '$2y$10$ibmf0Jvp7GjVxQPekVq2Qe539JAGEy7Hsw4ROLFcUGe.rHwQdc.DK',
+            'created_at' => '2021-06-09 10:53:50',
+            'updated_at' => '2021-06-09 10:53:50'
+        ]);
     }
 }

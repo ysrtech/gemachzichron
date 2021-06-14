@@ -63,7 +63,7 @@
 <script>
 import AppLayout from "@/Layouts/AppLayout";
 import KeyValue from "@/Components/UI/KeyValue";
-import LoanFormModal from "@/Pages/Loans/FormModal";
+import LoanFormModal from "@/Components/App/Loans/FormModal";
 import Money from "@/Components/UI/Money";
 import {date} from "@/helpers/dates";
 import AppPanel from "@/Components/UI/Panel";

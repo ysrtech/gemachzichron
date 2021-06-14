@@ -83,7 +83,7 @@ import SearchFilterField from "@/Components/App/SearchFilterField";
 import HasFilters from "@/Mixins/HasFilters";
 import {TRANSACTION_STATUSES, TRANSACTION_TYPES} from "@/config/transactions";
 import {AVAILABLE_GATEWAYS} from "@/config/gateways";
-import TransactionsTable from "@/Pages/Transactions/TransactionsTable";
+import TransactionsTable from "@/Components/App/Transactions/TransactionsTable";
 
 export default {
   layout: (h, page) => h(AppLayout, {title: 'Transactions'}, () => page),

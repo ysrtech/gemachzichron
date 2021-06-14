@@ -28,9 +28,9 @@
 <script>
 import MemberBase from "@/Pages/Members/MemberBase";
 import AppLayout from "@/Layouts/AppLayout";
-import SubscriptionsFormModal from "@/Pages/Subscriptions/FormModal";
+import SubscriptionsFormModal from "@/Components/App/Subscriptions/FormModal";
 import AppPanel from "@/Components/UI/Panel";
-import SubscriptionsTable from "@/Pages/Subscriptions/SubscriptionsTable";
+import SubscriptionsTable from "@/Components/App/Subscriptions/SubscriptionsTable";
 
 export default {
   layout: AppLayout,

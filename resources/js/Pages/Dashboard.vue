@@ -73,7 +73,7 @@ import {TRANSACTION_STATUSES} from '@/config/transactions';
 import {AVAILABLE_GATEWAYS} from "@/config/gateways";
 import {currentDate} from "@/helpers/dates";
 import Money from "@/Components/UI/Money";
-import TransactionsTable from "@/Pages/Transactions/TransactionsTable";
+import TransactionsTable from "@/Components/App/Transactions/TransactionsTable";
 import AppPanel from "@/Components/UI/Panel";
 
 export default {

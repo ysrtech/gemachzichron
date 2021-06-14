@@ -81,7 +81,7 @@ import KeyValue from "@/Components/UI/KeyValue";
 import {GATEWAY_BADGE_COLORS} from "@/config/gateways";
 import {date} from "@/helpers/dates";
 import Money from "@/Components/UI/Money";
-import RefreshButton from "@/Pages/Subscriptions/RefreshButton";
+import RefreshButton from "@/Components/App/Subscriptions/RefreshButton";
 
 export default {
   layout: (h, page) => h(AppLayout, {title: 'Subscriptions'}, () => page),

@@ -78,7 +78,7 @@
 import MemberBase from "@/Pages/Members/MemberBase";
 import AppLayout from "@/Layouts/AppLayout";
 import {date} from "@/helpers/dates";
-import LoansFormModal from "@/Pages/Loans/FormModal";
+import LoansFormModal from "@/Components/App/Loans/FormModal";
 import AppPanel from "@/Components/UI/Panel";
 import Money from "@/Components/UI/Money";
 

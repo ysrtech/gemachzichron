@@ -28,8 +28,8 @@
 
 <script>
 import AppLayout from "@/Layouts/AppLayout";
-import UsersTable from "./UsersTable";
-import UserFormModal from "./FormModal";
+import UsersTable from "../../Components/App/Users/UsersTable";
+import UserFormModal from "../../Components/App/Users/FormModal";
 
 export default {
   layout: (h, page) => h(AppLayout, {title: 'Users'}, () => page),

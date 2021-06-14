@@ -68,7 +68,7 @@
 import Money from "@/Components/UI/Money";
 import {GATEWAY_BADGE_COLORS} from "@/config/gateways";
 import {date} from "@/helpers/dates";
-import RefreshButton from "@/Pages/Subscriptions/RefreshButton";
+import RefreshButton from "@/Components/App/Subscriptions/RefreshButton";
 
 export default {
   components: {
