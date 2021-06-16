@@ -2,10 +2,9 @@
   <nav>
     <template v-for="item in navItems">
       <hr v-if="item.divider" class="border-gray-500">
-      <component
+      <inertia-link
         v-else
         v-show="!item.hidden"
-        :is="item.route ? 'inertia-link' : 'div'"
         :class="isCurrentRoute(item.route) ? 'bg-gray-700 text-white' : 'hover:bg-gray-800 text-gray-300 hover:text-white'"
         class="flex items-center group py-2 px-3 m-3 transition rounded-md focus:outline-none cursor-pointer"
         :href="item.route ? $route(item.route) : null"
@@ -16,7 +15,7 @@
         <div>
           {{ item.title }}
         </div>
-      </component>
+      </inertia-link>
     </template>
   </nav>
 </template>

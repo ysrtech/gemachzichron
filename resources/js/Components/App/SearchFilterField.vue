@@ -10,6 +10,7 @@
       <option v-for="(value, key) in options" :value="value" :key="key">
         {{ Array.isArray(options) ? value : key }}
       </option>
+      <slot name="options"/>
     </select>
 
     <input
@@ -31,7 +32,10 @@ export default {
       type: String,
       default: 'select'
     },
-    options: Object,
+    options: {
+      type: Object,
+      default: () => []
+    },
     placeholder: String,
     modelValue: {
       default: null

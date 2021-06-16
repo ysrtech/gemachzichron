@@ -2,6 +2,7 @@
   <div class="flex items-center">
     <div class="flex w-full">
       <app-dropdown
+        v-if="additionalFilters"
         :close-on-click="false"
         align="left" width="56">
         <template #trigger>
@@ -24,7 +25,8 @@
       <input
         :value="modelValue"
         autocomplete="off"
-        class="rounded-r-md shadow-sm w-full relative px-6 focus:outline-none focus:ring-2 ring-primary-700 bg-white"
+        class="shadow-sm w-full relative px-6 focus:outline-none focus:ring-2 ring-primary-700 bg-white"
+        :class="additionalFilters ? 'rounded-r-md' : 'h-10 rounded-md'"
         name="search"
         :placeholder="placeholder"
         type="text"
@@ -50,6 +52,10 @@ export default {
 
   props: {
     modelValue: String,
+    additionalFilters: {
+      type: Boolean,
+      default: true,
+    },
     appliedFiltersLength: {
       type: Number,
       required: false

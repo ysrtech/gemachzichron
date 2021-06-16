@@ -76,7 +76,9 @@ export default {
   },
 
   props: {
-    show: false
+    show: {
+      default: false
+    }
   },
 
   emits: ['close'],
