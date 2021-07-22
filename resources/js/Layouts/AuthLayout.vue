@@ -25,6 +25,7 @@ import {APP_NAME} from "@/config/app";
 import AlertModal from "@/Components/App/AlertModal";
 import LoginModal from "@/Components/App/LoginModal";
 import ConfirmPasswordModal from "@/Components/App/ConfirmPasswordModal";
+import {Head} from "@inertiajs/inertia-vue3";
 
 export default {
   components: {
@@ -34,6 +35,7 @@ export default {
     AlertModal,
     AppBanner,
     AppSnackbar,
+    'InertiaHead': Head
   },
 
   props: {

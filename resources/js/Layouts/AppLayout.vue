@@ -80,6 +80,7 @@ import AppBanner from "@/Components/UI/Banner";
 import AlertModal from "@/Components/App/AlertModal";
 import LoginModal from "@/Components/App/LoginModal";
 import ConfirmPasswordModal from "@/Components/App/ConfirmPasswordModal";
+import {Head} from "@inertiajs/inertia-vue3";
 
 export default {
   components: {
@@ -91,7 +92,8 @@ export default {
     UserSettingsDropdown,
     AppSideOverlay,
     AppLogo,
-    AppNav
+    AppNav,
+    'InertiaHead': Head
   },
 
   props: {
