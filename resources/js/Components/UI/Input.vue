@@ -97,11 +97,11 @@ export default {
     filename: String
   },
 
-  data() {
-    return {
-      styleClasses: `shadow-sm mt-1 block w-full appearance-none text-sm leading-normal bg-white
-        border focus:outline-none focus:ring-2 focus:ring-offset-1 ring-primary-600 rounded-md placeholder-gray-400
-        py-2 px-3 ${this.error ? 'border-red-600' : 'border-gray-300'}`
+  computed: {
+    styleClasses() {
+      return `py-1.5 px-3 shadow-sm mt-1 block w-full appearance-none text-sm leading-normal
+      bg-white border focus:outline-none focus:ring-2 focus:ring-offset-1 ring-primary-600
+      rounded-md placeholder-gray-400 ${this.error ? 'border-red-600' : 'border-gray-300'}`
     }
   },
 

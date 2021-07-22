@@ -100,7 +100,7 @@
                     <svg class="h-2 w-2" stroke="currentColor" fill="none" viewBox="0 0 8 8"><path stroke-linecap="round" stroke-width="1.5" d="M1 1l6 6m0-6L1 7" /></svg>
                   </button>
                 </app-badge>
-                <button type="button" class="material-icons-outlined rounded-full text-lg px-1.5 focus:outline-none hover:bg-gray-200 focus:bg-gray-300">add</button>
+                <button type="button" class="material-icons-outlined rounded-full text-lg px-1.5 focus:outline-none hover:bg-gray-200 focus:bg-gray-300 -my-0.5">add</button>
               </app-input>
             </template>
 

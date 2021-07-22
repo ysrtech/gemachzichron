@@ -1,22 +1,21 @@
 <template>
-  <nav>
-    <template v-for="item in navItems">
-      <hr v-if="item.divider" class="border-gray-500">
-      <inertia-link
-        v-else
-        v-show="!item.hidden"
-        :class="isCurrentRoute(item.route) ? 'bg-gray-700 text-white' : 'hover:bg-gray-800 text-gray-300 hover:text-white'"
-        class="flex items-center group py-2 px-3 m-3 transition rounded-md focus:outline-none cursor-pointer"
-        :href="item.route ? $route(item.route) : null"
-        @click="item.route ? $emit('close-navigation') : null">
-        <i :class="{'text-primary-500': isCurrentRoute(item.route)}" class="material-icons-outlined mr-3 text-xl">
-          {{ item.icon }}
-        </i>
-        <div>
-          {{ item.title }}
-        </div>
-      </inertia-link>
-    </template>
+  <nav class="flex flex-col justify-between min-h-full">
+    <span v-for="items in {topItems, bottomItems}">
+      <template v-for="item in items">
+        <hr class="border-gray-500" v-if="item.divide">
+        <inertia-link
+          v-show="!item.hidden"
+          :class="isCurrentRoute(item.route) ? 'bg-gray-700 text-white' : 'hover:bg-gray-800 text-gray-300 hover:text-white'"
+          class="flex items-center group py-2 px-3 m-3 transition rounded-md focus:outline-none cursor-pointer"
+          :href="$route(item.route)"
+          @click="$emit('item-clicked', item)">
+          <i :class="{'text-primary-500': isCurrentRoute(item.route)}" class="material-icons-outlined mr-3 text-xl">
+            {{ item.icon }}
+          </i>
+          <div>{{ item.title }}</div>
+        </inertia-link>
+      </template>
+    </span>
   </nav>
 </template>
 
@@ -25,7 +24,7 @@
 export default {
   data() {
     return {
-      navItems: [
+      topItems: [
         {
           title: "Dashboard",
           route: "dashboard",
@@ -56,8 +55,8 @@ export default {
           route: "loans.index",
           icon: "account_balance",
         },
-        { divider: true },
         {
+          divide: true,
           title: "Data Export",
           route: "export.index",
           icon: 'download',
@@ -69,11 +68,19 @@ export default {
         },
 
       ],
+      bottomItems: [
+        {
+          divide: true,
+          title: "Settings",
+          route: "login",
+          icon: 'settings',
+        },
+      ],
       currentRouteName: this.$route().current()
     }
   },
 
-  emits: ['close-navigation'],
+  emits: ['item-clicked'],
 
   methods: {
     isCurrentRoute(route) {

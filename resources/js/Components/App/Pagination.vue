@@ -3,9 +3,9 @@
     <div class="hidden sm:block">
       <p class="text-sm text-gray-700">
         Showing
-        <span class="font-medium">{{ response.from }}</span>
+        <span class="font-medium">{{ response.from || 0 }}</span>
         to
-        <span class="font-medium">{{ response.to }}</span>
+        <span class="font-medium">{{ response.to || 0 }}</span>
         of
         <span class="font-medium">{{ response.total }}</span>
         results

@@ -1,6 +1,7 @@
 const colors = require('tailwindcss/colors');
 
 module.exports = {
+  // mode: 'jit',
   purge: [
     './storage/framework/views/*.php',
     './resources/views/**/*.blade.php',
@@ -10,7 +11,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: colors.lightBlue
+        primary: colors.sky
       },
     },
   },
