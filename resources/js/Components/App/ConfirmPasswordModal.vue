@@ -20,7 +20,7 @@
               placeholder="Password"
               required
               type="password"
-              @input="form.clearErrors('password')"/>
+              @update:model-value="form.clearErrors('password')"/>
           </div>
         </div>
       </div>
@@ -40,9 +40,11 @@
 
 <script>
 import Modal from "@/Components/UI/Modal";
+import AppInput from "@/Components/FormControls/Input"
 
 export default {
   components: {
+    AppInput,
     Modal,
   },
 

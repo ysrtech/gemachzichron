@@ -8,6 +8,7 @@
     <div
       v-if="processing"
       class="rounded-full border-2 h-4 w-4 animate-spin relative mr-2"
+      :class="{'border-primary-700': color === 'secondary'}"
       style="font-size: 10px; border-left-color: transparent"
     />
 

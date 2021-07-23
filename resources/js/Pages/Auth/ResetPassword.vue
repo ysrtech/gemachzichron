@@ -1,5 +1,5 @@
 <template>
-  <app-auth-layout>
+  <app-auth-layout title="Reset Password">
 
     <form @submit.prevent="submit">
       <div>
@@ -11,7 +11,7 @@
           label="Email"
           required
           type="email"
-          @input="form.clearErrors('email')"/>
+          @update:model-value="form.clearErrors('email')"/>
       </div>
 
       <div class="mt-4">
@@ -23,7 +23,7 @@
           label="Password"
           required
           type="password"
-          @input="form.clearErrors('password')"/>
+          @update:model-value="form.clearErrors('password')"/>
       </div>
 
       <div class="mt-4">
@@ -35,7 +35,7 @@
           label="Confirm Password"
           required
           type="password"
-          @input="form.clearErrors('password_confirmation')"/>
+          @update:model-value="form.clearErrors('password_confirmation')"/>
       </div>
 
       <div class="flex items-center justify-center sm:justify-end mt-5">
@@ -50,9 +50,11 @@
 
 <script>
 import AppAuthLayout from '@/Layouts/AuthLayout'
+import AppInput from "@/Components/FormControls/Input"
 
 export default {
   components: {
+    AppInput,
     AppAuthLayout,
   },
 

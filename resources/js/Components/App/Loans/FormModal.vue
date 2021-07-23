@@ -8,13 +8,13 @@
 
     <form @submit.prevent="submit">
       <div class="px-6 pb-4 grid sm:grid-cols-2 gap-x-6 gap-y-4">
-        <app-input
+        <app-select
+          native
           id="type"
           v-model="form.dependent_id"
           :error="form.errors.dependent_id"
           label="Dependent"
-          type="select"
-          @input="form.clearErrors('dependent_id')">
+          @update:model-value="form.clearErrors('dependent_id')">
           <template #options>
             <option :value="null">--</option>
             <option
@@ -24,7 +24,7 @@
               {{ dependent.name }}
             </option>
           </template>
-        </app-input>
+        </app-select>
 
         <app-input
           id="amount"
@@ -32,7 +32,7 @@
           :error="form.errors.amount"
           label="Amount"
           type="number"
-          @input="form.clearErrors('amount')"
+          @update:model-value="form.clearErrors('amount')"
         />
 
         <app-input
@@ -41,7 +41,7 @@
           :error="form.errors.loan_date"
           label="Loan Date"
           type="date"
-          @input="form.clearErrors('loan_date')"
+          @update:model-value="form.clearErrors('loan_date')"
         />
 
         <app-input
@@ -50,18 +50,17 @@
           :error="form.errors.cheque_number"
           label="Cheque Number"
           type="text"
-          @input="form.clearErrors('cheque_number')"
+          @update:model-value="form.clearErrors('cheque_number')"
         />
 
         <div class="col-span-2">
-          <app-input
+          <app-file-input
             id="application_copy"
             v-model="form.application_copy"
             :error="form.errors.application_copy"
             label="Application Copy"
-            type="file"
             :filename="applicationCopyPreview"
-            @input="form.clearErrors('application_copy')"
+            @update:model-value="form.clearErrors('application_copy')"
           >
             <template #top-right>
               <a
@@ -73,24 +72,23 @@
                 <i class="material-icons-outlined text-base">launch</i>
               </a>
             </template>
-          </app-input>
+          </app-file-input>
         </div>
 
         <div class="col-span-2">
-          <app-input
+          <app-textarea
             id="comment"
             v-model="form.comment"
             :error="form.errors.comment"
             label="Comments"
-            type="textarea"
-            @input="form.clearErrors('comment')"
+            @update:model-value="form.clearErrors('comment')"
           />
         </div>
 
         <div class="col-span-2 relative">
           <app-dropdown width="full" align="left" :close-on-click="false">
             <template #trigger>
-              <app-input label="Guarantors" type="div" class="space-x-1 inline-flex flex-wrap items-center" :error="form.errors.guarantors">
+              <app-mock-input label="Guarantors" class="space-x-1 inline-flex flex-wrap items-center" :error="form.errors.guarantors">
                 <app-badge v-for="guarantor in form.guarantors" class="inline-flex items-center">
                   <span>{{ guarantor.first_name + ' ' + guarantor.last_name }}</span>
                   <button
@@ -101,7 +99,7 @@
                   </button>
                 </app-badge>
                 <button type="button" class="material-icons-outlined rounded-full text-lg px-1.5 focus:outline-none hover:bg-gray-200 focus:bg-gray-300 -my-0.5">add</button>
-              </app-input>
+              </app-mock-input>
             </template>
 
             <template #content>
@@ -134,11 +132,21 @@
 </template>
 <script>
 import Modal from "@/Components/UI/Modal";
-import AppCheckbox from "@/Components/UI/Checkbox";
+import AppCheckbox from "@/Components/FormControls/Checkbox";
 import AppDropdown from "@/Components/UI/Dropdown";
+import AppInput from "@/Components/FormControls/Input"
+import AppSelect from "@/Components/FormControls/Select";
+import AppFileInput from "@/Components/FormControls/FileInput";
+import AppTextarea from "@/Components/FormControls/Textarea";
+import AppMockInput from "@/Components/FormControls/MockInput";
 
 export default {
   components: {
+    AppMockInput,
+    AppTextarea,
+    AppFileInput,
+    AppSelect,
+    AppInput,
     AppDropdown,
     AppCheckbox,
     Modal

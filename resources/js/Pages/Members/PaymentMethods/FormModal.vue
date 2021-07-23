@@ -9,20 +9,20 @@
     <form @submit.prevent="submit">
 
       <div class="px-6 py-4 space-y-4">
-        <app-input
+        <app-select
+          native
           id="gateway"
           v-model="form.gateway"
           :error="form.errors.gateway"
           label="Gateway"
-          type="select"
           :disabled="!!paymentMethod"
-          @input="form.clearErrors('gateway')"
+          @update:model-value="form.clearErrors('gateway')"
         >
           <template #options>
 <!--            <option v-for="gateway in AVAILABLE_GATEWAYS">{{ gateway }}</option>-->
             <option>{{ AVAILABLE_GATEWAYS.Rotessa }}</option>
           </template>
-        </app-input>
+        </app-select>
 
         <div v-if="form.gateway === AVAILABLE_GATEWAYS.Rotessa" class="grid sm:grid-cols-2 gap-6">
           <app-input
@@ -31,7 +31,7 @@
             :error="form.errors.bank_name"
             label="Bank Name"
             type="text"
-            @input="form.clearErrors('bank_name')"
+            @update:model-value="form.clearErrors('bank_name')"
           />
           <app-input
             id="transit_number"
@@ -39,7 +39,7 @@
             :error="form.errors.transit_number"
             label="Transit Number"
             type="text"
-            @input="form.clearErrors('transit_number')"
+            @update:model-value="form.clearErrors('transit_number')"
           />
           <app-input
             id="institution_number"
@@ -47,7 +47,7 @@
             :error="form.errors.institution_number"
             label="Institution Number"
             type="text"
-            @input="form.clearErrors('institution_number')"
+            @update:model-value="form.clearErrors('institution_number')"
           />
           <app-input
             id="account_number"
@@ -55,7 +55,7 @@
             :error="form.errors.account_number"
             label="Account Number"
             type="text"
-            @input="form.clearErrors('account_number')"
+            @update:model-value="form.clearErrors('account_number')"
           />
         </div>
       </div>
@@ -72,9 +72,13 @@
 <script>
 import Modal from "@/Components/UI/Modal";
 import {AVAILABLE_GATEWAYS} from "@/config/gateways";
+import AppInput from "@/Components/FormControls/Input"
+import AppSelect from "@/Components/FormControls/Select";
 
 export default {
   components: {
+    AppSelect,
+    AppInput,
     Modal
   },
 

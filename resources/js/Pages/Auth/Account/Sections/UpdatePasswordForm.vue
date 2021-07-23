@@ -23,7 +23,7 @@
               autocomplete="current_password"
               label="Current Password"
               type="password"
-              @input="form.clearErrors('current_password')"/>
+              @update:model-value="form.clearErrors('current_password')"/>
           </div>
 
           <div class="col-span-6 sm:col-span-4">
@@ -34,7 +34,7 @@
               autocomplete="new-password"
               label="New Password"
               type="password"
-              @input="form.clearErrors('password')"/>
+              @update:model-value="form.clearErrors('password')"/>
           </div>
 
           <div class="col-span-6 sm:col-span-4">
@@ -45,7 +45,7 @@
               autocomplete="new-password"
               label="Confirm Password"
               type="password"
-              @input="form.clearErrors('password_confirmation')"/>
+              @update:model-value="form.clearErrors('password_confirmation')"/>
           </div>
         </div>
 
@@ -61,9 +61,11 @@
 
 <script>
 import AppSection from "./Section";
+import AppInput from "@/Components/FormControls/Input"
 
 export default {
   components: {
+    AppInput,
     AppSection,
   },
 

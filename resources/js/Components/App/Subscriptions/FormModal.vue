@@ -10,24 +10,24 @@
     <form @submit.prevent="submit">
       <div class="px-6 pb-4 grid sm:grid-cols-12 gap-x-6 gap-y-4">
         <div class="sm:col-span-6">
-          <app-input
+          <app-select
+            native
             id="type"
             v-model="form.type"
             :error="form.errors.type"
             label="Subscription Type"
-            type="select"
             @update:model-value="form.clearErrors('type')"
             :options="SUBSCRIPTION_TYPES"
           />
         </div>
 
         <div class="sm:col-span-6">
-          <app-input
+          <app-select
+            native
             id="gateway"
             v-model="form.gateway"
             :error="form.errors.gateway"
             label="Payment Method"
-            type="select"
             @update:model-value="form.clearErrors('gateway')">
             <template #options>
               <option v-for="paymentMethod in member.payment_methods" :key="paymentMethod.id">
@@ -35,7 +35,7 @@
               </option>
 <!--              <option>{{ AVAILABLE_GATEWAYS.Manual }}</option>-->
             </template>
-          </app-input>
+          </app-select>
         </div>
 
         <div class="sm:col-span-6">
@@ -50,19 +50,19 @@
         </div>
 
         <div class="sm:col-span-6">
-          <app-input
+          <app-select
+            native
             id="frequency"
             v-model="form.frequency"
             :error="form.errors.frequency"
             label="Frequency"
-            type="select"
             :options="SUBSCRIPTION_FREQUENCIES"
             @update:model-value="form.clearErrors('frequency')"
           />
         </div>
 
         <div class="sm:col-span-6">
-          <app-input
+          <app-number-input
             :readonly="form.frequency === SUBSCRIPTION_FREQUENCIES.Once"
             id="installments"
             v-model="form.installments"
@@ -70,7 +70,6 @@
             label="Installments"
             placeholder="Unlimited"
             class="placeholder-gray-700"
-            type="number"
             min="1"
             @update:model-value="form.clearErrors('installments')"
           />
@@ -128,23 +127,22 @@
         </div>
 
         <div class="sm:col-span-6">
-          <app-input
+          <app-mock-input
             label="Total Amount"
             type="div"
             class="bg-gray-100 text-gray-900"
           >
             <money :amount="totalAmount"/>
-          </app-input>
+          </app-mock-input>
         </div>
 
         <div class="sm:col-span-12">
-          <app-input
+          <app-textarea
             id="comment"
             class="h-12"
             v-model="form.comment"
             :error="form.errors.comment"
             label="Comments"
-            type="textarea"
             @update:model-value="form.clearErrors('comment')"
           />
         </div>
@@ -168,9 +166,19 @@ import Modal from "@/Components/UI/Modal";
 import {DEFAULT_SUBSCRIPTION_FEES, SUBSCRIPTION_FREQUENCIES, SUBSCRIPTION_TYPES} from "@/config/subscriptions";
 import {AVAILABLE_GATEWAYS} from "@/config/gateways";
 import Money from "@/Components/UI/Money";
+import AppInput from "@/Components/FormControls/Input"
+import AppSelect from "@/Components/FormControls/Select";
+import AppTextarea from "@/Components/FormControls/Textarea";
+import AppMockInput from "@/Components/FormControls/MockInput";
+import AppNumberInput from "@/Components/FormControls/NumberInput";
 
 export default {
   components: {
+    AppNumberInput,
+    AppMockInput,
+    AppTextarea,
+    AppSelect,
+    AppInput,
     Money,
     Modal
   },

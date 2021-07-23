@@ -14,7 +14,7 @@
           :error="form.errors.name"
           label="Name"
           type="text"
-          @input="form.clearErrors('name')"
+          @update:model-value="form.clearErrors('name')"
         />
       </div>
 
@@ -28,9 +28,11 @@
 </template>
 <script>
 import Modal from "@/Components/UI/Modal"
+import AppInput from "@/Components/FormControls/Input"
 
 export default {
   components: {
+    AppInput,
     Modal
   },
 

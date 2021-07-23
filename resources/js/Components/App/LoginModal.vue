@@ -1,5 +1,5 @@
 <template>
-  <app-modal v-if="show" max-width="md" @close="$emit('close')">
+  <app-modal v-if="show" max-width="sm" @close="$emit('close')">
     <div>
 
       <div class="pb-3 pt-6 text-center text-4xl">
@@ -17,7 +17,7 @@
               label="Email"
               required
               type="email"
-              @input="form.clearErrors('email')"/>
+              @update:model-value="form.clearErrors('email')"/>
           </div>
 
           <div class="mt-4">
@@ -29,7 +29,7 @@
               label="Password"
               required
               type="password"
-              @input="form.clearErrors('password')">
+              @update:model-value="form.clearErrors('password')">
             </app-input>
           </div>
 
@@ -66,11 +66,13 @@
 
 <script>
 import AppModal from "@/Components/UI/Modal";
-import AppCheckbox from "@/Components/UI/Checkbox";
+import AppCheckbox from "@/Components/FormControls/Checkbox";
+import AppInput from "@/Components/FormControls/Input"
 
 
 export default {
   components: {
+    AppInput,
     AppModal,
     AppCheckbox
   },

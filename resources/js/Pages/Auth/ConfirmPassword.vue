@@ -16,7 +16,7 @@
           label="Password"
           required
           type="password"
-          @input="form.clearErrors('password')"/>
+          @update:model-value="form.clearErrors('password')"/>
       </div>
 
       <div class="flex items-center justify-end mt-5">
@@ -31,9 +31,11 @@
 
 <script>
 import AppAuthLayout from '@/Layouts/AuthLayout'
+import AppInput from "@/Components/FormControls/Input"
 
 export default {
   components: {
+    AppInput,
     AppAuthLayout,
   },
 

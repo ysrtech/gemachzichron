@@ -22,7 +22,7 @@
               autocomplete="name"
               label="Name"
               type="text"
-              @input="form.clearErrors('name')"
+              @update:model-value="form.clearErrors('name')"
             />
           </div>
 
@@ -35,7 +35,7 @@
               autocomplete="email"
               label="Email"
               type="email"
-              @input="form.clearErrors('email')"
+              @update:model-value="form.clearErrors('email')"
             />
           </div>
         </div>
@@ -52,9 +52,11 @@
 
 <script>
 import AppSection from "./Section";
+import AppInput from "@/Components/FormControls/Input"
 
 export default {
   components: {
+    AppInput,
     AppSection,
   },
 

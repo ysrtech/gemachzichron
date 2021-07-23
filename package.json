@@ -13,16 +13,17 @@
         "@inertiajs/inertia": "^0.10.0",
         "@inertiajs/inertia-vue3": "^0.5.1",
         "@inertiajs/progress": "^0.2.6",
-        "@vue/compiler-sfc": "^3.1.1",
+        "@vue/compiler-sfc": "^3.1.2",
         "autoprefixer": "^10.2.6",
         "axios": "^0.21",
         "laravel-mix": "^6.0.24",
         "lodash": "^4.17.19",
         "postcss": "^8.3.5",
         "postcss-import": "^14.0.2",
-        "tailwindcss": "^2.2.2",
-        "vue": "^3.1.1",
+        "tailwindcss": "^2.2.4",
+        "vue": "^3.1.2",
         "vue-loader": "^16.1.0",
+        "vue-next-select": "^2.7.1",
         "vue-tippy": "^6.0.0-alpha.30"
     }
 }

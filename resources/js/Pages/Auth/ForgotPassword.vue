@@ -1,5 +1,5 @@
 <template>
-  <app-auth-layout>
+  <app-auth-layout title="Forgot Password">
 
     <div class="mb-4 text-sm text-gray-600">
       Please enter your email address and we will email you a password reset link.
@@ -15,7 +15,7 @@
           label="Email"
           required
           type="email"
-          @input="form.clearErrors('email')"
+          @update:model-value="form.clearErrors('email')"
         />
       </div>
 
@@ -35,9 +35,11 @@
 
 <script>
 import AppAuthLayout from '@/Layouts/AuthLayout'
+import AppInput from "@/Components/FormControls/Input"
 
 export default {
   components: {
+    AppInput,
     AppAuthLayout,
   },
 

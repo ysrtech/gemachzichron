@@ -5,14 +5,14 @@
       <div class="px-6 py-4 grid sm:grid-cols-12 gap-6">
 
         <div class="col-span-2">
-          <app-input
+          <app-select
+            native
             id="title"
             v-model="form.title"
             :error="form.errors.title"
             label="Title"
-            type="select"
             :options="['Rabbi & Mrs.', 'Mr. & Mrs.', 'Rabbi & Reb.', 'Rabbi', 'Mr.', 'Mrs.', 'Reb.']"
-            @input="form.clearErrors('title')"
+            @update:model-value="form.clearErrors('title')"
           />
         </div>
 
@@ -23,7 +23,7 @@
             :error="form.errors.first_name"
             label="First Name"
             type="text"
-            @input="form.clearErrors('first_name')"
+            @update:model-value="form.clearErrors('first_name')"
           />
         </div>
 
@@ -34,7 +34,7 @@
             :error="form.errors.last_name"
             label="Last Name"
             type="text"
-            @input="form.clearErrors('last_name')"
+            @update:model-value="form.clearErrors('last_name')"
           />
         </div>
 
@@ -45,7 +45,7 @@
             :error="form.errors.hebrew_first_name"
             label="Hebrew First Name"
             type="text"
-            @input="form.clearErrors('hebrew_first_name')"
+            @update:model-value="form.clearErrors('hebrew_first_name')"
           />
         </div>
 
@@ -56,7 +56,7 @@
             :error="form.errors.hebrew_last_name"
             label="Hebrew Last Name"
             type="text"
-            @input="form.clearErrors('hebrew_last_name')"
+            @update:model-value="form.clearErrors('hebrew_last_name')"
           />
         </div>
 
@@ -67,7 +67,7 @@
             :error="form.errors.wife_name"
             label="Wife's Name"
             type="text"
-            @input="form.clearErrors('wife_name')"
+            @update:model-value="form.clearErrors('wife_name')"
           />
         </div>
 
@@ -78,7 +78,7 @@
             :error="form.errors.address"
             label="Address"
             type="text"
-            @input="form.clearErrors('address')"
+            @update:model-value="form.clearErrors('address')"
           />
         </div>
 
@@ -89,7 +89,7 @@
             :error="form.errors.city"
             label="City"
             type="text"
-            @input="form.clearErrors('city')"
+            @update:model-value="form.clearErrors('city')"
           />
         </div>
 
@@ -100,7 +100,7 @@
             :error="form.errors.postal_code"
             label="Postal Code"
             type="text"
-            @input="form.clearErrors('postal_code')"
+            @update:model-value="form.clearErrors('postal_code')"
           />
         </div>
 
@@ -111,7 +111,7 @@
             :error="form.errors.email"
             label="Email"
             type="email"
-            @input="form.clearErrors('email')"
+            @update:model-value="form.clearErrors('email')"
           />
         </div>
 
@@ -122,7 +122,7 @@
             :error="form.errors.home_phone"
             label="Home Phone"
             type="text"
-            @input="form.clearErrors('home_phone')"
+            @update:model-value="form.clearErrors('home_phone')"
           />
         </div>
 
@@ -133,7 +133,7 @@
             :error="form.errors.cell_phone"
             label="Cellphone"
             type="text"
-            @input="form.clearErrors('cell_phone')"
+            @update:model-value="form.clearErrors('cell_phone')"
           />
         </div>
 
@@ -144,7 +144,7 @@
             :error="form.errors.wife_cell_phone"
             label="Wife's Cellphone"
             type="text"
-            @input="form.clearErrors('wife_cell_phone')"
+            @update:model-value="form.clearErrors('wife_cell_phone')"
           />
         </div>
 
@@ -155,7 +155,7 @@
             :error="form.errors.father"
             label="Father"
             type="text"
-            @input="form.clearErrors('father')"
+            @update:model-value="form.clearErrors('father')"
           />
         </div>
 
@@ -166,7 +166,7 @@
             :error="form.errors.father_in_law"
             label="Father In Law"
             type="text"
-            @input="form.clearErrors('father_in_law')"
+            @update:model-value="form.clearErrors('father_in_law')"
           />
         </div>
 
@@ -177,7 +177,7 @@
             :error="form.errors.shtibel"
             label="Shtibel"
             type="text"
-            @input="form.clearErrors('shtibel')"
+            @update:model-value="form.clearErrors('shtibel')"
           />
         </div>
 
@@ -197,10 +197,11 @@
 <script>
 import AppLayout from "@/Layouts/AppLayout";
 import IsMounted from "@/Mixins/IsMounted";
-import AppInput from "@/Components/UI/Input";
+import AppInput from "@/Components/FormControls/Input"
+import AppSelect from "@/Components/FormControls/Select";
 
 export default {
-  components: {AppInput},
+  components: {AppSelect, AppInput},
 
   layout: AppLayout,
 

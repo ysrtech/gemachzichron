@@ -8,24 +8,24 @@
     <form @submit.prevent="submit">
       <div class="px-6 py-4 space-y-4">
 
-        <app-input
+        <app-select
+          native
           id="membership_type"
           v-model="form.membership_type"
           :error="form.errors.membership_type"
           label="Membership Type"
-          type="select"
           :options="MEMBERSHIP_TYPES"
-          @input="form.clearErrors('membership_type')"
+          @update:model-value="form.clearErrors('membership_type')"
         />
 
-        <app-input
+        <app-select
+          native
           v-show="form.membership_type === MEMBERSHIP_TYPES.Membership"
           id="plan_type_id"
           v-model="form.plan_type_id"
           :error="form.errors.plan_type_id"
           label="Plan Type"
-          type="select"
-          @input="form.clearErrors('plan_type_id')"
+          @update:model-value="form.clearErrors('plan_type_id')"
         >
           <template #options>
             <option
@@ -34,7 +34,7 @@
               {{ planType.name }}
             </option>
           </template>
-        </app-input>
+        </app-select>
 
         <label class="flex items-center">
           <app-checkbox v-model="form.active_membership" name="active_membership"/>
@@ -52,11 +52,15 @@
 </template>
 <script>
 import Modal from "@/Components/UI/Modal";
-import AppCheckbox from "@/Components/UI/Checkbox";
+import AppCheckbox from "@/Components/FormControls/Checkbox";
 import {MEMBERSHIP_TYPES} from "@/config/memberships";
+import AppInput from "@/Components/FormControls/Input"
+import AppSelect from "@/Components/FormControls/Select";
 
 export default {
   components: {
+    AppSelect,
+    AppInput,
     AppCheckbox,
     Modal
   },

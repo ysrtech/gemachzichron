@@ -14,7 +14,7 @@
           :error="form.errors.name"
           label="Name"
           type="text"
-          @input="form.clearErrors('name')"
+          @update:model-value="form.clearErrors('name')"
         />
 
         <app-input
@@ -23,7 +23,7 @@
           :error="form.errors.email"
           label="Email"
           type="email"
-          @input="form.clearErrors('email')"
+          @update:model-value="form.clearErrors('email')"
         />
 
         <app-input
@@ -33,7 +33,7 @@
           label="Password"
           :placeholder="user ? 'Leave blank for no change' : ''"
           type="password"
-          @input="form.clearErrors('password')"
+          @update:model-value="form.clearErrors('password')"
         />
 
         <app-input
@@ -42,7 +42,7 @@
           :error="form.errors.password_confirmation"
           label="Confirm Password"
           type="password"
-          @input="form.clearErrors('password_confirmation')"
+          @update:model-value="form.clearErrors('password_confirmation')"
         />
       </div>
 
@@ -56,9 +56,11 @@
 </template>
 <script>
 import Modal from "@/Components/UI/Modal"
+import AppInput from "@/Components/FormControls/Input"
 
 export default {
   components: {
+    AppInput,
     Modal
   },
 

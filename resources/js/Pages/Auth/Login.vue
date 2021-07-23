@@ -1,5 +1,5 @@
 <template>
-  <app-auth-layout>
+  <app-auth-layout title="Login">
 
     <form @submit.prevent="submit">
       <div>
@@ -11,7 +11,7 @@
           label="Email"
           required
           type="email"
-          @input="form.clearErrors('email')"/>
+          @update:model-value="form.clearErrors('email')"/>
       </div>
 
       <div class="mt-4">
@@ -23,7 +23,7 @@
           label="Password"
           required
           type="password"
-          @input="form.clearErrors('password')">
+          @update:model-value="form.clearErrors('password')">
         </app-input>
       </div>
 
@@ -50,10 +50,12 @@
 
 <script>
 import AppAuthLayout from '@/Layouts/AuthLayout'
-import AppCheckbox from "@/Components/UI/Checkbox"
+import AppCheckbox from "@/Components/FormControls/Checkbox"
+import AppInput from "@/Components/FormControls/Input"
 
 export default {
   components: {
+    AppInput,
     AppAuthLayout,
     AppCheckbox,
   },

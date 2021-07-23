@@ -1,0 +1,12 @@
+.form-control {
+    @apply py-1.5 px-3 shadow-sm block w-full bg-white border border-gray-300
+    focus:outline-none focus-within:ring-2 focus-within:ring-offset-1 ring-primary-600 rounded-md
+}
+
+.form-input {
+    @apply appearance-none text-sm leading-normal bg-white placeholder-gray-400 focus:outline-none
+}
+
+.form-input:not(.form-control) {
+    @apply border-0
+}

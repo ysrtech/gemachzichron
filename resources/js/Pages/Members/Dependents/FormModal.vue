@@ -14,7 +14,7 @@
           :error="form.errors.name"
           label="Name"
           type="text"
-          @input="form.clearErrors('name')"
+          @update:model-value="form.clearErrors('name')"
         />
 
         <app-input
@@ -23,7 +23,7 @@
           :error="form.errors.dob"
           label="Date of Birth"
           type="date"
-          @input="form.clearErrors('dob')"
+          @update:model-value="form.clearErrors('dob')"
         />
 
         <label class="flex items-center">
@@ -42,10 +42,12 @@
 </template>
 <script>
 import Modal from "@/Components/UI/Modal";
-import AppCheckbox from "@/Components/UI/Checkbox";
+import AppCheckbox from "@/Components/FormControls/Checkbox";
+import AppInput from "@/Components/FormControls/Input"
 
 export default {
   components: {
+    AppInput,
     AppCheckbox,
     Modal
   },
