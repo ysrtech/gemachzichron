@@ -86,7 +86,7 @@
 </template>
 
 <script>
-import Money from "@/Components/UI/Money";
+import Money from "@/Components/Money";
 import {date} from "@/helpers/dates";
 import {TRANSACTION_STATUS_COLORS, TRANSACTION_STATUSES} from "@/config/transactions";
 import {AVAILABLE_GATEWAYS, GATEWAY_BADGE_COLORS} from "@/config/gateways";

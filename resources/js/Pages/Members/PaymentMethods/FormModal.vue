@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import Modal from "@/Components/UI/Modal";
+import Modal from "@/Components/Modal";
 import {AVAILABLE_GATEWAYS} from "@/config/gateways";
 import AppInput from "@/Components/FormControls/Input"
 import AppSelect from "@/Components/FormControls/Select";

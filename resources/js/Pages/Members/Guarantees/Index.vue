@@ -44,8 +44,8 @@
 import MemberBase from "@/Pages/Members/MemberBase";
 import AppLayout from "@/Layouts/AppLayout";
 import {date} from "@/helpers/dates";
-import Money from "@/Components/UI/Money";
-import AppPanel from "@/Components/UI/Panel";
+import Money from "@/Components/Money";
+import AppPanel from "@/Components/Panel";
 
 export default {
   layout: AppLayout,

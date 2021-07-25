@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import AppDropdown from "@/Components/UI/Dropdown"
+import AppDropdown from "@/Components/Dropdown"
 
 export default {
   components: {

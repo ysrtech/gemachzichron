@@ -29,7 +29,7 @@
 import MemberBase from "@/Pages/Members/MemberBase";
 import AppLayout from "@/Layouts/AppLayout";
 import SubscriptionsFormModal from "@/Components/App/Subscriptions/FormModal";
-import AppPanel from "@/Components/UI/Panel";
+import AppPanel from "@/Components/Panel";
 import SubscriptionsTable from "@/Components/App/Subscriptions/SubscriptionsTable";
 
 export default {

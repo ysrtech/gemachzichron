@@ -131,9 +131,9 @@
   </modal>
 </template>
 <script>
-import Modal from "@/Components/UI/Modal";
+import Modal from "@/Components/Modal";
 import AppCheckbox from "@/Components/FormControls/Checkbox";
-import AppDropdown from "@/Components/UI/Dropdown";
+import AppDropdown from "@/Components/Dropdown";
 import AppInput from "@/Components/FormControls/Input"
 import AppSelect from "@/Components/FormControls/Select";
 import AppFileInput from "@/Components/FormControls/FileInput";

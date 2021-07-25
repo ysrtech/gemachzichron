@@ -51,9 +51,9 @@
 <script>
 import {date} from "@/helpers/dates";
 import MembershipFormModal from "./MembershipFormModal";
-import KeyValue from "@/Components/UI/KeyValue";
-import Money from "@/Components/UI/Money";
-import AppPanel from "@/Components/UI/Panel";
+import KeyValue from "@/Components/KeyValue";
+import Money from "@/Components/Money";
+import AppPanel from "@/Components/Panel";
 
 export default {
 

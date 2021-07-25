@@ -16,7 +16,7 @@
 <script>
 import MemberBase from "@/Pages/Members/MemberBase";
 import AppLayout from "@/Layouts/AppLayout";
-import AppPanel from "@/Components/UI/Panel";
+import AppPanel from "@/Components/Panel";
 import TransactionsTable from "@/Components/App/Transactions/TransactionsTable"
 
 export default {

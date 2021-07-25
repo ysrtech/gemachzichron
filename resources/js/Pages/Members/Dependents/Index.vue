@@ -69,7 +69,7 @@ import MemberBase from "@/Pages/Members/MemberBase";
 import AppLayout from "@/Layouts/AppLayout";
 import {date} from "@/helpers/dates";
 import DependentsFormModal from "@/Pages/Members/Dependents/FormModal";
-import AppPanel from "@/Components/UI/Panel";
+import AppPanel from "@/Components/Panel";
 
 export default {
   layout: AppLayout,

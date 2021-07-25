@@ -51,7 +51,7 @@
   </modal>
 </template>
 <script>
-import Modal from "@/Components/UI/Modal";
+import Modal from "@/Components/Modal";
 import AppCheckbox from "@/Components/FormControls/Checkbox";
 import {MEMBERSHIP_TYPES} from "@/config/memberships";
 import AppInput from "@/Components/FormControls/Input"

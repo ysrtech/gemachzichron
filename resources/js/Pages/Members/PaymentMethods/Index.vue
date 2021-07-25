@@ -53,9 +53,9 @@
 import MemberBase from "@/Pages/Members/MemberBase";
 import AppLayout from "@/Layouts/AppLayout";
 import PaymentMethodsFormModal from "./FormModal";
-import AppPanel from "@/Components/UI/Panel";
-import Money from "@/Components/UI/Money";
-import KeyValue from "@/Components/UI/KeyValue";
+import AppPanel from "@/Components/Panel";
+import Money from "@/Components/Money";
+import KeyValue from "@/Components/KeyValue";
 
 export default {
   layout: AppLayout,

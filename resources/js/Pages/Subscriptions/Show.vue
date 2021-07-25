@@ -76,11 +76,11 @@
 
 <script>
 import AppLayout from "@/Layouts/AppLayout";
-import AppPanel from "@/Components/UI/Panel";
-import KeyValue from "@/Components/UI/KeyValue";
+import AppPanel from "@/Components/Panel";
+import KeyValue from "@/Components/KeyValue";
 import {GATEWAY_BADGE_COLORS} from "@/config/gateways";
 import {date} from "@/helpers/dates";
-import Money from "@/Components/UI/Money";
+import Money from "@/Components/Money";
 import RefreshButton from "@/Components/App/Subscriptions/RefreshButton";
 
 export default {

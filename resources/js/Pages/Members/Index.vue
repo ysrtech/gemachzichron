@@ -125,8 +125,8 @@
 import AppLayout from "@/Layouts/AppLayout";
 import SearchFilter from "@/Components/App/SearchFilter";
 import AppPagination from "@/Components/App/Pagination";
-import AppDropdownLink from "@/Components/UI/DropdownLink";
-import AppDropdown from "@/Components/UI/Dropdown";
+import AppDropdownLink from "@/Components/DropdownLink";
+import AppDropdown from "@/Components/Dropdown";
 import SearchFilterField from "@/Components/App/SearchFilterField";
 import HasFilters from "@/Mixins/HasFilters";
 

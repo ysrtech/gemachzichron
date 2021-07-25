@@ -71,12 +71,12 @@
 
 <script>
 import AppNav from "@/Components/App/AppNav";
-import AppLogo from "@/Components/UI/Logo";
-import AppSideOverlay from "@/Components/UI/SideOverlay";
+import AppLogo from "@/Components/Logo";
+import AppSideOverlay from "@/Components/SideOverlay";
 import UserSettingsDropdown from "@/Components/App/UserSettingsDropdown";
 import {APP_NAME} from "@/config/app";
-import AppSnackbar from "@/Components/UI/Snackbar";
-import AppBanner from "@/Components/UI/Banner";
+import AppSnackbar from "@/Components/Snackbar";
+import AppBanner from "@/Components/Banner";
 import AlertModal from "@/Components/App/AlertModal";
 import LoginModal from "@/Components/App/LoginModal";
 import ConfirmPasswordModal from "@/Components/App/ConfirmPasswordModal";

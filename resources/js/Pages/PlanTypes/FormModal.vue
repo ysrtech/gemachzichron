@@ -27,7 +27,7 @@
   </modal>
 </template>
 <script>
-import Modal from "@/Components/UI/Modal"
+import Modal from "@/Components/Modal"
 import AppInput from "@/Components/FormControls/Input"
 
 export default {

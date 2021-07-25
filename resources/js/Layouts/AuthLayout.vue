@@ -18,9 +18,9 @@
 </template>
 
 <script>
-import AppLogo from "@/Components/UI/Logo";
-import AppSnackbar from "@/Components/UI/Snackbar";
-import AppBanner from "@/Components/UI/Banner";
+import AppLogo from "@/Components/Logo";
+import AppSnackbar from "@/Components/Snackbar";
+import AppBanner from "@/Components/Banner";
 import {APP_NAME} from "@/config/app";
 import AlertModal from "@/Components/App/AlertModal";
 import LoginModal from "@/Components/App/LoginModal";

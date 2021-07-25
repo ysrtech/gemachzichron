@@ -31,8 +31,8 @@
 </template>
 
 <script>
-import AppDropdown from "@/Components/UI/Dropdown";
-import AppDropdownLink from "@/Components/UI/DropdownLink";
+import AppDropdown from "@/Components/Dropdown";
+import AppDropdownLink from "@/Components/DropdownLink";
 
 export default {
   components: {

@@ -69,8 +69,8 @@
 </template>
 
 <script>
-import AppDropdown from "@/Components/UI/Dropdown";
-import AppDropdownLink from "@/Components/UI/DropdownLink";
+import AppDropdown from "@/Components/Dropdown";
+import AppDropdownLink from "@/Components/DropdownLink";
 import AppPagination from "@/Components/App/Pagination";
 
 export default {

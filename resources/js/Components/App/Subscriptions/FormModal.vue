@@ -162,10 +162,10 @@
 </template>
 
 <script>
-import Modal from "@/Components/UI/Modal";
+import Modal from "@/Components/Modal";
 import {DEFAULT_SUBSCRIPTION_FEES, SUBSCRIPTION_FREQUENCIES, SUBSCRIPTION_TYPES} from "@/config/subscriptions";
 import {AVAILABLE_GATEWAYS} from "@/config/gateways";
-import Money from "@/Components/UI/Money";
+import Money from "@/Components/Money";
 import AppInput from "@/Components/FormControls/Input"
 import AppSelect from "@/Components/FormControls/Select";
 import AppTextarea from "@/Components/FormControls/Textarea";

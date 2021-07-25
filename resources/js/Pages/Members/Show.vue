@@ -63,8 +63,8 @@
 import AppLayout from "@/Layouts/AppLayout";
 import MemberBase from "@/Pages/Members/MemberBase";
 import MembershipSection from "@/Pages/Members/MembershipSection";
-import KeyValue from "@/Components/UI/KeyValue";
-import AppPanel from "@/Components/UI/Panel";
+import KeyValue from "@/Components/KeyValue";
+import AppPanel from "@/Components/Panel";
 
 export default {
   components: {

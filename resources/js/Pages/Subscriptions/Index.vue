@@ -51,7 +51,7 @@
 <script>
 import AppLayout from "@/Layouts/AppLayout";
 import LinksPagination from "@/Components/App/LinksPagination";
-import AppPanel from "@/Components/UI/Panel";
+import AppPanel from "@/Components/Panel";
 import SearchFilter from "@/Components/App/SearchFilter";
 import SearchFilterField from "@/Components/App/SearchFilterField";
 import HasFilters from "@/Mixins/HasFilters";

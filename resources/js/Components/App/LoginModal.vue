@@ -65,7 +65,7 @@
 </template>
 
 <script>
-import AppModal from "@/Components/UI/Modal";
+import AppModal from "@/Components/Modal";
 import AppCheckbox from "@/Components/FormControls/Checkbox";
 import AppInput from "@/Components/FormControls/Input"
 

@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import AppModal from "@/Components/UI/Modal";
+import AppModal from "@/Components/Modal";
 
 export default {
   components: {

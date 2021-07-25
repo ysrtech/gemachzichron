@@ -62,11 +62,11 @@
 
 <script>
 import AppLayout from "@/Layouts/AppLayout";
-import KeyValue from "@/Components/UI/KeyValue";
+import KeyValue from "@/Components/KeyValue";
 import LoanFormModal from "@/Components/App/Loans/FormModal";
-import Money from "@/Components/UI/Money";
+import Money from "@/Components/Money";
 import {date} from "@/helpers/dates";
-import AppPanel from "@/Components/UI/Panel";
+import AppPanel from "@/Components/Panel";
 
 export default {
   layout: (h, page) => h(AppLayout, {title: 'Loans'}, () => page),

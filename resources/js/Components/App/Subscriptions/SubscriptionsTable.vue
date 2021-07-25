@@ -65,7 +65,7 @@
 </template>
 
 <script>
-import Money from "@/Components/UI/Money";
+import Money from "@/Components/Money";
 import {GATEWAY_BADGE_COLORS} from "@/config/gateways";
 import {date} from "@/helpers/dates";
 import RefreshButton from "@/Components/App/Subscriptions/RefreshButton";
