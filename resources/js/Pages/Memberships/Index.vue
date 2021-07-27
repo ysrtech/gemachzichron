@@ -52,9 +52,9 @@
 
 <script>
 import AppLayout from "@/Layouts/AppLayout";
-import SearchFilter from "@/Components/App/SearchFilter";
+import SearchFilter from "@/Components/SearchFilter";
 import MembershipsTable from "../../Components/App/Memberships/MembershipsTable";
-import SearchFilterField from "@/Components/App/SearchFilterField";
+import SearchFilterField from "@/Components/SearchFilterField";
 import HasFilters from "@/Mixins/HasFilters";
 import {MEMBERSHIP_TYPES} from "@/config/memberships";
 

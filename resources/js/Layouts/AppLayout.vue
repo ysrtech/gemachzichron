@@ -70,16 +70,16 @@
 </template>
 
 <script>
-import AppNav from "@/Components/App/AppNav";
+import AppNav from "@/Components/AppNav";
 import AppLogo from "@/Components/Logo";
 import AppSideOverlay from "@/Components/SideOverlay";
-import UserSettingsDropdown from "@/Components/App/UserSettingsDropdown";
+import UserSettingsDropdown from "@/Components/UserSettingsDropdown";
 import {APP_NAME} from "@/config/app";
 import AppSnackbar from "@/Components/Snackbar";
 import AppBanner from "@/Components/Banner";
-import AlertModal from "@/Components/App/AlertModal";
-import LoginModal from "@/Components/App/LoginModal";
-import ConfirmPasswordModal from "@/Components/App/ConfirmPasswordModal";
+import AlertModal from "@/Components/AlertModal";
+import LoginModal from "@/Components/LoginModal";
+import ConfirmPasswordModal from "@/Components/ConfirmPasswordModal";
 import {Head} from "@inertiajs/inertia-vue3";
 
 export default {

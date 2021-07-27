@@ -76,10 +76,10 @@
 
 <script>
 import AppLayout from "@/Layouts/AppLayout";
-import LinksPagination from "@/Components/App/LinksPagination";
+import LinksPagination from "@/Components/LinksPagination";
 import AppPanel from "@/Components/Panel";
-import SearchFilter from "@/Components/App/SearchFilter";
-import SearchFilterField from "@/Components/App/SearchFilterField";
+import SearchFilter from "@/Components/SearchFilter";
+import SearchFilterField from "@/Components/SearchFilterField";
 import HasFilters from "@/Mixins/HasFilters";
 import {TRANSACTION_STATUSES, TRANSACTION_TYPES} from "@/config/transactions";
 import {AVAILABLE_GATEWAYS} from "@/config/gateways";

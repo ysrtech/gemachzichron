@@ -79,11 +79,11 @@
 <script>
 import AppLayout from "@/Layouts/AppLayout";
 import {date} from "@/helpers/dates";
-import LinksPagination from "@/Components/App/LinksPagination";
+import LinksPagination from "@/Components/LinksPagination";
 import Money from "@/Components/Money";
 import AppPanel from "@/Components/Panel";
-import SearchFilter from "@/Components/App/SearchFilter";
-import SearchFilterField from "@/Components/App/SearchFilterField";
+import SearchFilter from "@/Components/SearchFilter";
+import SearchFilterField from "@/Components/SearchFilterField";
 import HasFilters from "@/Mixins/HasFilters";
 
 export default {

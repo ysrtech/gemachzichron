@@ -22,9 +22,9 @@ import AppLogo from "@/Components/Logo";
 import AppSnackbar from "@/Components/Snackbar";
 import AppBanner from "@/Components/Banner";
 import {APP_NAME} from "@/config/app";
-import AlertModal from "@/Components/App/AlertModal";
-import LoginModal from "@/Components/App/LoginModal";
-import ConfirmPasswordModal from "@/Components/App/ConfirmPasswordModal";
+import AlertModal from "@/Components/AlertModal";
+import LoginModal from "@/Components/LoginModal";
+import ConfirmPasswordModal from "@/Components/ConfirmPasswordModal";
 import {Head} from "@inertiajs/inertia-vue3";
 
 export default {

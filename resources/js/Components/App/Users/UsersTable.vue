@@ -71,7 +71,7 @@
 <script>
 import AppDropdown from "@/Components/Dropdown";
 import AppDropdownLink from "@/Components/DropdownLink";
-import AppPagination from "@/Components/App/Pagination";
+import AppPagination from "@/Components/Pagination";
 
 export default {
   components: {

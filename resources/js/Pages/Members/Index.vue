@@ -123,11 +123,11 @@
 
 <script>
 import AppLayout from "@/Layouts/AppLayout";
-import SearchFilter from "@/Components/App/SearchFilter";
-import AppPagination from "@/Components/App/Pagination";
+import SearchFilter from "@/Components/SearchFilter";
+import AppPagination from "@/Components/Pagination";
 import AppDropdownLink from "@/Components/DropdownLink";
 import AppDropdown from "@/Components/Dropdown";
-import SearchFilterField from "@/Components/App/SearchFilterField";
+import SearchFilterField from "@/Components/SearchFilterField";
 import HasFilters from "@/Mixins/HasFilters";
 
 export default {
