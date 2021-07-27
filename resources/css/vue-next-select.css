@@ -164,7 +164,7 @@
 }
 
 .icon.loading div {
-    @apply box-border block absolute border w-4 h-4 rounded-full animate-spin
+    @apply box-border block absolute border border-primary-600 w-4 h-4 rounded-full animate-spin
 }
 
 .icon.loading div {
