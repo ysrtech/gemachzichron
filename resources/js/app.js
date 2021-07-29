@@ -3,7 +3,7 @@ import {createInertiaApp, Link} from "@inertiajs/inertia-vue3";
 import {InertiaProgress} from '@inertiajs/progress';
 import VueTippy from 'vue-tippy';
 import 'tippy.js/dist/tippy.css';
-import AppButton from '@/Components/Buttons/Button';
+import AppButton from '@/Components/Button';
 import AppBadge from '@/Components/Badge';
 import axios from "axios";
 
