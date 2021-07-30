@@ -8,7 +8,7 @@
         <!-- Fonts -->
 {{--        <link rel="preconnect" href="https://fonts.gstatic.com">--}}
 {{--        <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">--}}
-        <link rel="stylesheet" href="/fonts/icon/style.css">
+        <link rel="stylesheet" href="/font/icon/style.css">
 
         <!-- Styles -->
         <link rel="stylesheet" href="{{ mix('css/app.css') }}">
