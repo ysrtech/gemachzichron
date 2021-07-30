@@ -8,7 +8,8 @@
     <div class="mt-1 form-control overflow-hidden relative">
       <button
         type="button"
-        class="absolute left-0 top-0 bg-gray-100 hover:bg-gray-200 active:bg-gray-300 text-gray-500 text-xl h-full w-10 border-r material-icons-outlined"
+        class="absolute left-0 top-0 bg-gray-100 text-gray-500 text-xl h-full w-10 border-r material-icons-outlined"
+        :class="[($attrs.readonly || isMin) ? 'cursor-not-allowed': 'hover:bg-gray-200 active:bg-gray-300']"
         @click="decrement">
         remove
       </button>
@@ -22,7 +23,8 @@
       >
       <button
         type="button"
-        class="absolute right-0 top-0 bg-gray-100 hover:bg-gray-200 active:bg-gray-300 text-gray-500 text-xl h-full w-10 border-l material-icons-outlined"
+        class="absolute right-0 top-0 bg-gray-100 text-gray-500 text-xl h-full w-10 border-l material-icons-outlined"
+        :class="[($attrs.readonly || isMax) ? 'cursor-not-allowed': 'hover:bg-gray-200 active:bg-gray-300']"
         @click="increment">
         add
       </button>
@@ -61,12 +63,23 @@ export default {
     },
   },
 
+  computed: {
+    isMin() {
+      return this.$attrs.min && this.modelValue <= this.$attrs.min
+    },
+    isMax() {
+      return this.$attrs.max && this.modelValue >= this.$attrs.max
+    }
+  },
+
   methods: {
     increment() {
+      if (this.$attrs.readonly || this.isMax) return
       this.$emit('update:modelValue', Number(this.modelValue) + Number(this.$attrs.step || 1))
     },
     decrement() {
-      this.$emit('update:modelValue', Number(this.modelValue) + Number(this.$attrs.step || 1))
+      if (this.$attrs.readonly || this.isMin) return
+      this.$emit('update:modelValue', Number(this.modelValue) - Number(this.$attrs.step || 1))
     }
   }
 }
