@@ -56,6 +56,11 @@ class Subscription extends Model
         return $this->hasMany(Transaction::class);
     }
 
+    public function resolvesTransaction()
+    {
+        return $this->belongsTo(Transaction::class, 'resolves_transaction');
+    }
+
     public function getTransactionTotalAttribute()
     {
         return $this->amount + $this->membership_fee + $this->processing_fee + $this->decline_fee;

@@ -64,12 +64,13 @@
           class="material-icons-outlined text-gray-400">
           mode_comment
         </span>
-<!--        <button-->
-<!--          v-show="transaction.status === TRANSACTION_STATUSES.Fail"-->
-<!--          v-tippy="{content: 'Resolve (create new subscription)'}"-->
-<!--          class="material-icons-outlined focus:outline-none rounded-full p-1 hover:bg-gray-200 focus:bg-gray-300">-->
-<!--          add_task-->
-<!--        </button>-->
+        <button
+          v-show="transaction.status === TRANSACTION_STATUSES.Fail"
+          v-tippy="{content: 'Resolve [new single-installment subscription]'}"
+          @click="resolveFailedTransaction = transaction"
+          class="material-icons-outlined focus:outline-none rounded-full p-1 hover:bg-gray-200 focus:bg-gray-300">
+          add_task
+        </button>
 <!--        <button-->
 <!--          v-show="transaction.status === TRANSACTION_STATUSES.Pending-->
 <!--                && transaction.gateway === AVAILABLE_GATEWAYS.Manual"-->
@@ -82,6 +83,13 @@
 
       </tbody>
     </table>
+
+    <subscription-form-modal
+      :show="!!resolveFailedTransaction"
+      :resolves-failed-transaction="resolveFailedTransaction"
+      @close="resolveFailedTransaction = null"
+    />
+
   </div>
 </template>
 
@@ -108,6 +116,7 @@ export default {
 
   data() {
     return {
+      resolveFailedTransaction: null,
       TRANSACTION_STATUSES,
       TRANSACTION_STATUS_COLORS,
       AVAILABLE_GATEWAYS,

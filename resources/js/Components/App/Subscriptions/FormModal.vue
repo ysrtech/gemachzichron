@@ -4,6 +4,7 @@
     <div class="px-6 py-4 text-xl font-medium">
       <template v-if="subscription">Subscription #{{ subscription.id }}</template>
       <template v-else>Add New Subscription</template>
+      <div class="text-xs text-gray-500" v-if="resolvesFailedTransaction">Resolves failed transaction #{{ resolvesFailedTransaction.id }}</div>
     </div>
 
     <form @submit.prevent="submit">
@@ -20,7 +21,7 @@
             :clear-on-select="true"
             :close-on-select="true"
             :hide-selected="true"
-            :disabled="!!memberProp"
+            :disabled="!!memberProp || !!resolvesFailedTransaction"
             :options="membersOptions"
             :loading="membersLoading"
             :label-by="m => `${m.first_name} ${m.last_name}`"
@@ -37,6 +38,7 @@
             v-model="form.type"
             :error="form.errors.type"
             label="Subscription Type"
+            :disabled="!!resolvesFailedTransaction"
             @update:model-value="form.clearErrors('type')"
             :options="SUBSCRIPTION_TYPES"
           />
@@ -78,6 +80,7 @@
             v-model="form.frequency"
             :error="form.errors.frequency"
             label="Frequency"
+            :disabled="!!resolvesFailedTransaction"
             :options="SUBSCRIPTION_FREQUENCIES"
             @update:model-value="form.clearErrors('frequency')"
           />
@@ -87,9 +90,10 @@
           <app-number-input
             :readonly="form.frequency === SUBSCRIPTION_FREQUENCIES.Once"
             id="installments"
-            v-model="form.installments"
+            v-model.number="form.installments"
             :error="form.errors.installments"
             label="Installments"
+            :disabled="!!resolvesFailedTransaction"
             placeholder="Unlimited"
             class="placeholder-gray-700"
             min="1"
@@ -103,6 +107,7 @@
             v-model="form.amount"
             :error="form.errors.amount"
             label="Base Amount"
+            :disabled="!!resolvesFailedTransaction"
             type="number"
             step="0.01"
             min="1"
@@ -116,6 +121,7 @@
             v-model="form.membership_fee"
             :error="form.errors.membership_fee"
             label="Membership Fee"
+            :disabled="!!resolvesFailedTransaction"
             type="number"
             min="0"
             step="0.01"
@@ -221,7 +227,7 @@ export default {
     show: Boolean,
     subscription: Object,
     memberProp: Object,
-    failedTransaction: Object,
+    resolvesFailedTransaction: Object,
   },
 
   emits: [
@@ -233,6 +239,9 @@ export default {
       this.member = this.memberProp
       this.memberFieldError = null
       this.form = this.freshForm()
+      if (this.resolvesFailedTransaction) {
+        this.resolvesFailedTransactionForm()
+      }
     },
 
     member() {
@@ -255,7 +264,7 @@ export default {
     //
     'form.frequency'(newVal, oldVal) {
       if (newVal === SUBSCRIPTION_FREQUENCIES.Once) {
-        this.form.installments = '1'
+        this.form.installments = 1
       } else if (oldVal === SUBSCRIPTION_FREQUENCIES.Once) {
         this.form.installments = null
         this.form.decline_fee = null
@@ -293,13 +302,36 @@ export default {
       })
     },
 
+    resolvesFailedTransactionForm() {
+      this.member = this.resolvesFailedTransaction.member
+      this.$axios.get(this.$route('ajax.members.show', this.resolvesFailedTransaction.member_id), {
+        params: {with: 'paymentMethods:id,member_id,gateway'},
+      }).then(res => {
+        this.member.payment_methods = res.data.payment_methods
+      })
+
+      this.$axios.get(this.$route('ajax.subscriptions.show', this.resolvesFailedTransaction.subscription_id))
+        .then(res => {
+          const subscription = res.data
+          this.form.type = subscription.type
+          this.form.amount = subscription.amount
+          this.form.membership_fee = subscription.membership_fee
+          this.form.decline_fee = subscription.decline_fee + DEFAULT_SUBSCRIPTION_FEES.declineFee
+        })
+
+      this.form.comment = `Resolves failed transaction #${this.resolvesFailedTransaction.id}`
+      this.form.installments = 1
+      this.form.frequency = SUBSCRIPTION_FREQUENCIES.Once
+      this.form.resolves_transaction = this.resolvesFailedTransaction.id
+    },
+
     async fetchMembers(query) {
       if (!query) {
         this.membersResults = []
         return
       }
       this.membersLoading = true
-      const res = await this.$axios.get(this.$route('members.index'), {
+      const res = await this.$axios.get(this.$route('ajax.members.index'), {
         params: {
           search: query,
           limit: 10,

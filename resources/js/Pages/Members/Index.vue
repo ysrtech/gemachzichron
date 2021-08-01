@@ -11,7 +11,7 @@
           v-model="filterForm.membership_since"
           type="select"
           label="Membership"
-          :options="{'All Members': null, 'Only With Membership': 'true', 'Only Without Membership': 'false'}"
+          :options="{'All Members': '', 'Only With Membership': 'true', 'Only Without Membership': 'false'}"
         />
 
         <search-filter-field

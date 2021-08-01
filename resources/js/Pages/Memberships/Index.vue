@@ -12,7 +12,7 @@
           @change="reset('plan_type_id')"
           type="select"
           label="Membership type"
-          :options="Object.assign({'All': null}, MEMBERSHIP_TYPES)"
+          :options="Object.assign({'All': ''}, MEMBERSHIP_TYPES)"
         />
 
         <search-filter-field
@@ -20,14 +20,14 @@
           v-model="filterForm.plan_type_id"
           type="select"
           label="Plan type"
-          :options="planTypes.reduce((option, type) => ({...option, [type.name]: type.id}) ,{'All': null})"
+          :options="planTypes.reduce((option, type) => ({...option, [type.name]: type.id}) ,{'All': ''})"
         />
 
         <search-filter-field
           v-model="filterForm.active_membership"
           type="select"
           label="Active Membership"
-          :options="{'All': null, 'Only Active': 'true', 'Only Inactive': 'false'}"
+          :options="{'All': '', 'Only Active': 'true', 'Only Inactive': 'false'}"
         />
 
         <search-filter-field

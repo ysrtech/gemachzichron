@@ -17,21 +17,21 @@
         v-model="filterForm.type"
         type="select"
         label="Type"
-        :options="Object.assign({'All': null}, SUBSCRIPTION_TYPES)"
+        :options="Object.assign({'All': ''}, SUBSCRIPTION_TYPES)"
       />
 
       <search-filter-field
         v-model="filterForm.active"
         type="select"
         label="Status"
-        :options="{'All': null, 'Active': '1', 'Inactive': '0'}"
+        :options="{'All': '', 'Active': '1', 'Inactive': '0'}"
       />
 
       <search-filter-field
         v-model="filterForm.gateway"
         type="select"
         label="Gateway"
-        :options="Object.assign({'All': null}, AVAILABLE_GATEWAYS)"
+        :options="Object.assign({'All': ''}, AVAILABLE_GATEWAYS)"
       />
     </search-filter>
 

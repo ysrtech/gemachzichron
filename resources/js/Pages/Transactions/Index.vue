@@ -23,21 +23,21 @@
         v-model="filterForm.status"
         type="select"
         label="Status"
-        :options="TRANSACTION_STATUSES"
+        :options="Object.assign({'All': ''}, TRANSACTION_STATUSES)"
       />
 
       <search-filter-field
         v-model="filterForm.type"
         type="select"
         label="Type"
-        :options="TRANSACTION_TYPES"
+        :options="Object.assign({'All': ''}, TRANSACTION_TYPES)"
       />
 
       <search-filter-field
         v-model="filterForm.gateway"
         type="select"
         label="Gateway"
-        :options="AVAILABLE_GATEWAYS"
+        :options="Object.assign({'All': ''}, AVAILABLE_GATEWAYS)"
       />
 
       <search-filter-field

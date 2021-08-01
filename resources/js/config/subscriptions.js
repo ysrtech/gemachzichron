@@ -20,4 +20,5 @@ export const SUBSCRIPTION_FREQUENCIES = {
 export const DEFAULT_SUBSCRIPTION_FEES = {
   membershipFee: (membershipType, membershipAmount) => membershipType === MEMBERSHIP_TYPES.Membership ? (membershipAmount / 24).toFixed(2) : 0,
   processingFee: (gateway, amount) => gateway === AVAILABLE_GATEWAYS.Cardknox ? (amount * 0.03).toFixed(2) : 0,
+  declineFee: 20
 }
