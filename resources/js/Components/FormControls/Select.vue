@@ -18,24 +18,29 @@
       <slot name="options"/>
     </select>
 
-    <vue-next-select
+    <vue-select
       v-else
       :model-value="modelValue"
       :options="options"
       placeholder=""
       search-placeholder=""
       open-direction="bottom"
-      v-bind="$attrs.multiple ? $attrs : {...$attrs, ...{searchable: true, clearOnClose: true, clearOnSelect: true, closeOnSelect: true}}"
+      v-bind="$attrs"
       @update:model-value="$emit('update:modelValue', $event)"
       @search:input="$emit('search:input', $event.target.value)"
-    />
+    >
+      <template v-for="(slot, name) in $slots" v-slot:[name]="scope">
+        <slot v-if="name === 'default'" v-bind="scope"/>
+        <slot v-else :name="name" v-bind="scope"/>
+      </template>
+    </vue-select>
 
     <app-errors :error="error"/>
   </div>
 </template>
 
 <script>
-import VueNextSelect from 'vue-next-select';
+import VueSelect from 'vue-next-select';
 import AppLabel from "@/Components/FormControls/Label";
 import AppErrors from "@/Components/FormControls/Errors";
 
@@ -52,7 +57,7 @@ export default {
   components: {
     AppErrors,
     AppLabel,
-    VueNextSelect,
+    VueSelect,
   },
 
   props: {

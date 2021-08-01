@@ -85,39 +85,33 @@
           />
         </div>
 
-        <div class="col-span-2 relative">
-          <app-dropdown width="full" align="left" :close-on-click="false">
-            <template #trigger>
-              <app-mock-input label="Guarantors" class="space-x-1 inline-flex flex-wrap items-center" :error="form.errors.guarantors">
-                <app-badge v-for="guarantor in form.guarantors" class="inline-flex items-center">
-                  <span>{{ guarantor.first_name + ' ' + guarantor.last_name }}</span>
-                  <button
-                    type="button"
-                    @click.stop="removeGuarantor(guarantor)"
-                    class="flex-shrink-0 ml-0.5 -mr-1 h-4 w-4 rounded-full inline-flex items-center justify-center focus:outline-none hover:bg-primary-200 focus:bg-primary-500 focus:text-white">
-                    <svg class="h-2 w-2" stroke="currentColor" fill="none" viewBox="0 0 8 8"><path stroke-linecap="round" stroke-width="1.5" d="M1 1l6 6m0-6L1 7" /></svg>
-                  </button>
-                </app-badge>
-                <button type="button" class="material-icons-outlined rounded-full text-lg px-1.5 focus:outline-none hover:bg-gray-200 focus:bg-gray-300 -my-0.5">add</button>
-              </app-mock-input>
+        <div class="col-span-2">
+          <app-select
+            label="Guarantors"
+            :multiple="true"
+            :searchable="true"
+            :taggable="true"
+            :hide-selected="true"
+            :clear-on-close="true"
+            v-model="form.guarantors"
+            :options="guarantorsOptions"
+            :loading="membersLoading"
+            :label-by="e => `${e.first_name + ' ' + e.last_name}`"
+            :error="form.errors.guarantors"
+            @search:input="fetchCustomers"
+          >
+            <template #tag="{ option, remove }">
+              <app-badge class="inline-flex items-center">
+                <span>{{ option.first_name + ' ' + option.last_name }}</span>
+                <button
+                  type="button"
+                  @click.stop="remove"
+                  class="flex-shrink-0 ml-0.5 -mr-1 h-4 w-4 rounded-full inline-flex items-center justify-center focus:outline-none hover:bg-primary-200 focus:bg-primary-500 focus:text-white">
+                  <svg class="h-2 w-2" stroke="currentColor" fill="none" viewBox="0 0 8 8"><path stroke-linecap="round" stroke-width="1.5" d="M1 1l6 6m0-6L1 7" /></svg>
+                </button>
+              </app-badge>
             </template>
-
-            <template #content>
-              <div class="px-3">
-                <app-input type="search" class="sm:text-sm" v-model="searchMembers" placeholder="Search Members..."/>
-                <div class="mt-1 divide-y divide-gray-200">
-                  <div
-                    v-for="member in searchMembersResults"
-                    class="p-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 cursor-pointer flex items-center space-x-2"
-                    @click="addGuarantor(member)">
-                    <span>{{ member.first_name }} {{ member.last_name }}</span>
-                    <span class="text-gray-400 text-xs">{{ member.email }}</span>
-                  </div>
-                </div>
-                <div class="text-center py-8 text-gray-400" v-if="searchMembersResults.length === 0">No Members.</div>
-              </div>
-            </template>
-          </app-dropdown>
+          </app-select>
         </div>
 
       </div>
@@ -133,7 +127,6 @@
 <script>
 import Modal from "@/Components/Modal";
 import AppCheckbox from "@/Components/FormControls/Checkbox";
-import AppDropdown from "@/Components/Dropdown";
 import AppInput from "@/Components/FormControls/Input"
 import AppSelect from "@/Components/FormControls/Select";
 import AppFileInput from "@/Components/FormControls/FileInput";
@@ -147,7 +140,6 @@ export default {
     AppFileInput,
     AppSelect,
     AppInput,
-    AppDropdown,
     AppCheckbox,
     Modal
   },
@@ -155,8 +147,8 @@ export default {
   data() {
     return {
       form: this.freshForm(),
-      searchMembers: '',
-      searchMembersResults: [],
+      membersLoading: false,
+      membersResults: []
     }
   },
 
@@ -174,12 +166,7 @@ export default {
   watch: {
     show(val) {
       this.form = this.freshForm()
-      this.searchMembers = ''
-      this.searchMembersResults = []
-    },
-
-    searchMembers(val) {
-      this.fetchMembers()
+      this.membersResults = []
     },
   },
 
@@ -212,29 +199,29 @@ export default {
         })
     },
 
-    fetchMembers() {
-      if (!this.searchMembers) {
-        this.searchMembersResults = []
-      } else{
-        this.$axios.get(this.$route('members.index'), {params: {limit: 5, search: this.searchMembers}})
-          .then(res => this.searchMembersResults = res.data.filter(item => !this.form.guarantors.some(v => v.id === item.id)))
+    async fetchCustomers(query) {
+      if (!query) {
+        this.membersResults = []
+        return
       }
+      this.membersLoading = true
+      const res = await this.$axios.get(this.$route('members.index'), {
+        params: {
+          search: query,
+          limit: 10,
+        },
+      })
+      this.membersResults = res.data
+      this.membersLoading = false
     },
-
-    addGuarantor(member) {
-      this.form.guarantors.push(member)
-      this.fetchMembers()
-    },
-
-    removeGuarantor(guarantor) {
-      this.form.guarantors = this.form.guarantors.filter(item => item !== guarantor)
-      this.fetchMembers()
-    }
   },
 
   computed: {
     applicationCopyPreview() {
       return this.form.application_copy?.name || this.loan?.application_copy?.split("/").pop() || 'Choose file'
+    },
+    guarantorsOptions() {
+      return this.form.guarantors.concat(this.membersResults.filter(member => !this.form.guarantors.find(guarantor => guarantor.id == member.id)))
     }
   },
 }
