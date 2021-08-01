@@ -31,8 +31,9 @@
           />
         </div>
 
-        <div class="sm:col-span-6">
-          <app-select
+        <div class="sm:col-span-6 flex space-x-4">
+          <div class="flex-1">
+            <app-select
             native
             id="type"
             v-model="form.type"
@@ -42,6 +43,17 @@
             @update:model-value="form.clearErrors('type')"
             :options="SUBSCRIPTION_TYPES"
           />
+          </div>
+          <div class="flex-1" v-show="form.type === SUBSCRIPTION_TYPES['Loan Payment']">
+            <app-input
+              v-model="form.loan_id"
+              :error="form.errors.loan_id"
+              label="Loan ID"
+              :disabled="!!resolvesFailedTransaction"
+              @update:model-value="form.clearErrors('type')"
+              type="number"
+            />
+          </div>
         </div>
 
         <div class="sm:col-span-6">
@@ -299,6 +311,7 @@ export default {
         processing_fee: this.subscription?.processing_fee || null,
         decline_fee: this.subscription?.decline_fee || null,
         comment: this.subscription?.comment || null,
+        loan_id: this.subscription?.loan_id || null,
       })
     },
 
@@ -317,6 +330,7 @@ export default {
           this.form.amount = subscription.amount
           this.form.membership_fee = subscription.membership_fee
           this.form.decline_fee = subscription.decline_fee + DEFAULT_SUBSCRIPTION_FEES.declineFee
+          this.form.loan_id = subscription.loan_id
         })
 
       this.form.comment = `Resolves failed transaction #${this.resolvesFailedTransaction.id}`
@@ -347,6 +361,8 @@ export default {
         this.memberFieldError = 'This field is required'
         return
       }
+
+      if (this.form.type !== SUBSCRIPTION_TYPES["Loan Payment"]) this.form.loan_id = null
 
       let options = { onSuccess: () => this.$emit('close') }
       if (this.subscription) {

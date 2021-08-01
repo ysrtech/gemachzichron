@@ -30,6 +30,7 @@ class CreateSubscriptionsTable extends Migration
             $table->boolean('active')->default(true);
             $table->text('gateway_data')->nullable();
             $table->foreignId('resolves_transaction')->nullable();
+            $table->foreignId('loan_id')->nullable()->constrained();
             $table->timestamps();
         });
     }

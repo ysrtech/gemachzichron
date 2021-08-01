@@ -36,7 +36,8 @@ class CreateSubscriptionRequest extends FormRequest
             'membership_fee'       => ['required', 'numeric'],
             'processing_fee'       => ['required', 'numeric'],
             'decline_fee'          => ['required', 'numeric'],
-            'resolves_transaction' => ['nullable', 'numeric']
+            'resolves_transaction' => ['nullable', 'numeric'],
+            'loan_id'              => ['required_if:type,' . Subscription::TYPE_LOAN_PAYMENT]
         ];
     }
 
