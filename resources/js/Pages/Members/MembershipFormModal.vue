@@ -102,7 +102,7 @@ export default {
   },
 
   created() {
-    this.$axios.get(this.$route('api.plan-types.index'))
+    this.$axios.get(this.$route('ajax.plan-types.index'))
       .then(response => {
         this.planTypes = response.data.plan_types
       })
