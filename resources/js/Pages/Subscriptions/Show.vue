@@ -44,7 +44,7 @@
                 <ul class="border border-gray-300 rounded-md divide-y divide-gray-200">
                   <li class="px-4 py-2 font-medium border-b border0gray-300">Transaction Charges</li>
                   <li class="px-4 py-2 flex items-center justify-between">
-                    <span class="flex-1">Amount</span>
+                    <span class="flex-1">Base Amount</span>
                     <money class="font-medium" :amount="subscription.amount"/>
                   </li>
                   <li class="px-4 py-2 flex items-center justify-between">

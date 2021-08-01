@@ -4,11 +4,32 @@
     <div class="px-6 py-4 text-xl font-medium">
       <template v-if="subscription">Subscription #{{ subscription.id }}</template>
       <template v-else>Add New Subscription</template>
-      <div class="text-xs text-gray-500">Member: {{ `${member.first_name} ${member.last_name}` }}</div>
     </div>
 
     <form @submit.prevent="submit">
       <div class="px-6 pb-4 grid sm:grid-cols-12 gap-x-6 gap-y-4">
+
+        <div class="sm:col-span-6">
+          <app-select
+            id="member"
+            v-model="member"
+            label="Member"
+            required
+            :searchable="true"
+            :clear-on-close="true"
+            :clear-on-select="true"
+            :close-on-select="true"
+            :hide-selected="true"
+            :disabled="!!memberProp"
+            :options="membersOptions"
+            :loading="membersLoading"
+            :label-by="m => `${m.first_name} ${m.last_name}`"
+            :error="memberFieldError"
+            @update:model-value="memberFieldError = null"
+            @search:input="fetchMembers"
+          />
+        </div>
+
         <div class="sm:col-span-6">
           <app-select
             native
@@ -30,7 +51,8 @@
             label="Payment Method"
             @update:model-value="form.clearErrors('gateway')">
             <template #options>
-              <option v-for="paymentMethod in member.payment_methods" :key="paymentMethod.id">
+              <option></option>
+              <option v-for="paymentMethod in member?.payment_methods" :key="paymentMethod.id">
                 {{ paymentMethod.gateway }}
               </option>
 <!--              <option>{{ AVAILABLE_GATEWAYS.Manual }}</option>-->
@@ -80,7 +102,7 @@
             id="amount"
             v-model="form.amount"
             :error="form.errors.amount"
-            label="Membership Amount"
+            label="Base Amount"
             type="number"
             step="0.01"
             min="1"
@@ -95,6 +117,7 @@
             :error="form.errors.membership_fee"
             label="Membership Fee"
             type="number"
+            min="0"
             step="0.01"
             @update:model-value="form.clearErrors('membership_fee')"
           />
@@ -107,6 +130,7 @@
             :error="form.errors.processing_fee"
             label="Credit Card Processing Fee"
             type="number"
+            min="0"
             step="0.01"
             @update:model-value="form.clearErrors('processing_fee')"
           />
@@ -121,19 +145,10 @@
             :error="form.errors.decline_fee"
             label="Decline fee"
             type="number"
+            min="0"
             step="0.01"
             @update:model-value="form.clearErrors('decline_fee')"
           />
-        </div>
-
-        <div class="sm:col-span-6">
-          <app-mock-input
-            label="Total Amount"
-            type="div"
-            class="bg-gray-100 text-gray-900"
-          >
-            <money :amount="totalAmount"/>
-          </app-mock-input>
         </div>
 
         <div class="sm:col-span-12">
@@ -148,13 +163,19 @@
         </div>
       </div>
 
-      <div class="px-6 py-3 bg-gray-100 flex items-center justify-end rounded-b-lg space-x-2">
-        <app-button color="secondary" @click="$emit('close')">
-          Cancel
-        </app-button>
-        <app-button :processing="form.processing" color="primary" type="submit">
-          Submit
-        </app-button>
+      <div class="px-6 py-3 bg-gray-100 flex items-center justify-between rounded-b-lg">
+        <div class="flex flex-col font-medium">
+          <div class="text-xs">Full transaction amount</div>
+          <money :amount="totalAmount"/>
+        </div>
+        <div class="flex justify-end space-x-3">
+          <app-button color="secondary" @click="$emit('close')">
+            Cancel
+          </app-button>
+          <app-button :processing="form.processing" color="primary" type="submit">
+            Submit
+          </app-button>
+        </div>
       </div>
 
     </form>
@@ -186,19 +207,21 @@ export default {
   data() {
     return {
       form: this.freshForm(),
+      member: this.memberProp,
       SUBSCRIPTION_TYPES,
       SUBSCRIPTION_FREQUENCIES,
       AVAILABLE_GATEWAYS,
+      membersLoading: false,
+      membersResults: [],
+      memberFieldError: null
     }
   },
 
   props: {
     show: Boolean,
     subscription: Object,
-    member: {
-      type: Object,
-      required: true,
-    },
+    memberProp: Object,
+    failedTransaction: Object,
   },
 
   emits: [
@@ -207,7 +230,13 @@ export default {
 
   watch: {
     show() {
+      this.member = this.memberProp
+      this.memberFieldError = null
       this.form = this.freshForm()
+    },
+
+    member() {
+      this.form.gateway = null
     },
 
     // 'form.gateway'(val) {
@@ -235,6 +264,11 @@ export default {
   },
 
   computed: {
+    membersOptions() {
+      if (!this.member) return this.membersResults
+      return this.membersResults.concat([this.member])
+    },
+
     totalAmount() {
       return Number(this.form.amount || 0)
         + Number(this.form.membership_fee || 0)
@@ -259,7 +293,29 @@ export default {
       })
     },
 
+    async fetchMembers(query) {
+      if (!query) {
+        this.membersResults = []
+        return
+      }
+      this.membersLoading = true
+      const res = await this.$axios.get(this.$route('members.index'), {
+        params: {
+          search: query,
+          limit: 10,
+          with: 'paymentMethods:id,member_id,gateway'
+        },
+      })
+      this.membersResults = res.data
+      this.membersLoading = false
+    },
+
     submit() {
+      if (!this.member) {
+        this.memberFieldError = 'This field is required'
+        return
+      }
+
       let options = { onSuccess: () => this.$emit('close') }
       if (this.subscription) {
         this.form.put(
@@ -273,7 +329,6 @@ export default {
         )
       }
     },
-
   },
 }
 </script>

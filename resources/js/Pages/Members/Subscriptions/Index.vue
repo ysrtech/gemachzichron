@@ -18,7 +18,7 @@
       </div>
       <subscriptions-form-modal
         :show="openFormModal"
-        :member="member"
+        :member-prop="member"
         @close="openFormModal = false"
       />
     </member-base>
