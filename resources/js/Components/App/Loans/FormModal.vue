@@ -98,7 +98,7 @@
             :loading="membersLoading"
             :label-by="e => `${e.first_name + ' ' + e.last_name}`"
             :error="form.errors.guarantors"
-            @search:input="fetchCustomers"
+            @search:input="fetchMembers"
           >
             <template #tag="{ option, remove }">
               <app-badge class="inline-flex items-center">
@@ -199,7 +199,7 @@ export default {
         })
     },
 
-    async fetchCustomers(query) {
+    async fetchMembers(query) {
       if (!query) {
         this.membersResults = []
         return
