@@ -205,7 +205,7 @@ export default {
         return
       }
       this.membersLoading = true
-      const res = await this.$axios.get(this.$route('members.index'), {
+      const res = await this.$axios.get(this.$route('api.members.index'), {
         params: {
           search: query,
           limit: 10,

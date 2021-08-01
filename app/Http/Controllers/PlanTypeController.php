@@ -9,13 +9,9 @@ use Inertia\Inertia;
 
 class PlanTypeController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         $planTypes = Cache::rememberForever('plan-types', fn() => PlanType::all());
-
-        if ($request->wantsJson()) {
-            return response()->json(['plan_types' => $planTypes]);
-        }
 
         return Inertia::render('PlanTypes/Index', [
             'planTypes' => $planTypes
