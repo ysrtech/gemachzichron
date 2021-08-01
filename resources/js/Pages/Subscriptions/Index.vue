@@ -1,39 +1,43 @@
 <template>
   <div class="max-w-7xl mx-auto">
-    <search-filter
-      v-model="filterForm.search"
-      :applied-filters-length="appliedFiltersLength"
-      class="w-full max-w-md mb-6"
-      placeholder="Search By Member..."
-      @reset="reset">
+    <div class="mb-6 flex justify-between items-center px-1">
+        <search-filter
+          v-model="filterForm.search"
+          :applied-filters-length="appliedFiltersLength"
+          class="w-full max-w-md mb-6"
+          placeholder="Search By Member..."
+          @reset="reset">
 
-      <search-filter-field
-        v-model="filterForm.amount"
-        type="number"
-        label="Amount"
-      />
+          <search-filter-field
+            v-model="filterForm.amount"
+            type="number"
+            label="Amount"
+          />
 
-      <search-filter-field
-        v-model="filterForm.type"
-        type="select"
-        label="Type"
-        :options="Object.assign({'All': ''}, SUBSCRIPTION_TYPES)"
-      />
+          <search-filter-field
+            v-model="filterForm.type"
+            type="select"
+            label="Type"
+            :options="Object.assign({'All': ''}, SUBSCRIPTION_TYPES)"
+          />
 
-      <search-filter-field
-        v-model="filterForm.active"
-        type="select"
-        label="Status"
-        :options="{'All': '', 'Active': '1', 'Inactive': '0'}"
-      />
+          <search-filter-field
+            v-model="filterForm.active"
+            type="select"
+            label="Status"
+            :options="{'All': '', 'Active': '1', 'Inactive': '0'}"
+          />
 
-      <search-filter-field
-        v-model="filterForm.gateway"
-        type="select"
-        label="Gateway"
-        :options="Object.assign({'All': ''}, AVAILABLE_GATEWAYS)"
-      />
-    </search-filter>
+          <search-filter-field
+            v-model="filterForm.gateway"
+            type="select"
+            label="Gateway"
+            :options="Object.assign({'All': ''}, AVAILABLE_GATEWAYS)"
+          />
+        </search-filter>
+
+      <app-button @click="subscriptionFormModalOpen = true">New Subscription</app-button>
+    </div>
 
     <app-panel class="overflow-x-auto">
       <template #content>
@@ -45,6 +49,11 @@
         </div>
       </template>
     </app-panel>
+
+    <subscription-form-modal
+      :show="subscriptionFormModalOpen"
+      @close="subscriptionFormModalOpen = false"
+    />
   </div>
 </template>
 
@@ -58,6 +67,7 @@ import HasFilters from "@/Mixins/HasFilters";
 import {AVAILABLE_GATEWAYS} from "@/config/gateways";
 import {SUBSCRIPTION_TYPES} from "@/config/subscriptions";
 import SubscriptionsTable from "@/Components/App/Subscriptions/SubscriptionsTable";
+import SubscriptionFormModal from "@/Components/App/Subscriptions/FormModal"
 
 export default {
   layout: (h, page) => h(AppLayout, {title: 'Subscriptions'}, () => page),
@@ -68,6 +78,7 @@ export default {
     SearchFilter,
     AppPanel,
     LinksPagination,
+    SubscriptionFormModal
   },
 
   data() {
@@ -81,6 +92,7 @@ export default {
       },
       AVAILABLE_GATEWAYS,
       SUBSCRIPTION_TYPES,
+      subscriptionFormModalOpen: false
     }
   },
 

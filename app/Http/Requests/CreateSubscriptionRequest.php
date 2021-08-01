@@ -16,6 +16,10 @@ class CreateSubscriptionRequest extends FormRequest
             'processing_fee' => $this->get('processing_fee') ?? 0,
             'decline_fee' => $this->get('decline_fee') ?? 0,
         ]);
+
+        if ($this->get('type') != Subscription::TYPE_LOAN_PAYMENT) {
+            $this->offsetUnset('loan_id');
+        }
     }
 
     /**
@@ -37,7 +41,10 @@ class CreateSubscriptionRequest extends FormRequest
             'processing_fee'       => ['required', 'numeric'],
             'decline_fee'          => ['required', 'numeric'],
             'resolves_transaction' => ['nullable', 'numeric'],
-            'loan_id'              => ['required_if:type,' . Subscription::TYPE_LOAN_PAYMENT]
+            'loan_id'              => [
+                'sometimes',
+                Rule::exists('loans', 'id')->where('member_id', $this->route('member')->id)
+            ]
         ];
     }
 
