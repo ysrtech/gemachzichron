@@ -96,7 +96,7 @@
             v-model="form.guarantors"
             :options="guarantorsOptions"
             :loading="membersLoading"
-            :label-by="e => `${e.first_name + ' ' + e.last_name}`"
+            :label-by="e => `${e.first_name} ${e.last_name}`"
             :error="form.errors.guarantors"
             @search:input="fetchMembers"
           >
