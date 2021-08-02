@@ -11,14 +11,17 @@ class MemberLoanController extends Controller
 {
     public function index(Member $member)
     {
+        $member->load([
+            'loans' => fn($q) => $q->with('guarantors:id,first_name,last_name')
+                ->withSum('transactions', 'amount')
+                ->orderBy('loan_date', 'desc'),
+            'dependents:member_id,id,name'
+        ]);
+
+        $member->loans->each->append('remaining_balance');
+
         return Inertia::render('Members/Loans/Index', [
             'member' => $member
-                ->load([
-                    'loans' => fn($q) => $q->with('guarantors:id,first_name,last_name')->orderBy('loan_date', 'desc'),
-                    'dependents:member_id,id,name'
-                ])
-                ->loadSum('loans', 'amount')
-                ->append('loan_payments_total')
         ]);
     }
 

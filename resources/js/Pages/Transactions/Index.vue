@@ -20,6 +20,12 @@
       />
 
       <search-filter-field
+        v-model="filterForm.loan_id"
+        type="number"
+        label="Loan ID"
+      />
+
+      <search-filter-field
         v-model="filterForm.status"
         type="select"
         label="Status"
@@ -108,6 +114,7 @@ export default {
         gateway_identifier: this.filters.gateway_identifier,
         from_date: this.filters.from_date,
         to_date: this.filters.to_date,
+        loan_id: this.filters.loan_id,
       },
       TRANSACTION_STATUSES,
       TRANSACTION_TYPES,

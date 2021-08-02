@@ -12,10 +12,11 @@ class TransactionController extends Controller
     {
         return Inertia::render('Transactions/Index', [
            'filters' => $request->all([
-               'search', 'amount', 'subscription_id', 'status', 'type',
+               'search', 'amount', 'subscription_id', 'status', 'type', 'loan_id',
                'gateway', 'gateway_identifier', 'from_date', 'to_date'
            ]),
            'transactions' => Transaction::searchByRelated($request->search, ['member'])
+               ->filterByRelated($request->only('loan_id'), 'subscription')
                ->filter($request->only('amount', 'subscription_id', 'status', 'type', 'gateway', 'gateway_identifier'))
                ->filterBetweenDates('process_date', $request->from_date, $request->to_date)
                ->with(['member' => fn($q) => $q->select(['id', 'first_name', 'last_name', 'deleted_at'])->withTrashed()])

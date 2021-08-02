@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Exceptions\DataMismatchException;
 use App\Models\Traits\Filterable;
+use App\Models\Traits\FilterableByRelated;
 use App\Models\Traits\SearchableByRelated;
 use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Transaction extends Model
 {
-    use HasFactory, Filterable, SearchableByRelated;
+    use HasFactory, Filterable, SearchableByRelated, FilterableByRelated;
 
     const STATUS_SUCCESS = 1;
     const STATUS_PENDING = 2;

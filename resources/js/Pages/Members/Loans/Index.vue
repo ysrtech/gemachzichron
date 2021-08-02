@@ -1,7 +1,7 @@
 <template>
   <div>
     <member-base :member="member">
-      <div class="max-w-3xl mx-auto">
+      <div class="max-w-4xl mx-auto">
         <app-panel title="Loans">
           <template #actions>
             <button
@@ -15,9 +15,12 @@
             <table class="min-w-full divide-y divide-gray-200">
               <thead v-if="member.loans.length > 0">
               <tr class="bg-gray-50 text-xs text-left text-gray-400 uppercase">
-                <th v-for="title in ['ID', 'Loan date', 'Amount', 'Cheque Number', '']" class="px-6 py-3 font-medium">
-                  {{ title }}
-                </th>
+                <th class="px-6 py-3 font-medium">ID</th>
+                <th class="px-6 py-3 font-medium">Loan Date</th>
+                <th class="px-6 py-3 font-medium text-right">Amount</th>
+                <th class="px-6 py-3 font-medium text-right">Remaining Balance</th>
+                <th class="px-6 py-3 font-medium">Cheque #</th>
+                <th class="px-6 py-3 font-medium"></th>
               </tr>
               </thead>
 
@@ -29,8 +32,11 @@
                 class="bg-white text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900 cursor-pointer">
                 <td class="px-6 py-3.5 whitespace-nowrap space-x-2">{{ loan.id }}</td>
                 <td class="px-6 py-3.5 whitespace-nowrap">{{ date(loan.loan_date) }}</td>
-                <td class="px-6 py-3.5 whitespace-nowrap font-medium">
+                <td class="px-6 py-3.5 whitespace-nowrap font-medium text-right">
                   <money :amount="loan.amount"/>
+                </td>
+                <td class="px-6 py-3.5 whitespace-nowrap text-right">
+                  <money :amount="loan.remaining_balance"/>
                 </td>
                 <td class="px-6 py-3.5 whitespace-nowrap">{{ loan.cheque_number }}</td>
                 <td @click.stop class="px-5 text-right whitespace-nowrap text-gray-500 space-x-2 cursor-default">
@@ -42,23 +48,24 @@
                 </td>
               </tr>
 
-              <tr v-if="member.loans.length === 0">
+              <tr v-if="member.loans.length > 0" class="text-sm bg-gray-50">
+                <td colspan="2" class="px-6 py-3.5 font-medium uppercase border-t border-gray-300">Total:</td>
+                <td class="px-6 py-3.5 font-semibold text-right border-t border-gray-300">
+                  <money :amount="member.loans.reduce((sum, loan) => sum + loan.amount, 0)"/>
+                </td>
+                <td class="px-6 py-3.5 font-semibold text-right border-t border-gray-300">
+                  <money :amount="member.loans.reduce((sum, loan) => sum + loan.remaining_balance, 0)"/>
+                </td>
+                <td class="border-t border-gray-300"></td>
+                <td class="border-t border-gray-300"></td>
+              </tr>
+
+              <tr v-else>
                 <td class="px-6 py-10 text-center text-gray-500" colspan="5">No Loans Found.</td>
               </tr>
 
               </tbody>
             </table>
-            <hr>
-            <div v-if="member.loans.length > 0" class="px-6 py-5 text-gray-500 w-full flex">
-              <span class="flex-1 flex space-x-2">
-                <span class="font-medium" >Total:</span>
-                <money :amount="member.loans_sum_amount"/>
-              </span>
-              <span class="flex-1 flex space-x-2" title="Exluding Fees">
-                <span class="font-medium" >Total Paid:</span>
-                <money :amount="member.loan_payments_total"/>
-              </span>
-            </div>
 
           </template>
         </app-panel>

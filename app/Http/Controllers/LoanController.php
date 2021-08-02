@@ -18,6 +18,7 @@ class LoanController extends Controller
                 ->filter($request->only('amount'))
                 ->filterBetweenDates('loan_date', $request->from_date, $request->to_date)
                 ->with(['member' => fn($q) => $q->select(['id', 'first_name', 'last_name', 'deleted_at'])->withTrashed()])
+                ->withSum('transactions', 'amount')
                 ->orderBy('loan_date', 'desc')
                 ->paginate()
         ]);
@@ -31,7 +32,7 @@ class LoanController extends Controller
                 'member.dependents:id,member_id,name',
                 'dependent:id,name',
                 'guarantors:id,first_name,last_name',
-            ]),
+            ])->append('remaining_balance'),
         ]);
     }
 

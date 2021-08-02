@@ -6,11 +6,13 @@ namespace App\Models\Traits;
 
 trait FilterableByRelated
 {
-    public function scopeFilterByRelated($query, array $filters)
+    public function scopeFilterByRelated($query, array $filters, string $relation)
     {
-//        foreach ($filters as $key => $filter) {
-//            $query->when(array_key_exists($key, $filters))->whereHas($key, $callback);
-//        }
+        $query->whereHas($relation, function ($q) use ($filters) {
+            foreach ($filters as $key => $filter) {
+                $q->where($key, $filter);
+            }
+        });
     }
 
     public function scopeFilterHasRelated($query, array $filters)

@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-3xl mx-auto">
+  <div class="max-w-4xl mx-auto">
     <search-filter
       v-model="filterForm.search"
       :applied-filters-length="appliedFiltersLength"
@@ -30,9 +30,12 @@
       <template #content>
         <table class="min-w-full divide-y divide-gray-200">
           <thead v-if="loans.total > 0">
-          <tr
-            class="bg-gray-50 text-xs text-left text-gray-400 uppercase">
-            <th v-for="title in ['ID', 'Member', 'Loan date', 'Amount']" class="px-6 py-3 font-medium">{{ title }}</th>
+          <tr class="bg-gray-50 text-xs text-left text-gray-400 uppercase">
+            <th class="px-6 py-3 font-medium">ID</th>
+            <th class="px-6 py-3 font-medium">Member</th>
+            <th class="px-6 py-3 font-medium">Loan date</th>
+            <th class="px-6 py-3 font-medium text-right">Amount</th>
+            <th class="px-6 py-3 font-medium text-right">Remaining Balance</th>
           </tr>
           </thead>
 
@@ -53,8 +56,11 @@
               </inertia-link>
             </td>
             <td class="px-6 py-3.5 whitespace-nowrap">{{ date(loan.loan_date) }}</td>
-            <td class="px-6 py-3.5 whitespace-nowrap font-medium">
+            <td class="px-6 py-3.5 whitespace-nowrap font-medium text-right">
               <money :amount="loan.amount"/>
+            </td>
+            <td class="px-6 py-3.5 whitespace-nowrap text-right">
+              <money :amount="loan.amount - loan.transactions_sum_amount"/>
             </td>
           </inertia-link>
 

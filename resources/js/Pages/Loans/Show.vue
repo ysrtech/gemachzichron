@@ -11,7 +11,7 @@
         </template>
         <template #content>
           <div class="px-4 py-5 sm:px-6">
-            <dl class="space-y-8">
+            <dl class="grid grid-cols-2 gap-8">
               <key-value label="Member">
                 <inertia-link class="hover:underline font-medium" :href="$route('members.show', loan.member.id)">
                   {{ loan.member.first_name }} {{ loan.member.last_name }}
@@ -21,18 +21,27 @@
               <key-value label="Amount" class="font-medium">
                 <money class="text-base" :amount="loan.amount"/>
               </key-value>
+              <key-value label="Remaining Balance" class="font-medium">
+                <div class="flex space-x-4">
+                  <money class="text-base" :amount="loan.remaining_balance"/>
+                  <inertia-link :href="$route('transactions.index', {loan_id: loan.id, type: TRANSACTION_TYPES['Main Transaction']})" class="flex space-x-1 items-center">
+                    <span class="hover:underline text-xs font-normal">View Transactions</span>
+                    <i class="material-icons-outlined text-sm">launch</i>
+                  </inertia-link>
+                </div>
+              </key-value>
               <key-value label="Cheque Number" :value="loan.cheque_number"/>
               <key-value label="Child" :value="loan.dependent?.name || 'N/A'"/>
               <key-value label="Application Copy" v-if="loan.application_copy">
-                <a class="hover:underline" target="_blank" :href="loan.application_copy">
-                  {{ loan.application_copy }}
-                  <i class="material-icons-outlined ml-0.5 text-lg transform translate-y-1">launch</i>
+                <a class="hover:underline flex" target="_blank" :href="loan.application_copy">
+                  <span class="truncate">{{ loan.application_copy }}</span>
+                  <i class="material-icons-outlined ml-0.5 text-lg transform -translate-y-1">launch</i>
                 </a>
               </key-value>
-              <key-value label="Comments">
+              <key-value label="Comments" class="col-span-2">
                 <pre class="font-sans whitespace-pre-wrap">{{loan.comment}}</pre>
               </key-value>
-              <key-value label="Guarantors">
+              <key-value label="Guarantors" class="col-span-2">
                 <div class="border rounded-md p-2">
                   <app-badge
                     v-for="guarantor in loan.guarantors"
@@ -67,6 +76,7 @@ import LoanFormModal from "@/Components/App/Loans/FormModal";
 import Money from "@/Components/Money";
 import {date} from "@/helpers/dates";
 import AppPanel from "@/Components/Panel";
+import {TRANSACTION_TYPES} from '@/config/transactions';
 
 export default {
   layout: (h, page) => h(AppLayout, {title: 'Loans'}, () => page),
@@ -81,6 +91,7 @@ export default {
   data() {
     return {
       openFormModal: false,
+      TRANSACTION_TYPES,
     }
   },
 

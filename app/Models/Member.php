@@ -112,24 +112,26 @@ class Member extends Model
             ->sum('amount');
     }
 
-    public function scopeWithLoanPaymentsTotal(Builder $query)
-    {
-        return $query->withSum([
-            'transactions as loan_payments_total' => fn($q) => $q
-                ->whereHas('subscription', fn($q) => $q->where('type', Subscription::TYPE_LOAN_PAYMENT))
-                ->where('type', Transaction::TYPE_MAIN_TRANSACTION)
-        ], 'amount');
-    }
-
-    public function getLoanPaymentsTotalAttribute()
-    {
-        if (array_key_exists('loan_payments_total', $this->attributes)) {
-            return $this->attributes['loan_payments_total'];
-        }
-
-        return $this->transactions()
-            ->whereHas('subscription', fn($q) => $q->where('type', Subscription::TYPE_LOAN_PAYMENT))
-            ->where('type', Transaction::TYPE_MAIN_TRANSACTION)
-            ->sum('amount');
-    }
+//    /** @deprecated 2021-08-01 */
+//    public function scopeWithLoanPaymentsTotal(Builder $query)
+//    {
+//        return $query->withSum([
+//            'transactions as loan_payments_total' => fn($q) => $q
+//                ->whereHas('subscription', fn($q) => $q->where('type', Subscription::TYPE_LOAN_PAYMENT))
+//                ->where('type', Transaction::TYPE_MAIN_TRANSACTION)
+//        ], 'amount');
+//    }
+//
+//    /** @deprecated 2021-08-01 */
+//    public function getLoanPaymentsTotalAttribute()
+//    {
+//        if (array_key_exists('loan_payments_total', $this->attributes)) {
+//            return $this->attributes['loan_payments_total'];
+//        }
+//
+//        return $this->transactions()
+//            ->whereHas('subscription', fn($q) => $q->where('type', Subscription::TYPE_LOAN_PAYMENT))
+//            ->where('type', Transaction::TYPE_MAIN_TRANSACTION)
+//            ->sum('amount');
+//    }
 }

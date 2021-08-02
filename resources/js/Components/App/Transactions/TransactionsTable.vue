@@ -127,6 +127,7 @@ export default {
   methods: {
     date,
     formattedGatewayData(data) {
+      if (!data) return;
       return `<table>${Object.keys(data).reduce((accumulator, key) => {
         return accumulator + `<tr><td>${key.replaceAll('_', ' ')}: </td><td class="text-right">${data[key]}</td></tr>`
       }, '')}</table>`
