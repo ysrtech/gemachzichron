@@ -19,7 +19,7 @@ class AccountUpdatesTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_user_can_update_account_information()
+    public function test_user_can_update_account_details()
     {
         $user = $this->loginNewUser();
 
