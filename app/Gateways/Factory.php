@@ -4,14 +4,21 @@ namespace App\Gateways;
 
 use App\Contracts\Gateway;
 use Exception;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 class Factory
 {
+    const ROTESSA = 'Rotessa';
+    const CARDKNOX = 'Cardknox';
+    const MANUAL = 'Manual';
+
     public function all()
     {
-        return Arr::pluck(config('gateways'), 'name');
+        return [
+            self::ROTESSA,
+//            self::CARDKNOX,
+            self::MANUAL
+        ];
     }
 
     public function initialize(string $class, ...$args): Gateway

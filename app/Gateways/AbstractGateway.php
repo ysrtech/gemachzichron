@@ -19,6 +19,11 @@ abstract class AbstractGateway implements Gateway
         $this->httpRequest = Http::baseUrl($this->getBaseUrl())->withOptions($this->getDefaultOptions());
     }
 
+    protected function config($key)
+    {
+        return config("gateways.{$this->getName()}.$key");
+    }
+
     public function setBaseUrl(string $baseUrl): Gateway
     {
         $this->baseUrl = $baseUrl;

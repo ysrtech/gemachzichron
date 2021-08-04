@@ -28,10 +28,10 @@ class Gateway extends AbstractGateway
 
     public function __construct()
     {
-        $this->baseUrl = config('gateways.rotessa.base_url');
+        $this->baseUrl = $this->config('base_url');
         $this->defaultOptions = [
             'headers' => [
-                'Authorization' => 'Token token=' . config('gateways.rotessa.api_key'),
+                'Authorization' => "Token token={$this->config('api_key')}",
             ]
         ];
 
@@ -40,7 +40,7 @@ class Gateway extends AbstractGateway
 
     public function getName(): string
     {
-        return config('gateways.rotessa.name');
+        return \App\Gateways\Factory::ROTESSA;
     }
 
     public function createCustomer(Member $member, array $data): array

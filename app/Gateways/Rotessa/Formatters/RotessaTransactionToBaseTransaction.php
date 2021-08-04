@@ -32,7 +32,7 @@ class RotessaTransactionToBaseTransaction implements Formatter
         $this->subscription = $this->getSubscriptionFromRotessaTransaction($output);
 
         return [
-            'gateway'            => config('gateways.rotessa.name'),
+            'gateway'            => \App\Gateways\Factory::ROTESSA,
             'gateway_identifier' => $output['id'],
             'amount'             => $output['amount'],
             'process_date' => $output['process_date'],
@@ -57,7 +57,7 @@ class RotessaTransactionToBaseTransaction implements Formatter
 
     protected function getSubscriptionFromRotessaTransaction(array $rotessaTransaction)
     {
-        $subscription = Subscription::where('gateway', config('gateways.rotessa.name'))
+        $subscription = Subscription::where('gateway', \App\Gateways\Factory::ROTESSA)
             ->where('gateway_identifier', $rotessaTransaction['transaction_schedule_id'])
             ->first();
 

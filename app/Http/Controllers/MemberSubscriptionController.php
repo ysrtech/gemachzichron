@@ -20,7 +20,7 @@ class MemberSubscriptionController extends Controller
 
     public function store(CreateSubscriptionRequest $request, Member $member)
     {
-        if ($request->gateway != config('gateways.manual.name')) {
+        if ($request->gateway != \App\Gateways\Factory::MANUAL) {
 
             if (!$paymentMethod = $member->paymentMethods()->firstWhere('gateway', $request->gateway)) {
                 throw ValidationException::withMessages(['gateway' => 'Member does not have a payment method set up with this gateway']);

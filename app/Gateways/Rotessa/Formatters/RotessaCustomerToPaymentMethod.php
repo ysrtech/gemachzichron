@@ -13,7 +13,7 @@ class RotessaCustomerToPaymentMethod implements Formatter
     public function formatOutput($output): array
     {
         return [
-            'gateway'            => config('gateways.rotessa.name'),
+            'gateway'            => \App\Gateways\Factory::ROTESSA,
             'gateway_identifier' => $output['id'],
             'gateway_data'       => $output->collect()
                 ->only([

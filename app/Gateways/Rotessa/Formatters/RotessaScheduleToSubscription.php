@@ -19,7 +19,7 @@ class RotessaScheduleToSubscription implements Formatter
     public function formatOutput($output): array
     {
         return [
-            'gateway'            => config('gateways.rotessa.name'),
+            'gateway'            => \App\Gateways\Factory::ROTESSA,
             'gateway_identifier' => $output['id'],
             'type'               => Str::contains($output['comment'], 'loan') ? Subscription::TYPE_LOAN_PAYMENT : Subscription::TYPE_MEMBERSHIP,
             'start_date'         => $output['process_date'],

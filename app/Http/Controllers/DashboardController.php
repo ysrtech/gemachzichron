@@ -18,7 +18,7 @@ class DashboardController extends Controller
                 ->orderByDesc('id')
                 ->take(20)
                 ->get(),
-            'pending_manual_count' => Transaction::where('gateway', config('gateways.manual.name'))
+            'pending_manual_count' => Transaction::where('gateway', \App\Gateways\Factory::MANUAL)
                 ->where('status', Transaction::STATUS_PENDING)
                 ->count(),
             'failed_count' => Transaction::where('status', Transaction::STATUS_FAIL)->count(),
