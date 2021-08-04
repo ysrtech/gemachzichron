@@ -13,15 +13,20 @@ use Illuminate\Support\Facades\Log;
 
 class RotessaTransactionToBaseTransaction implements Formatter
 {
+    protected Subscription $subscription;
+
     protected array $statuses = [
-        'Future' => 0, // shouldn't happen..
+        'Future' => 0, // shouldn't happen...
         'Pending' => Transaction::STATUS_PENDING,
         'Approved' => Transaction::STATUS_SUCCESS,
         'Declined' => Transaction::STATUS_FAIL,
     ];
 
-    protected Subscription $subscription;
-
+    /**
+     * @param $output
+     * @return array{gateway: string, gateway_identifier: string, amount: string|float, process_date: string, status: int, subscription_id: string, member_id: string, type: string, comment: string, status_message: string, gateway_data: array}
+     * @throws MissingSubscriptionException
+     */
     public function formatOutput($output): array
     {
         $this->subscription = $this->getSubscriptionFromRotessaTransaction($output);

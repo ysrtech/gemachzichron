@@ -7,7 +7,8 @@ use App\Contracts\Formatter;
 class RotessaCustomerToPaymentMethod implements Formatter
 {
     /**
-     * Transforms rotessa customer response to PaymentMethod array shape (not model object)
+     * @param $output
+     * @return array{gateway: string, gateway_identifier: string, gateway_data: array}
      */
     public function formatOutput($output): array
     {

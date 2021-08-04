@@ -14,29 +14,42 @@ interface Gateway
     public function getName(): string;
 
     /**
+     * @param Member $member
+     * @param array $data
+     * @return array{gateway: string, gateway_identifier: string, gateway_data: array}
      * @throws \App\Exceptions\NotImplementedException
-     * @returns array of PaymentMethod attributes i.e. ['gateway' => 'string', 'gateway_identifier' => 'string', 'gateway_data' => 'array']
      */
     public function createCustomer(Member $member, array $data): array;
 
     /**
+     * @param PaymentMethod $paymentMethod
+     * @param array $data
+     * @return array{gateway: string, gateway_identifier: string, gateway_data: array}
      * @throws \App\Exceptions\NotImplementedException
-     * @returns array of PaymentMethod attributes
      */
     public function updateCustomer(PaymentMethod $paymentMethod, array $data): array;
 
     /**
+     * @param PaymentMethod $paymentMethod
+     * @param array $data
+     * @return array{gateway: string, gateway_identifier: string, type: string, start_date: string, installments: int, frequency: string, active: bool, comment: string, gateway_data: array}
      * @throws \App\Exceptions\NotImplementedException
-     * @returns array of Subscription attributes
      */
     public function createSchedule(PaymentMethod $paymentMethod, array $data): array;
 
     /**
+     * @param Subscription $subscription
+     * @param array $data
+     * @return array{gateway: string, gateway_identifier: string, type: string, start_date: string, installments: int, frequency: string, active: bool, comment: string, gateway_data: array}
      * @throws \App\Exceptions\NotImplementedException
-     * @returns array of Subscription attributes
      */
     public function updateSchedule(Subscription $subscription, array $data): array;
 
+    /**
+     * @param Subscription $subscription
+     * @param array $query
+     * @return array{gateway: string, gateway_identifier: string, type: string, start_date: string, installments: int, frequency: string, active: bool, comment: string, gateway_data: array}
+     */
     public function getSchedule(Subscription $subscription, array $query = []): array;
 
     public function getScheduleTransactions(Subscription $subscription, array $query = []): Collection;

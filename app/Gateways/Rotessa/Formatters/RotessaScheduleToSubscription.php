@@ -12,6 +12,10 @@ use Illuminate\Support\Str;
 
 class RotessaScheduleToSubscription implements Formatter
 {
+    /**
+     * @param $output
+     * @return array{gateway: string, gateway_identifier: string, type: string, start_date: string, installments: int, frequency: string, active: bool, comment: string, gateway_data: array}
+     */
     public function formatOutput($output): array
     {
         return [
