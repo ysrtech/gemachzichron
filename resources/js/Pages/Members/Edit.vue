@@ -183,8 +183,9 @@
 
       </div>
 
-      <div class="p-6 flex items-center justify-end">
-        <app-button :processing="form.processing" class="ml-2" color="primary" type="submit">Submit</app-button>
+      <div class="p-6 flex items-center justify-end space-x-2">
+        <inertia-link :href="$route('members.show', member.id)"><app-button color="secondary">Cancel</app-button></inertia-link>
+        <app-button :processing="form.processing" color="primary" type="submit">Submit</app-button>
       </div>
     </form>
 
