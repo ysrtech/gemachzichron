@@ -19,21 +19,21 @@ class Subscription extends Model
 
     const FREQUENCY_ONCE = 'Once';
     const FREQUENCY_WEEKLY = 'Weekly';
-    const FREQUENCY_BIWEEKLY = 'Bi-Weekly';
+//    const FREQUENCY_BIWEEKLY = 'Bi-Weekly';
     const FREQUENCY_MONTHLY = 'Monthly';
-    const FREQUENCY_BIMONTHLY = 'Bi-Monthly';
-    const FREQUENCY_QUARTERLY = 'Every 3 months';
-    const FREQUENCY_SEMI_ANNUALLY = 'Every 6 months';
+//    const FREQUENCY_BIMONTHLY = 'Bi-Monthly';
+//    const FREQUENCY_QUARTERLY = 'Every 3 months';
+//    const FREQUENCY_SEMI_ANNUALLY = 'Every 6 months';
     const FREQUENCY_YEARLY = 'Yearly';
 
     public static array $frequencies = [
          self::FREQUENCY_ONCE,
          self::FREQUENCY_WEEKLY,
-         self::FREQUENCY_BIWEEKLY,
+//         self::FREQUENCY_BIWEEKLY,
          self::FREQUENCY_MONTHLY,
-         self::FREQUENCY_BIMONTHLY,
-         self::FREQUENCY_QUARTERLY,
-         self::FREQUENCY_SEMI_ANNUALLY,
+//         self::FREQUENCY_BIMONTHLY,
+//         self::FREQUENCY_QUARTERLY,
+//         self::FREQUENCY_SEMI_ANNUALLY,
          self::FREQUENCY_YEARLY,
     ];
 

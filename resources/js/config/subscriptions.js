@@ -9,11 +9,11 @@ export const SUBSCRIPTION_TYPES = {
 export const SUBSCRIPTION_FREQUENCIES = {
   Once: 'Once',
   Weekly: 'Weekly',
-  'Bi-Weekly': 'Bi-Weekly',
+  // 'Bi-Weekly': 'Bi-Weekly',
   Monthly: 'Monthly',
-  'Bi-Monthly': 'Bi-Monthly',
-  'Every 3 months': 'Every 3 months',
-  'Every 6 months': 'Every 6 months',
+  // 'Bi-Monthly': 'Bi-Monthly',
+  // 'Every 3 months': 'Every 3 months',
+  // 'Every 6 months': 'Every 6 months',
   Yearly: 'Yearly',
 }
 
