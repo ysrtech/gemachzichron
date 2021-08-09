@@ -32,7 +32,7 @@ interface Gateway
     /**
      * @param PaymentMethod $paymentMethod
      * @param array $data
-     * @return array{gateway: string, gateway_identifier: string, type: string, start_date: string, installments: int, frequency: string, active: bool, comment: string, gateway_data: array}
+     * @return array{gateway: string, gateway_identifier: string, start_date: string, installments: int, frequency: string, active: bool, comment: string, gateway_data: array}
      * @throws \App\Exceptions\NotImplementedException
      */
     public function createSchedule(PaymentMethod $paymentMethod, array $data): array;
@@ -40,7 +40,7 @@ interface Gateway
     /**
      * @param Subscription $subscription
      * @param array $data
-     * @return array{gateway: string, gateway_identifier: string, type: string, start_date: string, installments: int, frequency: string, active: bool, comment: string, gateway_data: array}
+     * @return array{gateway: string, gateway_identifier: string, start_date: string, installments: int, frequency: string, active: bool, comment: string, gateway_data: array}
      * @throws \App\Exceptions\NotImplementedException
      */
     public function updateSchedule(Subscription $subscription, array $data): array;
@@ -48,7 +48,7 @@ interface Gateway
     /**
      * @param Subscription $subscription
      * @param array $query
-     * @return array{gateway: string, gateway_identifier: string, type: string, start_date: string, installments: int, frequency: string, active: bool, comment: string, gateway_data: array}
+     * @return array{gateway: string, gateway_identifier: string, start_date: string, installments: int, frequency: string, active: bool, comment: string, gateway_data: array}
      */
     public function getSchedule(Subscription $subscription, array $query = []): array;
 
