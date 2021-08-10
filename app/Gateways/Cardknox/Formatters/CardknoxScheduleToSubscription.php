@@ -25,6 +25,7 @@ class CardknoxScheduleToSubscription implements Formatter
             'active'             => $output['IsActive'],
             'comment'            => $output['Description'] ?? null,
             'gateway_data'       => Arr::only(is_array($output) ? $output : $output->json(), [
+                'ScheduleId',
                 'Amount',
                 'NextScheduledRunTime',
                 'Revision',
