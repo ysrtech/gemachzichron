@@ -27,7 +27,7 @@ trait InertiaHandler
             429 => 'Too Many Requests',
             500 => $e instanceof RequestException || $e instanceof CardknoxApiException || $e instanceof DataMismatchException
                 ? $e->getMessage()
-                : 'Whoops, something went wrong on our servers',
+                : 'Something went wrong',
             503 => 'We are doing some maintenance, Please check back soon',
         ];
 
