@@ -55,6 +55,8 @@ class PullTransactions implements ShouldQueue
                     ? Transaction::create($gatewayTransaction)
                     : $transactions->firstWhere('type', Transaction::TYPE_BASE_TRANSACTION);
 
+                // Todo check if gateway transaction failed after success. i.e. rotessa chargeback - then unsplit transaction + mark as failed
+
                 if (!$baseTransaction) return;
 
                 $attributes = Arr::only($gatewayTransaction, [
