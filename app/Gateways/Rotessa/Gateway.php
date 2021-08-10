@@ -19,16 +19,10 @@ use Illuminate\Support\LazyCollection;
 
 class Gateway extends AbstractGateway
 {
-    protected array $transactionStatuses = [
-        'Approved'   => Transaction::STATUS_SUCCESS,
-        'Pending'    => Transaction::STATUS_PENDING,
-        'Declined'   => Transaction::STATUS_FAIL,
-        'Chargeback' => Transaction::STATUS_FAIL,
-    ];
-
     public function __construct()
     {
         $this->baseUrl = $this->config('base_url');
+
         $this->defaultOptions = [
             'headers' => [
                 'Authorization' => "Token token={$this->config('api_key')}",
@@ -164,6 +158,8 @@ class Gateway extends AbstractGateway
     public function updateSchedule(Subscription $subscription, array $data): array
     {
         throw new NotImplementedException('Not implemented yet');
+
+        // todo
     }
 
     public function getSchedule(Subscription $subscription, array $query = []): array
@@ -183,7 +179,8 @@ class Gateway extends AbstractGateway
 
         $this->setFormatter(new RotessaTransactionToBaseTransaction);
 
-        return $response->collect('financial_transactions')
+        return $response
+            ->collect('financial_transactions')
             ->map(fn($transaction) => $this->format($transaction));
     }
 

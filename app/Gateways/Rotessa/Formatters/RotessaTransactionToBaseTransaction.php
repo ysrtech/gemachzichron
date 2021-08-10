@@ -20,6 +20,7 @@ class RotessaTransactionToBaseTransaction implements Formatter
         'Pending' => Transaction::STATUS_PENDING,
         'Approved' => Transaction::STATUS_SUCCESS,
         'Declined' => Transaction::STATUS_FAIL,
+        'Chargeback' => Transaction::STATUS_FAIL,
     ];
 
     /**
