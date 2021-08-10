@@ -21,8 +21,7 @@ class MemberPaymentMethodController extends Controller
     public function store(CreatePaymentMethodRequest $request, Member $member)
     {
         try {
-            $customer = Gateway::initialize($request->gateway)
-                ->createCustomer($member, $request->toArray());
+            $customer = Gateway::initialize($request->gateway)->createCustomer($member, $request->toArray());
         } catch (NotImplementedException $exception) {
             throw ValidationException::withMessages(['gateway' => 'This gateway does not support creating payment methods']);
         }

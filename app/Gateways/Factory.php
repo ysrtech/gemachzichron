@@ -16,7 +16,7 @@ class Factory
     {
         return [
             self::ROTESSA,
-//            self::CARDKNOX,
+            self::CARDKNOX,
             self::MANUAL
         ];
     }

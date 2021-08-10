@@ -33,8 +33,7 @@ class MemberUpdateNotifyGateways implements ShouldQueue
             ->paymentMethods
             ->each(function ($paymentMethod) {
                 try {
-                    Gateway::initialize($paymentMethod->gateway)
-                        ->updateCustomer($paymentMethod, []);
+                    Gateway::initialize($paymentMethod->gateway)->updateCustomer($paymentMethod, []);
                 } catch (NotImplementedException $exception) {}
             });
     }

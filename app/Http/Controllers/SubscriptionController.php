@@ -46,8 +46,9 @@ class SubscriptionController extends Controller
 
         $gSubscription = $gateway->getSchedule($subscription);
 
-        if (isset($gSubscription['gateway_data']['amount'])
-            && $gSubscription['gateway_data']['amount']  != $subscription->transaction_total) {
+        $gatewayAmount = $gSubscription['gateway_data']['amount'] ?? $gSubscription['gateway_data']['Amount'] ?? null;
+
+        if ($gatewayAmount && $gatewayAmount != $subscription->transaction_total) {
             throw new DataMismatchException('Subscription amount does not match gateways schedule amount');
         }
 

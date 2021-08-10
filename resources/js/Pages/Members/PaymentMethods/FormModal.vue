@@ -19,8 +19,8 @@
           @update:model-value="form.clearErrors('gateway')"
         >
           <template #options>
-<!--            <option v-for="gateway in AVAILABLE_GATEWAYS">{{ gateway }}</option>-->
             <option>{{ AVAILABLE_GATEWAYS.Rotessa }}</option>
+            <option>{{ AVAILABLE_GATEWAYS.Cardknox }}</option>
           </template>
         </app-select>
 
@@ -56,6 +56,29 @@
             label="Account Number"
             type="text"
             @update:model-value="form.clearErrors('account_number')"
+          />
+        </div>
+
+        <div v-if="form.gateway === AVAILABLE_GATEWAYS.Cardknox" class="grid sm:grid-cols-2 gap-6">
+          <app-input
+            id="card_number"
+            v-model="form.card_number"
+            :error="form.errors.card_number"
+            label="Card Number"
+            type="text"
+            @update:model-value="form.clearErrors('card_number')"
+          />
+          <app-input
+            id="card_expiry"
+            v-model="form.card_expiry"
+            :error="form.errors.card_expiry"
+            label="Exp. Date"
+            type="text"
+            minlength="4"
+            maxlength="4"
+            pattern="\d{2}\d{2}"
+            placeholder="MMYY"
+            @update:model-value="form.clearErrors('card_expiry')"
           />
         </div>
       </div>
@@ -118,6 +141,8 @@ export default {
         transit_number: '',
         institution_number: '',
         account_number: '',
+        card_number: '',
+        card_expiry: '',
       })
     },
 
