@@ -48,6 +48,7 @@ class Gateway extends AbstractGateway
         return \App\Gateways\Factory::CARDKNOX;
     }
 
+    // region Customers/Payment Methods
     public function createCustomer(Member $member, array $data): array
     {
         Log::info("[CARDKNOX] creating customer (Member #$member->id)");
@@ -175,7 +176,9 @@ class Gateway extends AbstractGateway
             'PaymentMethodId' => $paymentMethod->gateway_data['PaymentMethodId'],
         ]);
     }
+    // endregion
 
+    // region Schedules
     public function createSchedule(PaymentMethod $paymentMethod, array $data): array
     {
         $response = $this->post('CreateSchedule', [
@@ -197,6 +200,38 @@ class Gateway extends AbstractGateway
     public function updateSchedule(Subscription $subscription, array $data): array
     {
         throw new NotImplementedException('Not implemented yet');
+
+        if (!$subscription->active) {
+            // activate temporarily - Cardknox does not allow update of inactive schedules
+            $this->activateSchedule($subscription);
+        }
+
+        $this->post('UpdateSchedule', array_filter([
+            'ScheduleId' => $subscription->gateway_identifier,
+            'Amount' => $data['amount'] ?? null,
+            'Description' => $data['comment'] ?? null,
+            'TotalPayments' => $data['installments'] ?? null,
+        ]));
+
+        if ((isset($data['active']) && $data['active'] === false) || !$subscription->active) {
+            $this->deactivateSchedule($subscription);
+        }
+
+        return $this->getSchedule($subscription);
+    }
+
+    public function activateSchedule(Subscription $subscription)
+    {
+        $this->post('EnableSchedule', [
+            'ScheduleId' => $subscription->gateway_identifier
+        ]);
+    }
+
+    public function deactivateSchedule(Subscription $subscription)
+    {
+        $this->post('DisableSchedule', [
+            'ScheduleId' => $subscription->gateway_identifier
+        ]);
     }
 
     public function getSchedule(Subscription $subscription, array $query = []): array
@@ -226,25 +261,9 @@ class Gateway extends AbstractGateway
             ]
         ]));
     }
+    // endregion
 
-    public function getScheduleTransactions(Subscription $subscription, array $query = []): Collection
-    {
-        return $this->getTransactions(
-            $query['startDate'] ?? Carbon::parse(0),
-            $query['endDate'] ?? null,
-            ['Filters' => array_merge($query['Filters'] ?? [], ['ScheduleId' => $subscription->gateway_identifier])]
-        );
-    }
-
-    public function getCustomerTransactions(PaymentMethod $paymentMethod, $query = null): Collection
-    {
-        return $this->getTransactions(
-            $query['startDate'] ?? Carbon::parse(0),
-            $query['endDate'] ?? null,
-            ['Filters' => array_merge($query['Filters'] ?? [], ['CustomerId' => $paymentMethod->gateway_identifier])]
-        );
-    }
-
+    // region Transactions
     public function getTransactions(Carbon $startDate, ?Carbon $endDate = null, $query = []): Collection
     {
         $this->setFormatter(new CardknoxTransactionToBaseTransaction);
@@ -306,6 +325,25 @@ class Gateway extends AbstractGateway
             } while ($response->isNotEmpty() && !is_null($nextToken));
         });
     }
+
+    public function getScheduleTransactions(Subscription $subscription, array $query = []): Collection
+    {
+        return $this->getTransactions(
+            $query['startDate'] ?? Carbon::parse(0),
+            $query['endDate'] ?? null,
+            ['Filters' => array_merge($query['Filters'] ?? [], ['ScheduleId' => $subscription->gateway_identifier])]
+        );
+    }
+
+    public function getCustomerTransactions(PaymentMethod $paymentMethod, $query = null): Collection
+    {
+        return $this->getTransactions(
+            $query['startDate'] ?? Carbon::parse(0),
+            $query['endDate'] ?? null,
+            ['Filters' => array_merge($query['Filters'] ?? [], ['CustomerId' => $paymentMethod->gateway_identifier])]
+        );
+    }
+    // endregion
 
     protected function requestNewToken(array $data): string
     {
