@@ -3,7 +3,6 @@
 namespace App\Gateways\Rotessa;
 
 use App\Exceptions\MissingSubscriptionException;
-use App\Exceptions\NotImplementedException;
 use App\Exceptions\RotessaApiException;
 use App\Gateways\AbstractGateway;
 use App\Gateways\Rotessa\Formatters\RotessaCustomerToPaymentMethod;
@@ -155,9 +154,13 @@ class Gateway extends AbstractGateway
 
     public function updateSchedule(Subscription $subscription, array $data): array
     {
-        throw new NotImplementedException('Not implemented yet');
+        $response = $this->patch("transaction_schedules/$subscription->gateway_identifier", [
+            'amount'  => $data['transaction_total'],
+            'comment' => $data['comment'],
+            'active'  => $data['active'],
+        ]);
 
-        // todo
+        return $this->setFormatter(new RotessaScheduleToSubscription)->format($response);
     }
 
     public function getSchedule(Subscription $subscription, array $query = []): array

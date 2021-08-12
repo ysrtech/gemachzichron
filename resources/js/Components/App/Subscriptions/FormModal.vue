@@ -2,7 +2,13 @@
   <modal v-if="show" max-width="2xl" @close="$emit('close')">
 
     <div class="px-6 py-4 text-xl font-medium">
-      <template v-if="subscription">Subscription #{{ subscription.id }}</template>
+      <div class="flex justify-between" v-if="subscription">
+        <span>Edit Subscription #{{ subscription.id }}</span>
+        <label class="flex items-center">
+          <app-checkbox v-model="form.active" name="active"/>
+          <span class="ml-2 text-sm text-gray-600">Active</span>
+        </label>
+      </div>
       <template v-else>Add New Subscription</template>
       <div class="text-xs text-gray-500" v-if="resolvesFailedTransaction">Resolves failed transaction #{{ resolvesFailedTransaction.id }}</div>
     </div>
@@ -21,7 +27,7 @@
             :clear-on-select="true"
             :close-on-select="true"
             :hide-selected="true"
-            :disabled="!!memberProp || !!resolvesFailedTransaction"
+            :disabled="!!subscription || !!memberProp || !!resolvesFailedTransaction"
             :options="membersOptions"
             :loading="membersLoading"
             :label-by="m => `${m.first_name} ${m.last_name}`"
@@ -39,7 +45,7 @@
             v-model="form.type"
             :error="form.errors.type"
             label="Subscription Type"
-            :disabled="!!resolvesFailedTransaction"
+            :disabled="!!subscription || !!resolvesFailedTransaction"
             @update:model-value="form.clearErrors('type')"
             :options="SUBSCRIPTION_TYPES"
           />
@@ -49,7 +55,7 @@
               v-model="form.loan_id"
               :error="form.errors.loan_id"
               label="Loan ID"
-              :disabled="!!resolvesFailedTransaction"
+              :readonly="!!subscription || !!resolvesFailedTransaction"
               @update:model-value="form.clearErrors('type')"
               type="number"
             />
@@ -62,6 +68,7 @@
             id="gateway"
             v-model="form.gateway"
             :error="form.errors.gateway"
+            :disabled="!!subscription"
             label="Payment Method"
             @update:model-value="form.clearErrors('gateway')">
             <template #options>
@@ -79,6 +86,7 @@
             id="start_date"
             v-model="form.start_date"
             :error="form.errors.start_date"
+            :readonly="(subscription && subscription.gateway === AVAILABLE_GATEWAYS.Rotessa)"
             label="Start Date"
             type="date"
             @update:model-value="form.clearErrors('start_date')"
@@ -92,7 +100,7 @@
             v-model="form.frequency"
             :error="form.errors.frequency"
             label="Frequency"
-            :disabled="!!resolvesFailedTransaction"
+            :disabled="!!subscription || !!resolvesFailedTransaction"
             :options="SUBSCRIPTION_FREQUENCIES"
             @update:model-value="form.clearErrors('frequency')"
           />
@@ -100,12 +108,15 @@
 
         <div class="sm:col-span-6">
           <app-number-input
-            :readonly="form.frequency === SUBSCRIPTION_FREQUENCIES.Once"
             id="installments"
             v-model.number="form.installments"
             :error="form.errors.installments"
             label="Installments"
-            :disabled="!!resolvesFailedTransaction"
+            :readonly="
+              form.frequency === SUBSCRIPTION_FREQUENCIES.Once
+              || (subscription && subscription.gateway === AVAILABLE_GATEWAYS.Rotessa)
+              || !!resolvesFailedTransaction
+            "
             placeholder="Unlimited"
             class="placeholder-gray-700"
             min="1"
@@ -119,7 +130,7 @@
             v-model="form.amount"
             :error="form.errors.amount"
             label="Base Amount"
-            :disabled="!!resolvesFailedTransaction"
+            :readonly="!!resolvesFailedTransaction"
             type="number"
             step="0.01"
             min="1"
@@ -133,7 +144,7 @@
             v-model="form.membership_fee"
             :error="form.errors.membership_fee"
             label="Membership Fee"
-            :disabled="!!resolvesFailedTransaction"
+            :readonly="!!resolvesFailedTransaction"
             type="number"
             min="0"
             step="0.01"
@@ -210,9 +221,11 @@ import AppSelect from "@/Components/FormControls/Select";
 import AppTextarea from "@/Components/FormControls/Textarea";
 import AppMockInput from "@/Components/FormControls/MockInput";
 import AppNumberInput from "@/Components/FormControls/NumberInput";
+import AppCheckbox from "@/Components/FormControls/Checkbox";
 
 export default {
   components: {
+    AppCheckbox,
     AppNumberInput,
     AppMockInput,
     AppTextarea,
@@ -248,7 +261,7 @@ export default {
 
   watch: {
     show() {
-      this.member = this.memberProp
+      this.member = this.subscription?.member || this.memberProp
       this.memberFieldError = null
       this.form = this.freshForm()
       if (this.resolvesFailedTransaction) {
@@ -257,7 +270,7 @@ export default {
     },
 
     member() {
-      this.form.gateway = null
+      if (!this.subscription) this.form.gateway = null
     },
 
     // 'form.gateway'(val) {
@@ -312,6 +325,7 @@ export default {
         decline_fee: this.subscription?.decline_fee || null,
         comment: this.subscription?.comment || null,
         loan_id: this.subscription?.loan_id || null,
+        active: this.subscription ? this.subscription.active : true
       })
     },
 

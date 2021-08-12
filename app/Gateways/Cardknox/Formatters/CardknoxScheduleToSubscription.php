@@ -22,7 +22,7 @@ class CardknoxScheduleToSubscription implements Formatter
             'start_date'         => $output['StartDate'],
             'installments'       => $output['TotalPayments'],
             'frequency'          => Frequencies::$fromCardknoxFrequencies[strtolower($output['IntervalType'])],
-            'active'             => $output['IsActive'],
+            'active'             => $output['IsActive'] ?? false,
             'comment'            => $output['Description'] ?? null,
             'gateway_data'       => Arr::only(is_array($output) ? $output : $output->json(), [
                 'ScheduleId',

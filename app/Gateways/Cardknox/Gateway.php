@@ -4,7 +4,6 @@ namespace App\Gateways\Cardknox;
 
 use App\Exceptions\CardknoxApiException;
 use App\Exceptions\MissingSubscriptionException;
-use App\Exceptions\NotImplementedException;
 use App\Gateways\AbstractGateway;
 use App\Gateways\Cardknox\Formatters\CardknoxScheduleToSubscription;
 use App\Gateways\Cardknox\Formatters\CardknoxTransactionToBaseTransaction;
@@ -199,21 +198,25 @@ class Gateway extends AbstractGateway
 
     public function updateSchedule(Subscription $subscription, array $data): array
     {
-        throw new NotImplementedException('Not implemented yet');
+        $revision = $subscription->gateway_data['Revision'];
 
         if (!$subscription->active) {
             // activate temporarily - Cardknox does not allow update of inactive schedules
             $this->activateSchedule($subscription);
+            $revision++;
         }
 
-        $this->post('UpdateSchedule', array_filter([
-            'ScheduleId' => $subscription->gateway_identifier,
-            'Amount' => $data['amount'] ?? null,
-            'Description' => $data['comment'] ?? null,
-            'TotalPayments' => $data['installments'] ?? null,
-        ]));
+        $this->post('UpdateSchedule', [
+            'ScheduleId'      => $subscription->gateway_identifier,
+            'Amount'          => $data['transaction_total'],
+            'StartDate'       => $data['start_date'], // can only be changed if schedule did not begin yet
+            'Description'     => $data['comment'],
+            'TotalPayments'   => $data['installments'],
+            'CalendarCulture' => 'Gregorian',
+            'Revision'        => $revision
+        ]);
 
-        if ((isset($data['active']) && $data['active'] === false) || !$subscription->active) {
+        if ((isset($data['active']) && $data['active'] === false) || (!isset($data['active']) && !$subscription->active)) {
             $this->deactivateSchedule($subscription);
         }
 

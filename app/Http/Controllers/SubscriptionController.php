@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\DataMismatchException;
+use App\Exceptions\NotImplementedException;
 use App\Facades\Gateway;
+use App\Http\Requests\UpdateSubscriptionRequest;
 use App\Models\Subscription;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 
 class SubscriptionController extends Controller
@@ -26,13 +29,30 @@ class SubscriptionController extends Controller
     public function show(Subscription $subscription)
     {
         return Inertia::render('Subscriptions/Show', [
-            'subscription' => $subscription->load('member:id,first_name,last_name')
+            'subscription' => $subscription->load('member:id,first_name,last_name', 'member.paymentMethods')
         ]);
     }
 
-    public function update(Request $request, Subscription $subscription)
+    public function update(UpdateSubscriptionRequest $request, Subscription $subscription)
     {
-        //
+        if ($subscription->gateway != \App\Gateways\Factory::MANUAL) {
+            try {
+                $request->merge(
+                    Gateway::initialize($subscription->gateway)->updateSchedule(
+                        $subscription,
+                        $request->withTransactionTotal()
+                    )
+                );
+            } catch (NotImplementedException $exception) {
+                throw ValidationException::withMessages(['gateway' => 'This payment methods gateway does not support updating subscriptions']);
+            }
+        }
+
+        // todo make sure pending/failed transactions won't be modified when splitting
+
+        $subscription->update($request->all());
+
+        return back()->snackbar('Subscription updated successfully');
     }
 
     public function destroy(Subscription $subscription)

@@ -71,6 +71,12 @@
         </div>
       </template>
     </app-panel>
+
+    <subscription-form-modal
+      :show="openFormModal"
+      @close="openFormModal = false"
+      :subscription="subscription"
+    />
   </div>
 </template>
 
@@ -82,6 +88,7 @@ import {GATEWAY_BADGE_COLORS} from "@/config/gateways";
 import {date} from "@/helpers/dates";
 import Money from "@/Components/Money";
 import RefreshButton from "@/Components/App/Subscriptions/RefreshButton";
+import SubscriptionFormModal from "@/Components/App/Subscriptions/FormModal"
 
 export default {
   layout: (h, page) => h(AppLayout, {title: 'Subscriptions'}, () => page),
@@ -91,6 +98,7 @@ export default {
     Money,
     KeyValue,
     AppPanel,
+    SubscriptionFormModal,
   },
 
   props: {
