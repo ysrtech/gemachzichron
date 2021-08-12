@@ -20,9 +20,9 @@ class CreatePaymentMethodRequest extends FormRequest
                 Rule::unique('payment_methods')->where('member_id', $this->route('member.id')),
             ],
             'bank_name' => 'nullable|string',
-            'transit_number' => "required_if:gateway,$rotessa",
-            'institution_number' => "required_if:gateway,$rotessa",
-            'account_number' => "required_if:gateway,$rotessa",
+            'transit_number' => ["required_if:gateway,$rotessa", 'nullable', 'digits:5'],
+            'institution_number' => ["required_if:gateway,$rotessa", 'nullable', 'digits:3'],
+            'account_number' => ["required_if:gateway,$rotessa", 'nullable', 'digits_between:5,18'],
             'card_number' => "required_if:gateway,$cardknox",
             'card_expiry' => ["required_if:gateway,$cardknox", 'nullable', 'date_format:my'],
         ];
