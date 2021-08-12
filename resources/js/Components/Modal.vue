@@ -1,7 +1,7 @@
 <template>
   <teleport to="body">
     <transition leave-active-class="duration-200">
-      <div v-show="show" class="fixed top-0 overflow-y-auto inset-x-0 h-screen items-center px-4 sm:px-0 flex items-top justify-center z-50">
+      <div v-show="show" class="fixed top-0 overflow-y-auto inset-x-0 h-screen items-center px-4 sm:px-0 flex items-top justify-center z-40">
         <transition enter-active-class="ease-out duration-300"
                     enter-from-class="opacity-0"
                     enter-to-class="opacity-100"

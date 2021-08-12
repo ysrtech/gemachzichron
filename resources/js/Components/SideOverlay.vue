@@ -7,7 +7,7 @@
       leave-active-class="transition-opacity ease-linear duration-300"
       leave-from-class="opacity-100"
       leave-to-class="opacity-0">
-      <div v-show="show" class="fixed inset-0 overflow-hidden z-50">
+      <div v-show="show" class="fixed inset-0 overflow-hidden z-40">
         <div class="absolute inset-0 overflow-hidden">
           <div aria-hidden="true" class="absolute inset-0 bg-gray-400 bg-opacity-75 transition-opacity"></div>
           <transition
