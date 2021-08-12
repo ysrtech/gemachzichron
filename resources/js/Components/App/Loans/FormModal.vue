@@ -126,7 +126,6 @@
 </template>
 <script>
 import Modal from "@/Components/Modal";
-import AppCheckbox from "@/Components/FormControls/Checkbox";
 import AppInput from "@/Components/FormControls/Input"
 import AppSelect from "@/Components/FormControls/Select";
 import AppFileInput from "@/Components/FormControls/FileInput";
@@ -140,7 +139,6 @@ export default {
     AppFileInput,
     AppSelect,
     AppInput,
-    AppCheckbox,
     Modal
   },
 
