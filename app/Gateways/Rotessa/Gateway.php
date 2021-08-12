@@ -4,6 +4,7 @@ namespace App\Gateways\Rotessa;
 
 use App\Exceptions\MissingSubscriptionException;
 use App\Exceptions\NotImplementedException;
+use App\Exceptions\RotessaApiException;
 use App\Gateways\AbstractGateway;
 use App\Gateways\Rotessa\Formatters\RotessaCustomerToPaymentMethod;
 use App\Gateways\Rotessa\Formatters\RotessaScheduleToSubscription;
@@ -11,7 +12,6 @@ use App\Gateways\Rotessa\Formatters\RotessaTransactionToBaseTransaction;
 use App\Models\Member;
 use App\Models\PaymentMethod;
 use App\Models\Subscription;
-use App\Models\Transaction;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
@@ -41,7 +41,7 @@ class Gateway extends AbstractGateway
     {
         Log::info("[ROTESSA] creating customer (Member #$member->id)", $data);
 
-        $response = $this->httpRequest->post('customers', [
+        $response = $this->post('customers', [
             'custom_identifier'  => $member->id,
             'email'              => $member->email,
             'name'               => "{$member->first_name} {$member->last_name}",
@@ -57,7 +57,7 @@ class Gateway extends AbstractGateway
                 'province_code' => 'QC',
                 'postal_code'   => $member->postal_code,
             ]
-        ])->throw();
+        ]);
 
         Log::info("[ROTESSA] created customer (Member #$member->id)", $response->collect()->toArray());
 
@@ -92,9 +92,7 @@ class Gateway extends AbstractGateway
 
         Log::info("[ROTESSA] updating customer (Member #{$paymentMethod->member->id})", $data);
 
-        $response = $this->httpRequest
-            ->patch("customers/$paymentMethod->gateway_identifier", $attributes)
-            ->throw();
+        $response = $this->patch("customers/$paymentMethod->gateway_identifier", $attributes);
 
         Log::info("[ROTESSA] updated customer (Member #{$paymentMethod->member->id})", $response->collect()->toArray());
 
@@ -107,14 +105,14 @@ class Gateway extends AbstractGateway
             ->where('gateway', $this->getName())
             ->firstOrFail();
 
-        $response = $this->httpRequest->get("customers/$paymentMethod->gateway_identifier");
+        $response = $this->get("customers/$paymentMethod->gateway_identifier");
 
         return $this->setFormatter(new $formatter())->format($response);
     }
 
     public function getCustomerByCustomIdentifier($customIdentifier, $formatter = RotessaCustomerToPaymentMethod::class)
     {
-        $response = $this->httpRequest->post(
+        $response = $this->post(
             "customers/show_with_custom_identifier",
             ['custom_identifier' => $customIdentifier]
         );
@@ -124,7 +122,7 @@ class Gateway extends AbstractGateway
 
     public function getCustomers($query = null, $formatter = RotessaCustomerToPaymentMethod::class)
     {
-        $response = $this->httpRequest->get('customers', $query);
+        $response = $this->get('customers', $query);
 
         $this->setFormatter(new $formatter());
 
@@ -133,7 +131,7 @@ class Gateway extends AbstractGateway
 
     public function getCustomerSchedules(PaymentMethod $paymentMethod, $query = null)
     {
-        $response = $this->httpRequest->get("customers/$paymentMethod->gateway_identifier", $query);
+        $response = $this->get("customers/$paymentMethod->gateway_identifier", $query);
 
         $this->setFormatter(new RotessaScheduleToSubscription);
 
@@ -143,14 +141,14 @@ class Gateway extends AbstractGateway
 
     public function createSchedule(PaymentMethod $paymentMethod, array $data): array
     {
-        $response = $this->httpRequest->post('transaction_schedules', [
+        $response = $this->post('transaction_schedules', [
             'customer_id'  => $paymentMethod->gateway_identifier,
             'amount'       => $data['transaction_total'],
             'frequency'    => Frequencies::$toRotessaFrequencies[$data['frequency']],
             'installments' => $data['installments'],
             'process_date' => $data['start_date'],
             'comment'      => $data['comment']
-        ])->throw();
+        ]);
 
         return $this->setFormatter(new RotessaScheduleToSubscription)->format($response);
     }
@@ -164,18 +162,14 @@ class Gateway extends AbstractGateway
 
     public function getSchedule(Subscription $subscription, array $query = []): array
     {
-        $response = $this->httpRequest
-            ->get("transaction_schedules/$subscription->gateway_identifier", $query)
-            ->throw();
+        $response = $this->get("transaction_schedules/$subscription->gateway_identifier", $query);
 
         return $this->setFormatter(new RotessaScheduleToSubscription)->format($response);
     }
 
     public function getScheduleTransactions(Subscription $subscription, array $query = []): Collection
     {
-        $response = $this->httpRequest
-            ->get("transaction_schedules/$subscription->gateway_identifier", $query)
-            ->throw();
+        $response = $this->get("transaction_schedules/$subscription->gateway_identifier", $query);
 
         $this->setFormatter(new RotessaTransactionToBaseTransaction);
 
@@ -186,7 +180,7 @@ class Gateway extends AbstractGateway
 
     public function getCustomerTransactions(PaymentMethod $paymentMethod, $query = null): Collection
     {
-        $response = $this->httpRequest->get("customers/$paymentMethod->gateway_identifier", $query)->throw();
+        $response = $this->get("customers/$paymentMethod->gateway_identifier", $query);
 
         $this->setFormatter(new RotessaTransactionToBaseTransaction);
 
@@ -203,10 +197,10 @@ class Gateway extends AbstractGateway
 
     public function getTransactions(Carbon $startDate, ?Carbon $endDate = null, $query = []): Collection
     {
-        $response = $this->httpRequest->get('transaction_report', array_merge([
+        $response = $this->get('transaction_report', array_merge([
             'start_date' => $startDate->toDateString(),
             'end_date'   => ($endDate ?? now())->toDateString()
-        ], $query))->throw();
+        ], $query));
 
         $this->setFormatter(new RotessaTransactionToBaseTransaction);
 
@@ -228,12 +222,11 @@ class Gateway extends AbstractGateway
         return LazyCollection::make(function () use ($query, $startDate) {
             $page = 1;
             do {
-                $response = $this->httpRequest->get('transaction_report', array_merge([
+                $response = $this->get('transaction_report', array_merge([
                     'start_date' => $startDate->toDateString(),
                     'end_date'   => ($endDate ?? now())->toDateString(),
                     'page'       => $page++
                 ], $query))
-                    ->throw()
                     ->collect()
                     ->map(function ($transaction) {
                         try {
@@ -251,6 +244,57 @@ class Gateway extends AbstractGateway
                 sleep(2);
 
             } while ($response->isNotEmpty());
+        });
+    }
+
+    /**
+     * @param string $url
+     * @param $query
+     * @return \GuzzleHttp\Promise\PromiseInterface|\Illuminate\Http\Client\Response
+     * @throws RotessaApiException
+     * @throws \Illuminate\Http\Client\RequestException
+     */
+    protected function get(string $url, $query = null)
+    {
+        return $this->httpRequest->get($url, $query)->throw(function ($response, $e) {
+            if ($e->getCode() == 422) {
+                $message = $response->collect('errors')->reduce(fn($carry, $item) => $carry . ($carry ? ", " : '') . $item['error_message'] ?? '');
+                throw new RotessaApiException($message);
+            }
+        });
+    }
+
+    /**
+     * @param string $url
+     * @param array $data
+     * @return \GuzzleHttp\Promise\PromiseInterface|\Illuminate\Http\Client\Response
+     * @throws RotessaApiException
+     * @throws \Illuminate\Http\Client\RequestException
+     */
+    protected function post(string $url, array $data)
+    {
+        return $this->httpRequest->post($url, $data)->throw(function ($response, $e) {
+            if ($e->getCode() == 422) {
+                $message = $response->collect('errors')->reduce(fn($carry, $item) => $carry . ($carry ? ", " : '') . $item['error_message'] ?? '');
+                throw new RotessaApiException($message);
+            }
+        });
+    }
+
+    /**
+     * @param string $url
+     * @param array $data
+     * @return \GuzzleHttp\Promise\PromiseInterface|\Illuminate\Http\Client\Response
+     * @throws RotessaApiException
+     * @throws \Illuminate\Http\Client\RequestException
+     */
+    protected function patch(string $url, array $data)
+    {
+        return $this->httpRequest->patch($url, $data)->throw(function ($response, $e) {
+            if ($e->getCode() == 422) {
+                $message = $response->collect('errors')->reduce(fn($carry, $item) => $carry . ($carry ? ", " : '') . $item['error_message'] ?? '');
+                throw new RotessaApiException($message);
+            }
         });
     }
 

@@ -25,7 +25,7 @@ trait InertiaHandler
             404 => 'Page Not Found',
             419 => 'The page expired, please try again',
             429 => 'Too Many Requests',
-            500 => $e instanceof RequestException || $e instanceof CardknoxApiException || $e instanceof DataMismatchException
+            500 => $e instanceof ApiException || $e instanceof DataMismatchException
                 ? $e->getMessage()
                 : 'Something went wrong',
             503 => 'We are doing some maintenance, Please check back soon',
