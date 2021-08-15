@@ -20,7 +20,7 @@
           :href="$route('transactions.index', {
             status: TRANSACTION_STATUSES.Pending, gateway: AVAILABLE_GATEWAYS.Manual
           })"
-          class="py-3 px-8 bg-gray-50 hover:bg-gray-100 text-gray-700 hover:text-gray-900 font-medium hover:underline">
+          class="py-3 px-8 bg-gray-50 hover:bg-gray-100 text-gray-700 hover:text-gray-900 text-sm font-medium hover:underline">
           View
         </inertia-link>
       </div>
@@ -39,7 +39,7 @@
         </div>
         <inertia-link
           :href="$route('transactions.index', {status: TRANSACTION_STATUSES.Fail})"
-          class="py-3 px-8 bg-gray-50 hover:bg-gray-100 text-gray-700 hover:text-gray-900 font-medium hover:underline">
+          class="py-3 px-8 bg-gray-50 hover:bg-gray-100 text-gray-700 hover:text-gray-900 text-sm font-medium hover:underline">
           View
         </inertia-link>
       </div>
@@ -48,7 +48,7 @@
             <money class="text-4xl" :amount="month_success_total"/>
           </div>
           <div class="bg-gray-50 py-3 px-8">
-            <span class="text-gray-700 font-medium">
+            <span class="text-gray-700 font-medium text-sm">
               Successful Transactions Total &dash; {{ currentDate({year: 'numeric', month: 'long'}) }}
             </span>
           </div>
