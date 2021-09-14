@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen flex flex-col justify-center items-center pt-0 bg-gray-100">
     <inertia-head :title="title ? `${title} - ${APP_NAME}` : APP_NAME"/>
-    <div class="w-full sm:max-w-md px-6 py-4 sm:bg-white sm:shadow-md overflow-hidden sm:rounded-lg">
+    <div class="w-full sm:max-w-sm px-6 py-4 sm:bg-white sm:shadow-md overflow-hidden sm:rounded-lg">
       <inertia-link href="/">
         <app-logo class="h-24 mx-auto my-5"/>
       </inertia-link>

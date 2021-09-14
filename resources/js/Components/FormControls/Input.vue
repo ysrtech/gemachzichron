@@ -9,6 +9,7 @@
       v-bind="$attrs"
       :type="type"
       :value="modelValue"
+      ref="input"
       class="mt-1 form-control form-input"
       :class="{'border-red-600': error}"
       @input="$emit('update:modelValue', $event.target.value)"
@@ -48,6 +49,12 @@ export default {
       type: String,
       default: 'text'
     },
+  },
+
+  methods: {
+    focusInput() {
+      this.$refs.input.focus()
+    }
   },
 }
 </script>

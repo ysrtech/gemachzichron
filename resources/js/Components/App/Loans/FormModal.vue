@@ -130,11 +130,9 @@ import AppInput from "@/Components/FormControls/Input"
 import AppSelect from "@/Components/FormControls/Select";
 import AppFileInput from "@/Components/FormControls/FileInput";
 import AppTextarea from "@/Components/FormControls/Textarea";
-import AppMockInput from "@/Components/FormControls/MockInput";
 
 export default {
   components: {
-    AppMockInput,
     AppTextarea,
     AppFileInput,
     AppSelect,

@@ -48,7 +48,9 @@ class AppServiceProvider extends ServiceProvider
                 ->studly()
                 ->start('App\Models\\');
 
-            abort_unless(class_exists($model), 404, "class $model does not exist");
+            if (!class_exists($model)) {
+                throw new \Exception("class $model does not exist");
+            }
 
             return $model;
         });

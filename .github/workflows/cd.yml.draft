@@ -44,7 +44,7 @@ jobs:
         run: ssh dev 'cd ${{ env.SITE_PATH }} && npm run prod'
 
       - name: 🤖 Optimize
-        run: ssh dev 'cd ${{ env.SITE_PATH }} && php artisan optimize:clear && php artisan config:cache && php artisan route:cache && php artisan view:cache'
+        run: ssh dev 'cd ${{ env.SITE_PATH }} && php artisan optimize:clear && php artisan config:cache && php artisan route:cache && php artisan view:cache && php artisan event:cache'
 
 #      - name: 🐘 Restart PHP
 #        run: ssh dev 'echo ${{ secrets.DEV_USER_PASSWORD }} | sudo -S systemctl restart php-fpm'

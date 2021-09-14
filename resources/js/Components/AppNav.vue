@@ -5,11 +5,11 @@
         <hr class="border-gray-500" v-if="item.divide">
         <inertia-link
           v-show="!item.hidden"
-          :class="isCurrentRoute(item.route) ? 'bg-gray-700 text-white' : 'hover:bg-gray-800 text-gray-300 hover:text-white'"
+          :class="item.active() ? 'bg-gray-700 text-white' : 'hover:bg-gray-800 text-gray-300 hover:text-white'"
           class="flex items-center group py-2 px-3 m-3 transition rounded-md focus:outline-none cursor-pointer"
           :href="$route(item.route)"
           @click="$emit('item-clicked', item)">
-          <i :class="{'text-primary-500': isCurrentRoute(item.route)}" class="material-icons-outlined mr-3 text-xl">
+          <i :class="{'text-primary-500': item.active()}" class="material-icons-outlined mr-3 text-xl">
             {{ item.icon }}
           </i>
           <div>{{ item.title }}</div>
@@ -29,42 +29,50 @@ export default {
           title: "Dashboard",
           route: "dashboard",
           icon: "dashboard",
+          active: () => this.currentRouteName === 'dashboard'
         },
         {
           title: "Members",
           route: "members.index",
           icon: "people",
+          active: () => this.currentRouteName.startsWith('members.'),
         },
         {
           title: "Memberships",
           route: "memberships.index",
           icon: "card_membership",
+          active: () => this.currentRouteName.startsWith('memberships.'),
         },
         {
           title: "Subscriptions",
           route: "subscriptions.index",
           icon: "subscriptions",
+          active: () => this.currentRouteName.startsWith('subscriptions.'),
         },
         {
           title: "Transactions",
           route: "transactions.index",
           icon: "payments",
+          active: () => this.currentRouteName.startsWith('transactions.'),
         },
         {
           title: "Loans",
           route: "loans.index",
           icon: "account_balance",
+          active: () => this.currentRouteName.startsWith('loans.'),
         },
         {
           divide: true,
           title: "Data Export",
           route: "export.index",
           icon: 'download',
+          active: () => this.currentRouteName === 'export.index',
         },
         {
           title: "Users",
           route: "users.index",
           icon: 'supervised_user_circle',
+          active: () => this.currentRouteName.startsWith('users.'),
         },
 
       ],
@@ -74,27 +82,19 @@ export default {
           title: "Settings",
           route: "login",
           icon: 'settings',
+          active: () => false
         },
       ],
-      currentRouteName: this.$route().current()
     }
   },
 
   emits: ['item-clicked'],
 
-  methods: {
-    isCurrentRoute(route) {
-      if (!route) {
-        return false;
-      }
-      return this.currentRouteName?.split('.')[0] === route.split('.')[0]
+  computed: {
+    currentRouteName() {
+      this.$page.url // trigger update
+      return this.$route().current()
     }
   },
-
-  watch: {
-    '$page.url': function () {
-      this.currentRouteName = this.$route().current()
-    }
-  }
 }
 </script>

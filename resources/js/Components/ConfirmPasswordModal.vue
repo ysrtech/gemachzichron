@@ -72,7 +72,7 @@ export default {
   watch: {
     show(val) {
       if (val) {
-        setTimeout(() => this.$refs.password.focus(), 600)
+        setTimeout(() => this.$refs.password.focusInput(), 600)
 
       }
     }
