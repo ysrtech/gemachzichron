@@ -89,7 +89,7 @@ export default {
     recent_transactions: Array,
     pending_manual_count: Number,
     failed_count: Number,
-    month_success_total: Number,
+    month_success_total: [Number, String],
   },
 
   data() {

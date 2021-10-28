@@ -75,7 +75,7 @@
         <div
           v-if="loans.total > loans.per_page"
           class="bg-white px-4 py-3 flex items-center justify-around border-t border-gray-300 sm:px-6">
-          <links-pagination :links="loans.links"/>
+          <pagination :response="loans"/>
         </div>
       </template>
     </app-panel>
@@ -85,7 +85,7 @@
 <script>
 import AppLayout from "@/Layouts/AppLayout";
 import {date} from "@/helpers/dates";
-import LinksPagination from "@/Components/LinksPagination";
+import Pagination from "@/Components/Pagination";
 import Money from "@/Components/Money";
 import AppPanel from "@/Components/Panel";
 import SearchFilter from "@/Components/SearchFilter";
@@ -100,7 +100,7 @@ export default {
     SearchFilter,
     AppPanel,
     Money,
-    LinksPagination
+    Pagination,
   },
 
   data() {

@@ -45,7 +45,7 @@
 
         <!-- Pagination -->
         <div class="bg-white px-4 py-3 flex items-center justify-around border-t border-gray-300 sm:px-6">
-          <links-pagination :links="subscriptions.links"/>
+          <pagination :response="subscriptions"/>
         </div>
       </template>
     </app-panel>
@@ -59,7 +59,7 @@
 
 <script>
 import AppLayout from "@/Layouts/AppLayout";
-import LinksPagination from "@/Components/LinksPagination";
+import Pagination from "@/Components/Pagination";
 import AppPanel from "@/Components/Panel";
 import SearchFilter from "@/Components/SearchFilter";
 import SearchFilterField from "@/Components/SearchFilterField";
@@ -77,7 +77,7 @@ export default {
     SearchFilterField,
     SearchFilter,
     AppPanel,
-    LinksPagination,
+    Pagination,
     SubscriptionFormModal
   },
 

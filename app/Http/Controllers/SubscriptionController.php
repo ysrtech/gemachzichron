@@ -22,7 +22,7 @@ class SubscriptionController extends Controller
                 ->filter($request->only('amount', 'type', 'active', 'gateway'))
                 ->with(['member' => fn($q) => $q->select(['id', 'first_name', 'last_name', 'deleted_at'])->withTrashed()])
                 ->orderBy('start_date', 'desc')
-                ->paginate()
+                ->paginate(20)
         ]);
     }
 

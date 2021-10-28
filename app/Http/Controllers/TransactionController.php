@@ -22,7 +22,7 @@ class TransactionController extends Controller
                ->with(['member' => fn($q) => $q->select(['id', 'first_name', 'last_name', 'deleted_at'])->withTrashed()])
                ->orderByDesc('process_date')
                ->orderByDesc('id')
-               ->paginate()
+               ->paginate(20)
         ]);
     }
 

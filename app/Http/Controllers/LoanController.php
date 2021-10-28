@@ -20,7 +20,7 @@ class LoanController extends Controller
                 ->with(['member' => fn($q) => $q->select(['id', 'first_name', 'last_name', 'deleted_at'])->withTrashed()])
                 ->withSum('transactions', 'amount')
                 ->orderBy('loan_date', 'desc')
-                ->paginate()
+                ->paginate(20)
         ]);
     }
 

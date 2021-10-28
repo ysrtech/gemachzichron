@@ -61,7 +61,7 @@
         <span
           v-show="transaction.comment"
           v-tippy="{ content: transaction.comment }"
-          class="material-icons-outlined text-gray-400">
+          class="material-icons-outlined text-gray-400 cursor-default">
           mode_comment
         </span>
         <button
