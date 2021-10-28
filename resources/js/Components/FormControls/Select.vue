@@ -26,6 +26,7 @@
       search-placeholder=""
       open-direction="bottom"
       v-bind="$attrs"
+      :class="{'border-red-600': error}"
       @update:model-value="$emit('update:modelValue', $event)"
       @search:input="$emit('search:input', $event.target.value)"
     >
