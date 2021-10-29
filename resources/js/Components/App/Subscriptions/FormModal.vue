@@ -10,7 +10,10 @@
         </label>
       </div>
       <template v-else>Add New Subscription</template>
-      <div class="text-xs text-gray-500" v-if="resolvesFailedTransaction">Resolves failed transaction #{{ resolvesFailedTransaction.id }}</div>
+      <template v-if="resolvesFailedTransaction">
+        <div class="text-xs text-gray-500">Resolves failed transaction #{{ resolvesFailedTransaction.id }}</div>
+        <app-errors :error="form.errors.resolves_transaction"/>
+      </template>
     </div>
 
     <form @submit.prevent="submit">
@@ -222,9 +225,11 @@ import AppTextarea from "@/Components/FormControls/Textarea";
 import AppMockInput from "@/Components/FormControls/MockInput";
 import AppNumberInput from "@/Components/FormControls/NumberInput";
 import AppCheckbox from "@/Components/FormControls/Checkbox";
+import AppErrors from "@/Components/FormControls/Errors";
 
 export default {
   components: {
+    AppErrors,
     AppCheckbox,
     AppNumberInput,
     AppMockInput,

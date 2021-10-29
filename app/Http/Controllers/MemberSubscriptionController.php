@@ -6,6 +6,7 @@ use App\Exceptions\NotImplementedException;
 use App\Facades\Gateway;
 use App\Http\Requests\CreateSubscriptionRequest;
 use App\Models\Member;
+use App\Models\Transaction;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 
@@ -39,6 +40,14 @@ class MemberSubscriptionController extends Controller
         }
 
         $member->subscriptions()->create($request->all());
+
+        if ($request->resolves_transaction) {
+            try {
+                Transaction::find($request->resolves_transaction)->resolve();
+            } catch (\Exception $exception) {
+                // todo revert/delete subscription??
+            }
+        }
 
         return back()->snackbar('Subscription created successfully');
     }

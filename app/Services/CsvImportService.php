@@ -196,7 +196,7 @@ class CsvImportService
                 'frequency'      => [
                     'Once'              => Subscription::FREQUENCY_ONCE,
                     'Monthly'           => Subscription::FREQUENCY_MONTHLY,
-                    'Every Other Month' => Subscription::FREQUENCY_BIMONTHLY,
+//                    'Every Other Month' => Subscription::FREQUENCY_BIMONTHLY,
                     'Yearly'            => Subscription::FREQUENCY_YEARLY,
                 ][trim($row[$headers->search('frequency')])],
                 'membership_fee' => Str::after(trim($row[$headers->search('Membership Fees')]), '$') ?: 0,

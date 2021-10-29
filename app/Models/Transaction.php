@@ -113,4 +113,15 @@ class Transaction extends Model
                 'amount' => $this->subscription->transaction_total
             ], $attributes));
     }
+
+    public function resolve()
+    {
+        if (!$this->status == self::STATUS_FAIL) {
+            throw new Exception("Can't resolve not failed transaction [transaction #$this->id]");
+        }
+
+        $this->update([
+            'status' => self::STATUS_RESOLVED,
+        ]);
+    }
 }

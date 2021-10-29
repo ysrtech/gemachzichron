@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Facades\Gateway;
 use App\Models\Subscription;
+use App\Models\Transaction;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -40,7 +41,10 @@ class CreateSubscriptionRequest extends FormRequest
             'membership_fee'       => ['required', 'numeric'],
             'processing_fee'       => ['required', 'numeric'],
             'decline_fee'          => ['required', 'numeric'],
-            'resolves_transaction' => ['nullable', 'numeric'],
+            'resolves_transaction' => [
+                'nullable',
+                Rule::exists('transactions')->where('status', Transaction::STATUS_FAIL)
+            ],
             'loan_id'              => [
                 'sometimes',
                 Rule::exists('loans', 'id')->where('member_id', $this->route('member')->id)
@@ -56,5 +60,12 @@ class CreateSubscriptionRequest extends FormRequest
                 + $this->get('processing_fee')
                 + $this->get('decline_fee')
         ]);
+    }
+
+    public function messages()
+    {
+        return [
+            'resolves_transaction.exists' => 'We didn\'t find a failed transaction with this id.'
+        ];
     }
 }
