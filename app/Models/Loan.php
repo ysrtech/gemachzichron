@@ -56,7 +56,7 @@ class Loan extends Model
             Storage::delete($this->attributes['application_copy']);
         }
 
-        $this->attributes['application_copy'] = $file->storeAs('applications', "loan_{$this->id}.{$file->guessExtension()}");
+        $this->attributes['application_copy'] = $file->store('applications');
     }
 
     public function getRemainingBalanceAttribute()
