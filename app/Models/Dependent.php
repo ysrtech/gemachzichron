@@ -6,9 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 
-/**
- * @mixin IdeHelperDependent
- */
 class Dependent extends Model
 {
     use HasFactory;

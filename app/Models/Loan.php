@@ -9,9 +9,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
-/**
- * @mixin IdeHelperLoan
- */
 class Loan extends Model
 {
     use HasFactory, SearchableByRelated, Filterable;
