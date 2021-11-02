@@ -3,11 +3,12 @@
 namespace App\Gateways\Rotessa;
 
 use App\Exceptions\MissingSubscriptionException;
-use App\Exceptions\RotessaApiException;
 use App\Gateways\AbstractGateway;
 use App\Gateways\Rotessa\Formatters\RotessaCustomerToPaymentMethod;
 use App\Gateways\Rotessa\Formatters\RotessaScheduleToSubscription;
 use App\Gateways\Rotessa\Formatters\RotessaTransactionToBaseTransaction;
+use App\Gateways\Rotessa\Traits\HandlesConflicts;
+use App\Gateways\Rotessa\Traits\HttpClientWrapper;
 use App\Models\Member;
 use App\Models\PaymentMethod;
 use App\Models\Subscription;
@@ -18,6 +19,8 @@ use Illuminate\Support\LazyCollection;
 
 class Gateway extends AbstractGateway
 {
+    use HandlesConflicts, HttpClientWrapper;
+
     public function __construct()
     {
         $this->baseUrl = $this->config('base_url');
@@ -165,9 +168,14 @@ class Gateway extends AbstractGateway
 
     public function getSchedule(Subscription $subscription, array $query = []): array
     {
-        $response = $this->get("transaction_schedules/$subscription->gateway_identifier", $query);
+        $response = $this->getRawSchedule($subscription->gateway_identifier, $query);
 
         return $this->setFormatter(new RotessaScheduleToSubscription)->format($response);
+    }
+
+    public function getRawSchedule($scheduleId, array $query = [])
+    {
+        return $this->get("transaction_schedules/$scheduleId", $query);
     }
 
     public function getScheduleTransactions(Subscription $subscription, array $query = []): Collection
@@ -192,6 +200,7 @@ class Gateway extends AbstractGateway
                 try {
                     return $this->format($transaction);
                 } catch (MissingSubscriptionException $exception) {
+                    $this->createMissingSubscriptionFromTransaction($transaction);
                     return null;
                 }
             })
@@ -212,6 +221,7 @@ class Gateway extends AbstractGateway
                 try {
                     return $this->format($transaction);
                 } catch (MissingSubscriptionException $exception) {
+                    $this->createMissingSubscriptionFromTransaction($transaction);
                     return null;
                 }
             })
@@ -235,6 +245,7 @@ class Gateway extends AbstractGateway
                         try {
                             return $this->format($transaction);
                         } catch (MissingSubscriptionException $exception) {
+                            $this->createMissingSubscriptionFromTransaction($transaction);
                             return null;
                         }
                     })
@@ -249,56 +260,4 @@ class Gateway extends AbstractGateway
             } while ($response->isNotEmpty());
         });
     }
-
-    /**
-     * @param string $url
-     * @param $query
-     * @return \GuzzleHttp\Promise\PromiseInterface|\Illuminate\Http\Client\Response
-     * @throws RotessaApiException
-     * @throws \Illuminate\Http\Client\RequestException
-     */
-    protected function get(string $url, $query = null)
-    {
-        return $this->httpRequest->get($url, $query)->throw(function ($response, $e) {
-            if ($e->getCode() == 422) {
-                $message = $response->collect('errors')->reduce(fn($carry, $item) => $carry . ($carry ? ", " : '') . $item['error_message'] ?? '');
-                throw new RotessaApiException($message);
-            }
-        });
-    }
-
-    /**
-     * @param string $url
-     * @param array $data
-     * @return \GuzzleHttp\Promise\PromiseInterface|\Illuminate\Http\Client\Response
-     * @throws RotessaApiException
-     * @throws \Illuminate\Http\Client\RequestException
-     */
-    protected function post(string $url, array $data)
-    {
-        return $this->httpRequest->post($url, $data)->throw(function ($response, $e) {
-            if ($e->getCode() == 422) {
-                $message = $response->collect('errors')->reduce(fn($carry, $item) => $carry . ($carry ? ", " : '') . $item['error_message'] ?? '');
-                throw new RotessaApiException($message);
-            }
-        });
-    }
-
-    /**
-     * @param string $url
-     * @param array $data
-     * @return \GuzzleHttp\Promise\PromiseInterface|\Illuminate\Http\Client\Response
-     * @throws RotessaApiException
-     * @throws \Illuminate\Http\Client\RequestException
-     */
-    protected function patch(string $url, array $data)
-    {
-        return $this->httpRequest->patch($url, $data)->throw(function ($response, $e) {
-            if ($e->getCode() == 422) {
-                $message = $response->collect('errors')->reduce(fn($carry, $item) => $carry . ($carry ? ", " : '') . $item['error_message'] ?? '');
-                throw new RotessaApiException($message);
-            }
-        });
-    }
-
 }
