@@ -1,16 +1,17 @@
 <template>
-  <button
+  <icon-button
+    icon="sync"
     @click="refresh"
-    v-tippy="{content: 'Refresh'}"
+    v-tippy="{content: 'Sync with Gateway'}"
     :class="{'animate-spin': isRefreshing}"
-    class="material-icons-outlined focus:outline-none rounded-full p-1 hover:bg-gray-200 focus:bg-gray-300">
-    refresh
-  </button>
+    style="animation-direction: reverse"
+  />
 </template>
 
 <script>
+import IconButton from "@/Components/IconButton";
 export default {
-
+  components: {IconButton},
   props: {
     subscriptionId: {
       type: Number,
