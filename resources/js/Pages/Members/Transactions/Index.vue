@@ -4,7 +4,7 @@
       <div class="max-w-6xl mx-auto">
         <app-panel title="Transactions">
           <template #content>
-            <transactions-table :transactions="member.transactions"/>
+            <transactions-table :transactions="member.transactions" :member="member"/>
             <div v-if="member.transactions.length === 0" class="px-6 py-10 text-center text-gray-500">No Transactions Found.</div>
           </template>
         </app-panel>

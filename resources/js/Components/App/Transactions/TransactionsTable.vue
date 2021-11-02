@@ -107,10 +107,18 @@ export default {
   },
 
   props: {
+    member: Object,
     transactions: Array,
     showMember: {
       type: Boolean,
       default: false
+    }
+  },
+
+  watch: {
+    resolveFailedTransaction(val) {
+      if (!val) return;
+      this.resolveFailedTransaction.member = this.member // for creating new subscription in form modal
     }
   },
 
