@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\NotImplementedException;
 use App\Facades\Gateway;
+use App\Gateways\Factory as GatewayFactory;
 use App\Http\Requests\CreateSubscriptionRequest;
 use App\Models\Member;
 use App\Models\Transaction;
@@ -21,7 +22,7 @@ class MemberSubscriptionController extends Controller
 
     public function store(CreateSubscriptionRequest $request, Member $member)
     {
-        if ($request->gateway != \App\Gateways\Factory::MANUAL) {
+        if ($request->gateway != GatewayFactory::MANUAL) {
 
             if (!$paymentMethod = $member->paymentMethods()->firstWhere('gateway', $request->gateway)) {
                 throw ValidationException::withMessages(['gateway' => 'Member does not have a payment method set up with this gateway']);
