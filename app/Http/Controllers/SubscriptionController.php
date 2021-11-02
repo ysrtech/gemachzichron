@@ -7,7 +7,6 @@ use App\Exceptions\NotImplementedException;
 use App\Facades\Gateway;
 use App\Http\Requests\UpdateSubscriptionRequest;
 use App\Models\Subscription;
-use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
@@ -62,28 +61,13 @@ class SubscriptionController extends Controller
 
     public function refresh(Subscription $subscription)
     {
-        $gateway = Gateway::initialize($subscription->gateway);
-
-        $gSubscription = $gateway->getSchedule($subscription);
-
-        $gatewayAmount = $gSubscription['gateway_data']['amount'] ?? $gSubscription['gateway_data']['Amount'] ?? null;
-
-        if ($gatewayAmount && $gatewayAmount != $subscription->transaction_total) {
-            throw new DataMismatchException('Subscription amount does not match gateways schedule amount');
+        try {
+            $subscription->syncWithGateway();
+        } catch (DataMismatchException $exception) {
+            // todo create GatewayConflict
         }
 
-        $subscription->update($gSubscription);
-
-        $gateway->getScheduleTransactions($subscription)->each(function ($gTransaction) {
-            $transaction = Transaction::firstOrNew([
-                'gateway' => $gTransaction['gateway'],
-                'gateway_identifier' => $gTransaction['gateway_identifier']
-            ]);
-
-            if ($transaction->type !== Transaction::TYPE_BASE_TRANSACTION) return;
-
-            $transaction->update($gTransaction);
-        });
+        $subscription->pullTransactionsFromGateway();
 
         return back();
     }

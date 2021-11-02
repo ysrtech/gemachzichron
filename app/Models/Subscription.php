@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Exceptions\DataMismatchException;
+use App\Facades\Gateway;
 use App\Models\Traits\Filterable;
 use App\Models\Traits\SearchableByRelated;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -61,5 +63,34 @@ class Subscription extends Model
     public function getTransactionTotalAttribute()
     {
         return $this->amount + $this->membership_fee + $this->processing_fee + $this->decline_fee;
+    }
+
+    public function syncWithGateway()
+    {
+        $gSubscription = Gateway::initialize($this->gateway)->getSchedule($this);
+
+        $gatewayAmount = $gSubscription['gateway_data']['amount'] ?? $gSubscription['gateway_data']['Amount'] ?? null;
+
+        if ($gatewayAmount && $gatewayAmount != $this->transaction_total) {
+            throw new DataMismatchException('Subscription amount does not match gateways schedule amount');
+        }
+
+        $this->update($gSubscription);
+    }
+
+    public function pullTransactionsFromGateway()
+    {
+        Gateway::initialize($this->gateway)
+            ->getScheduleTransactions($this)
+            ->each(function ($gTransaction) {
+                $transaction = Transaction::firstOrNew([
+                    'gateway' => $gTransaction['gateway'],
+                    'gateway_identifier' => $gTransaction['gateway_identifier']
+                ]);
+
+                if ($transaction->type !== Transaction::TYPE_BASE_TRANSACTION) return;
+
+                $transaction->update($gTransaction);
+            });
     }
 }
