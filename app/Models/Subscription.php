@@ -71,7 +71,7 @@ class Subscription extends Model
         try {
             $gSubscription = Gateway::initialize($this->gateway)->getSchedule($this);
         } catch (RequestException $requestException) {
-            // todo (how to handle 404?)
+            return;  // todo (how to handle 404?)
         }
 
         $gatewayAmount = $gSubscription['gateway_data']['amount'] ?? /* $gSubscription['gateway_data']['Amount'] ??*/ null;
