@@ -14,6 +14,15 @@
         <div class="text-xs text-gray-500">Resolves failed transaction #{{ resolvesFailedTransaction.id }}</div>
         <app-errors :error="form.errors.resolves_transaction"/>
       </template>
+      <template v-if="syncGatewaySchedule">
+        <div class="text-xs text-gray-500">
+          Syncing with gateway schedule<br>
+          Gateway: <code>{{ syncGatewaySchedule.gateway }}</code>,
+          Schedule ID: <code>{{ syncGatewaySchedule.gateway_identifier }}</code>,
+          Amount: <code>${{ syncGatewaySchedule.data.amount }}</code>
+        </div>
+        <app-errors :error="totalAmountFieldError"/>
+      </template>
     </div>
 
     <form @submit.prevent="submit">
@@ -30,7 +39,7 @@
             :clear-on-select="true"
             :close-on-select="true"
             :hide-selected="true"
-            :disabled="!!subscription || !!memberProp || !!resolvesFailedTransaction"
+            :disabled="!!subscription || !!memberProp || !!resolvesFailedTransaction || !!syncGatewaySchedule"
             :options="membersOptions"
             :loading="membersLoading"
             :label-by="m => `${m.first_name} ${m.last_name}`"
@@ -58,8 +67,7 @@
               v-model="form.loan_id"
               :error="form.errors.loan_id"
               label="Loan ID"
-              :readonly="!!subscription || !!resolvesFailedTransaction"
-              @update:model-value="form.clearErrors('type')"
+              @update:model-value="form.clearErrors('loan_id')"
               type="number"
             />
           </div>
@@ -71,7 +79,7 @@
             id="gateway"
             v-model="form.gateway"
             :error="form.errors.gateway"
-            :disabled="!!subscription"
+            :disabled="!!subscription || !!syncGatewaySchedule"
             label="Payment Method"
             @update:model-value="form.clearErrors('gateway')">
             <template #options>
@@ -89,7 +97,7 @@
             id="start_date"
             v-model="form.start_date"
             :error="form.errors.start_date"
-            :readonly="(subscription && subscription.gateway === AVAILABLE_GATEWAYS.Rotessa)"
+            :readonly="(subscription && subscription.gateway === AVAILABLE_GATEWAYS.Rotessa) || !!syncGatewaySchedule"
             label="Start Date"
             type="date"
             @update:model-value="form.clearErrors('start_date')"
@@ -103,7 +111,7 @@
             v-model="form.frequency"
             :error="form.errors.frequency"
             label="Frequency"
-            :disabled="!!subscription || !!resolvesFailedTransaction"
+            :disabled="!!subscription || !!resolvesFailedTransaction || !!syncGatewaySchedule"
             :options="SUBSCRIPTION_FREQUENCIES"
             @update:model-value="form.clearErrors('frequency')"
           />
@@ -119,6 +127,7 @@
               form.frequency === SUBSCRIPTION_FREQUENCIES.Once
               || (subscription && subscription.gateway === AVAILABLE_GATEWAYS.Rotessa)
               || !!resolvesFailedTransaction
+              || !!syncGatewaySchedule
             "
             placeholder="Unlimited"
             class="placeholder-gray-700"
@@ -137,7 +146,7 @@
             type="number"
             step="0.01"
             min="1"
-            @update:model-value="form.clearErrors('amount')"
+            @update:model-value="form.clearErrors('amount'); this.totalAmountFieldError = null"
           />
         </div>
 
@@ -151,7 +160,7 @@
             type="number"
             min="0"
             step="0.01"
-            @update:model-value="form.clearErrors('membership_fee')"
+            @update:model-value="form.clearErrors('membership_fee'); this.totalAmountFieldError = null"
           />
         </div>
 
@@ -164,7 +173,7 @@
             type="number"
             min="0"
             step="0.01"
-            @update:model-value="form.clearErrors('processing_fee')"
+            @update:model-value="form.clearErrors('processing_fee'); this.totalAmountFieldError = null"
           />
         </div>
 
@@ -179,7 +188,7 @@
             type="number"
             min="0"
             step="0.01"
-            @update:model-value="form.clearErrors('decline_fee')"
+            @update:model-value="form.clearErrors('decline_fee'); this.totalAmountFieldError = null"
           />
         </div>
 
@@ -249,7 +258,8 @@ export default {
       AVAILABLE_GATEWAYS,
       membersLoading: false,
       membersResults: [],
-      memberFieldError: null
+      memberFieldError: null,
+      totalAmountFieldError: null,
     }
   },
 
@@ -258,6 +268,7 @@ export default {
     subscription: Object,
     memberProp: Object,
     resolvesFailedTransaction: Object,
+    syncGatewaySchedule: Object,
   },
 
   emits: [
@@ -272,10 +283,13 @@ export default {
       if (this.resolvesFailedTransaction) {
         this.resolvesFailedTransactionForm()
       }
+      if (this.syncGatewaySchedule) {
+        this.syncGatewayScheduleForm()
+      }
     },
 
     member() {
-      if (!this.subscription) this.form.gateway = null
+      if (!this.subscription && !this.syncGatewaySchedule) this.form.gateway = null
     },
 
     // 'form.gateway'(val) {
@@ -321,6 +335,7 @@ export default {
       return this.$inertia.form({
         type: this.subscription?.type || null,
         gateway: this.subscription?.gateway || null,
+        gateway_identifier: undefined, // used only for syncGatewaySchedule (if undefined key will be removed when submitting)
         start_date: this.subscription?.start_date || null,
         installments: this.subscription?.installments || null,
         frequency: this.subscription?.frequency || null,
@@ -358,6 +373,18 @@ export default {
       this.form.resolves_transaction = this.resolvesFailedTransaction.id
     },
 
+    syncGatewayScheduleForm() {
+      this.member = this.syncGatewaySchedule.member
+
+      this.form.gateway = this.syncGatewaySchedule.gateway
+      this.form.gateway_identifier = this.syncGatewaySchedule.gateway_identifier
+      this.form.start_date = this.syncGatewaySchedule.data.start_date
+      this.form.installments = this.syncGatewaySchedule.data.installments
+      this.form.frequency = this.syncGatewaySchedule.data.frequency
+      this.form.comment = this.syncGatewaySchedule.data.comment
+      this.form.active = this.syncGatewaySchedule.data.active
+    },
+
     async fetchMembers(query) {
       if (!query) {
         this.membersResults = []
@@ -380,6 +407,15 @@ export default {
         this.memberFieldError = 'This field is required'
         return
       }
+
+      if (this.syncGatewaySchedule) {
+        if (Number(this.syncGatewaySchedule.data.amount) !== this.totalAmount) {
+          this.totalAmountFieldError = 'Total amount does not match gateway amount'
+          return
+        }
+      }
+
+      if (!this.syncGatewaySchedule) delete this.form.gateway_identifier
 
       if (this.form.type !== SUBSCRIPTION_TYPES["Loan Payment"]) this.form.loan_id = null
 

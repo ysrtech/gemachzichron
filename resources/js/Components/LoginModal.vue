@@ -2,7 +2,7 @@
   <app-modal v-if="show" max-width="sm" @close="$emit('close')">
     <div>
 
-      <div class="pb-3 pt-6 text-center text-4xl">
+      <div class="pb-3 pt-6 text-center text-3xl">
         Login
       </div>
 

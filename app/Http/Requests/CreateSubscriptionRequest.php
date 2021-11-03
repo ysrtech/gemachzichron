@@ -34,7 +34,7 @@ class CreateSubscriptionRequest extends FormRequest
             'type'                 => ['required', Rule::in([Subscription::TYPE_MEMBERSHIP, Subscription::TYPE_LOAN_PAYMENT])],
             'gateway'              => ['required', Rule::in(Gateway::all())],
             'amount'               => ['required', 'numeric', 'min:1'],
-            'start_date'           => ['required', 'date', 'after:today'],
+            'start_date'           => ['required', 'date', Rule::when(!$this->gateway_identifier, 'after:today')],
             'installments'         => ['nullable', 'integer'],
             'frequency'            => ['required', Rule::in(Subscription::$frequencies)],
             'comment'              => ['nullable'],

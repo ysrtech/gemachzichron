@@ -6,6 +6,7 @@ use App\Exceptions\DataMismatchException;
 use App\Exceptions\NotImplementedException;
 use App\Facades\Gateway;
 use App\Http\Requests\UpdateSubscriptionRequest;
+use App\Models\GatewayConflict;
 use App\Models\Subscription;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -20,8 +21,9 @@ class SubscriptionController extends Controller
             'subscriptions' => Subscription::searchByRelated($request->search, ['member'])
                 ->filter($request->only('amount', 'type', 'active', 'gateway'))
                 ->with(['member' => fn($q) => $q->select(['id', 'first_name', 'last_name', 'deleted_at'])->withTrashed()])
-                ->orderBy('start_date', 'desc')
-                ->paginate(20)
+                ->orderByDesc('start_date')
+                ->paginate(20),
+            'missing_subscriptions_count' => GatewayConflict::where('type', GatewayConflict::TYPE_MISSING_SUBSCRIPTION)->count()
         ]);
     }
 

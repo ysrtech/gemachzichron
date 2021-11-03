@@ -69,7 +69,7 @@ class Subscription extends Model
     {
         $gSubscription = Gateway::initialize($this->gateway)->getSchedule($this);
 
-        $gatewayAmount = $gSubscription['gateway_data']['amount'] ?? $gSubscription['gateway_data']['Amount'] ?? null;
+        $gatewayAmount = $gSubscription['gateway_data']['amount'] ?? /* $gSubscription['gateway_data']['Amount'] ??*/ null;
 
         if ($gatewayAmount && $gatewayAmount != $this->transaction_total) {
             throw new DataMismatchException('Subscription amount does not match gateways schedule amount');
@@ -88,9 +88,9 @@ class Subscription extends Model
                     'gateway_identifier' => $gTransaction['gateway_identifier']
                 ]);
 
-                if ($transaction->type !== Transaction::TYPE_BASE_TRANSACTION) return;
+                if ($transaction->type && $transaction->type !== Transaction::TYPE_BASE_TRANSACTION) return;
 
-                $transaction->update($gTransaction);
+                $transaction->fill($gTransaction)->save();
             });
     }
 }

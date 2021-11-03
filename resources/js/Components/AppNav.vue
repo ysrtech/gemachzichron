@@ -29,50 +29,56 @@ export default {
           title: "Dashboard",
           route: "dashboard",
           icon: "dashboard",
-          active: () => this.currentRouteName === 'dashboard'
+          active: () => this.$page.component === 'Dashboard'
         },
         {
           title: "Members",
           route: "members.index",
           icon: "people",
-          active: () => this.currentRouteName.startsWith('members.'),
+          active: () => this.$page.component.startsWith('Members/'),
         },
         {
           title: "Memberships",
           route: "memberships.index",
           icon: "card_membership",
-          active: () => this.currentRouteName.startsWith('memberships.'),
+          active: () => this.$page.component.startsWith('Memberships/'),
         },
         {
           title: "Subscriptions",
           route: "subscriptions.index",
           icon: "subscriptions",
-          active: () => this.currentRouteName.startsWith('subscriptions.'),
+          active: () => this.$page.component.startsWith('Subscriptions/'),
         },
         {
           title: "Transactions",
           route: "transactions.index",
           icon: "payments",
-          active: () => this.currentRouteName.startsWith('transactions.'),
+          active: () => this.$page.component.startsWith('Transactions/'),
         },
         {
           title: "Loans",
           route: "loans.index",
           icon: "account_balance",
-          active: () => this.currentRouteName.startsWith('loans.'),
+          active: () => this.$page.component.startsWith('Loans/'),
         },
         {
           divide: true,
+          title: "Conflicts",
+          route: "conflicts.index",
+          icon: 'error_outline',
+          active: () => this.$page.component.startsWith('GatewayConflicts/'),
+        },
+        {
           title: "Data Export",
           route: "export.index",
           icon: 'download',
-          active: () => this.currentRouteName === 'export.index',
+          active: () => this.$page.component === 'DataExport/Index',
         },
         {
           title: "Users",
           route: "users.index",
           icon: 'supervised_user_circle',
-          active: () => this.currentRouteName.startsWith('users.'),
+          active: () => this.$page.component.startsWith('Users/'),
         },
 
       ],
@@ -90,11 +96,5 @@ export default {
 
   emits: ['item-clicked'],
 
-  computed: {
-    currentRouteName() {
-      this.$page.url // trigger update
-      return this.$route().current()
-    }
-  },
 }
 </script>

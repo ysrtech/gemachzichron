@@ -6,7 +6,9 @@ namespace App\Gateways\Cardknox\Formatters;
 
 use App\Contracts\Formatter;
 use App\Gateways\Cardknox\Frequencies;
+use App\Gateways\Factory as GatewayFactory;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 class CardknoxScheduleToSubscription implements Formatter
 {
@@ -17,20 +19,23 @@ class CardknoxScheduleToSubscription implements Formatter
     public function formatOutput($output): array
     {
         return [
-            'gateway'            => \App\Gateways\Factory::CARDKNOX,
+            'gateway'            => GatewayFactory::CARDKNOX,
             'gateway_identifier' => $output['ScheduleId'],
             'start_date'         => $output['StartDate'],
             'installments'       => $output['TotalPayments'],
             'frequency'          => Frequencies::$fromCardknoxFrequencies[strtolower($output['IntervalType'])],
             'active'             => $output['IsActive'] ?? false,
             'comment'            => $output['Description'] ?? null,
-            'gateway_data'       => Arr::only(is_array($output) ? $output : $output->json(), [
-                'ScheduleId',
-                'Amount',
-                'NextScheduledRunTime',
-                'Revision',
-                'PaymentsProcessed'
-            ])
+            'gateway_data'       => collect(is_array($output) ? $output : $output->json())
+                ->only([
+                    'ScheduleId',
+                    'Amount',
+                    'NextScheduledRunTime',
+                    'Revision',
+                    'PaymentsProcessed'
+                ])
+                ->mapWithKeys(fn($value, $key) => [Str::snake($key) => $value])
+                ->toArray(),
         ];
     }
 }

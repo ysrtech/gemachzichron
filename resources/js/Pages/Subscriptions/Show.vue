@@ -34,7 +34,7 @@
               <app-badge color="gray">{{subscription.frequency}}</app-badge>
             </key-value>
             <key-value label="Installments" :value="subscription.installments"/>
-            <key-value label="Comments"><pre class="font-sans whitespace-pre-wrap">{{ subscription.comment }}</pre></key-value>
+            <key-value label="Comments"><div class="font-sans whitespace-pre-wrap">{{ subscription.comment }}</div></key-value>
             <inertia-link :href="$route('transactions.index', {subscription_id: subscription.id})" class="flex space-x-1">
               <span class="font-medium hover:underline text-sm">View Transactions</span>
               <i class="material-icons-outlined text-base">launch</i>

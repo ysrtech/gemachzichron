@@ -1,10 +1,19 @@
 <template>
   <div class="max-w-7xl mx-auto">
-    <div class="mb-6 flex justify-between items-center px-1">
+
+    <alert
+      v-if="missing_subscriptions_count"
+      :header="`${missing_subscriptions_count} missing subscriptions from gateways`"
+      link-text="View"
+      :link="$route('conflicts.index', {tab: 'Missing Subscriptions'})"
+      class="mb-6"
+    />
+
+    <div class="mb-6 flex justify-between items-center">
         <search-filter
           v-model="filterForm.search"
           :applied-filters-length="appliedFiltersLength"
-          class="w-full max-w-md mb-6"
+          class="w-full max-w-md"
           placeholder="Search By Member..."
           @reset="reset">
 
@@ -68,11 +77,13 @@ import {AVAILABLE_GATEWAYS} from "@/config/gateways";
 import {SUBSCRIPTION_TYPES} from "@/config/subscriptions";
 import SubscriptionsTable from "@/Components/App/Subscriptions/SubscriptionsTable";
 import SubscriptionFormModal from "@/Components/App/Subscriptions/FormModal"
+import Alert from "@/Components/Alert";
 
 export default {
   layout: (h, page) => h(AppLayout, {title: 'Subscriptions'}, () => page),
 
   components: {
+    Alert,
     SubscriptionsTable,
     SearchFilterField,
     SearchFilter,
@@ -101,6 +112,7 @@ export default {
   props: {
     subscriptions: Object,
     filters: Object,
+    missing_subscriptions_count: Number,
   },
 }
 </script>

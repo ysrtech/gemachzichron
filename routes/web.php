@@ -2,12 +2,12 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataExportController;
+use App\Http\Controllers\GatewayConflictController;
 use App\Http\Controllers\MemberDependentController;
 use App\Http\Controllers\MemberLoanController;
 use App\Http\Controllers\MemberPaymentMethodController;
 use App\Http\Controllers\MemberSubscriptionController;
 use App\Http\Controllers\MemberTransactionController;
-use App\Http\Controllers\NoteController;
 use App\Http\Controllers\DependentController;
 use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\LoanController;
@@ -75,6 +75,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('members/{member}/dependents', [MemberDependentController::class, 'store'])->name('members.dependents.store');
     Route::put('dependents/{dependent}', [DependentController::class, 'update'])->name('dependents.update');
     Route::delete('dependents/{dependent}', [DependentController::class, 'destroy'])->name('dependents.destroy');
+
+    // Gateway Conflicts
+    Route::get('conflicts', [GatewayConflictController::class, 'index'])->name('conflicts.index');
 
     // Plan Types
     Route::apiResource('plan-types', PlanTypeController::class);

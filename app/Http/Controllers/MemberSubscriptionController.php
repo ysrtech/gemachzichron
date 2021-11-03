@@ -6,6 +6,7 @@ use App\Exceptions\NotImplementedException;
 use App\Facades\Gateway;
 use App\Gateways\Factory as GatewayFactory;
 use App\Http\Requests\CreateSubscriptionRequest;
+use App\Models\GatewayConflict;
 use App\Models\Member;
 use App\Models\Transaction;
 use Illuminate\Validation\ValidationException;
@@ -22,22 +23,40 @@ class MemberSubscriptionController extends Controller
 
     public function store(CreateSubscriptionRequest $request, Member $member)
     {
-        if ($request->gateway != GatewayFactory::MANUAL) {
+        if ($request->gateway == GatewayFactory::MANUAL) {
+            $member->subscriptions()->create($request->validated());
 
-            if (!$paymentMethod = $member->paymentMethods()->firstWhere('gateway', $request->gateway)) {
-                throw ValidationException::withMessages(['gateway' => 'Member does not have a payment method set up with this gateway']);
-            }
+            return back()->snackbar('Subscription created successfully');
+        }
 
-            try {
-                $request->merge(
-                    Gateway::initialize($paymentMethod->gateway)->createSchedule(
-                        $paymentMethod,
-                        $request->withTransactionTotal()
-                    )
-                );
-            } catch (NotImplementedException $exception) {
-                throw ValidationException::withMessages(['gateway' => 'This payment methods gateway does not support creating subscriptions']);
-            }
+        if ($request->gateway_identifier) { // sync with existing gateway schedule
+            $subscription = $member->subscriptions()->create(
+                array_merge($request->validated(), $request->only('gateway_identifier'))
+            );
+
+            $subscription->syncWithGateway();
+            $subscription->pullTransactionsFromGateway();
+            GatewayConflict::where('type', GatewayConflict::TYPE_MISSING_SUBSCRIPTION)
+                ->where('gateway', $request->gateway)
+                ->where('gateway_identifier', $request->gateway_identifier)
+                ->delete();
+
+            return back()->snackbar('Subscription created and synced successfully');
+        }
+
+        if (!$paymentMethod = $member->paymentMethods()->firstWhere('gateway', $request->gateway)) {
+            throw ValidationException::withMessages(['gateway' => 'Member does not have a payment method set up with this gateway']);
+        }
+
+        try {
+            $request->merge(
+                Gateway::initialize($paymentMethod->gateway)->createSchedule(
+                    $paymentMethod,
+                    $request->withTransactionTotal()
+                )
+            );
+        } catch (NotImplementedException $exception) {
+            throw ValidationException::withMessages(['gateway' => 'This payment methods gateway does not support creating subscriptions']);
         }
 
         $member->subscriptions()->create($request->all());

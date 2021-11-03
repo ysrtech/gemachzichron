@@ -39,7 +39,7 @@
                 </a>
               </key-value>
               <key-value label="Comments" class="col-span-2">
-                <pre class="font-sans whitespace-pre-wrap">{{loan.comment}}</pre>
+                <div class="font-sans whitespace-pre-wrap">{{loan.comment}}</div>
               </key-value>
               <key-value label="Guarantors" class="col-span-2">
                 <div class="border rounded-md p-2">

@@ -88,6 +88,11 @@ class Member extends Model
         return $this->belongsToMany(Loan::class, 'guarantors');
     }
 
+    public function gatewayConflicts()
+    {
+        return $this->hasMany(GatewayConflict::class);
+    }
+
     public function scopeWithMembershipPaymentsTotal(Builder $query)
     {
         return $query->withSum([

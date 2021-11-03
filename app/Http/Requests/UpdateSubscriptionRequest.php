@@ -26,7 +26,7 @@ class UpdateSubscriptionRequest extends FormRequest
             'active'         => ['sometimes', 'boolean'],
             'amount'         => ['required', 'numeric', 'min:1'],
             'installments'   => ['nullable', 'integer'], // cardknox/manual only
-            'start_date'     => ['required', 'date', 'after:today'], // cardknox/manual only
+            'start_date'     => ['required', 'date', /*'after:today'*/], // cardknox/manual only
             'comment'        => ['nullable'],
             'membership_fee' => ['required', 'numeric'],
             'processing_fee' => ['required', 'numeric'],
