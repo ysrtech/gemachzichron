@@ -8,6 +8,7 @@ use App\Models\Traits\Filterable;
 use App\Models\Traits\SearchableByRelated;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Client\RequestException;
 
 class Subscription extends Model
 {
@@ -67,7 +68,11 @@ class Subscription extends Model
 
     public function syncWithGateway()
     {
-        $gSubscription = Gateway::initialize($this->gateway)->getSchedule($this);
+        try {
+            $gSubscription = Gateway::initialize($this->gateway)->getSchedule($this);
+        } catch (RequestException $requestException) {
+            // todo (how to handle 404?)
+        }
 
         $gatewayAmount = $gSubscription['gateway_data']['amount'] ?? /* $gSubscription['gateway_data']['Amount'] ??*/ null;
 
