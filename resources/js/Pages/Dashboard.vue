@@ -6,7 +6,7 @@
       <div class="bg-white flex flex-col overflow-hidden rounded-lg shadow">
         <div class="py-5 px-8 flex-1">
           <div class="flex items-center">
-            <div class="flex-shrink-0">
+            <div class="shrink-0">
               <h2 class="font-medium text-5xl">{{ pending_manual_count }}</h2>
             </div>
             <div class="ml-5 w-0 flex-1">
@@ -27,7 +27,7 @@
       <div class="bg-white flex flex-col overflow-hidden rounded-lg shadow">
         <div class="py-5 px-8 flex-1">
           <div class="flex items-center">
-            <div class="flex-shrink-0">
+            <div class="shrink-0">
               <h2 class="font-medium text-5xl">{{ failed_count }}</h2>
             </div>
             <div class="ml-5 w-0 flex-1">

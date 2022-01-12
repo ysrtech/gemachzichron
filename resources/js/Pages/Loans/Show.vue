@@ -35,7 +35,7 @@
               <key-value label="Application Copy" v-if="loan.application_copy">
                 <a class="hover:underline flex" target="_blank" :href="loan.application_copy">
                   <span class="truncate">{{ loan.application_copy }}</span>
-                  <i class="material-icons-outlined ml-0.5 text-lg transform -translate-y-1">launch</i>
+                  <i class="material-icons-outlined ml-0.5 text-lg -translate-y-1">launch</i>
                 </a>
               </key-value>
               <key-value label="Comments" class="col-span-2">

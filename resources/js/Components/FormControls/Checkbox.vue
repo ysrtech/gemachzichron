@@ -3,7 +3,7 @@
     type="checkbox"
     v-model="checked"
     :style="['background-origin: border-box', backgroundImage]"
-    class="h-4 w-4 p-0 rounded border flex-shrink-0 appearance-none inline-block select-none align-middle text-primary-600 shadow-sm focus:ring-2 focus:ring-offset-1 focus:ring-primary-600 focus:outline-none"
+    class="h-4 w-4 p-0 rounded border shrink-0 appearance-none inline-block select-none align-middle text-primary-600 shadow-sm focus:ring-2 focus:ring-offset-1 focus:ring-primary-600 focus:outline-none"
     :class="modelValue ? 'border-transparent focus:border-gray-300 bg-current bg-cover bg-center bg-no-repeat' : 'bg-white border-gray-300'"
   >
 </template>

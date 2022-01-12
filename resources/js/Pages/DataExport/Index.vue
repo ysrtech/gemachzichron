@@ -4,7 +4,7 @@
       v-for="model in models"
       :href="$route('export.show', {model: model.name})"
       download
-      class="bg-white hover:scale-105 p-4 rounded-md shadow transform duration-200">
+      class="bg-white hover:scale-105 p-4 rounded-md shadow duration-200">
       <span class="flex items-start space-x-5">
         <span class="material-icons-outlined text-2xl text-gray-400">{{ model.icon }}</span>
         <span class="flex flex-col space-y-2">

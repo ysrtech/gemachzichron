@@ -11,10 +11,10 @@
         <div class="absolute inset-0 overflow-hidden">
           <div aria-hidden="true" class="absolute inset-0 bg-gray-400 bg-opacity-75 transition-opacity"></div>
           <transition
-            enter-active-class="transition ease-in-out duration-300 transform"
+            enter-active-class="transition ease-in-out duration-300"
             :enter-from-class="side === 'left' ? '-translate-x-full' : 'translate-x-full'"
             enter-to-class="translate-x-0"
-            leave-active-class="transition ease-in-out duration-300 transform"
+            leave-active-class="transition ease-in-out duration-300"
             leave-from-class="translate-x-0"
             :leave-to-class="side === 'left' ? '-translate-x-full' : 'translate-x-full'">
             <section v-show="show" :class="side === 'left' ? 'left-0 pr-10' : 'right-0 pl-10'" aria-labelledby="slide-over-heading" class="absolute inset-y-0 max-w-full flex">

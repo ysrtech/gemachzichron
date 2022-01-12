@@ -1,8 +1,7 @@
 const colors = require('tailwindcss/colors');
 
 module.exports = {
-  // mode: 'jit',
-  purge: [
+  content: [
     './storage/framework/views/*.php',
     './resources/views/**/*.blade.php',
     './resources/js/**/*.vue',
@@ -13,13 +12,6 @@ module.exports = {
       colors: {
         primary: colors.sky
       },
-    },
-  },
-
-  variants: {
-    extend: {
-      opacity: ['disabled'],
-      backgroundColor: ['active'],
     },
   },
 };

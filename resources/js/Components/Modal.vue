@@ -8,7 +8,7 @@
                     leave-active-class="ease-in duration-200"
                     leave-from-class="opacity-100"
                     leave-to-class="opacity-0">
-          <div v-show="show" class="fixed inset-0 transform transition-all"> <!-- @click="close" -->
+          <div v-show="show" class="fixed inset-0 transition-all"> <!-- @click="close" -->
             <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
           </div>
         </transition>
@@ -24,7 +24,7 @@
             :class="maxWidthClass"
             v-bind="$attrs"
             class="scrollbar-w-2 scrollbar-thumb-gray-200 hover:scrollbar-thumb-gray-300 scrollbar-thumb-rounded-full
-             bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full max-h-screen overflow-y-auto">
+             bg-white rounded-lg overflow-hidden shadow-xl transition-all sm:w-full max-h-screen overflow-y-auto z-50">
             <slot/>
           </div>
         </transition>
