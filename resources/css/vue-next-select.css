@@ -7,7 +7,7 @@
 }
 
 .icon.arrow-downward.active {
-    @apply transform rotate-180
+    @apply rotate-180
 }
 
 .icon.arrow-downward::after {
