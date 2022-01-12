@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Gateways\Rotessa\Formatters\RotessaTransactionToBaseTransaction;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -20,5 +21,11 @@ class GatewayConflict extends Model
     public function member()
     {
         return $this->belongsTo(Member::class);
+    }
+
+    public function convertOrphanedRotessaTransactionsToTransaction()
+    {
+        Transaction::create((new RotessaTransactionToBaseTransaction)->formatOutput($this->data));
+        $this->delete();
     }
 }

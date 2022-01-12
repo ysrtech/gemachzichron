@@ -4,6 +4,7 @@ namespace App\Gateways\Rotessa\Traits;
 
 use App\Models\GatewayConflict;
 use App\Models\PaymentMethod;
+use App\Models\Subscription;
 use App\Support\GatewayConflictDataStructures\Rotessa as RotessaDataStructure;
 use Illuminate\Http\Client\RequestException;
 
@@ -11,6 +12,13 @@ trait HandlesConflicts
 {
     public function createMissingSubscriptionFromTransaction($rawTransaction)
     {
+        $existingMissingSubscription = GatewayConflict::query()
+            ->where('gateway', self::getName())
+            ->where('gateway_identifier', $rawTransaction['id'])
+            ->first();
+
+        if ($existingMissingSubscription) return;
+
         $paymentMethod = PaymentMethod::query()
             ->where('gateway', self::getName())
             ->where('gateway_identifier', $rawTransaction['customer_id'])
@@ -26,7 +34,7 @@ trait HandlesConflicts
         } catch (RequestException $exception) {
             if ($exception->getCode() == 404) {
                 $this->createOrphanedRotessaTransaction($rawTransaction, $paymentMethod);
-                return;
+                $this->createDeletedMissingSubscription($rawTransaction, $paymentMethod);
             }
             throw $exception;
         }
@@ -53,8 +61,53 @@ trait HandlesConflicts
         ]);
     }
 
+    public function createDeletedMissingSubscription($rawTransaction, $paymentMethod)
+    {
+        $existingMissingSubscription = GatewayConflict::query()
+            ->where('type', GatewayConflict::TYPE_MISSING_SUBSCRIPTION)
+            ->where('gateway', self::getName())
+            ->where('gateway_identifier', $rawTransaction['transaction_schedule_id'])
+            ->where('member_id', $paymentMethod->member_id)
+            ->first();
+
+        if ($existingMissingSubscription) {
+
+            $currentData = $existingMissingSubscription->data;
+            $currentInstallments = $currentData['installments'] ?? 0;
+
+            $existingMissingSubscription->update([
+                'data' => array_merge($currentData, [
+                    'start_date' => min($rawTransaction['start_date'], $currentData['start_date'] ?? 'XXXX-XX-XX'),
+                    'installments' => 1 + $currentInstallments,
+                    'frequency' => $currentInstallments == 0 ? Subscription::FREQUENCY_ONCE : Subscription::FREQUENCY_MONTHLY,
+                    'amount' => $rawTransaction['amount'],
+                    'comment' => $rawTransaction['comment'],
+                    'active' => false,
+                    'deleted' => true,
+                ]),
+            ]);
+        } else {
+            GatewayConflict::create([
+                'type' => GatewayConflict::TYPE_MISSING_SUBSCRIPTION,
+                'gateway' => self::getName(),
+                'gateway_identifier' => $rawTransaction['transaction_schedule_id'],
+                'member_id' => $paymentMethod->member_id,
+                'data' => [
+                    'start_date' => $rawTransaction['process_date'],
+                    'installments' => 1,
+                    'frequency' => Subscription::FREQUENCY_ONCE,
+                    'amount' => $rawTransaction['amount'],
+                    'comment' => $rawTransaction['comment'],
+                    'active' => false,
+                    'deleted' => true,
+                ],
+            ]);
+        }
+        return;
+    }
+
     public function createMissingMemberFromTransaction($rawTransaction)
     {
-
+        // todo
     }
 }

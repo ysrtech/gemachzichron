@@ -34,15 +34,16 @@ class SyncSubscriptions extends Command
         Subscription::query()
             ->where('active', true)
             ->where('gateway', '!=', GatewayFactory::MANUAL)
+            ->whereIsNotDeletedInGateway()
             ->each(function (Subscription $subscription) {
-            try {
-                $this->line("Syncing subscription #$subscription->id");
-                $subscription->syncWithGateway();
-            } catch (NotImplementedException $exception) {
-            } catch (DataMismatchException $exception) {
-                // todo create GatewayConflict
-            }
-        });
+                try {
+                    $this->line("Syncing subscription #$subscription->id");
+                    $subscription->syncWithGateway();
+                } catch (NotImplementedException $exception) {
+                } catch (DataMismatchException $exception) {
+                    // todo create GatewayConflict
+                }
+            });
 
         $this->info('Done!');
 

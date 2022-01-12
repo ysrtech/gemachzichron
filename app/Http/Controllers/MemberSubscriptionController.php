@@ -8,6 +8,7 @@ use App\Gateways\Factory as GatewayFactory;
 use App\Http\Requests\CreateSubscriptionRequest;
 use App\Models\GatewayConflict;
 use App\Models\Member;
+use App\Models\Subscription;
 use App\Models\Transaction;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
@@ -30,16 +31,22 @@ class MemberSubscriptionController extends Controller
         }
 
         if ($request->gateway_identifier) { // sync with existing gateway schedule
+
+            $conflict = GatewayConflict::where('type', GatewayConflict::TYPE_MISSING_SUBSCRIPTION)
+                ->where('gateway', $request->gateway)
+                ->where('gateway_identifier', $request->gateway_identifier)
+                ->firstOr(function () {
+                    throw ValidationException::withMessages(['gateway_identifier' => 'We didn\'t find a missing subscription with this Schedule ID']);
+                });
+
+            /**
+             * @var Subscription $subscription
+             */
             $subscription = $member->subscriptions()->create(
                 array_merge($request->validated(), $request->only('gateway_identifier'))
             );
 
-            $subscription->syncWithGateway();
-            $subscription->pullTransactionsFromGateway();
-            GatewayConflict::where('type', GatewayConflict::TYPE_MISSING_SUBSCRIPTION)
-                ->where('gateway', $request->gateway)
-                ->where('gateway_identifier', $request->gateway_identifier)
-                ->delete();
+            $subscription->resolveAssociatedConflicts();
 
             return back()->snackbar('Subscription created and synced successfully');
         }

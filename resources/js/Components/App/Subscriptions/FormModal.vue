@@ -22,6 +22,7 @@
           Amount: <code>${{ syncGatewaySchedule.data.amount }}</code>
         </div>
         <app-errors :error="totalAmountFieldError"/>
+        <app-errors :error="form.errors.gateway_identifier"/>
       </template>
     </div>
 
