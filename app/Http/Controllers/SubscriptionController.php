@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exceptions\DataMismatchException;
 use App\Exceptions\NotImplementedException;
 use App\Facades\Gateway;
+use App\Gateways\Factory as GatewayFactory;
 use App\Http\Requests\UpdateSubscriptionRequest;
 use App\Models\GatewayConflict;
 use App\Models\Subscription;
@@ -63,6 +64,8 @@ class SubscriptionController extends Controller
 
     public function refresh(Subscription $subscription)
     {
+        if ($subscription->gateway === GatewayFactory::MANUAL) return back()->banner('Subscription is not managed by a payment gateway', 'warning');
+
         try {
             $subscription->syncWithGateway();
         } catch (DataMismatchException $exception) {

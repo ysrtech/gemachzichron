@@ -16,6 +16,7 @@ use App\Http\Controllers\MemberGuaranteesController;
 use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\PlanTypeController;
 use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\SubscriptionTransactionController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use App\Providers\RouteServiceProvider;
@@ -59,8 +60,8 @@ Route::middleware(['auth'])->group(function () {
 
     // Transactions
     Route::get('members/{member}/transactions', [MemberTransactionController::class, 'index'])->name('members.transactions.index');
-    Route::post('members/{member}/transactions', [MemberTransactionController::class, 'store'])->name('members.transactions.store');
     Route::apiResource('transactions', TransactionController::class)->except('store');
+    Route::post('subscriptions/{subscription}/transactions', [SubscriptionTransactionController::class, 'store'])->name('subscriptions.transactions.store');
 
     // Guarantees
     Route::get('members/{member}/guarantees', [MemberGuaranteesController::class, 'index'])->name('members.guarantees.index');

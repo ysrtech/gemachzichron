@@ -14,9 +14,4 @@ class MemberTransactionController extends Controller
             'member' => $member->load(['transactions' => fn($q) => $q->orderByDesc('process_date')])
         ]);
     }
-
-    public function store(Request $request, Member $member)
-    {
-        //
-    }
 }

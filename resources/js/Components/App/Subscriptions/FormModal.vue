@@ -88,7 +88,7 @@
               <option v-for="paymentMethod in member?.payment_methods" :key="paymentMethod.id">
                 {{ paymentMethod.gateway }}
               </option>
-<!--              <option>{{ AVAILABLE_GATEWAYS.Manual }}</option>-->
+              <option>{{ AVAILABLE_GATEWAYS.Manual }}</option>
             </template>
           </app-select>
         </div>

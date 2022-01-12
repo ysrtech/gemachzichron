@@ -42,6 +42,7 @@ class Subscription extends Model
     protected $casts = [
         'active' => 'boolean',
         'gateway_data'   => 'array',
+        'deleted_from_gateway' => 'boolean',
     ];
 
     protected $appends = [

@@ -39,6 +39,13 @@
               <span class="font-medium hover:underline text-sm">View Transactions</span>
               <i class="material-icons-outlined text-base">launch</i>
             </inertia-link>
+            <div class="flex justify-around col-span-2" v-show="subscription.gateway === AVAILABLE_GATEWAYS.Manual">
+              <button
+                @click="openTransactionFormModal = true"
+                class="px-6 py-2 uppercase text-xs rounded bg-primary-50 hover:bg-primary-100 font-medium">
+                Make Transaction
+              </button>
+            </div>
             <div class="col-span-2">
               <dd class="mt-1 text-sm text-gray-900">
                 <ul class="border border-gray-300 rounded-md divide-y divide-gray-200">
@@ -77,6 +84,13 @@
       @close="openFormModal = false"
       :subscription="subscription"
     />
+
+    <transaction-form-modal
+      v-if="subscription.gateway === AVAILABLE_GATEWAYS.Manual"
+      :show="openTransactionFormModal"
+      @close="openTransactionFormModal = false"
+      :subscription="subscription"
+    />
   </div>
 </template>
 
@@ -84,11 +98,12 @@
 import AppLayout from "@/Layouts/AppLayout";
 import AppPanel from "@/Components/Panel";
 import KeyValue from "@/Components/KeyValue";
-import {GATEWAY_BADGE_COLORS} from "@/config/gateways";
+import {AVAILABLE_GATEWAYS, GATEWAY_BADGE_COLORS} from "@/config/gateways";
 import {date} from "@/helpers/dates";
 import Money from "@/Components/Money";
 import RefreshButton from "@/Components/App/Subscriptions/RefreshButton";
 import SubscriptionFormModal from "@/Components/App/Subscriptions/FormModal"
+import TransactionFormModal from "@/Components/App/Transactions/FormModal";
 
 export default {
   layout: (h, page) => h(AppLayout, {title: 'Subscriptions'}, () => page),
@@ -99,6 +114,7 @@ export default {
     KeyValue,
     AppPanel,
     SubscriptionFormModal,
+    TransactionFormModal,
   },
 
   props: {
@@ -108,6 +124,8 @@ export default {
   data() {
     return {
       openFormModal: false,
+      openTransactionFormModal: false,
+      AVAILABLE_GATEWAYS,
       GATEWAY_BADGE_COLORS,
     }
   },
@@ -115,6 +133,7 @@ export default {
   methods: {
     date,
     formattedGatewayData(data) {
+      if (!data) return;
       return `<table>${Object.keys(data).reduce((accumulator, key) => {
         return accumulator + `<tr><td>${key.replaceAll('_', ' ')}: </td><td class="text-right">${data[key]}</td></tr>`
       }, '')}</table>`
