@@ -118,6 +118,7 @@ export default {
   watch: {
     resolveFailedTransaction(val) {
       if (!val) return;
+      if (!this.member) return;
       this.resolveFailedTransaction.member = this.member // for creating new subscription in form modal
     }
   },
