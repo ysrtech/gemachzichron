@@ -52,7 +52,7 @@
           <app-badge v-show="!subscription.active" color="red">Inactive</app-badge>
         </td>
         <td class="px-3 py-2 whitespace-nowrap flex items-center space-x-2" @click.stop>
-          <refresh-button :subscription-id="subscription.id"/>
+          <refresh-button :subscription-id="subscription.id" v-show="!subscription.gateway_data?.deleted"/>
         </td>
       </inertia-link>
 
