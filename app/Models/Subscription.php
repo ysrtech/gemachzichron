@@ -10,6 +10,7 @@ use App\Models\Traits\SearchableByRelated;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Client\RequestException;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 
 class Subscription extends Model
@@ -98,9 +99,22 @@ class Subscription extends Model
         $this->update($gSubscription);
     }
 
-    public function syncWithGatewayConflict($missingSubscriptionConflict)
+    public function syncWithGatewayConflict(GatewayConflict $missingSubscriptionConflict)
     {
-        $this->update(['gateway_data' => $missingSubscriptionConflict->data]);
+        $attributes = Arr::only($missingSubscriptionConflict->data, [
+            'start_date',
+            'installments',
+            'frequency',
+            'active',
+            'comment',
+            'amount',
+        ]);
+
+        $attributes['gateway_data'] = Arr::only($missingSubscriptionConflict->data, [
+            'deleted'
+        ]);
+
+        $this->update($attributes);
     }
 
     public function pullTransactionsFromGateway()
@@ -168,7 +182,7 @@ class Subscription extends Model
         $missingSubscription->delete();
     }
 
-    public function getAssociatedConflict()
+    public function getAssociatedConflict(): ?GatewayConflict
     {
        return GatewayConflict::where('type', GatewayConflict::TYPE_MISSING_SUBSCRIPTION)
             ->where('gateway', $this->gateway)
