@@ -33,11 +33,11 @@
               <tr v-if="member.guarantees.length > 0" class="text-sm bg-gray-50">
                 <td class="border-t border-gray-300"></td>
                 <td class="border-t border-gray-300"></td>
-                <td colspan="2" class="px-6 py-3.5 font-medium uppercase border-t border-gray-300">Total:</td>
-                <td class="px-6 py-3.5 font-semibold text-right border-t border-gray-300">
+                <td class="px-6 py-3.5 font-medium uppercase border-t border-gray-300 text-right">Totals:</td>
+                <td class="px-6 py-3.5 font-semibold border-t border-gray-300">
                   <money :amount="member.guarantees.reduce((sum, loan) => sum + loan.amount, 0)"/>
                 </td>
-                <td class="px-6 py-3.5 font-semibold text-right border-t border-gray-300">
+                <td class="px-6 py-3.5 font-semibold border-t border-gray-300">
                   <money :amount="member.guarantees.reduce((sum, loan) => sum + loan.remaining_balance, 0)"/>
                 </td>
                 
