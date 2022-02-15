@@ -7,7 +7,7 @@
             <table class="min-w-full divide-y divide-gray-200">
               <thead v-if="member.guarantees.length > 0">
               <tr class="bg-gray-50 text-xs text-left text-gray-400 uppercase">
-                <th v-for="title in ['Loan ID', 'Member', 'Loan date', 'Amount']" class="px-6 py-3 font-medium">{{title}}</th>
+                <th v-for="title in ['Loan ID', 'Member', 'Loan date', 'Amount', 'Remaining Balance']" class="px-6 py-3 font-medium">{{title}}</th>
               </tr>
               </thead>
 
@@ -25,6 +25,22 @@
                 <td class="px-6 py-3.5 whitespace-nowrap font-medium">
                   <money :amount="loan.amount"/>
                 </td>
+                <td class="px-6 py-3.5 whitespace-nowrap font-medium">
+                  <money :amount="loan.remaining_balance"/>
+                </td>
+              </tr>
+
+              <tr v-if="member.guarantees.length > 0" class="text-sm bg-gray-50">
+                <td class="border-t border-gray-300"></td>
+                <td class="border-t border-gray-300"></td>
+                <td colspan="2" class="px-6 py-3.5 font-medium uppercase border-t border-gray-300">Total:</td>
+                <td class="px-6 py-3.5 font-semibold text-right border-t border-gray-300">
+                  <money :amount="member.guarantees.reduce((sum, loan) => sum + loan.amount, 0)"/>
+                </td>
+                <td class="px-6 py-3.5 font-semibold text-right border-t border-gray-300">
+                  <money :amount="member.guarantees.reduce((sum, loan) => sum + loan.remaining_balance, 0)"/>
+                </td>
+                
               </tr>
 
               <tr v-if="member.guarantees.length === 0">

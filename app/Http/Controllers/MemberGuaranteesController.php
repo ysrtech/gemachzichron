@@ -9,11 +9,16 @@ class MemberGuaranteesController extends Controller
 {
     public function index(Member $member)
     {
+
+        $member->load([
+            'guarantees:id,loan_date,amount,member_id',
+            'guarantees.member' => fn($q) => $q->select('id', 'first_name', 'last_name')->withTrashed(),
+        ]);
+
+        $member->guarantees->each->append('remaining_balance');
+
         return Inertia::render('Members/Guarantees/Index', [
-            'member' => $member->load([
-                'guarantees:id,loan_date,amount,member_id',
-                'guarantees.member' => fn($q) => $q->select('id', 'first_name', 'last_name')->withTrashed()
-            ])
+            'member' => $member
         ]);
     }
 }
