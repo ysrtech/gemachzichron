@@ -1,4 +1,4 @@
-export function date(value, options = {year: 'numeric', month: 'long', day: 'numeric'}) {
+export function date(value, options = {year: 'numeric', month: 'long', day: 'numeric',timeZone: 'Europe/London'}) {
   return (new Date(value)).toLocaleString([], options)
 }
 
