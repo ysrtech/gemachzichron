@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-5xl mx-auto">
+  <div class="max-w-12xl mx-auto">
     <div class="mb-6 flex justify-between items-center px-1">
       <search-filter
         v-model="filterForm.search"
@@ -8,17 +8,31 @@
         @reset="reset">
 
         <search-filter-field
-          v-model="filterForm.membership_since"
+          v-model="filterForm.plan_type_id"
           type="select"
-          label="Membership"
-          :options="{'All Members': '', 'Only With Membership': 'true', 'Only Without Membership': 'false'}"
+          label="Plan type"
+          :options="planTypes.reduce((option, type) => ({...option, [type.name]: type.id}) ,{'All': ''})"
         />
+
+        <search-filter-field
+          v-model="filterForm.active_membership"
+          type="select"
+          label="Active Membership"
+          :options="{'All': '', 'Only Active': 'true', 'Only Inactive': 'false'}"
+        />
+
 
         <search-filter-field
           v-model="filterForm.archived"
           type="select"
           label="Archived"
           :options="{'Without Archived': null, 'With Archived': 'with', 'Only Archived': 'only'}"
+        />
+
+        <search-filter-field
+          v-model="filterForm.loans_count"
+          type="text"
+          label="Loans"
         />
       </search-filter>
 
@@ -36,7 +50,7 @@
 
               <thead>
               <tr class="bg-gray-50 text-xs text-left text-gray-400 uppercase">
-                <th v-for="title in ['Name', 'Home Phone', 'Cellphone', 'Email', '']" class="px-6 py-3 font-medium">{{ title }}</th>
+                <th v-for="title in ['Name', 'Member Plan','Member Since', 'Membership Paid','Loans','Loans Balance','Home Phone', 'Cellphone', 'Email', '']" class="px-6 py-3 font-medium">{{ title }}</th>
               </tr>
               </thead>
 
@@ -54,6 +68,32 @@
                     :class="member.active_membership ? 'bg-green-500' : 'bg-red-500'">
                   </span>
                   <app-badge v-if="member.deleted_at" color="red" class="ml-1">Archived Member</app-badge>
+                </td>
+                <td class="px-6 py-3.5 whitespace-nowrap">
+                  {{ member.plan_type?.name }}
+                </td>
+                <td class="px-6 py-3.5 whitespace-nowrap">
+                  <span v-if="member.active_membership">{{ date(member.membership_since) }}</span>
+                </td>
+                
+                <td class="px-6 py-3.5 whitespace-nowrap">
+                  <span v-if="member.active_membership"><money
+                    :amount="member.membership_payments_total || 0"
+                    class="font-medium"
+                    currency-sign-class="font-normal text-gray-600 mr-1"/></span>
+                </td>
+                <td class="px-6 py-3.5 whitespace-nowrap">
+                  <span v-if="member.loans_count" class="flex"><money
+                    :amount="member.loans_total || 0"
+                    class="font-medium"
+                    currency-sign-class="font-normal text-gray-600 mr-1"/><span class="pl-2">({{ member.loans_count }})</span>
+                    </span>
+                </td>
+                 <td class="px-6 py-3.5 whitespace-nowrap">
+                  <span v-if="member.loans_total"><money
+                    :amount="member.loans_total - member.loans_payments || 0"
+                    class="font-medium"
+                    currency-sign-class="font-normal text-gray-600 mr-1"/></span>
                 </td>
                 <td class="px-6 py-3.5 whitespace-nowrap">
                   {{ member.home_phone }}
@@ -129,11 +169,15 @@ import AppDropdownLink from "@/Components/DropdownLink";
 import AppDropdown from "@/Components/Dropdown";
 import SearchFilterField from "@/Components/SearchFilterField";
 import HasFilters from "@/Mixins/HasFilters";
+import {date} from "@/helpers/dates";
+import Money from "@/Components/Money";
+import {MEMBERSHIP_TYPES} from "@/config/memberships";
 
 export default {
   layout: (h, page) => h(AppLayout, {title: 'Members'}, () => page),
 
   components: {
+    Money,
     SearchFilterField,
     SearchFilter,
     AppPagination,
@@ -143,10 +187,17 @@ export default {
 
   data() {
     return {
+      MEMBERSHIP_TYPES,
+      planTypes: [],
       filterForm: {
         search: this.filters.search,
         archived: this.filters.archived,
-        membership_since: this.filters.membership_since
+        membership_since: this.filters.membership_since,
+        active_membership: this.filters.active_membership,
+        membership_type: this.filters.membership_type,
+        plan_type_id: this.filters.plan_type_id,
+        loans_count: this.filters.loans_count,
+        
       },
     }
   },
@@ -159,6 +210,7 @@ export default {
   },
 
   methods: {
+    date,
     duplicateMember(member) {
       const  duplicateValues = [
         'title', 'first_name', 'last_name', 'hebrew_first_name', 'hebrew_last_name',
@@ -176,5 +228,12 @@ export default {
       this.$inertia.post(this.$route('members.store'), newMember)
     }
   },
+
+  created() {
+    this.$axios.get(this.$route('ajax.plan-types.index'))
+      .then(response => {
+        this.planTypes = response.data.plan_types
+      })
+  }
 }
 </script>

@@ -12,15 +12,25 @@ class MemberController extends Controller
 {
     public function index(Request $request)
     {
-        return Inertia::render('Members/Index', [
-            'filters' => $request->all('search', 'archived', 'membership_since'),
-            'members' => Member::search($request->search)
-                ->filterWithTrashed($request->archived)
-                ->filterNull($request->only('membership_since'))
-                ->orderBy('last_name')
-                ->orderBy('first_name')
-                ->paginate()
-        ]);
+
+    $results = [
+    'filters' => $request->all('search', 'archived', 'membership_since', 'membership_type', 'plan_type_id', 'active_membership'),
+    'members' => Member::search($request->search)
+        ->filterWithTrashed($request->archived)
+        ->filterNull($request->only('membership_since'))
+        ->filterBoolean($request->only('active_membership'))
+        ->filter($request->only('membership_type', 'plan_type_id'))
+        ->withMembershipPaymentsTotal()
+        ->withLoansCount()
+        ->withLoansTotal()
+        ->withLoansPayments()
+        ->with('planType')
+        ->orderBy('last_name')
+        ->orderBy('first_name')
+        ->paginate()
+    ];
+
+        return Inertia::render('Members/Index', $results);
     }
 
     public function create()
