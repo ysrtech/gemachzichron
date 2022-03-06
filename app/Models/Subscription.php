@@ -76,17 +76,26 @@ class Subscription extends Model
 
         if ($this->isDeletedInGateway()) {
             Log::info("Subscription $this->id is deleted from gateway, cannot sync");
-            return;
+            //return;
         }
 
         try {
             $gSubscription = Gateway::initialize($this->gateway)->getSchedule($this);
+
+
         } catch (RequestException $requestException) {
             if ($requestException->getCode() == 404) {
-                Log::info("Subscription $this->id has been deleted from gateway");
+                Log::info("Subscription $this->id not found on gateway");
+                
                 $this->setAsDeletedFromGateway();
+                $this->setAsInactive();
             }
             return;
+        }
+
+        if ($this->isDeletedInGateway()) {
+            $this->setAsNotDeletedFromGateway();
+            Log::info("Subscription $this->id reverted deleted from gateway");
         }
 
         $gatewayAmount = $gSubscription['gateway_data']['amount'] ?? /* $gSubscription['gateway_data']['Amount'] ??*/ null;
@@ -137,6 +146,19 @@ class Subscription extends Model
                 if ($transaction->type && $transaction->type !== Transaction::TYPE_BASE_TRANSACTION) return;
 
                 $transaction->fill($gTransaction)->save();
+
+                $attributes = Arr::only($gTransaction, [
+                    'process_date',
+                    'status',
+                    'comment',
+                    'status_message',
+                    'gateway_data',
+                ]);
+
+
+                if ($gTransaction['status'] == Transaction::STATUS_SUCCESS) {
+                    $transaction->split($attributes);
+                }
             });
     }
 
@@ -162,6 +184,18 @@ class Subscription extends Model
     {
         $this->update([
             'gateway_data' => array_merge($this->gateway_data, ['deleted' => true])
+        ]);
+    }
+
+    public function setAsInactive()
+    {
+        $this->update(['active' => 0]);
+    }
+
+    public function setAsNotDeletedFromGateway()
+    {
+        $this->update([
+            'gateway_data' => array_merge($this->gateway_data, ['deleted' => false])
         ]);
     }
 

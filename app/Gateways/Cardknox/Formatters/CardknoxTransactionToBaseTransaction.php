@@ -39,7 +39,7 @@ class CardknoxTransactionToBaseTransaction implements Formatter
             'subscription_id'    => $this->subscription->id,
             'member_id'          => $this->subscription->member_id,
             'type'               => Transaction::TYPE_BASE_TRANSACTION,
-            'status_message'     => $output['GatewayError'],
+            'status_message'     => (isset($output['GatewayErrorMessage']) ? $output['GatewayErrorMessage'] : NULL),
             'gateway_data'       => Arr::only(is_array($output) ? $output : $output->json(), [
                 'ScheduleId',
                 'CustomerId',
