@@ -8,6 +8,12 @@
             class="material-icons-outlined focus:outline-none rounded-full p-1.5 text-gray-600 hover:bg-gray-200 focus:bg-gray-300">
             edit
           </button>
+          <button
+                    @click="$inertia.delete($route('loan.destroy', loan.id), {preserveScroll: true})"
+                    v-tippy="{ content: 'Delete Loan' }"
+                    class="material-icons-outlined focus:outline-none rounded-full p-1 hover:bg-gray-200 focus:bg-gray-300">
+                    delete
+                  </button>
         </template>
         <template #content>
           <div class="px-4 py-5 sm:px-6">

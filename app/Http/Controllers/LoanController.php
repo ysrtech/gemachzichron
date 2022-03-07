@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Inertia\Inertia;
 
+
 class LoanController extends Controller
 {
     public function index(Request $request)
@@ -47,8 +48,51 @@ class LoanController extends Controller
         return back()->snackbar('Loan updated.');
     }
 
-    public function destroy(Loan $loan)
+    public function destroy(Request $request, Loan $loan)
     {
-        //
+        if ($loan->subscriptions->isNotEmpty()) {
+            if (!$request->boolean('confirm')) {
+                return back()->alert([
+                    'icon'         => 'error',
+                    'title'        => 'Delete Loan Failed',
+                    'message'      => "You cannot delete a loan with associated transaction. Remove loan from subscribtion first.<br>
+                              Do you want to delete loan <strong>#$loan->id</strong> from associated subscriptions?",
+                    'actionButton' => [
+                        'text'   => 'Continue',
+                        'color'  => 'danger',
+                        'route'  => route('loan.destroy', ['loan' => $loan->id, 'confirm' => true]),
+                        'method' => 'delete'
+                    ],
+                ]);
+            }
+
+            $loan->subscriptions->each(fn($subscription) => $subscription->update(['loan_id' => null]));
+
+            
+        }
+
+        if (!$request->boolean('confirm')) {
+            return back()->alert([
+                'icon'         => 'error',
+                'title'        => 'Are you sure?',
+                'message'      => "Are you sure you want to delete loan <strong>#$loan->id</strong>?",
+                'actionButton' => [
+                    'text'   => 'Delete',
+                    'color'  => 'danger',
+                    'route'  => route('loan.destroy', ['loan' => $loan->id, 'confirm' => true]),
+                    'method' => 'delete'
+                ],
+            ]);
+        }
+
+        $loan->guarantors()->detach();
+        $member = $loan->member->id;
+        $loan->delete();
+
+        
+
+        return redirect()->route('members.loans.index', $member)->snackbar('Loan Deleted.');
     }
+
+    
 }

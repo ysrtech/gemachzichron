@@ -7,6 +7,7 @@ use App\Facades\Gateway;
 use App\Gateways\Factory;
 use App\Models\Traits\Filterable;
 use App\Models\Traits\SearchableByRelated;
+use App\Exceptions\CardknoxApiException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Client\RequestException;
@@ -65,6 +66,11 @@ class Subscription extends Model
         return $this->belongsTo(Transaction::class, 'resolves_transaction');
     }
 
+    public function paysLoan()
+    {
+        return $this->belongsTo(Loan::class, 'loan_id');
+    }
+
     public function getTransactionTotalAttribute()
     {
         return $this->amount + $this->membership_fee + $this->processing_fee + $this->decline_fee;
@@ -92,6 +98,17 @@ class Subscription extends Model
             }
             return;
         }
+
+        catch (CardknoxApiException $apiException) {
+            
+                Log::info("Subscription $this->id not found on gateway");
+                
+                $this->setAsDeletedFromGateway();
+                $this->setAsInactive();
+            return;
+        }
+
+
 
         if ($this->isDeletedInGateway()) {
             $this->setAsNotDeletedFromGateway();

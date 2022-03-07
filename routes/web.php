@@ -5,6 +5,7 @@ use App\Http\Controllers\DataExportController;
 use App\Http\Controllers\GatewayConflictController;
 use App\Http\Controllers\MemberDependentController;
 use App\Http\Controllers\MemberLoanController;
+use App\Http\Controllers\MemberDashboardController;
 use App\Http\Controllers\MemberPaymentMethodController;
 use App\Http\Controllers\MemberSubscriptionController;
 use App\Http\Controllers\MemberTransactionController;
@@ -43,6 +44,7 @@ Route::middleware(['auth'])->group(function () {
     // Members
     Route::resource('members', MemberController::class);
     Route::put('members/{member}/restore', [MemberController::class, 'restore'])->name('members.restore');
+    Route::get('members/{member}/dashboard', [MemberDashboardController::class, 'index'])->name('members.dashboard');
 
     // Memberships
     Route::get('memberships', [MembershipController::class, 'index'])->name('memberships.index');
@@ -51,6 +53,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('members/{member}/loans', [MemberLoanController::class, 'index'])->name('members.loans.index');
     Route::post('members/{member}/loans', [MemberLoanController::class, 'store'])->name('members.loans.store');
     Route::apiResource('loans', LoanController::class)->except('store');
+    Route::delete('loans/{loan}', [LoanController::class, 'destroy'])->name('loan.destroy');
 
     // Subscriptions
     Route::get('members/{member}/subscriptions', [MemberSubscriptionController::class, 'index'])->name('members.subscriptions.index');

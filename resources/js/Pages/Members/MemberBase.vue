@@ -73,6 +73,11 @@ export default {
           route: 'members.guarantees.index',
           show: true,
         },
+        {
+          title: 'Dashboard',
+          route: 'members.dashboard',
+          show: true,
+        },
       ]
     }
   },

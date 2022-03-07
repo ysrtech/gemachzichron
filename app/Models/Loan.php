@@ -32,6 +32,11 @@ class Loan extends Model
         return $this->belongsToMany(Member::class, 'guarantors');
     }
 
+    public function subscriptions()
+    {
+        return $this->hasMany(Subscription::class);
+    }
+
     public function transactions()
     {
         return $this->hasManyThrough(Transaction::class, Subscription::class)
