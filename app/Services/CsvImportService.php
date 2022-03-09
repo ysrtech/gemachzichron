@@ -167,6 +167,8 @@ class CsvImportService
         }
     }
 
+   
+
     public static function importRotessaSchedules($filename)
     {
         $handle = self::handle($filename);
@@ -213,6 +215,60 @@ class CsvImportService
                 'amount' => DB::raw('amount - membership_fee - processing_fee - decline_fee')
             ]);
         }
+    }
+
+
+    public static function importCardknoxSchedules($filename)
+    {
+        $handle = self::handle($filename);
+
+        $headers = self::headers($handle, $filename);
+        $imported =0;
+        while (($row = fgetcsv($handle, 1000)) !== false) {
+            if (!is_array($row)) continue;
+
+            $member = Member::whereHas(
+                'paymentMethods',
+                fn($q) => $q
+                    ->where('gateway', 'Cardknox')
+                    ->where('gateway_identifier', trim($row[$headers->search('customer_id')]))
+            )->first();
+
+            if($member === null){continue;}
+
+            $member->subscriptions()->updateOrCreate([
+                'gateway'            => 'Cardknox',
+                'gateway_identifier' => trim($row[$headers->search('recurring_id')])
+            ], [
+                'type'           => trim($row[$headers->search('type')]) == 'Loan Payment'
+                    ? Subscription::TYPE_LOAN_PAYMENT
+                    : Subscription::TYPE_MEMBERSHIP,
+                'amount'         => trim($row[$headers->search('amount')]),
+                'start_date'     => Carbon::parse(trim($row[$headers->search('start_date')]))->toDateString(),
+                'created_at'     => Carbon::parse(trim($row[$headers->search('date_created')]))->toDateString(),
+                'frequency'      => [
+                    'Once'              => Subscription::FREQUENCY_ONCE,
+                    'Monthly'           => Subscription::FREQUENCY_MONTHLY,
+//                    'Every Other Month' => Subscription::FREQUENCY_BIMONTHLY,
+                    'Yearly'            => Subscription::FREQUENCY_YEARLY,
+                ][trim($row[$headers->search('frequency')])],
+                'membership_fee' => Str::after(trim($row[$headers->search('membership_fee')]), '$') ?: 0,
+                'processing_fee' => trim($row[$headers->search('cc_fee')]) ?: 0,
+                'decline_fee'    => trim($row[$headers->search('decline_fee')]) ?: 0,
+                'active'         => (boolean)trim($row[$headers->search('active')]),
+                'comment'        => trim($row[$headers->search('comment')]),
+                'gateway_data'   => [
+                    'id' => trim($row[$headers->search('recurring_id')]),
+                    'next_process_date' => trim($row[$headers->search('next_process_date')])
+                ]
+            ])->update([
+                // update amount to exclude fees
+                'amount' => DB::raw('amount - membership_fee - processing_fee - decline_fee')
+            ]);
+            $imported++;
+        }
+
+        return $imported;
     }
 
     private static function handle($filename)

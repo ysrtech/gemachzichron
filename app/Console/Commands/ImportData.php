@@ -19,7 +19,8 @@ class ImportData extends Command
          {--children=}
          {--loans=}
          {--rotessaCustomers=}
-         {--rotessaSchedules=}';
+         {--rotessaSchedules=}
+         {--cardknoxSchedules=}';
 
     /**
      * The console command description.
@@ -84,12 +85,21 @@ class ImportData extends Command
             $this->newLine();
         }
 
+        if ($cardknoxSchedules = ($this->option('cardknoxSchedules') ?? $this->ask('Please enter filename for Cardknox schedules (or empty to skip) then [ENTER]'))) {
+            $this->comment('Importing Cardknox schedules...');
+            $importedCount = CsvImportService::importCardknoxSchedules(
+                $this->getFilePath($cardknoxSchedules)
+            );
+            $this->info('Finished Importing Cardknox schedules. '.$importedCount.' schedules imported.');
+            $this->newLine();
+        }
+
         $this->info('Done');
     }
 
     private function getFilePath($filename)
     {
-        $filepath = storage_path("imports/$filename");
+        $filepath = storage_path("imports\\".$filename);
 
         if (!file_exists($filepath)) {
             $this->error("file $filepath does not exist");
