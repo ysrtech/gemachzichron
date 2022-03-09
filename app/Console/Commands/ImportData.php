@@ -99,7 +99,7 @@ class ImportData extends Command
 
     private function getFilePath($filename)
     {
-        $filepath = storage_path("imports\\".$filename);
+        $filepath = storage_path("imports/$filename");
 
         if (!file_exists($filepath)) {
             $this->error("file $filepath does not exist");
