@@ -50,7 +50,7 @@
 
               <thead>
               <tr class="bg-gray-50 text-xs text-left text-gray-400 uppercase">
-                <th v-for="title in ['Name', 'Member Plan','Member Since', 'Membership Paid','Loans','Loans Balance','Home Phone', 'Cellphone', 'Email', '']" class="px-6 py-3 font-medium">{{ title }}</th>
+                <th v-for="title in ['ID', 'Name', 'Member Plan','Member Since', 'Membership Paid','Loans','Loans Balance','Home Phone', 'Cellphone', 'Email', '']" class="px-6 py-3 font-medium">{{ title }}</th>
               </tr>
               </thead>
 
@@ -60,6 +60,9 @@
                 v-for="member in members.data"
                 :key="member.id"
                 class="bg-white text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900 cursor-pointer">
+                <td class="px-6 py-3.5 whitespace-nowrap">
+                  {{ member.id }}
+                </td>
                 <td class="px-6 py-3.5 whitespace-nowrap flex space-x-3 items-baseline">
                   <span>{{ member.last_name + ', ' + member.first_name }}</span>
                   <span
