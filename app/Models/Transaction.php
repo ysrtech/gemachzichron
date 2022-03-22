@@ -50,11 +50,11 @@ class Transaction extends Model
     public function split($attributes = [])
     {
         if ($this->isSplit()) {
-            throw new Exception('Transaction is already split');
+            throw new Exception('Transaction ID '.$this->gateway_identifier.' is already split');
         }
 
         if ($this->amount != $this->subscription->transaction_total) {
-            throw new DataMismatchException('Base transaction amount does not match subscription total amount');
+            throw new DataMismatchException('Base transaction '.$this->id.' amount does not match subscription '.$this->subscription->id.' total amount');
         }
 
         $this->update(array_merge([

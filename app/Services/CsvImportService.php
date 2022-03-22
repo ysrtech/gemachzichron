@@ -5,12 +5,15 @@ namespace App\Services;
 use App\Models\Member;
 use App\Models\PlanType;
 use App\Models\Subscription;
+use App\Models\Transaction;
 use Carbon\Carbon;
 use Carbon\Exceptions\InvalidFormatException;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Arr;
 
 class CsvImportService
 {
@@ -265,6 +268,91 @@ class CsvImportService
                 // update amount to exclude fees
                 'amount' => DB::raw('amount - membership_fee - processing_fee - decline_fee')
             ]);
+            $imported++;
+        }
+
+        return $imported;
+    }
+
+    public static function importCardknoxLooseTransactions($filename)
+    {
+        $handle = self::handle($filename);
+
+        $headers = self::headers($handle, $filename);
+        $imported =0;
+        while (($row = fgetcsv($handle, 1000)) !== false) {
+            if (!is_array($row)) continue;
+
+            $member = Member::find($row[$headers->search('member_id')]);
+
+            if($member === null){continue;}
+
+            $amnt = trim($row[$headers->search('amount')]);
+            $memfee = Str::after(trim($row[$headers->search('membership_fee')]), '$') ?: 0;
+            $prcsfee = trim($row[$headers->search('cc_fee')]) ?: 0;
+            $decline_fee = trim($row[$headers->search('decline_fee')]) ?: 0;
+
+            $subscription = $member->subscriptions()->firstOrCreate([
+                'gateway'            => 'Cardknox',
+                'gateway_identifier' => trim($row[$headers->search('subscription_id')])
+            ], [
+                'type'           => trim($row[$headers->search('type')]),
+                'amount'         => ($amnt - $memfee - $prcsfee - $decline_fee),
+                'start_date'     => Carbon::parse(trim($row[$headers->search('date')]))->toDateString(),
+                'created_at'     => Carbon::parse(trim($row[$headers->search('date')]))->toDateString(),
+                'frequency'      => [
+                    'Once'              => Subscription::FREQUENCY_ONCE,
+                    'Monthly'           => Subscription::FREQUENCY_MONTHLY,
+                    'Yearly'            => Subscription::FREQUENCY_YEARLY,
+                ][trim($row[$headers->search('frequency')])],
+                'membership_fee' => $memfee,
+                'processing_fee' => $prcsfee,
+                'decline_fee'    => $decline_fee,
+                'active'         => 0,
+                'deleted_from_gateway' => 1,
+                'comment'        => 'Created by manual import for loose transactions',
+                'gateway_data' => ['deleted' => true]
+                ]);
+
+
+            $gatewayData = array(
+                'SubscriptionId' => trim($row[$headers->search('subscription_id')]),
+                'GatewayRefNum' => $row[$headers->search('trans_number')],
+                'CardType' => $row[$headers->search('card_type')],
+                'CardNumber' => $row[$headers->search('card_number')],
+                'GatewayComment' => $row[$headers->search('comment')]
+            );
+
+
+            $transaction = Transaction::firstOrCreate([
+                'gateway'            => \App\Gateways\Factory::CARDKNOX,
+                'gateway_identifier' => $row[$headers->search('trans_number')]
+            ],[
+                'amount'             => $row[$headers->search('amount')], 
+                'process_date'       => Carbon::parse(trim($row[$headers->search('date')]))->toDateString(),
+                'status'             => Transaction::STATUS_SUCCESS,
+                'subscription_id'    => $subscription->id,
+                'member_id'          => $subscription->member_id,
+                'type'               => $subscription->type == Subscription::TYPE_MEMBERSHIP ? Transaction::TYPE_BASE_TRANSACTION : Transaction::TYPE_MAIN_TRANSACTION,
+                'status_message'     => NULL,
+                'comment'            => $row[$headers->search('comment')],
+                'gateway_data'       => $gatewayData
+
+            ]);
+
+            
+
+                $attributes = [
+                    'process_date' => Carbon::parse(trim($row[$headers->search('date')]))->toDateString(),
+                    'status' => Transaction::STATUS_SUCCESS,
+                    'comment' => $row[$headers->search('comment')],
+                    'status_message' => NULL,
+                    'gateway_data' => $gatewayData,
+                ];
+
+                if($transaction->type == Transaction::TYPE_BASE_TRANSACTION){
+                    $transaction->split($attributes);
+                }
             $imported++;
         }
 

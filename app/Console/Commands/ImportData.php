@@ -20,7 +20,8 @@ class ImportData extends Command
          {--loans=}
          {--rotessaCustomers=}
          {--rotessaSchedules=}
-         {--cardknoxSchedules=}';
+         {--cardknoxSchedules=}
+         {--cardknoxTransactions=}';
 
     /**
      * The console command description.
@@ -91,6 +92,15 @@ class ImportData extends Command
                 $this->getFilePath($cardknoxSchedules)
             );
             $this->info('Finished Importing Cardknox schedules. '.$importedCount.' schedules imported.');
+            $this->newLine();
+        }
+
+        if ($cardknoxTransactions = ($this->option('cardknoxTransactions') ?? $this->ask('Please enter filename for Cardknox transactions (or empty to skip) then [ENTER]'))) {
+            $this->comment('Importing Cardknox transactions...');
+            $importedCount = CsvImportService::importCardknoxLooseTransactions(
+                $this->getFilePath($cardknoxTransactions)
+            );
+            $this->info('Finished Importing Cardknox transactions. '.$importedCount.' transactions imported.');
             $this->newLine();
         }
 
