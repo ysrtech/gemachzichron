@@ -3,7 +3,8 @@ import {MEMBERSHIP_TYPES} from "@/config/memberships";
 
 export const SUBSCRIPTION_TYPES = {
   Membership: 'Membership',
-  'Loan Payment': 'Loan Payment'
+  'Loan Payment': 'Loan Payment',
+  'Pikudon': 'Pikudon'
 }
 
 export const SUBSCRIPTION_FREQUENCIES = {
