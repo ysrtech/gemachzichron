@@ -27,7 +27,8 @@ class Member extends Model
         'first_name',
         'hebrew_first_name',
         'hebrew_last_name',
-        'email'
+        'email',
+        'id'
     ];
 
     protected static function booted()
