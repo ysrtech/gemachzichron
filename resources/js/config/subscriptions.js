@@ -2,7 +2,7 @@ import {AVAILABLE_GATEWAYS} from "@/config/gateways";
 import {MEMBERSHIP_TYPES} from "@/config/memberships";
 
 export const SUBSCRIPTION_TYPES = {
-  Membership: 'Membership',
+  'Membership': 'Membership',
   'Loan Payment': 'Loan Payment',
   'Pikudon': 'Pikudon'
 }
