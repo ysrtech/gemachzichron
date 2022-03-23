@@ -274,6 +274,91 @@ class CsvImportService
         return $imported;
     }
 
+    public static function importRotessaLooseTransactions($filename)
+    {
+        $handle = self::handle($filename);
+
+        $headers = self::headers($handle, $filename);
+        $imported =0;
+        while (($row = fgetcsv($handle, 1000)) !== false) {
+            if (!is_array($row)) continue;
+
+            $member = Member::find($row[$headers->search('member_id')]);
+
+            if($member === null){continue;}
+
+            $amnt = trim($row[$headers->search('amount')]);
+            $memfee = Str::after(trim($row[$headers->search('membership_fee')]), '$') ?: 0;
+            $decline_fee = trim($row[$headers->search('decline_fee')]) ?: 0;
+
+            $subscription = $member->subscriptions()->firstOrCreate([
+                'gateway'            => 'Rotessa',
+                'gateway_identifier' => trim($row[$headers->search('subscription_id')])
+            ], [
+                'type'           => trim($row[$headers->search('type')]),
+                'amount'         => ($amnt - $memfee - $decline_fee),
+                'start_date'     => Carbon::parse(trim($row[$headers->search('date')]))->toDateString(),
+                'created_at'     => Carbon::parse(trim($row[$headers->search('date')]))->toDateString(),
+                'frequency'      => [
+                    'Once'              => Subscription::FREQUENCY_ONCE,
+                    'Monthly'           => Subscription::FREQUENCY_MONTHLY,
+                    'Yearly'            => Subscription::FREQUENCY_YEARLY,
+                ][trim($row[$headers->search('frequency')])],
+                'membership_fee' => $memfee,
+                'processing_fee' => 0,
+                'decline_fee'    => $decline_fee,
+                'active'         => 0,
+                'installments'         => trim($row[$headers->search('installments')]),
+                'deleted_from_gateway' => 1,
+                'comment'        => 'Created by manual import for loose transactions',
+                'gateway_data' => ['deleted' => true]
+                ]);
+
+
+            $gatewayData = array(
+                'Subscription Id' => trim($row[$headers->search('subscription_id')]),
+                'Transaction #' => $row[$headers->search('trans_number')],
+                'Institution #' => $row[$headers->search('inst')],
+                'Branch #' => $row[$headers->search('branch')],
+                'Account #' => $row[$headers->search('acc')]
+            );
+
+
+            $transaction = Transaction::firstOrCreate([
+                'gateway'            => \App\Gateways\Factory::CARDKNOX,
+                'gateway_identifier' => $row[$headers->search('trans_number')]
+            ],[
+                'amount'             => $row[$headers->search('amount')], 
+                'process_date'       => Carbon::parse(trim($row[$headers->search('date')]))->toDateString(),
+                'status'             => Transaction::STATUS_SUCCESS,
+                'subscription_id'    => $subscription->id,
+                'member_id'          => $subscription->member_id,
+                'type'               => $subscription->type == Subscription::TYPE_MEMBERSHIP ? Transaction::TYPE_BASE_TRANSACTION : Transaction::TYPE_MAIN_TRANSACTION,
+                'status_message'     => NULL,
+                //'comment'            => $row[$headers->search('comment')],
+                'gateway_data'       => $gatewayData
+
+            ]);
+
+            
+
+                $attributes = [
+                    'process_date' => Carbon::parse(trim($row[$headers->search('date')]))->toDateString(),
+                    'status' => Transaction::STATUS_SUCCESS,
+                    'comment' => $row[$headers->search('comment')],
+                    'status_message' => NULL,
+                    'gateway_data' => $gatewayData,
+                ];
+
+                if($transaction->type == Transaction::TYPE_BASE_TRANSACTION){
+                    $transaction->split($attributes);
+                }
+            $imported++;
+        }
+
+        return $imported;
+    }
+
     public static function importCardknoxLooseTransactions($filename)
     {
         $handle = self::handle($filename);

@@ -37,7 +37,7 @@ class SubscriptionController extends Controller
 
     public function update(UpdateSubscriptionRequest $request, Subscription $subscription)
     {
-        if ($subscription->gateway != \App\Gateways\Factory::MANUAL) {
+        if ($subscription->gateway != \App\Gateways\Factory::MANUAL && !$subscription->isDeletedInGateway()) {
             try {
                 $request->merge(
                     Gateway::initialize($subscription->gateway)->updateSchedule(
