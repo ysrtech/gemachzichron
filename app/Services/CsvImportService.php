@@ -325,7 +325,7 @@ class CsvImportService
 
 
             $transaction = Transaction::firstOrCreate([
-                'gateway'            => \App\Gateways\Factory::ROTESSA,
+                'gateway'            => \App\Gateways\Factory::CARDKNOX,
                 'gateway_identifier' => $row[$headers->search('trans_number')]
             ],[
                 'amount'             => $row[$headers->search('amount')], 
@@ -339,7 +339,7 @@ class CsvImportService
                 'gateway_data'       => $gatewayData
 
             ]);
-
+            
             $transaction->update(['gateway'  => \App\Gateways\Factory::ROTESSA]);
 
                 $attributes = [
