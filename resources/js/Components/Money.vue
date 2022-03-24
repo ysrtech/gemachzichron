@@ -1,6 +1,6 @@
 <template>
   <div>
-    <span :class="currencySignClass">$</span>{{ Number(amount).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) }}
+    <span :class="currencySignClass">$</span>{{ Number(amount).toLocaleString(undefined, {minimumFractionDigits: fraction, maximumFractionDigits: fraction}) }}
   </div>
 </template>
 
@@ -11,7 +11,11 @@ export default {
       type: String,
       default: 'mr-0.5 text-gray-500'
     },
-    amount: [Number, String]
+    amount: [Number, String],
+    fraction: {
+      type: Number,
+      default: 2
+    }
   }
 }
 </script>

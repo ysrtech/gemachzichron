@@ -9,28 +9,28 @@
       <div class="bg-white flex flex-col overflow-hidden rounded-lg shadow p-5">
         <div class="text-xl text-gray-500">Loans Total</div>
         <h2 class="font-medium text-5xl flex-1">
-          <money class="text-4xl" :amount="total_loans" />
+          <money class="text-4xl" :amount="total_loans" :fraction="0"/>
         </h2>
       </div>
 
       <div class="bg-white flex flex-col overflow-hidden rounded-lg shadow p-5">
         <div class="text-xl text-gray-500">Outstanding Loans</div>
         <h2 class="font-medium text-5xl flex-1">
-          <money class="text-4xl" :amount="total_loans_outstanding" />
+          <money class="text-4xl" :amount="total_loans_outstanding" :fraction="0"/>
         </h2>
       </div>
 
       <div class="bg-white flex flex-col overflow-hidden rounded-lg shadow p-5">
         <div class="text-xl text-gray-500">Gemach Capital</div>
         <h2 class="font-medium text-4xl">
-          <money class="text-4xl" :amount="total_capital" />
+          <money class="text-4xl" :amount="total_capital" :fraction="0"/>
         </h2>
       </div>
 
       <div class="bg-white flex flex-col overflow-hidden rounded-lg shadow p-5">
         <div class="text-xl text-gray-500">Membership & Decline Fees</div>
         <h2 class="font-medium text-4xl">
-          <money class="text-4xl" :amount="total_membership_fees" />
+          <money class="text-4xl" :amount="total_membership_fees" :fraction="0"/>
         </h2>
       </div>
 
