@@ -20,7 +20,7 @@ class Subscription extends Model
 
     const TYPE_MEMBERSHIP = 'Membership';
     const TYPE_LOAN_PAYMENT = 'Loan Payment';
-    const TYPE_Pikudon = 'Pikudon';
+    const TYPE_PIKUDON = 'Pikudon';
 
     const FREQUENCY_ONCE = 'Once';
     const FREQUENCY_WEEKLY = 'Weekly';

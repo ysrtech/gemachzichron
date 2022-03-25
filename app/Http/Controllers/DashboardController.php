@@ -34,7 +34,7 @@ class DashboardController extends Controller
             ->sum('amount'),
             'total_capital' => Transaction::where('status', Transaction::STATUS_SUCCESS)
                 ->where('type',Transaction::TYPE_MAIN_TRANSACTION)
-                ->whereHas('subscription', fn($q) => $q->where('type', Subscription::TYPE_MEMBERSHIP))
+                ->whereHas('subscription', fn($q) => $q->whereIn('type', [Subscription::TYPE_MEMBERSHIP,Subscription::TYPE_PIKUDON]))
                 ->sum('amount'),
             'total_membership_fees' => Transaction::where('status', Transaction::STATUS_SUCCESS)
             ->where('type',Transaction::TYPE_MEMBERSHIP_FEE)
