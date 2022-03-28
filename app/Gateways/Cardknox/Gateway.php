@@ -198,7 +198,7 @@ class Gateway extends AbstractGateway
 
     public function updateSchedule(Subscription $subscription, array $data): array
     {
-        $revision = $subscription->gateway_data['Revision'];
+        $revision = $subscription->gateway_data['revision'];
 
         if (!$subscription->active) {
             // activate temporarily - Cardknox does not allow update of inactive schedules
