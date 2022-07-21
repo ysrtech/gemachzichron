@@ -49,7 +49,9 @@ class Subscription extends Model
     ];
 
     protected $appends = [
-        'transaction_total'
+        'transaction_total',
+        'transactions_count',
+        'transactions_sum'
     ];
 
     public function member()
@@ -75,6 +77,20 @@ class Subscription extends Model
     public function getTransactionTotalAttribute()
     {
         return $this->amount + $this->membership_fee + $this->processing_fee + $this->decline_fee;
+    }
+
+    public function getTransactionsCountAttribute()
+    {
+        return $this->transactions
+        ->whereIn('type', Transaction::TYPE_MAIN_TRANSACTION)
+        ->count();
+    }
+
+    public function getTransactionsSumAttribute()
+    {
+        return $this->transactions
+        ->where('type', Transaction::TYPE_MAIN_TRANSACTION)
+        ->sum('amount');
     }
 
     public function syncWithGateway()

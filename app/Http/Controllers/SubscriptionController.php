@@ -26,6 +26,7 @@ class SubscriptionController extends Controller
                 ->paginate(20),
             'missing_subscriptions_count' => GatewayConflict::where('type', GatewayConflict::TYPE_MISSING_SUBSCRIPTION)->count()
         ]);
+
     }
 
     public function show(Subscription $subscription)

@@ -36,7 +36,9 @@
             <key-value label="Installments" :value="subscription.installments"/>
             <key-value label="Comments"><div class="font-sans whitespace-pre-wrap">{{ subscription.comment }}</div></key-value>
             <inertia-link :href="$route('transactions.index', {subscription_id: subscription.id})" class="flex space-x-1">
-              <span class="font-medium hover:underline text-sm">View Transactions</span>
+              <span class="font-medium hover:underline text-sm">View Transactions 
+                <span v-show="subscription.transactions_sum > 0">({{subscription.transactions_count}}) <money :amount="subscription.transactions_sum"/></span>
+                </span>
               <i class="material-icons-outlined text-base">launch</i>
             </inertia-link>
             <div class="flex justify-around col-span-2" v-show="subscription.gateway === AVAILABLE_GATEWAYS.Manual">

@@ -4,9 +4,11 @@
       <tr class="bg-gray-50 text-xs text-left text-gray-400 uppercase">
         <th class="px-6 py-3 font-medium">ID</th>
         <th class="px-6 py-3 font-medium" v-show="showMember">Member</th>
-        <th class="px-6 py-3 font-medium">Transaction Total</th>
+        <th class="px-6 py-3 font-medium">Transaction Amount</th>
         <th class="px-6 py-3 font-medium">Frequency</th>
         <th class="px-6 py-3 font-medium">Installments</th>
+        <th class="px-6 py-3 font-medium">Transactions</th>
+        <th class="px-6 py-3 font-medium">Total Paid</th>
         <th class="px-6 py-3 font-medium">Type</th>
         <th class="px-6 py-3 font-medium">Start Date</th>
         <th class="px-6 py-3 font-medium">Gateway</th>
@@ -38,6 +40,8 @@
           <app-badge color="gray">{{ subscription.frequency }}</app-badge>
         </td>
         <td class="px-6 py-3.5 whitespace-nowrap">{{ subscription.installments || 'Unlimited' }}</td>
+        <td class="px-6 py-3.5 whitespace-nowrap"><span v-show="subscription.transactions_count > 0">{{ subscription.transactions_count }}</span></td>
+        <td class="px-6 py-3.5 whitespace-nowrap"><span v-show="subscription.transactions_sum > 0"><money :amount="subscription.transactions_sum"/></span></td>
         <td class="px-6 py-3.5 whitespace-nowrap">{{ subscription.type }}</td>
         <td class="px-6 py-3.5 whitespace-nowrap">{{ date(subscription.start_date) }}</td>
         <td class="px-6 py-3.5 whitespace-nowrap">
@@ -52,7 +56,7 @@
           <app-badge v-show="!subscription.active" color="red">Inactive</app-badge>
         </td>
         <td class="px-3 py-2 whitespace-nowrap flex items-center space-x-2" @click.stop>
-          <refresh-button :subscription-id="subscription.id" v-show="!subscription.gateway_data?.deleted"/>
+          <refresh-button :subscription-id="subscription.id" v-show="!subscription.gateway_data?.deleted && subscription.gateway != 'Manual'"/>
         </td>
       </inertia-link>
 

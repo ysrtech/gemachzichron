@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-7xl mx-auto">
+  <div class="max-w-12xl mx-auto">
 
     <alert
       v-if="missing_subscriptions_count"

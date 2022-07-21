@@ -71,6 +71,14 @@
           class="material-icons-outlined focus:outline-none rounded-full p-1 hover:bg-gray-200 focus:bg-gray-300">
           add_task
         </button>
+
+         <button
+          v-show="transaction.gateway === AVAILABLE_GATEWAYS.Manual"
+          v-tippy="{content: 'Delete Transaction'}"
+          @click="$inertia.delete($route('transaction.destroy', transaction.id), {preserveScroll: true})"
+          class="material-icons-outlined focus:outline-none rounded-full p-1 hover:bg-gray-200 focus:bg-gray-300">
+        delete
+        </button>
 <!--        <button-->
 <!--          v-show="transaction.status === TRANSACTION_STATUSES.Pending-->
 <!--                && transaction.gateway === AVAILABLE_GATEWAYS.Manual"-->

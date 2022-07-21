@@ -1,7 +1,7 @@
 <template>
   <div>
     <member-base :member="member">
-      <div class="max-w-6xl mx-auto">
+      <div class="max-w-12xl mx-auto">
         <app-panel title="Subscriptions">
           <template #actions>
             <button
