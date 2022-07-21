@@ -65,6 +65,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('members/{member}/transactions', [MemberTransactionController::class, 'index'])->name('members.transactions.index');
     Route::apiResource('transactions', TransactionController::class)->except('store');
     Route::post('subscriptions/{subscription}/transactions', [SubscriptionTransactionController::class, 'store'])->name('subscriptions.transactions.store');
+    Route::delete('transactions/{transaction}', [TransactionController::class, 'destroy'])->name('transaction.destroy');
 
     // Guarantees
     Route::get('members/{member}/guarantees', [MemberGuaranteesController::class, 'index'])->name('members.guarantees.index');
