@@ -24,8 +24,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('transactions:pull rotessa "1 week ago"')->dailyAt('0:00');
-        $schedule->command('transactions:pull cardknox "1 week ago"')->dailyAt('0:30');
+        $schedule->command('transactions:pull rotessa "2 weeks ago"')->dailyAt('0:00');
+        $schedule->command('transactions:pull cardknox "2 weeks ago"')->dailyAt('0:30');
         $schedule->command('subscriptions:sync')->dailyAt('1:00');
         $schedule->command('queue:restart')->dailyAt('1:30');
     }
