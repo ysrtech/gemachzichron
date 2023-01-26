@@ -86,7 +86,7 @@
             <template #options>
               <option></option>
               <option v-for="paymentMethod in member?.payment_methods" :key="paymentMethod.id">
-                {{ paymentMethod.gateway }}
+                {{ paymentMethod.gateway+' '+paymentMethod.id }}
               </option>
               <option>{{ AVAILABLE_GATEWAYS.Manual }}</option>
             </template>
