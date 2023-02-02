@@ -42,6 +42,18 @@ trait HttpClientWrapper
         return $this->httpRequest->patch($url, $data)->throw($this->exceptionThrowerCallback());
     }
 
+    /**
+     * @param string $url
+     * @param array $data
+     * @return \GuzzleHttp\Promise\PromiseInterface|\Illuminate\Http\Client\Response
+     * @throws RotessaApiException
+     * @throws \Illuminate\Http\Client\RequestException
+     */
+    protected function delete(string $url)
+    {
+        return $this->httpRequest->delete($url)->throw($this->exceptionThrowerCallback());
+    }
+
     private function exceptionThrowerCallback(): \Closure
     {
         return function ($response, $e) {

@@ -32,7 +32,7 @@ class CreateSubscriptionRequest extends FormRequest
     {
         return [
             'type'                 => ['required', Rule::in([Subscription::TYPE_MEMBERSHIP, Subscription::TYPE_LOAN_PAYMENT])],
-            'gateway'              => ['required', Rule::in(Gateway::all())],
+            'gateway'              => ['required', Rule::exists('payment_methods', 'id')->where('member_id', $this->route('member')->id)],
             'amount'               => ['required', 'numeric', 'min:1'],
             'start_date'           => ['required', 'date', Rule::when(!$this->gateway_identifier, 'after:today')],
             'installments'         => ['nullable', 'integer'],

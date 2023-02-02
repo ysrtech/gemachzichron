@@ -226,6 +226,8 @@ class Subscription extends Model
         $this->update(['active' => 0]);
     }
 
+
+
     public function setAsNotDeletedFromGateway()
     {
         $this->update([
@@ -262,6 +264,7 @@ class Subscription extends Model
     {
         return $this->gateway_data['deleted'] ?? false;
     }
+
 
     public function scopeWhereIsNotDeletedInGateway($query)
     {

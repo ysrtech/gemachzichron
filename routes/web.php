@@ -59,7 +59,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('members/{member}/subscriptions', [MemberSubscriptionController::class, 'index'])->name('members.subscriptions.index');
     Route::post('members/{member}/subscriptions', [MemberSubscriptionController::class, 'store'])->name('members.subscriptions.store');
     Route::apiResource('subscriptions', SubscriptionController::class)->except('store');
-    Route::post('subscriptions/{subscription}', [SubscriptionController::class, 'refresh'])->name('subscriptions.refresh');
+    Route::post('subscriptions/{subscription}/refresh', [SubscriptionController::class, 'refresh'])->name('subscription.refresh');
+    Route::post('subscriptions/{subscription}/destroy', [SubscriptionController::class, 'destroy'])->name('subscription.destroy');
+    Route::post('subscriptions/{subscription}/cancel', [SubscriptionController::class, 'cancel'])->name('subscription.cancel');
+
 
     // Transactions
     Route::get('members/{member}/transactions', [MemberTransactionController::class, 'index'])->name('members.transactions.index');

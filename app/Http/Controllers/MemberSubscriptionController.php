@@ -51,7 +51,7 @@ class MemberSubscriptionController extends Controller
             return back()->snackbar('Subscription created and synced successfully');
         }
 
-        if (!$paymentMethod = $member->paymentMethods()->firstWhere('gateway', $request->gateway)) {
+        if (!$paymentMethod = $member->paymentMethods()->firstWhere('id', $request->gateway)) {
             throw ValidationException::withMessages(['gateway' => 'Member does not have a payment method set up with this gateway']);
         }
 

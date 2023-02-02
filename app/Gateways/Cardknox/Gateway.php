@@ -175,6 +175,31 @@ class Gateway extends AbstractGateway
             'PaymentMethodId' => $paymentMethod->gateway_data['PaymentMethodId'],
         ]);
     }
+
+    public function removeSchedule(Subscription $subscription)
+    {
+        if ($subscription->active) {
+            $this->deactivateSchedule($subscription);
+        }
+
+        try{
+                $this->post('DeleteSchedule', [
+                    'ScheduleId' => $subscription->gateway_identifier,
+                ]);
+                $subscription->setAsDeletedFromGateway();
+        }catch(Exception  $e){
+            return null;
+        }
+    }
+
+    public function cancelSchedule(Subscription $subscription)
+    {
+        
+        $this->deactivateSchedule($subscription);
+        $subscription->setAsInactive();
+        
+
+    }
     // endregion
 
     // region Schedules

@@ -58,10 +58,98 @@ class SubscriptionController extends Controller
         return back()->snackbar('Subscription updated successfully');
     }
 
-    public function destroy(Subscription $subscription)
+    public function destroy(Request $request, Subscription $subscription)
     {
-        //
+
+        $subscription->syncWithGateway();
+        
+        if ($subscription->gateway != \App\Gateways\Factory::MANUAL && !$subscription->isDeletedInGateway()) {
+            $subscription->pullTransactionsFromGateway();
+        }
+
+        if ($subscription->transactions->isNotEmpty()) {
+                return back()->alert([
+                    'icon'         => 'error',
+                    'title'        => 'Delete Subscription Failed',
+                    'message'      => "You cannot delete a subscription with existing transactions.",
+                    'actionButton' => [
+                        'text'   => 'Close',
+                        'color'  => 'danger',
+                    ],
+                ]);
+        }
+
+        if (!$request->boolean('confirm')) {
+            return back()->alert([
+                'icon'         => 'error',
+                'title'        => 'Are you sure?',
+                'message'      => "Are you sure you want to delete Subscription <strong>#$subscription->id</strong>?",
+                'actionButton' => [
+                    'text'   => 'Delete',
+                    'color'  => 'danger',
+                    'route'  => route('subscription.destroy', ['subscription' => $subscription->id, 'confirm' => true]),
+                    'method' => 'post'
+                ],
+            ]);
+        }
+
+        if ($subscription->gateway != \App\Gateways\Factory::MANUAL && !$subscription->isDeletedInGateway()) {
+            try {
+                Gateway::initialize($subscription->gateway)->removeSchedule($subscription);
+            } catch (NotImplementedException $exception) {
+                throw ValidationException::withMessages(['gateway' => 'This payment method gateway does not support removing subscriptions']);
+                return;
+            }
+        }
+        
+
+        $subscription->delete();
+        $member = $subscription->member->id;
+
+        return redirect()->route('members.subscriptions.index', $member)->snackbar('Subscription Deleted.');
     }
+
+    public function cancel(Request $request, Subscription $subscription)
+    {
+        $subscription->syncWithGateway();
+
+        if ($subscription->gateway != \App\Gateways\Factory::MANUAL && !$subscription->isDeletedInGateway()) {
+            $subscription->pullTransactionsFromGateway();
+        }
+
+        if (!$request->boolean('confirm')) {
+
+            return back()->alert([
+                'icon'         => 'error',
+                'title'        => 'Are you sure?',
+                'message'      => "Are you sure you want to cancel Subscription <strong>#$subscription->id</strong>?",
+                'actionButton' => [
+                    'text'   => 'Cancel',
+                    'color'  => 'danger',
+                    'route'  => route('subscription.cancel', ['subscription' => $subscription->id, 'confirm' => true]),
+                    'method' => 'post'
+                ],
+            ]);
+        }
+
+        if ($subscription->gateway != \App\Gateways\Factory::MANUAL && !$subscription->isDeletedInGateway()) {
+            try {
+                Gateway::initialize($subscription->gateway)->cancelSchedule($subscription);
+            } catch (NotImplementedException $exception) {
+                throw ValidationException::withMessages(['gateway' => 'This payment method gateway does not support canceling subscriptions']);
+            }
+        }else{
+            $subscription->setAsInactive();
+        }
+        
+
+        
+        $member = $subscription->member->id;
+
+        return redirect()->route('members.subscriptions.index', $member)->snackbar('Subscription Canceled.');
+    }
+
+    
 
     public function refresh(Subscription $subscription)
     {

@@ -4,8 +4,8 @@
     <div class="px-6 py-4 text-xl font-medium">
       <div class="flex justify-between" v-if="subscription">
         <span>Edit Subscription #{{ subscription.id }}</span>
-        <label class="flex items-center">
-          <app-checkbox v-model="form.active" name="active"/>
+        <label class="flex items-center" v-show="subscription.gateway != AVAILABLE_GATEWAYS.Rotessa">
+          <app-checkbox  v-model="form.active" name="active"/>
           <span class="ml-2 text-sm text-gray-600">Active</span>
         </label>
       </div>
@@ -85,10 +85,10 @@
             @update:model-value="form.clearErrors('gateway')">
             <template #options>
               <option></option>
-              <option v-for="paymentMethod in member?.payment_methods" :key="paymentMethod.id">
+              <option v-for="paymentMethod in member?.payment_methods" :key="paymentMethod.id" :value="paymentMethod.id">
                 {{ paymentMethod.gateway+' '+paymentMethod.id }}
               </option>
-              <option>{{ AVAILABLE_GATEWAYS.Manual }}</option>
+              <option :value="AVAILABLE_GATEWAYS.Manual">{{ AVAILABLE_GATEWAYS.Manual }}</option>
             </template>
           </app-select>
         </div>
@@ -351,6 +351,7 @@ export default {
     },
 
     resolvesFailedTransactionForm() {
+
       this.member = this.resolvesFailedTransaction.member
       this.$axios.get(this.$route('ajax.members.show', this.resolvesFailedTransaction.member_id), {
         params: {with: 'paymentMethods:id,member_id,gateway'},

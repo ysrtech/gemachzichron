@@ -9,6 +9,7 @@ echo -e "\e[1;32mDeploying application...\e[0m"
 
 printf "Entering maintenance mode.\n"
 php artisan down
+php artisan backup:run
 
 printf "Updating codebase...\n"
 git fetch origin

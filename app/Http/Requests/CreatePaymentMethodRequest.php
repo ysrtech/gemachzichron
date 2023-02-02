@@ -14,11 +14,7 @@ class CreatePaymentMethodRequest extends FormRequest
         $cardknox = \App\Gateways\Factory::CARDKNOX;
 
         return [
-            'gateway' => [
-                'required',
-                Rule::in(Gateway::all()),
-                Rule::unique('payment_methods')->where('member_id', $this->route('member.id')),
-            ],
+            'gateway' => ['required',Rule::in(Gateway::all()),],
             'bank_name' => 'nullable|string',
             'transit_number' => ["required_if:gateway,$rotessa", 'nullable', 'digits:5'],
             'institution_number' => ["required_if:gateway,$rotessa", 'nullable', 'digits:3'],

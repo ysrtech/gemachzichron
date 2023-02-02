@@ -28,7 +28,7 @@ export default {
   methods: {
     refresh() {
       this.isRefreshing = true;
-      this.$inertia.post(this.$route('subscriptions.refresh', this.subscriptionId), {}, {
+      this.$inertia.post(this.$route('subscription.refresh', this.subscriptionId), {}, {
         onFinish: () => this.isRefreshing = false,
         preserveScroll: true
       })

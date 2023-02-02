@@ -5,13 +5,26 @@
       text: subscription.active ? 'Active' : 'Inactive',
     }">
       <template #actions>
-        <refresh-button :subscription-id="subscription.id" class="p-1.5"/>
+        <refresh-button :subscription-id="subscription.id" class="p-1.5" v-show="!subscription.gateway_data?.deleted && subscription.gateway != 'Manual'"/>
         <button
+          v-show="!(subscription.gateway == AVAILABLE_GATEWAYS.Rotessa && !subscription.active)"
           v-tippy="{ content: 'Edit Subscription' }"
           @click="openFormModal = true"
           class="material-icons-outlined focus:outline-none rounded-full p-1.5 text-gray-600 hover:bg-gray-200 focus:bg-gray-300">
           edit
         </button>
+        <button v-show="subscription.transactions_count < 1"
+                    @click="$inertia.post($route('subscription.destroy', subscription.id), {preserveScroll: false})"
+                    v-tippy="{ content: 'Delete Subscription' }"
+                    class="material-icons-outlined focus:outline-none rounded-full p-1 hover:bg-gray-200 focus:bg-gray-300">
+                    delete
+                  </button>
+      <button v-show="subscription.active"
+                    @click="$inertia.post($route('subscription.cancel', subscription.id), {preserveScroll: false})" 
+                    v-tippy="{ content: 'Cancel Subscription' }"
+                    class="material-icons-outlined focus:outline-none rounded-full p-1 hover:bg-gray-200 focus:bg-gray-300">
+                    cancel
+                  </button>
       </template>
       <template #content>
         <div class="px-4 py-5 sm:px-6">

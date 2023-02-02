@@ -44,13 +44,14 @@ class Gateway extends AbstractGateway
         Log::info("[ROTESSA] creating customer (Member #$member->id)", $data);
 
         $response = $this->post('customers', [
-            'custom_identifier'  => $member->id,
+            //'custom_identifier'  => $member->id,
             'email'              => $member->email,
             'name'               => "{$member->first_name} {$member->last_name}",
             'bank_name'          => $data['bank_name'] ?? null,
             'transit_number'     => $data['transit_number'] ?? null,
             'institution_number' => $data['institution_number'] ?? null,
             'account_number'     => $data['account_number'] ?? null,
+            'authorization_type' => "Online",
             'home_phone'         => $member->home_phone,
             'cell_phone'         => $member->cell_phone,
             'address'            => [
@@ -164,6 +165,19 @@ class Gateway extends AbstractGateway
         ]);
 
         return $this->setFormatter(new RotessaScheduleToSubscription)->format($response);
+    }
+
+    public function removeSchedule(Subscription $subscription)
+    {
+        $this->delete("transaction_schedules/$subscription->gateway_identifier");
+        $subscription->setAsDeletedFromGateway();
+    }
+
+    public function cancelSchedule(Subscription $subscription)
+    {
+        $this->delete("transaction_schedules/$subscription->gateway_identifier");
+        $subscription->setAsDeletedFromGateway();
+        $subscription->setAsInactive();
     }
 
     public function getSchedule(Subscription $subscription, array $query = []): array
