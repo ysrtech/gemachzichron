@@ -86,6 +86,11 @@ class Subscription extends Model
         ->count();
     }
 
+    public function getHasTransactionsAttribute()
+    {
+        return $this->transactions->count();
+    }
+
     public function getTransactionsSumAttribute()
     {
         return $this->transactions
