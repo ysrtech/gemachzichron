@@ -51,7 +51,8 @@ class Subscription extends Model
     protected $appends = [
         'transaction_total',
         'transactions_count',
-        'transactions_sum'
+        'transactions_sum',
+        'has_transactions'
     ];
 
     public function member()
@@ -88,7 +89,7 @@ class Subscription extends Model
 
     public function getHasTransactionsAttribute()
     {
-        return $this->transactions->count();
+        return $this->transactions->count()?:false;
     }
 
     public function getTransactionsSumAttribute()

@@ -13,7 +13,7 @@
           class="material-icons-outlined focus:outline-none rounded-full p-1.5 text-gray-600 hover:bg-gray-200 focus:bg-gray-300">
           edit
         </button>
-        <button v-show="subscription.has_transactions < 1"
+        <button v-show="!subscription.has_transactions"
                     @click="$inertia.post($route('subscription.destroy', subscription.id), {preserveScroll: false})"
                     v-tippy="{ content: 'Delete Subscription' }"
                     class="material-icons-outlined focus:outline-none rounded-full p-1 hover:bg-gray-200 focus:bg-gray-300">
