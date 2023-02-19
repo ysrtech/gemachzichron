@@ -86,14 +86,8 @@
         </inertia-link>
       </div>
       <div class="bg-white flex flex-col overflow-hidden rounded-lg shadow p-5">
-        <div class="text-xl text-gray-500">
-          Successful Transactions &dash;{{
-            currentDate({ year: "numeric", month: "long" })
-          }}
-        </div>
-        <h2 class="font-medium text-4xl">
-          <money :amount="month_success_total" />
-        </h2>
+        <div class="text-xl text-gray-500">Active Members</div>
+        <h2 class="flex-1 font-medium text-4xl">{{ members_count }}</h2>
       </div>
 
       <app-panel
@@ -138,6 +132,7 @@ export default {
     pending_manual_count: Number,
     failed_count: Number,
     loans_count: Number,
+    members_count: Number,
     month_success_total: [Number, String],
     total_loans: [Number, String],
     total_loans_outstanding: [Number, String],

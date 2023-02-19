@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Transaction;
 use App\Models\Loan;
 use App\Models\Subscription;
+use App\Models\Member;
 use Inertia\Inertia;
 
 class DashboardController extends Controller
@@ -13,6 +14,7 @@ class DashboardController extends Controller
     {
         $totalLoansGiven = Loan::sum('amount');
         $loansCount = Loan::count();
+        $membersCount = Member::where('active_membership',1)->count();
         $totalLoansPayments = Transaction::where('status', Transaction::STATUS_SUCCESS)
         ->whereHas('subscription', fn($q) => $q->where('type', Subscription::TYPE_LOAN_PAYMENT))->sum('amount');
 
@@ -42,7 +44,8 @@ class DashboardController extends Controller
             ->sum('amount'),
             'total_loans' => $totalLoansGiven,
             'total_loans_outstanding' => ($totalLoansGiven - $totalLoansPayments),
-            'loans_count' => $loansCount
+            'loans_count' => $loansCount,
+            'members_count' => $membersCount,
         ]);
     }
 }
