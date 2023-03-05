@@ -18,11 +18,11 @@ class SubscriptionController extends Controller
     public function index(Request $request)
     {
         return Inertia::render('Subscriptions/Index', [
-            'filters' => $request->all('search', 'amount', 'type', 'active', 'gateway'),
+            'filters' => $request->all('search', 'amount', 'type', 'active', 'gateway', 'sort'),
             'subscriptions' => Subscription::searchByRelated($request->search, ['member'])
                 ->filter($request->only('amount', 'type', 'active', 'gateway'))
+                ->sort($request->sort)
                 ->with(['member' => fn($q) => $q->select(['id', 'first_name', 'last_name', 'deleted_at'])->withTrashed()])
-                ->orderByDesc('start_date')
                 ->paginate(20),
             'missing_subscriptions_count' => GatewayConflict::where('type', GatewayConflict::TYPE_MISSING_SUBSCRIPTION)->count()
         ]);
@@ -62,7 +62,7 @@ class SubscriptionController extends Controller
     {
 
         $subscription->syncWithGateway();
-        
+
         if ($subscription->gateway != \App\Gateways\Factory::MANUAL && !$subscription->isDeletedInGateway()) {
             $subscription->pullTransactionsFromGateway();
         }
@@ -101,7 +101,7 @@ class SubscriptionController extends Controller
                 return;
             }
         }
-        
+
 
         $subscription->delete();
         $member = $subscription->member->id;
@@ -141,15 +141,15 @@ class SubscriptionController extends Controller
         }else{
             $subscription->setAsInactive();
         }
-        
 
-        
+
+
         $member = $subscription->member->id;
 
         return redirect()->route('members.subscriptions.index', $member)->snackbar('Subscription Canceled.');
     }
 
-    
+
 
     public function refresh(Subscription $subscription)
     {

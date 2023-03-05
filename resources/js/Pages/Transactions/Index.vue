@@ -67,7 +67,7 @@
 
     <app-panel>
       <template #content>
-        <transactions-table :transactions="transactions.data" show-member/>
+        <transactions-table :transactions="transactions.data" show-member v-model:sort="filterForm.sort"/>
 
         <div v-if="transactions.total === 0" class="px-6 py-10 text-center text-gray-500">No Transactions Found.</div>
 
@@ -105,6 +105,7 @@ export default {
   data() {
     return {
       filterForm: {
+        sort: this.filters.sort,
         search: this.filters.search,
         amount: this.filters.amount,
         subscription_id: this.filters.subscription_id,

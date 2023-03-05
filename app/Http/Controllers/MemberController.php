@@ -14,12 +14,13 @@ class MemberController extends Controller
     {
 
     $results = [
-    'filters' => $request->all('search', 'archived', 'membership_since', 'membership_type', 'plan_type_id', 'active_membership'),
+    'filters' => $request->all('search', 'archived', 'membership_since', 'membership_type', 'plan_type_id', 'active_membership', 'sort'),
     'members' => Member::search($request->search)
         ->filterWithTrashed($request->archived)
         ->filterNull($request->only('membership_since'))
         ->filterBoolean($request->only('active_membership'))
         ->filter($request->only('membership_type', 'plan_type_id'))
+        ->sort($request->sort)
         ->withMembershipPaymentsTotal()
         ->withLoansCount()
         ->withLoansTotal()

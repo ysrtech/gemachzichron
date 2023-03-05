@@ -50,7 +50,15 @@
 
               <thead>
               <tr class="bg-gray-50 text-xs text-left text-gray-400 uppercase">
-                <th v-for="title in ['ID', 'Name', 'Member Plan','Member Since', 'Membership Paid','Loans','Loans Balance','Home Phone', 'Cellphone', 'Email', '']" class="px-6 py-3 font-medium">{{ title }}</th>
+                <table-header
+                  v-for="header in headers"
+                  :key="header.name"
+                  :name="header.name"
+                  :value="header.value"
+                  :current="filterForm.sort"
+                  v-show="!header.hidden"
+                  @sort="filterForm.sort = $event"
+                />
               </tr>
               </thead>
 
@@ -78,7 +86,7 @@
                 <td class="px-6 py-3.5 whitespace-nowrap">
                   <span v-if="member.active_membership">{{ date(member.membership_since) }}</span>
                 </td>
-                
+
                 <td class="px-6 py-3.5 whitespace-nowrap">
                   <span v-if="member.active_membership"><money
                     :amount="member.membership_payments_total || 0"
@@ -175,11 +183,13 @@ import HasFilters from "@/Mixins/HasFilters";
 import {date} from "@/helpers/dates";
 import Money from "@/Components/Money";
 import {MEMBERSHIP_TYPES} from "@/config/memberships";
+import TableHeader from "@/Components/TableHeader.vue";
 
 export default {
   layout: (h, page) => h(AppLayout, {title: 'Members'}, () => page),
 
   components: {
+    TableHeader,
     Money,
     SearchFilterField,
     SearchFilter,
@@ -192,7 +202,21 @@ export default {
     return {
       MEMBERSHIP_TYPES,
       planTypes: [],
+      headers: [
+        {value: 'ID', name: 'id'},
+        {value: 'Name', name: 'last_name,first_name'},
+        {value: 'Member Plan', name: 'plan_type_id'},
+        {value: 'Member Since', name: 'membership_since'},
+        {value: 'Membership Paid'},
+        {value: 'Loans'},
+        {value: 'Loans Balance'},
+        {value: 'Home Phone'},
+        {value: 'Cellphone'},
+        {value: 'Email'},
+        {value: ''},
+      ],
       filterForm: {
+        sort: this.filters.sort,
         search: this.filters.search,
         archived: this.filters.archived,
         membership_since: this.filters.membership_since,
@@ -200,7 +224,7 @@ export default {
         membership_type: this.filters.membership_type,
         plan_type_id: this.filters.plan_type_id,
         loans_count: this.filters.loans_count,
-        
+
       },
     }
   },

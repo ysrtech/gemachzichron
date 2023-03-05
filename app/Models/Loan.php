@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Traits\Filterable;
 use App\Models\Traits\SearchableByRelated;
+use App\Models\Traits\Sortable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\Storage;
 
 class Loan extends Model
 {
-    use HasFactory, SearchableByRelated, Filterable;
+    use HasFactory, SearchableByRelated, Filterable, Sortable;
 
     protected $casts = [
         'amount' => 'float'
@@ -42,6 +43,16 @@ class Loan extends Model
         return $this->hasManyThrough(Transaction::class, Subscription::class)
             ->where('subscriptions.type', Subscription::TYPE_LOAN_PAYMENT)
             ->where('transactions.type', Transaction::TYPE_MAIN_TRANSACTION);
+    }
+
+    protected function scopeOrderByMemberLastName($query, $direction)
+    {
+        $query->orderBy(Member::select('last_name')->whereColumn('members.id', 'loans.member_id'), $direction);
+    }
+
+    protected function scopeOrderByMemberFirstName($query, $direction)
+    {
+        $query->orderBy(Member::select('first_name')->whereColumn('members.id', 'loans.member_id'), $direction);
     }
 
     public function getApplicationCopyAttribute($value)

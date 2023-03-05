@@ -50,7 +50,7 @@
 
     <app-panel class="overflow-x-auto">
       <template #content>
-        <subscriptions-table :subscriptions="subscriptions.data" show-member/>
+        <subscriptions-table :subscriptions="subscriptions.data" show-member v-model:sort="filterForm.sort"/>
 
         <!-- Pagination -->
         <div class="bg-white px-4 py-3 flex items-center justify-around border-t border-gray-300 sm:px-6">
@@ -95,6 +95,7 @@ export default {
   data() {
     return {
       filterForm: {
+        sort: this.filters.sort,
         search: this.filters.search,
         amount: this.filters.amount,
         type: this.filters.type,

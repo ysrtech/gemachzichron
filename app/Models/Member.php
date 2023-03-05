@@ -6,6 +6,7 @@ use App\Events\MemberUpdated;
 use App\Models\Traits\Filterable;
 use App\Models\Traits\FilterableWithTrashed;
 use App\Models\Traits\Searchable;
+use App\Models\Traits\Sortable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,7 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Member extends Model
 {
-    use HasFactory, SoftDeletes, Searchable, Filterable, FilterableWithTrashed;
+    use HasFactory, SoftDeletes, Searchable, Filterable, FilterableWithTrashed, Sortable;
 
     const TYPE_MEMBERSHIP = 'Membership';
     const TYPE_PEKUDON = 'Pekudon';
@@ -152,9 +153,9 @@ class Member extends Model
 
 
 
-    
 
-    
-   
+
+
+
 
 }
