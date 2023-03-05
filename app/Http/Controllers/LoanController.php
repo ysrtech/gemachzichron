@@ -29,7 +29,7 @@ class LoanController extends Controller
     {
         return Inertia::render('Loans/Show', [
             'loan' => $loan->load([
-                'member:id,first_name,last_name',
+                'member' => fn($q) => $q->select(['id', 'first_name', 'last_name'])->withTrashed(),
                 'member.dependents:id,member_id,name',
                 'dependent:id,name',
                 'guarantors:id,first_name,last_name',
