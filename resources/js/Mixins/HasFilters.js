@@ -29,7 +29,7 @@ export default {
 
   computed: {
     appliedFiltersLength() {
-      return Object.keys(pickBy(this.filterForm, (value, key) => value && key !== 'search')).length
+      return Object.keys(pickBy(this.filterForm, (value, key) => value && key !== 'search' && key !== 'sort')).length
     }
   },
 

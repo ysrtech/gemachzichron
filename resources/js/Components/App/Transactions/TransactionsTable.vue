@@ -3,15 +3,14 @@
     <table class="min-w-full divide-y divide-gray-200">
       <thead>
       <tr class="bg-gray-50 text-xs text-left text-gray-400 uppercase">
-        <th class="px-6 py-3 font-medium">ID</th>
-        <th class="px-6 py-3 font-medium" v-if="showMember">Member</th>
-        <th class="px-6 py-3 font-medium">Subscription ID</th>
-        <th class="px-6 py-3 font-medium">Amount</th>
-        <th class="px-6 py-3 font-medium">Process Date</th>
-        <th class="px-6 py-3 font-medium">Status</th>
-        <th class="px-6 py-3 font-medium">Type</th>
-        <th class="px-6 py-3 font-medium">Gateway</th>
-        <th class="px-6 py-3 font-medium"></th>
+        <table-header
+          v-for="header in headers"
+          :name="header.name"
+          :value="header.value"
+          :current="sort"
+          v-show="!header.hidden"
+          @sort="updateSort"
+        />
       </tr>
       </thead>
 
@@ -107,9 +106,11 @@ import {date} from "@/helpers/dates";
 import {TRANSACTION_STATUS_COLORS, TRANSACTION_STATUSES} from "@/config/transactions";
 import {AVAILABLE_GATEWAYS, GATEWAY_BADGE_COLORS} from "@/config/gateways";
 import SubscriptionFormModal from "@/Components/App/Subscriptions/FormModal";
+import TableHeader from "@/Components/TableHeader.vue";
 
 export default {
   components: {
+    TableHeader,
     SubscriptionFormModal,
     Money
   },
@@ -120,8 +121,14 @@ export default {
     showMember: {
       type: Boolean,
       default: false
+    },
+    sort: {
+      type: String,
+      default: null
     }
   },
+
+  emits: ['update:sort'],
 
   watch: {
     resolveFailedTransaction(val) {
@@ -133,6 +140,17 @@ export default {
 
   data() {
     return {
+      headers: [
+        {value: 'ID', name: 'id'},
+        {value: 'Member', name: 'member_last_name,member_first_name', hidden: !this.showMember},
+        {value: 'Subscription ID', name: 'subscription_id'},
+        {value: 'Amount', name: 'amount'},
+        {value: 'Process Date', name: 'process_date'},
+        {value: 'Status', name: 'status'},
+        {value: 'Type', name: 'type'},
+        {value: 'Gateway', name: 'gateway'},
+        {},
+      ],
       resolveFailedTransaction: null,
       TRANSACTION_STATUSES,
       TRANSACTION_STATUS_COLORS,
@@ -149,6 +167,9 @@ export default {
         return accumulator + `<tr><td>${key.replaceAll('_', ' ')}: </td><td class="text-right">${data[key]}</td></tr>`
       }, '')}</table>`
     },
+    updateSort(sort) {
+      this.$emit('update:sort', sort)
+    }
   }
 }
 </script>

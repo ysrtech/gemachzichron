@@ -31,11 +31,15 @@
         <table class="min-w-full divide-y divide-gray-200">
           <thead v-if="loans.total > 0">
           <tr class="bg-gray-50 text-xs text-left text-gray-400 uppercase">
-            <th class="px-6 py-3 font-medium">ID</th>
-            <th class="px-6 py-3 font-medium">Member</th>
-            <th class="px-6 py-3 font-medium">Loan date</th>
-            <th class="px-6 py-3 font-medium text-right">Amount</th>
-            <th class="px-6 py-3 font-medium text-right">Remaining Balance</th>
+            <table-header
+              v-for="header in headers"
+              :key="header.name"
+              :name="header.name"
+              :value="header.value"
+              :current="filterForm.sort"
+              v-show="!header.hidden"
+              @sort="filterForm.sort = $event"
+            />
           </tr>
           </thead>
 
@@ -91,11 +95,13 @@ import AppPanel from "@/Components/Panel";
 import SearchFilter from "@/Components/SearchFilter";
 import SearchFilterField from "@/Components/SearchFilterField";
 import HasFilters from "@/Mixins/HasFilters";
+import TableHeader from "@/Components/TableHeader.vue";
 
 export default {
   layout: (h, page) => h(AppLayout, {title: 'Loans'}, () => page),
 
   components: {
+    TableHeader,
     SearchFilterField,
     SearchFilter,
     AppPanel,
@@ -105,7 +111,15 @@ export default {
 
   data() {
     return {
+      headers: [
+        {value: 'ID', name: 'id'},
+        {value: 'Member', name: 'member_last_name,member_first_name'},
+        {value: 'Loan Date', name: 'loan_date'},
+        {value: 'Amount', name: 'amount'},
+        {value: 'Remaining Balance', name: 'transactions_sum_amount'},
+      ],
       filterForm: {
+        sort: this.filters.sort,
         search: this.filters.search,
         amount: this.filters.amount,
         from_date: this.filters.from_date,

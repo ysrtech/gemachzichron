@@ -2,18 +2,14 @@
   <table class="min-w-full divide-y divide-gray-200">
       <thead>
       <tr class="bg-gray-50 text-xs text-left text-gray-400 uppercase">
-        <th class="px-6 py-3 font-medium">ID</th>
-        <th class="px-6 py-3 font-medium" v-show="showMember">Member</th>
-        <th class="px-6 py-3 font-medium">Transaction Amount</th>
-        <th class="px-6 py-3 font-medium">Frequency</th>
-        <th class="px-6 py-3 font-medium">Installments</th>
-        <th class="px-6 py-3 font-medium">Transactions</th>
-        <th class="px-6 py-3 font-medium">Total Paid</th>
-        <th class="px-6 py-3 font-medium">Type</th>
-        <th class="px-6 py-3 font-medium">Start Date</th>
-        <th class="px-6 py-3 font-medium">Gateway</th>
-        <th class="px-6 py-3 font-medium">Status</th>
-        <th class="px-6 py-3 font-medium"></th>
+        <table-header
+          v-for="header in headers"
+          :name="header.name"
+          :value="header.value"
+          :current="sort"
+          v-show="!header.hidden"
+          @sort="updateSort"
+        />
       </tr>
       </thead>
 
@@ -73,9 +69,11 @@ import Money from "@/Components/Money";
 import {GATEWAY_BADGE_COLORS} from "@/config/gateways";
 import {date} from "@/helpers/dates";
 import RefreshButton from "@/Components/App/Subscriptions/RefreshButton";
+import TableHeader from "@/Components/TableHeader.vue";
 
 export default {
   components: {
+    TableHeader,
     RefreshButton,
     Money,
   },
@@ -88,11 +86,31 @@ export default {
     showMember: {
       type: Boolean,
       default: false
+    },
+    sort: {
+      type: String,
+      default: null
     }
   },
 
+  emits: ['update:sort'],
+
   data() {
     return {
+      headers: [
+        {value: 'ID', name: 'id'},
+        {value: 'Member', name: 'member_last_name,member_first_name', hidden: !this.showMember},
+        {value: 'Transaction Amount'},
+        {value: 'Frequency', name: 'frequency'},
+        {value: 'Installments', name: 'installments'},
+        {value: 'Transactions'},
+        {value: 'Total Paid'},
+        {value: 'Type', name: 'type'},
+        {value: 'Start Date', name: 'start_date'},
+        {value: 'Gateway', name: 'gateway'},
+        {value: 'Status', name: 'active'},
+        {},
+      ],
       GATEWAY_BADGE_COLORS,
     }
   },
@@ -104,6 +122,9 @@ export default {
       return `<table>${Object.keys(data).reduce((accumulator, key) => {
         return accumulator + `<tr><td>${key.replaceAll('_', ' ')}: </td><td class="text-right">${data[key]}</td></tr>`
       }, '')}</table>`
+    },
+    updateSort(sort) {
+      this.$emit('update:sort', sort)
     }
   }
 }

@@ -8,6 +8,7 @@ use App\Gateways\Factory;
 use App\Models\Traits\Filterable;
 use App\Models\Traits\SearchableByRelated;
 use App\Exceptions\CardknoxApiException;
+use App\Models\Traits\Sortable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Client\RequestException;
@@ -16,7 +17,7 @@ use Illuminate\Support\Facades\Log;
 
 class Subscription extends Model
 {
-    use HasFactory, Filterable, SearchableByRelated;
+    use HasFactory, Filterable, SearchableByRelated, Sortable;
 
     const TYPE_MEMBERSHIP = 'Membership';
     const TYPE_LOAN_PAYMENT = 'Loan Payment';
@@ -99,6 +100,21 @@ class Subscription extends Model
         ->sum('amount');
     }
 
+    protected function scopeOrderByMemberLastName($query, $direction)
+    {
+        $query->orderBy(Member::select('last_name')->whereColumn('members.id', 'subscriptions.member_id'), $direction);
+    }
+
+    protected function scopeOrderByMemberFirstName($query, $direction)
+    {
+        $query->orderBy(Member::select('first_name')->whereColumn('members.id', 'subscriptions.member_id'), $direction);
+    }
+
+    public function scopeDefaultSortBy($query)
+    {
+        $query->orderByDesc('start_date');
+    }
+
     public function syncWithGateway()
     {
         Log::info("Syncing with gateway, subscription $this->id");
@@ -115,7 +131,7 @@ class Subscription extends Model
         } catch (RequestException $requestException) {
             if ($requestException->getCode() == 404) {
                 Log::info("Subscription $this->id not found on gateway");
-                
+
                 $this->setAsDeletedFromGateway();
                 $this->setAsInactive();
             }
@@ -123,9 +139,9 @@ class Subscription extends Model
         }
 
         catch (CardknoxApiException $apiException) {
-            
+
                 Log::info("Subscription $this->id not found on gateway");
-                
+
                 $this->setAsDeletedFromGateway();
                 $this->setAsInactive();
             return;

@@ -14,10 +14,11 @@ class LoanController extends Controller
     public function index(Request $request)
     {
         return Inertia::render('Loans/Index', [
-            'filters' => $request->all('search', 'amount', 'from_date', 'to_date'),
+            'filters' => $request->all('search', 'amount', 'from_date', 'to_date', 'sort'),
             'loans' => Loan::searchByRelated($request->search, ['member'])
                 ->filter($request->only('amount'))
                 ->filterBetweenDates('loan_date', $request->from_date, $request->to_date)
+                ->sort($request->sort)
                 ->with(['member' => fn($q) => $q->select(['id', 'first_name', 'last_name', 'deleted_at'])->withTrashed()])
                 ->withSum('transactions', 'amount')
                 ->orderBy('loan_date', 'desc')
@@ -29,7 +30,7 @@ class LoanController extends Controller
     {
         return Inertia::render('Loans/Show', [
             'loan' => $loan->load([
-                'member:id,first_name,last_name',
+                'member' => fn($q) => $q->select(['id', 'first_name', 'last_name'])->withTrashed(),
                 'member.dependents:id,member_id,name',
                 'dependent:id,name',
                 'guarantors:id,first_name,last_name',
@@ -68,7 +69,7 @@ class LoanController extends Controller
 
             $loan->subscriptions->each(fn($subscription) => $subscription->update(['loan_id' => null]));
 
-            
+
         }
 
         if (!$request->boolean('confirm')) {
@@ -89,10 +90,10 @@ class LoanController extends Controller
         $member = $loan->member->id;
         $loan->delete();
 
-        
+
 
         return redirect()->route('members.loans.index', $member)->snackbar('Loan Deleted.');
     }
 
-    
+
 }
