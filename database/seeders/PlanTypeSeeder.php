@@ -16,6 +16,8 @@ class PlanTypeSeeder extends Seeder
         ['name' => '9 Year'],
         ['name' => '12 Year'],
         ['name' => '15 Year'],
+        ['name' => 'Viznitz Regular Member'],
+        ['name' => 'Viznitz Horues Shu'],
 //        ['name' => 'New'],
 //        ['name' => '5 Year Plan'],
 //        ['name' => '7 Year Plan'],
