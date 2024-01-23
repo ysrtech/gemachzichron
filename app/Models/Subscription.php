@@ -130,7 +130,7 @@ class Subscription extends Model
 
         } catch (RequestException $requestException) {
             if ($requestException->getCode() == 404) {
-                Log::info("Subscription $this->id not found on gateway");
+                Log::info("Subscription $this->id not found on gateway. Response error 404");
 
                 $this->setAsDeletedFromGateway();
                 $this->setAsInactive();
@@ -140,10 +140,10 @@ class Subscription extends Model
 
         catch (CardknoxApiException $apiException) {
 
-                Log::info("Subscription $this->id not found on gateway");
+                Log::info("Subscription $this->id not found on gateway. API error.");
 
-                $this->setAsDeletedFromGateway();
-                $this->setAsInactive();
+                //$this->setAsDeletedFromGateway();
+                //$this->setAsInactive();
             return;
         }
 
@@ -152,6 +152,11 @@ class Subscription extends Model
         if ($this->isDeletedInGateway()) {
             $this->setAsNotDeletedFromGateway();
             Log::info("Subscription $this->id reverted deleted from gateway");
+        }
+
+        if ($gSubscription['active'] && !$this->active) {
+            $this->setAsActive();
+            Log::info("Subscription $this->id reverted to active");
         }
 
         $gatewayAmount = $gSubscription['gateway_data']['amount'] ?? /* $gSubscription['gateway_data']['Amount'] ??*/ null;
@@ -246,6 +251,11 @@ class Subscription extends Model
     public function setAsInactive()
     {
         $this->update(['active' => 0]);
+    }
+
+    public function setAsActive()
+    {
+        $this->update(['active' => 1]);
     }
 
 
