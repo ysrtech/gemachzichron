@@ -8,7 +8,7 @@ use App\Gateways\Factory as GatewayFactory;
 use App\Models\Subscription;
 use Illuminate\Console\Command;
 
-class SyncSubscriptions extends Command
+class FixCardknoxSubscriptions extends Command
 {
     /**
      * The name and signature of the console command.
@@ -38,7 +38,7 @@ class SyncSubscriptions extends Command
                     $this->line("Syncing subscription #$subscription->id");
                     $subscription->syncWithGateway();
                 } catch (NotImplementedException $exception) {
-                    
+
                 }
                 
             });
