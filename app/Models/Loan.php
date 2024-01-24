@@ -18,6 +18,7 @@ class Loan extends Model
         'amount' => 'float'
     ];
 
+
     public function member()
     {
         return $this->belongsTo(Member::class);

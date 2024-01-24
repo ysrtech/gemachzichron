@@ -61,9 +61,10 @@ class SubscriptionController extends Controller
     public function destroy(Request $request, Subscription $subscription)
     {
 
-        $subscription->syncWithGateway();
+        
 
         if ($subscription->gateway != \App\Gateways\Factory::MANUAL && !$subscription->isDeletedInGateway()) {
+            $subscription->syncWithGateway();
             $subscription->pullTransactionsFromGateway();
         }
 
@@ -111,9 +112,10 @@ class SubscriptionController extends Controller
 
     public function cancel(Request $request, Subscription $subscription)
     {
-        $subscription->syncWithGateway();
+        
 
         if ($subscription->gateway != \App\Gateways\Factory::MANUAL && !$subscription->isDeletedInGateway()) {
+            $subscription->syncWithGateway();
             $subscription->pullTransactionsFromGateway();
         }
 

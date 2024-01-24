@@ -35,6 +35,13 @@
               </inertia-link>
             </key-value>
             <key-value label="Type" :value="subscription.type"/>
+
+            <key-value label="Loan ID" v-show="subscription.type === SUBSCRIPTION_TYPES['Loan Payment']" >
+              <inertia-link :href="$route('loans.show', subscription.loan_id)" class="font-medium hover:underline">
+                {{ subscription.loan_id }}
+              </inertia-link>
+            </key-value>
+            <key-value label="Is Guarantor Payment" v-show="subscription.guarantor_payment" >YES</key-value>
             <key-value label="Gateway">
               <app-badge
                 :color="GATEWAY_BADGE_COLORS[subscription.gateway]"
@@ -110,6 +117,7 @@
 </template>
 
 <script>
+import {SUBSCRIPTION_TYPES} from "@/config/subscriptions";
 import AppLayout from "@/Layouts/AppLayout";
 import AppPanel from "@/Components/Panel";
 import KeyValue from "@/Components/KeyValue";
@@ -142,6 +150,7 @@ export default {
       openTransactionFormModal: false,
       AVAILABLE_GATEWAYS,
       GATEWAY_BADGE_COLORS,
+      SUBSCRIPTION_TYPES,
     }
   },
 

@@ -63,7 +63,7 @@
             :options="SUBSCRIPTION_TYPES"
           />
           </div>
-          <div class="flex-1" v-show="form.type === SUBSCRIPTION_TYPES['Loan Payment']">
+          <div class="flex-1 flex-col" v-show="form.type === SUBSCRIPTION_TYPES['Loan Payment']">
             <app-input
               v-model="form.loan_id"
               :error="form.errors.loan_id"
@@ -71,7 +71,15 @@
               @update:model-value="form.clearErrors('loan_id')"
               type="number"
             />
+            <label>
+              <app-checkbox  
+                v-model="form.guarantor_payment"
+                @update:model-value="form.clearErrors('loan_id')"
+                name="guarantor_payment"/>
+              <span class="ml-2 text-sm text-gray-600">Guarantor Payment</span>
+            </label>
           </div>
+         
         </div>
 
         <div class="sm:col-span-6">
@@ -346,7 +354,8 @@ export default {
         decline_fee: this.subscription?.decline_fee || null,
         comment: this.subscription?.comment || null,
         loan_id: this.subscription?.loan_id || null,
-        active: this.subscription ? this.subscription.active : true
+        active: this.subscription ? this.subscription.active : true,
+        guarantor_payment: this.subscription?.guarantor_payment || null
       })
     },
 
@@ -367,6 +376,7 @@ export default {
           this.form.membership_fee = subscription.membership_fee
           this.form.decline_fee = subscription.decline_fee + DEFAULT_SUBSCRIPTION_FEES.declineFee
           this.form.loan_id = subscription.loan_id
+          this.form.guarantor_payment = subscription.guarantor_payment
         })
 
       this.form.comment = `Resolves failed transaction #${this.resolvesFailedTransaction.id}`
@@ -419,7 +429,10 @@ export default {
 
       if (!this.syncGatewaySchedule) delete this.form.gateway_identifier
 
-      if (this.form.type !== SUBSCRIPTION_TYPES["Loan Payment"]) this.form.loan_id = null
+      if (this.form.type !== SUBSCRIPTION_TYPES["Loan Payment"]){
+        this.form.loan_id = null
+        this.form.guarantor_payment = null
+      }
 
       let options = { onSuccess: () => this.$emit('close') }
       if (this.subscription) {

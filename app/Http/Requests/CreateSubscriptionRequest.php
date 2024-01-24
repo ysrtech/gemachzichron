@@ -3,9 +3,12 @@
 namespace App\Http\Requests;
 
 use App\Facades\Gateway;
+use App\Gateways\Factory as GatewayFactory;
 use App\Models\Subscription;
 use App\Models\Transaction;
+use App\Models\Loan;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Validation\Rule;
 
 class CreateSubscriptionRequest extends FormRequest
@@ -32,7 +35,7 @@ class CreateSubscriptionRequest extends FormRequest
     {
         return [
             'type'                 => ['required', Rule::in([Subscription::TYPE_MEMBERSHIP, Subscription::TYPE_LOAN_PAYMENT])],
-            'gateway'              => ['required', Rule::exists('payment_methods', 'id')->where('member_id', $this->route('member')->id)],
+            'gateway'              => ['required', Rule::when($this->gateway != GatewayFactory::MANUAL, Rule::exists('payment_methods', 'id')->where('member_id', $this->route('member')->id))],
             'amount'               => ['required', 'numeric', 'min:1'],
             'start_date'           => ['required', 'date', Rule::when(!$this->gateway_identifier, 'after:today')],
             'installments'         => ['nullable', 'integer'],
@@ -47,7 +50,7 @@ class CreateSubscriptionRequest extends FormRequest
             ],
             'loan_id'              => [
                 'sometimes',
-                Rule::exists('loans', 'id')->where('member_id', $this->route('member')->id)
+                Rule::when($this->guarantor_payment != true, Rule::exists('loans', 'id')->where('member_id', $this->route('member')->id))
             ]
         ];
     }

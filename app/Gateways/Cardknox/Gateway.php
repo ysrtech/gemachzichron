@@ -211,7 +211,8 @@ class Gateway extends AbstractGateway
             'IntervalType'  => Frequencies::$toCardknoxFrequencies[$data['frequency']],
             'TotalPayments' => $data['installments'],
             'StartDate'     => $data['start_date'],
-            'Description'   => $data['comment']
+            'Description'   => $data['comment'],
+            'FailedTransactionRetryTimes' => 0
         ]);
 
         $schedule = $this->post('GetSchedule', [
