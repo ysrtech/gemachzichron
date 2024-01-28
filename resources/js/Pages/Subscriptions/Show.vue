@@ -38,10 +38,11 @@
 
             <key-value label="Loan ID" v-show="subscription.type === SUBSCRIPTION_TYPES['Loan Payment']" >
               <inertia-link :href="$route('loans.show', subscription.loan_id)" class="font-medium hover:underline">
-                {{ subscription.loan_id }}
+                <span v-show="subscription.guarantor_payment">Guarantor payment for 
+                  ({{subscription.pays_loan.member.first_name +' '+subscription.pays_loan.member.last_name}}) </span>{{ subscription.loan_id }} 
               </inertia-link>
             </key-value>
-            <key-value label="Is Guarantor Payment" v-show="subscription.guarantor_payment" >YES</key-value>
+            
             <key-value label="Gateway">
               <app-badge
                 :color="GATEWAY_BADGE_COLORS[subscription.gateway]"

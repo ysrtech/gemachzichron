@@ -51,7 +51,8 @@ class CreateSubscriptionRequest extends FormRequest
             'loan_id'              => [
                 'sometimes',
                 Rule::when($this->guarantor_payment != true, Rule::exists('loans', 'id')->where('member_id', $this->route('member')->id))
-            ]
+            ],
+            'guarantor_payment'    => ['nullable'],
         ];
     }
 

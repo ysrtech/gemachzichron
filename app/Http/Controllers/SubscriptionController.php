@@ -32,7 +32,7 @@ class SubscriptionController extends Controller
     public function show(Subscription $subscription)
     {
         return Inertia::render('Subscriptions/Show', [
-            'subscription' => $subscription->load('member:id,first_name,last_name', 'member.paymentMethods')
+            'subscription' => $subscription->load('member', 'member.paymentMethods','paysLoan.member'),
         ]);
     }
 
