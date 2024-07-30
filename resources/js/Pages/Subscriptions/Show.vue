@@ -36,8 +36,8 @@
             </key-value>
             <key-value label="Type" :value="subscription.type"/>
 
-            <key-value label="Loan ID" v-show="subscription.type === SUBSCRIPTION_TYPES['Loan Payment']" >
-              <inertia-link :href="$route('loans.show', subscription.loan_id)" class="font-medium hover:underline">
+            <key-value label="Loan ID" v-if="subscription.type === SUBSCRIPTION_TYPES['Loan Payment']" >
+              <inertia-link :href="$route('loans.show', subscription.loan_id)" class="font-medium underline">
                 <span v-show="subscription.guarantor_payment">Guarantor payment for 
                   ({{subscription.pays_loan.member.first_name +' '+subscription.pays_loan.member.last_name}}) </span>{{ subscription.loan_id }} 
               </inertia-link>
@@ -47,7 +47,10 @@
               <app-badge
                 :color="GATEWAY_BADGE_COLORS[subscription.gateway]"
                 v-tippy="{content: formattedGatewayData(subscription.gateway_data), allowHTML: true}">
-                {{subscription.gateway}}
+                {{subscription.gateway}} &nbsp;<span v-if="subscription.gateway != AVAILABLE_GATEWAYS.Manual && subscription.payment_method_id">
+                  <inertia-link :href="$route('members.payment-methods.index', subscription.member.id)" 
+                  class="font-medium underline"> {{subscription.payment_method_id}}</inertia-link>
+                </span>
               </app-badge>
             </key-value>
             <key-value label="Start Date">{{date(subscription.start_date)}}</key-value>

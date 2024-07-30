@@ -18,9 +18,11 @@ class CardknoxScheduleToSubscription implements Formatter
      */
     public function formatOutput($output): array
     {
+        
         return [
             'gateway'            => GatewayFactory::CARDKNOX,
             'gateway_identifier' => $output['ScheduleId'],
+            'gateway_customerid' => $output['CustomerId'],
             'start_date'         => $output['StartDate'],
             'installments'       => (isset($output['TotalPayments']) ? $output['TotalPayments'] : NULL),
             'frequency'          => Frequencies::$fromCardknoxFrequencies[strtolower($output['IntervalType'])],
@@ -29,10 +31,12 @@ class CardknoxScheduleToSubscription implements Formatter
             'gateway_data'       => collect(is_array($output) ? $output : $output->json())
                 ->only([
                     'ScheduleId',
+                    'PaymentMethodId',
                     'Amount',
                     'NextScheduledRunTime',
                     'Revision',
-                    'PaymentsProcessed'
+                    'PaymentsProcessed',
+                    
                 ])
                 ->mapWithKeys(fn($value, $key) => [Str::snake($key) => $value])
                 ->toArray(),

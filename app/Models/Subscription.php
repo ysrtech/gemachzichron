@@ -7,6 +7,7 @@ use App\Facades\Gateway;
 use App\Gateways\Factory;
 use App\Models\Traits\Filterable;
 use App\Models\Traits\SearchableByRelated;
+use App\Models\PaymentMethod;
 use App\Exceptions\CardknoxApiException;
 use App\Models\Traits\Sortable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -165,6 +166,15 @@ class Subscription extends Model
             Log::info("Subscription $this->id amount does not match gateways schedule amount");
             throw new DataMismatchException('Subscription amount does not match gateways schedule amount');
         }
+        //this section is to fix old subscriptions that where not connected to payment method, now it should be connected at creation
+        if($this->payment_method_id == NULL  && $this->gateway !== 'Manual' && $gSubscription['gateway_customerid'] !== NULL){
+
+            $paymentMethod = PaymentMethod::where('gateway_identifier', (string)$gSubscription['gateway_customerid'])->first();
+            
+            if(isset($paymentMethod) && $paymentMethod !== null){
+                $gSubscription['payment_method_id'] = $paymentMethod['id'];
+            }
+        }
 
         $this->update($gSubscription);
     }
@@ -229,7 +239,7 @@ class Subscription extends Model
             case Factory::ROTESSA:
                 GatewayConflict::query()
                     ->where('type', GatewayConflict::TYPE_ORPHANED_ROTESSA_TRANSACTION)
-                    ->where('gateway_identifier', $gatewayIdentifier)
+                    ->whereJsonContains('data->transaction_schedule_id', $gatewayIdentifier)
                     ->get()
                     ->each(function (GatewayConflict $conflict) {
                         $conflict->convertOrphanedRotessaTransactionsToTransaction();
@@ -243,9 +253,10 @@ class Subscription extends Model
 
     public function setAsDeletedFromGateway()
     {
-        $this->update([
-            'gateway_data' => array_merge($this->gateway_data, ['deleted' => true])
-        ]);
+            $gatewayData = is_array($this->gateway_data) ? array_merge($this->gateway_data, ['deleted' => true]) : ['deleted' => true];
+
+            $this->update(['gateway_data' => $gatewayData]);
+        
     }
 
     public function setAsInactive()
@@ -279,6 +290,7 @@ class Subscription extends Model
         } else {
             $this->syncWithGateway();
             $this->pullTransactionsFromGateway();
+            $this->pullTransactionsFromGatewayConflicts($missingSubscription->gateway, $missingSubscription->gateway_identifier);
         }
 
         $missingSubscription->delete();

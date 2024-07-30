@@ -8,6 +8,7 @@ use App\Contracts\Formatter;
 use App\Gateways\Rotessa\Frequencies;
 use Illuminate\Support\Arr;
 
+
 class RotessaScheduleToSubscription implements Formatter
 {
     /**
@@ -19,6 +20,7 @@ class RotessaScheduleToSubscription implements Formatter
         return [
             'gateway'            => \App\Gateways\Factory::ROTESSA,
             'gateway_identifier' => $output['id'],
+            'gateway_customerid' => $this->getCustomerIdFromTransactions($output['financial_transactions']),//cause rotessa doesnt return customer id with schedules
             'start_date'         => $output['process_date'],
             'installments'       => $output['installments'],
             'frequency'          => Frequencies::$fromRotessaFrequencies[$output['frequency']],
@@ -30,5 +32,13 @@ class RotessaScheduleToSubscription implements Formatter
                 'next_process_date'
             ])
         ];
+    }
+
+    public function getCustomerIdFromTransactions($transactions){
+        if(count($transactions) > 0){
+            return $transactions[0]['customer_id'];
+        }else{
+            return null;
+        }
     }
 }

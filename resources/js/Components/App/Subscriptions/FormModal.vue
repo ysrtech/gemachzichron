@@ -81,22 +81,21 @@
           </div>
          
         </div>
-
         <div class="sm:col-span-6">
           <app-select
             native
             id="gateway"
             v-model="form.gateway"
             :error="form.errors.gateway"
-            :disabled="!!subscription || !!syncGatewaySchedule"
+            :disabled="!!subscription"
             label="Payment Method"
             @update:model-value="form.clearErrors('gateway')">
             <template #options>
               <option></option>
               <option v-for="paymentMethod in member?.payment_methods" :key="paymentMethod.id" :value="paymentMethod.id">
-                {{ paymentMethod.gateway+' '+paymentMethod.id }}
+                {{ paymentMethod.gateway+' '+paymentMethod.id}}
               </option>
-              <option :value="AVAILABLE_GATEWAYS.Manual">{{ AVAILABLE_GATEWAYS.Manual }}</option>
+              <option :value="AVAILABLE_GATEWAYS.Manual" >{{ AVAILABLE_GATEWAYS.Manual }}</option>
             </template>
           </app-select>
         </div>
@@ -244,6 +243,8 @@ import AppMockInput from "@/Components/FormControls/MockInput";
 import AppNumberInput from "@/Components/FormControls/NumberInput";
 import AppCheckbox from "@/Components/FormControls/Checkbox";
 import AppErrors from "@/Components/FormControls/Errors";
+import { App } from '@inertiajs/inertia-vue3';
+
 
 export default {
   components: {
@@ -257,6 +258,8 @@ export default {
     Money,
     Modal
   },
+
+
 
   data() {
     return {
@@ -343,7 +346,7 @@ export default {
     freshForm() {
       return this.$inertia.form({
         type: this.subscription?.type || null,
-        gateway: this.subscription?.gateway || null,
+        gateway: (this.subscription?.payment_method_id ?? this.subscription?.gateway) || null,
         gateway_identifier: undefined, // used only for syncGatewaySchedule (if undefined key will be removed when submitting)
         start_date: this.subscription?.start_date || null,
         installments: this.subscription?.installments || null,
@@ -387,7 +390,6 @@ export default {
 
     syncGatewayScheduleForm() {
       this.member = this.syncGatewaySchedule.member
-
       this.form.gateway = this.syncGatewaySchedule.gateway
       this.form.gateway_identifier = this.syncGatewaySchedule.gateway_identifier
       this.form.start_date = this.syncGatewaySchedule.data.start_date

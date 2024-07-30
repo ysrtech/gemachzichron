@@ -39,8 +39,10 @@ trait HandlesConflicts
             throw $exception;
         }
 
+
         GatewayConflict::updateOrCreate([
             'member_id'          => $paymentMethod->member_id,
+            'payment_method_id'  => $paymentMethod->id,
             'gateway'            => self::getName(),
             'type'               => GatewayConflict::TYPE_MISSING_SUBSCRIPTION,
             'gateway_identifier' => $rawSchedule['id'],
@@ -51,8 +53,10 @@ trait HandlesConflicts
 
     public function createOrphanedRotessaTransaction($rawTransaction, PaymentMethod $paymentMethod)
     {
+
         GatewayConflict::updateOrCreate([
             'member_id'          => $paymentMethod->member_id,
+            'payment_method_id'  => $paymentMethod->id,
             'gateway'            => self::getName(),
             'type'               => GatewayConflict::TYPE_ORPHANED_ROTESSA_TRANSACTION,
             'gateway_identifier' => $rawTransaction['id'],
@@ -76,6 +80,7 @@ trait HandlesConflicts
             $currentInstallments = $currentData['installments'] ?? 0;
 
             $existingMissingSubscription->update([
+                'payment_method_id'     => $paymentMethod->id,
                 'data' => array_merge($currentData, [
                     'start_date' => min($rawTransaction['start_date'], $currentData['start_date'] ?? 'XXXX-XX-XX'),
                     'installments' => 1 + $currentInstallments,
@@ -91,6 +96,7 @@ trait HandlesConflicts
                 'type' => GatewayConflict::TYPE_MISSING_SUBSCRIPTION,
                 'gateway' => self::getName(),
                 'gateway_identifier' => $rawTransaction['transaction_schedule_id'],
+                'payment_method_id'     => $paymentMethod->id,
                 'member_id' => $paymentMethod->member_id,
                 'data' => [
                     'start_date' => $rawTransaction['process_date'],
