@@ -77,7 +77,7 @@ class Transaction extends Model
 
         $this->update(array_merge([
             'type'   => self::TYPE_MAIN_TRANSACTION,
-            'amount' => $this->subscription->amount,
+            'amount' => ($this->amount - $this->subscription->membership_fee - $this->subscription->processing_fee - $this->subscription->decline_fee),
         ], $attributes));
 
         if ($this->subscription->membership_fee) {
