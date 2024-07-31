@@ -10,6 +10,7 @@ use App\Models\Traits\Sortable;
 use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 class Transaction extends Model
 {
@@ -68,11 +69,15 @@ class Transaction extends Model
     public function split($attributes = [])
     {
         if ($this->isSplit()) {
-            throw new Exception('Transaction ID '.$this->gateway_identifier.' is already split');
+            Log::info("Transaction $this->gateway_identifier is already split cannot split");
+            //throw new Exception('Transaction ID '.$this->gateway_identifier.' is already split');
+            return;
         }
 
         if ($this->amount != $this->subscription->transaction_total) {
-            throw new DataMismatchException('Base transaction '.$this->id.' amount does not match subscription '.$this->subscription->id.' total amount');
+            //throw new DataMismatchException('Base transaction '.$this->id.' amount does not match subscription '.$this->subscription->id.' total amount');
+            Log::info('Base transaction '.$this->id.' amount does not match subscription '.$this->subscription->id.' total amount');
+
         }
 
         $this->update(array_merge([
