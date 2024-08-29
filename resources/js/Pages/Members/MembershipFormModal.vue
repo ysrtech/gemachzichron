@@ -8,6 +8,15 @@
     <form @submit.prevent="submit">
       <div class="px-6 py-4 space-y-4">
 
+        <app-input
+          id="dob"
+          v-model="form.membership_since"
+          :error="form.errors.membership_since"
+          label="Membership Since"
+          type="date"
+          @update:model-value="form.clearErrors('membership_since')"
+        />
+
         <app-select
           native
           id="membership_type"
@@ -86,6 +95,7 @@ export default {
     show(val) {
       this.form = this.$inertia.form({
         active_membership: this.member.membership_since? this.member.active_membership : true,
+        membership_since: this.member?.membership_since,
         membership_type: this.member?.membership_type,
         plan_type_id: this.member?.plan_type_id,
       })

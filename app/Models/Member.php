@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 
 class Member extends Model
 {
@@ -22,6 +23,8 @@ class Member extends Model
     protected $casts = [
         'active_membership' => 'boolean'
     ];
+
+    protected $appends = ['membership_due'];
 
     protected array $searchable = [
         'last_name',
@@ -150,6 +153,42 @@ class Member extends Model
             ->where('type', Transaction::TYPE_MAIN_TRANSACTION)
             ->sum('amount');
     }
+
+    
+
+    public function getMembershipDueAttribute()
+    {
+        if($this->active_membership){
+
+                $startDate = Carbon::parse($this->membership_since)->floorMonth();
+
+                $oldPlanTypes = [10,11,12];
+
+                $currentDate = Carbon::now()->floorMonth();
+
+                if(in_array($this->plan_type_id,$oldPlanTypes)){
+                    $membershipMonths = $startDate->diffInMonths($currentDate)+1;
+                    $supposedtobePaid =  ($membershipMonths * 120);
+
+                }else{
+                    $lastBeforeIncrease = Carbon::parse('June 20, 2024')->floorMonth();
+                    $oldMemershipMonths = $startDate->diffInMonths($lastBeforeIncrease)+1;
+                    $newMemershipMonths = $lastBeforeIncrease->diffInMonths($currentDate);
+
+                    $supposedtobePaid =  ($oldMemershipMonths * 120) + ($newMemershipMonths * 190);
+                }
+
+                $membershipBalance = $supposedtobePaid - $this->membership_payments_total;
+
+                return $membershipBalance;
+
+        }else{
+            return 0;
+        }
+
+        
+    }
+
 
 
 

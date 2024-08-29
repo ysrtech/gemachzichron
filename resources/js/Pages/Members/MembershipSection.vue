@@ -20,13 +20,24 @@
               <key-value label="Membership Type">
                 {{ member.membership_type }} <span v-if="member.plan_type">({{ member.plan_type.name }})</span>
               </key-value>
+              <key-value label="Created on" :value="date(member.created_at)"/>
+              <key-value label="Updated on" :value="date(member.updated_at)"/>
             </dl>
           </div>
           <div class="px-4 py-5 sm:px-6 flex items-center">
-            <div class="font-medium text-gray-400 flex-1" title="Excluding Fees">Total Paid <span class="text-xs font-normal">(Membership)</span></div>
+            <div class="font-medium text-gray-400 flex-1" title="Excluding Fees">Total Paid</div>
             <div class="text-2xl">
               <money
                 :amount="member.membership_payments_total || 0"
+                class="font-medium text-gray-900 text-right"
+                currency-sign-class="font-normal text-gray-600 mr-1"/>
+            </div>
+          </div>
+          <div class="px-4 py-5 sm:px-6 flex items-center">
+            <div class="font-medium text-gray-400 flex-1" title="Excluding Fees">Total Due</div>
+            <div class="text-2xl">
+              <money
+                :amount="member.membership_due || 0"
                 class="font-medium text-gray-900 text-right"
                 currency-sign-class="font-normal text-gray-600 mr-1"/>
             </div>

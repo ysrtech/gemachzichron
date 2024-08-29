@@ -19,7 +19,7 @@ class MemberController extends Controller
         ->filterWithTrashed($request->archived)
         ->filterNull($request->only('membership_since'))
         ->filterBoolean($request->only('active_membership'))
-        ->filter($request->only('membership_type', 'plan_type_id'))
+        ->filter($request->only('membership_type', 'plan_type_id','membership_due'))
         ->sort($request->sort)
         ->withMembershipPaymentsTotal()
         ->withLoansCount()

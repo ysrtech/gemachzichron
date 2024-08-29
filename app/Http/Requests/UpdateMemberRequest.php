@@ -27,6 +27,7 @@ class UpdateMemberRequest extends FormRequest
             'father'            => 'sometimes|nullable|string',
             'father_in_law'     => 'sometimes|nullable|string',
             'active_membership' => 'sometimes|boolean',
+            'membership_since'  => 'sometimes|required|date_format:Y-m-d',
             'membership_type'   => 'sometimes|required|in:' . Member::TYPE_MEMBERSHIP . ',' . Member::TYPE_PEKUDON,
             'plan_type_id'      => 'sometimes|required_if:membership_type,' . Member::TYPE_MEMBERSHIP
         ];

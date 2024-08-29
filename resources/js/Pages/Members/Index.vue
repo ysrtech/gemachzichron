@@ -94,6 +94,12 @@
                     currency-sign-class="font-normal text-gray-600 mr-1"/></span>
                 </td>
                 <td class="px-6 py-3.5 whitespace-nowrap">
+                  <span v-if="member.active_membership"><money
+                    :amount="member.membership_due || 0"
+                    class="font-medium"
+                    currency-sign-class="font-normal text-gray-600 mr-1"/></span>
+                </td>
+                <td class="px-6 py-3.5 whitespace-nowrap">
                   <span v-if="member.loans_count" class="flex"><money
                     :amount="member.loans_total || 0"
                     class="font-medium"
@@ -208,6 +214,7 @@ export default {
         {value: 'Member Plan', name: 'plan_type_id'},
         {value: 'Member Since', name: 'membership_since'},
         {value: 'Membership Paid'},
+        {value: 'Membership Due'},
         {value: 'Loans'},
         {value: 'Loans Balance'},
         {value: 'Home Phone'},
