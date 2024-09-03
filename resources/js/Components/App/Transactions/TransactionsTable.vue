@@ -33,7 +33,7 @@
           </inertia-link>
         </td>
         <td class="px-6 py-3.5 whitespace-nowrap">
-            {{ transaction.subscription.id }}
+            {{ transaction.subscription.type }}
         </td>
         <td class="px-6 py-3.5 whitespace-nowrap font-medium">
           <money :amount="transaction.amount"/>
