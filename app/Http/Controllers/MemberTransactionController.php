@@ -11,7 +11,7 @@ class MemberTransactionController extends Controller
     public function index(Member $member)
     {
         return Inertia::render('Members/Transactions/Index', [
-            'member' => $member->load(['transactions' => fn($q) => $q->orderByDesc('process_date')])
+            'member' => $member->load(['transactions' => fn($q) => $q->with('subscription:id,type')->orderByDesc('process_date')])
         ]);
     }
 }

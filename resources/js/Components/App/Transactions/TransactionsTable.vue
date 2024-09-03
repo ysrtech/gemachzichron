@@ -32,6 +32,9 @@
             {{ transaction.subscription_id }}
           </inertia-link>
         </td>
+        <td class="px-6 py-3.5 whitespace-nowrap">
+            {{ transaction.subscription.id }}
+        </td>
         <td class="px-6 py-3.5 whitespace-nowrap font-medium">
           <money :amount="transaction.amount"/>
         </td>
@@ -144,6 +147,7 @@ export default {
         {value: 'ID', name: 'id'},
         {value: 'Member', name: 'member_last_name,member_first_name', hidden: !this.showMember},
         {value: 'Subscription ID', name: 'subscription_id'},
+        {value: 'Subscription Type', name: 'subscription_type'},
         {value: 'Amount', name: 'amount'},
         {value: 'Process Date', name: 'process_date'},
         {value: 'Status', name: 'status'},

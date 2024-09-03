@@ -7,6 +7,10 @@ use App\Http\Requests\UpdateMemberRequest;
 use App\Models\Member;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Spatie\Browsershot\Browsershot;
+use Illuminate\Support\Facades\Storage;
+use App\Services\PdfWrapper;
+
 
 class MemberController extends Controller
 {
@@ -85,5 +89,45 @@ class MemberController extends Controller
         $member->restore();
 
         return back()->snackbar('Member restored.');
+    }
+
+    public function transactionsreport(Member $member){
+
+        $member = $member->load(['transactions' => fn($q) => $q->with('subscription:id,type')->orderByDesc('process_date')]);
+
+        $filename = 'gemachhakehilos_report_'.$member->id.'.pdf';
+
+        $pdfGenerator = new Browsershot();
+
+        $headerHtml =  view('pdfs._header')->render();
+        $footerHtml =  view('pdfs._footer')->render();
+        $bodyHtml = view('pdfs.transactions_report',['member' => $member])->render();
+
+        //return $bodyHtml;
+
+        $pdf = Browsershot::html($bodyHtml)
+        ->margins(15, 15, 15, 15)
+        ->showBrowserHeaderAndFooter()
+        ->headerHtml($headerHtml)
+        ->footerHtml($footerHtml)
+        ->waitUntilNetworkIdle()
+        ->pdf();
+
+        Storage::put('pdf_reports/' .$filename, $pdf);
+
+        $headers = [
+            "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
+            "Content-type"        => "application/pdf",
+            "Content-Disposition" => "attachment; filename=$filename",
+            "Expires"             => "0",
+            "Pragma"              => "no-cache",
+            "Content-Length" => strlen($pdf)
+        ];
+
+
+
+        //
+        return Storage::download('pdf_reports/' .$filename, $filename, $headers);
+
     }
 }

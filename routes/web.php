@@ -45,6 +45,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('members', MemberController::class);
     Route::put('members/{member}/restore', [MemberController::class, 'restore'])->name('members.restore');
     Route::get('members/{member}/dashboard', [MemberDashboardController::class, 'index'])->name('members.dashboard');
+    Route::get('members/{member}/transactionsreport', [MemberController::class, 'transactionsreport'])->name('members.transactionsreport');
 
     // Memberships
     Route::get('memberships', [MembershipController::class, 'index'])->name('memberships.index');
