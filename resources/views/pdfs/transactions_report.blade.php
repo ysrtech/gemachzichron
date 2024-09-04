@@ -6,7 +6,7 @@
             <div >
             <h2>Transaction Report for <b>{{$member->first_name.' '.$member->last_name }}</b></h2>
             <br />
-                <b>Print Date: </b> {{ date('Y-m-d H:i:s') }}<br />
+                <b>Print Date: </b> {{ date('Y-m-d H:i A') }}<br />
                 Total Membership Payments:  <b>${{ $member->membership_payments_total }}</b><br />
                 @if($member->loans_payments)
                 Total Loan Payments:  <b>${{ $member->loans_payments }}</b><br />

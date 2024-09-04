@@ -111,6 +111,7 @@ class MemberController extends Controller
         ->headerHtml($headerHtml)
         ->footerHtml($footerHtml)
         ->waitUntilNetworkIdle()
+        ->setCustomTempPath(storage_path('tmp/pdf'))
         ->pdf();
 
         Storage::put('pdf_reports/' .$filename, $pdf);
