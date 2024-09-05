@@ -166,7 +166,11 @@ class Member extends Model
 
                 $currentDate = Carbon::now()->floorMonth();
 
-                if(in_array($this->plan_type_id,$oldPlanTypes)){
+                if($startDate->isAfter(Carbon::parse('Feb 29, 2024'))){
+                    $membershipMonths = $startDate->diffInMonths($currentDate)+1;
+                    $supposedtobePaid =  ($membershipMonths * 190);
+
+                }elseif(in_array($this->plan_type_id,$oldPlanTypes)){
                     $membershipMonths = $startDate->diffInMonths($currentDate)+1;
                     $supposedtobePaid =  ($membershipMonths * 120);
 
