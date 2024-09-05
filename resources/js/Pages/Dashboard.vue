@@ -95,7 +95,7 @@
         title="Recent Transactions"
       >
         <template #content>
-          <transactions-table :transactions="recent_transactions" />
+          <transactions-table :transactions="recent_transactions" :showMember=1 />
           <div class="text-gray-700 text-center font-medium py-3">
             <inertia-link
               class="hover:underline"

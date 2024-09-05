@@ -21,7 +21,8 @@ class DashboardController extends Controller
         return Inertia::render('Dashboard', [
             'recent_transactions'  => Transaction::with(
                 [
-                    'member' => fn($q) => $q->select(['id', 'first_name', 'last_name', 'deleted_at'])->withTrashed()
+                    'member' => fn($q) => $q->select(['id', 'first_name', 'last_name', 'deleted_at'])->withTrashed(),
+                    'subscription:id,type'
                 ])
                 ->orderByDesc('process_date')
                 ->orderByDesc('id')

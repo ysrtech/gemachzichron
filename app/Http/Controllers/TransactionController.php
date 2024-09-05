@@ -19,7 +19,7 @@ class TransactionController extends Controller
                ->filterByRelated($request->only('loan_id'), 'subscription')
                ->filter($request->only('amount', 'subscription_id', 'status', 'type', 'gateway', 'gateway_identifier'))
                ->filterBetweenDates('process_date', $request->from_date, $request->to_date)
-               ->with(['member' => fn($q) => $q->select(['id', 'first_name', 'last_name', 'deleted_at'])->withTrashed()])
+               ->with(['member' => fn($q) => $q->select(['id', 'first_name', 'last_name', 'deleted_at'])->withTrashed(),'subscription:id,type'])
                ->sort($request->sort)
                ->orderByDesc('process_date')
                ->orderByDesc('id')
