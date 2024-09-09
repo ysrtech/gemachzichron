@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Spatie\Browsershot\Browsershot;
 use Illuminate\Support\Facades\Storage;
-use App\Services\PdfWrapper;
 
 
 class MemberController extends Controller
@@ -102,8 +101,6 @@ class MemberController extends Controller
         $headerHtml =  view('pdfs._header')->render();
         $footerHtml =  view('pdfs._footer')->render();
         $bodyHtml = view('pdfs.transactions_report',['member' => $member])->render();
-
-        //return $bodyHtml;
 
         $pdf = Browsershot::html($bodyHtml)
         ->margins(15, 15, 15, 15)

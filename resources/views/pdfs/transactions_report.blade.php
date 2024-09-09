@@ -36,7 +36,7 @@
                         <tr>
                             <td>{{ $transaction->id }}</td>
                             <td>{{ $transaction->subscription->type }}</td>
-                            <td><b>{{ $transaction->process_date }}</td>
+                            <td><b>{{ $transaction->process_date }}</b></td>
                             <td>${{ $transaction->amount }}</td>
                             <td>{{ $transaction->gateway == 'Rotessa' ? 'Bank' : ($transaction->gateway == 'Cardknox' ? 'Credit Card' : 'Manual') }}</td>
                         </tr>
