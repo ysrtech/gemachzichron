@@ -13,6 +13,7 @@
         "laravel/tinker": "^2.8.2",
         "spatie/browsershot": "^3.61",
         "spatie/laravel-backup": "^6.16.5",
+        "spipu/html2pdf": "^5.2",
         "tightenco/ziggy": "^1.8.1"
     },
     "require-dev": {

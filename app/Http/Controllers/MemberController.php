@@ -7,7 +7,7 @@ use App\Http\Requests\UpdateMemberRequest;
 use App\Models\Member;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use Spatie\Browsershot\Browsershot;
+use Spipu\Html2Pdf\Html2Pdf;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -96,36 +96,14 @@ class MemberController extends Controller
 
         $filename = 'gemachhakehilos_report_'.$member->id.'.pdf';
 
-        $pdfGenerator = new Browsershot();
 
-        $headerHtml =  view('pdfs._header')->render();
-        $footerHtml =  view('pdfs._footer')->render();
         $bodyHtml = view('pdfs.transactions_report',['member' => $member])->render();
 
-        $pdf = Browsershot::html($bodyHtml)
-        ->margins(15, 15, 15, 15)
-        ->showBrowserHeaderAndFooter()
-        ->headerHtml($headerHtml)
-        ->footerHtml($footerHtml)
-        ->waitUntilNetworkIdle()
-        ->setCustomTempPath(storage_path('tmp/pdf'))
-        ->pdf();
+        $html2pdf = new Html2Pdf('P','LETTER','en',true,'UTF-8');
+        $html2pdf->writeHTML($bodyHtml);
+        return $html2pdf->output($filename,'D');
 
-        Storage::put('pdf_reports/' .$filename, $pdf);
-
-        $headers = [
-            "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
-            "Content-type"        => "application/pdf",
-            "Content-Disposition" => "attachment; filename=$filename",
-            "Expires"             => "0",
-            "Pragma"              => "no-cache",
-            "Content-Length" => strlen($pdf)
-        ];
-
-
-
-        //
-        return Storage::download('pdf_reports/' .$filename, $filename, $headers);
+        
 
     }
 }
