@@ -358,7 +358,8 @@ export default {
         comment: this.subscription?.comment || null,
         loan_id: this.subscription?.loan_id || null,
         active: this.subscription ? this.subscription.active : true,
-        guarantor_payment: this.subscription?.guarantor_payment || null
+        guarantor_payment: this.subscription?.guarantor_payment || null,
+        resolves_transaction: null
       })
     },
 

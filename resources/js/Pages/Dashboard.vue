@@ -63,12 +63,12 @@
       </div>
       <div class="bg-white flex flex-col overflow-hidden rounded-lg shadow">
         <div class="flex flex-col p-5">
-          <div class="text-xl text-gray-500">Failed Transactions</div>
-          <h2 class="font-medium text-4xl">{{ failed_count }}</h2>
+          <div class="text-xl text-gray-500">Unresolved Failed Transactions</div>
+          <h2 class="font-medium text-4xl">{{ unresolved_failed_count }}</h2>
         </div>
         <inertia-link
           :href="
-            $route('transactions.index', { status: TRANSACTION_STATUSES.Fail })
+            $route('transactions.index', { status: TRANSACTION_STATUSES.Fail, hide_resolved: true })
           "
           class="
             py-3
@@ -130,7 +130,7 @@ export default {
   props: {
     recent_transactions: Array,
     pending_manual_count: Number,
-    failed_count: Number,
+    unresolved_failed_count: Number,
     loans_count: Number,
     members_count: Number,
     month_success_total: [Number, String],

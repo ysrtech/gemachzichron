@@ -32,6 +32,16 @@
         :options="Object.assign({'All': ''}, TRANSACTION_STATUSES)"
       />
 
+      <div v-if="filterForm.status == TRANSACTION_STATUSES.Fail" class="flex items-center space-x-2 border-b pb-4">
+        <input
+          v-model="filterForm.hide_resolved"
+          type="checkbox"
+          id="hide_resolved"
+          class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50"
+        />
+        <label for="hide_resolved" class="text-sm font-medium text-gray-700 cursor-pointer">Hide Resolved</label>
+      </div>
+
       <search-filter-field
         v-model="filterForm.type"
         type="select"
@@ -110,6 +120,7 @@ export default {
         amount: this.filters.amount,
         subscription_id: this.filters.subscription_id,
         status: this.filters.status,
+        hide_resolved: Boolean(this.filters.hide_resolved),
         type: this.filters.type,
         gateway: this.filters.gateway,
         gateway_identifier: this.filters.gateway_identifier,

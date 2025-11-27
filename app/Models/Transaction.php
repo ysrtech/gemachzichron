@@ -19,7 +19,6 @@ class Transaction extends Model
     const STATUS_SUCCESS = 1;
     const STATUS_PENDING = 2;
     const STATUS_FAIL = 3;
-    const STATUS_RESOLVED = 4; // fail resolved
 
     const TYPE_BASE_TRANSACTION = 'Base Transaction'; // original full amount
     const TYPE_MAIN_TRANSACTION = 'Main Transaction'; // amount after splitting
@@ -28,7 +27,8 @@ class Transaction extends Model
     const TYPE_DECLINE_FEE = 'Decline Fees';
 
     protected $casts = [
-        'gateway_data' => 'array'
+        'gateway_data' => 'array',
+        'resolved_data' => 'array'
     ];
 
     public function subscription()
@@ -41,11 +41,26 @@ class Transaction extends Model
         return $this->belongsTo(Member::class);
     }
 
+    public function resolvingSubscriptions()
+    {
+        return $this->hasMany(Subscription::class, 'resolves_transaction');
+    }
+
     protected function scopeDefaultSortBy($query)
     {
         $query
             ->orderByDesc('process_date')
             ->orderByDesc('id');
+    }
+
+    protected function scopeUnresolved($query)
+    {
+        return $query->where('status', self::STATUS_FAIL)->where('resolved', false);
+    }
+
+    protected function scopeResolved($query)
+    {
+        return $query->where('status', self::STATUS_FAIL)->where('resolved', true);
     }
 
     protected function scopeOrderByMemberLastName($query, $direction)
@@ -134,14 +149,8 @@ class Transaction extends Model
             ], $attributes));
     }
 
-    public function resolve()
+    public function isResolved(): bool
     {
-        if (!$this->status == self::STATUS_FAIL) {
-            throw new Exception("Can't resolve not failed transaction [transaction #$this->id]");
-        }
-
-        $this->update([
-            'status' => self::STATUS_RESOLVED,
-        ]);
+        return $this->resolved;
     }
 }

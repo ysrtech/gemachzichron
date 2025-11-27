@@ -40,11 +40,23 @@
         </td>
         <td class="px-6 py-3.5 whitespace-nowrap">{{ date(transaction.process_date) }}</td>
 
-        <td class="px-6 py-3.5 whitespace-nowrap">
+        <td class="px-6 py-3.5 whitespace-nowrap space-x-2 flex items-center">
           <app-badge
             :color="TRANSACTION_STATUS_COLORS[transaction.status]"
             v-tippy="{ content: transaction.status_message }">
             {{ Object.keys(TRANSACTION_STATUSES)[Object.values(TRANSACTION_STATUSES).indexOf(transaction.status)] }}
+          </app-badge>
+          <inertia-link
+            v-if="transaction.status === TRANSACTION_STATUSES.Fail && transaction.resolved && transaction.resolving_subscriptions?.length"
+            :href="$route('subscriptions.show', transaction.resolving_subscriptions[0].id)"
+            v-tippy="{content: 'View resolving subscription #' + transaction.resolving_subscriptions[0].id}"
+          >
+            <app-badge color="purple" class="cursor-pointer hover:bg-purple-600">
+              Resolved
+            </app-badge>
+          </inertia-link>
+          <app-badge v-else-if="transaction.status === TRANSACTION_STATUSES.Fail && transaction.resolved" color="purple">
+            Resolved
           </app-badge>
         </td>
         <td class="px-6 py-3.5 whitespace-nowrap">
@@ -67,11 +79,19 @@
           mode_comment
         </span>
         <button
-          v-show="transaction.status === TRANSACTION_STATUSES.Fail"
+          v-show="transaction.status === TRANSACTION_STATUSES.Fail && !transaction.resolved"
           v-tippy="{content: 'Resolve [new single-installment subscription]'}"
           @click="resolveFailedTransaction = transaction"
           class="material-icons-outlined focus:outline-none rounded-full p-1 hover:bg-gray-200 focus:bg-gray-300">
           add_task
+        </button>
+
+        <button
+          v-show="transaction.status === TRANSACTION_STATUSES.Fail && !transaction.resolved"
+          v-tippy="{content: 'Mark as resolved'}"
+          @click="$inertia.patch($route('transaction.resolve', transaction.id), {}, {preserveScroll: true})"
+          class="material-icons-outlined focus:outline-none rounded-full p-1 hover:bg-gray-200 focus:bg-gray-300">
+          check_circle
         </button>
 
          <button

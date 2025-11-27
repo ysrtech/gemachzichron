@@ -22,7 +22,8 @@ class DashboardController extends Controller
             'recent_transactions'  => Transaction::with(
                 [
                     'member' => fn($q) => $q->select(['id', 'first_name', 'last_name', 'deleted_at'])->withTrashed(),
-                    'subscription:id,type'
+                    'subscription:id,type',
+                    'resolvingSubscriptions:id,resolves_transaction'
                 ])
                 ->orderByDesc('process_date')
                 ->orderByDesc('id')
@@ -32,6 +33,7 @@ class DashboardController extends Controller
                 ->where('status', Transaction::STATUS_PENDING)
                 ->count(),
             'failed_count' => Transaction::where('status', Transaction::STATUS_FAIL)->count(),
+            'unresolved_failed_count' => Transaction::unresolved()->count(),
             'month_success_total' => Transaction::where('status', Transaction::STATUS_SUCCESS)
                 ->where('process_date', '>=', now()->startOfMonth()->toDateString())
             ->sum('amount'),

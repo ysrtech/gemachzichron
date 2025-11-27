@@ -46,7 +46,7 @@ class CreateSubscriptionRequest extends FormRequest
             'decline_fee'          => ['required', 'numeric'],
             'resolves_transaction' => [
                 'nullable',
-                Rule::exists('transactions')->where('status', Transaction::STATUS_FAIL)
+                Rule::exists('transactions', 'id')->where('status', Transaction::STATUS_FAIL)
             ],
             'loan_id'              => [
                 'sometimes',

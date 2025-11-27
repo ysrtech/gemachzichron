@@ -13,13 +13,18 @@ class TransactionController extends Controller
         return Inertia::render('Transactions/Index', [
            'filters' => $request->all([
                'search', 'amount', 'subscription_id', 'status', 'type', 'loan_id',
-               'gateway', 'gateway_identifier', 'from_date', 'to_date', 'sort'
+               'gateway', 'gateway_identifier', 'from_date', 'to_date', 'sort', 'hide_resolved'
            ]),
            'transactions' => Transaction::searchByRelated($request->search, ['member'])
                ->filterByRelated($request->only('loan_id'), 'subscription')
                ->filter($request->only('amount', 'subscription_id', 'status', 'type', 'gateway', 'gateway_identifier'))
+               ->when($request->status == 3 && $request->boolean('hide_resolved'), fn($q) => $q->where('resolved', false))
                ->filterBetweenDates('process_date', $request->from_date, $request->to_date)
-               ->with(['member' => fn($q) => $q->select(['id', 'first_name', 'last_name', 'deleted_at'])->withTrashed(),'subscription:id,type'])
+               ->with([
+                   'member' => fn($q) => $q->select(['id', 'first_name', 'last_name', 'deleted_at'])->withTrashed(),
+                   'subscription:id,type',
+                   'resolvingSubscriptions:id,resolves_transaction'
+               ])
                ->sort($request->sort)
                ->orderByDesc('process_date')
                ->orderByDesc('id')
@@ -35,6 +40,43 @@ class TransactionController extends Controller
     public function update(Request $request, Transaction $transaction)
     {
         //
+    }
+
+    public function resolve(Request $request, Transaction $transaction)
+    {
+        if ($transaction->status !== Transaction::STATUS_FAIL) {
+            return back()->alert([
+                'icon'    => 'error',
+                'title'   => 'Invalid Transaction',
+                'message' => 'Only failed transactions can be marked as resolved.',
+            ]);
+        }
+
+        if ($transaction->resolved) {
+            return back()->alert([
+                'icon'    => 'info',
+                'title'   => 'Already Resolved',
+                'message' => 'This transaction is already marked as resolved.',
+            ]);
+        }
+
+        if (!$request->boolean('confirm')) {
+            return back()->alert([
+                'icon'         => 'warning',
+                'title'        => 'Mark as Resolved?',
+                'message'      => "Are you sure you want to mark transaction <strong>#$transaction->id</strong> as resolved?",
+                'actionButton' => [
+                    'text'   => 'Mark as Resolved',
+                    'color'  => 'purple',
+                    'route'  => route('transaction.resolve', ['transaction' => $transaction->id, 'confirm' => true]),
+                    'method' => 'patch'
+                ],
+            ]);
+        }
+
+        $transaction->update(['resolved' => true]);
+
+        return back()->snackbar('Transaction marked as resolved.');
     }
 
     public function destroy(Request $request,Transaction $transaction)

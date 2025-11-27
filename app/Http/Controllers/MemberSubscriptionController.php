@@ -27,6 +27,10 @@ class MemberSubscriptionController extends Controller
         if ($request->gateway == GatewayFactory::MANUAL) {
             $member->subscriptions()->create($request->validated());
 
+            if ($request->resolves_transaction) {
+                Transaction::find($request->resolves_transaction)->update(['resolved' => true]);
+            }
+
             return back()->snackbar('Subscription created successfully');
         }
 
@@ -60,6 +64,10 @@ class MemberSubscriptionController extends Controller
 
             $subscription->resolveAssociatedConflicts();
 
+            if ($request->resolves_transaction) {
+                Transaction::find($request->resolves_transaction)->update(['resolved' => true]);
+            }
+
             return back()->snackbar('Subscription created and synced successfully');
         }
 
@@ -78,14 +86,10 @@ class MemberSubscriptionController extends Controller
 
         
 
-        $member->subscriptions()->create($request->all());
+        $member->subscriptions()->create($request->validated());
 
         if ($request->resolves_transaction) {
-            try {
-                Transaction::find($request->resolves_transaction)->resolve();
-            } catch (\Exception $exception) {
-                // todo revert/delete subscription??
-            }
+            Transaction::find($request->resolves_transaction)->update(['resolved' => true]);
         }
 
         return back()->snackbar('Subscription created successfully');

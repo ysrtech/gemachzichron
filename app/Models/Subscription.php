@@ -226,7 +226,6 @@ class Subscription extends Model
                     'gateway_data',
                 ]);
 
-
                 if ($gTransaction['status'] == Transaction::STATUS_SUCCESS) {
                     $transaction->split($attributes);
                 }
@@ -308,7 +307,6 @@ class Subscription extends Model
     {
         return $this->gateway_data['deleted'] ?? false;
     }
-
 
     public function scopeWhereIsNotDeletedInGateway($query)
     {
