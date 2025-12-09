@@ -158,39 +158,68 @@ class Member extends Model
 
     public function getMembershipDueAttribute()
     {
-        if($this->active_membership){
+        if($this->active_membership && $this->planType){
 
-                $startDate = Carbon::parse($this->membership_since)->floorMonth();
+            $startDate = Carbon::parse($this->membership_since)->floorMonth();
+            $currentDate = Carbon::now()->floorMonth();
+            $rates = $this->planType->rates ?? [];
 
-                $oldPlanTypes = [10,11,12];
+            if (empty($rates)) {
+                return 0;
+            }
 
-                $currentDate = Carbon::now()->floorMonth();
+            // Sort rates by date (ascending) to process chronologically
+            $sortedRates = collect($rates)->sortKeys()->toArray();
+            $supposedtobePaid = 0;
 
-               if(in_array($this->plan_type_id,$oldPlanTypes)){
-                    $membershipMonths = $startDate->diffInMonths($currentDate)+1;
-                    $supposedtobePaid =  ($membershipMonths * 120);
+            // If only one rate, simple calculation
+            if (count($sortedRates) === 1) {
+                $rate = current($sortedRates);
+                $months = $startDate->diffInMonths($currentDate) + 1;
+                $supposedtobePaid = $months * $rate;
+            } else {
+                // Multiple rates - process each period
+                $ratesArray = array_keys($sortedRates);
 
-                }elseif($startDate->isAfter(Carbon::parse('Feb 29, 2024'))){
-                    $membershipMonths = $startDate->diffInMonths($currentDate)+1;
-                    $supposedtobePaid =  ($membershipMonths * 190);
+                foreach ($ratesArray as $index => $effectiveDate) {
+                    $effectiveDateCarbon = Carbon::parse($effectiveDate)->floorMonth();
 
-                }else{
-                    $lastBeforeIncrease = Carbon::parse('June 20, 2024')->floorMonth();
-                    $oldMemershipMonths = $startDate->diffInMonths($lastBeforeIncrease)+1;
-                    $newMemershipMonths = $lastBeforeIncrease->diffInMonths($currentDate);
+                    // Only process rates that came into effect on or after membership start
+                    if ($effectiveDateCarbon >= $startDate) {
+                        // Determine the rate to charge for this period
+                        $rate = $sortedRates[$effectiveDate];
+                        
+                        // Period starts at this rate's effective date
+                        $periodStart = $effectiveDateCarbon;
+                        
+                        // Determine the end of this period (either next rate date or today, whichever is earlier)
+                        if ($index < count($ratesArray) - 1) {
+                            $nextRateDate = Carbon::parse($ratesArray[$index + 1])->floorMonth();
+                            $periodEnd = $nextRateDate->lessThanOrEqualTo($currentDate) ? $nextRateDate->subMonth() : $currentDate;
+                        } else {
+                            $periodEnd = $currentDate;
+                        }
 
-                    $supposedtobePaid =  ($oldMemershipMonths * 120) + ($newMemershipMonths * 190);
+                        // Calculate months in this period
+                        $months = $periodStart->diffInMonths($periodEnd) + 1;
+                        $supposedtobePaid += $months * $rate;
+                    } elseif ($index === count($ratesArray) - 1) {
+                        // Special case: this is the last (most recent) rate, and it came into effect BEFORE membership started
+                        // Use this rate from membership start to today
+                        $rate = $sortedRates[$effectiveDate];
+                        $months = $startDate->diffInMonths($currentDate) + 1;
+                        $supposedtobePaid += $months * $rate;
+                    }
                 }
+            }
 
-                $membershipBalance = $supposedtobePaid - $this->membership_payments_total;
+            $membershipBalance = $supposedtobePaid - $this->membership_payments_total;
 
-                return $membershipBalance;
+            return $membershipBalance;
 
-        }else{
+        } else {
             return 0;
         }
-
-        
     }
 
 

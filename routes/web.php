@@ -16,6 +16,7 @@ use App\Http\Controllers\MemberController;
 use App\Http\Controllers\MemberGuaranteesController;
 use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\PlanTypeController;
+use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\SubscriptionTransactionController;
 use App\Http\Controllers\TransactionController;
@@ -95,4 +96,12 @@ Route::middleware(['auth'])->group(function () {
     // Exports
     Route::get('export', [DataExportController::class, 'index'])->name('export.index');
     Route::get('export/{model}', [DataExportController::class, 'show'])->name('export.show');
+
+    // Settings
+    Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
+    Route::post('settings/plan-types', [SettingsController::class, 'storePlanType'])->name('settings.plan-types.store');
+    Route::put('settings/plan-types/{planType}', [SettingsController::class, 'updatePlanType'])->name('settings.plan-types.update');
+    Route::patch('settings/plan-types/{planType}/rate', [SettingsController::class, 'updatePlanTypeRate'])->name('settings.plan-types.rate.update');
+    Route::delete('settings/plan-types/{planType}/rate', [SettingsController::class, 'deletePlanTypeRate'])->name('settings.plan-types.rate.delete');
+    Route::delete('settings/plan-types/{planType}', [SettingsController::class, 'destroyPlanType'])->name('settings.plan-types.destroy');
 });

@@ -86,9 +86,9 @@ export default {
         {
           divide: true,
           title: "Settings",
-          route: "login",
+          route: "settings.index",
           icon: 'settings',
-          active: () => false
+          active: () => this.$page.component === 'Settings/Index'
         },
       ],
     }

@@ -17,9 +17,18 @@
           <div class="px-4 py-5 sm:px-6">
             <dl class="space-y-8">
               <key-value label="Membership Since" :value="date(member.membership_since)"/>
-              <key-value label="Membership Type">
-                {{ member.membership_type }} <span v-if="member.plan_type">({{ member.plan_type.name }})</span>
-              </key-value>
+              <div v-if="member.plan_type" class="p-3 bg-blue-50 border border-blue-200 rounded">
+                <p class="text-sm text-gray-600 mb-2">Membership Type</p>
+                <p class="text-base text-blue-600 mb-3">{{ member.membership_type }} ({{ member.plan_type.name }})</p>
+                <div v-if="currentRate">
+                  <p class="text-lg font-semibold text-blue-600">${{ currentRate }}/month</p>
+                </div>
+              </div>
+              <div v-else>
+                <key-value label="Membership Type">
+                  {{ member.membership_type }}
+                </key-value>
+              </div>
               <key-value label="Created on" :value="date(member.created_at)"/>
               <key-value label="Updated on" :value="date(member.updated_at)"/>
             </dl>
@@ -87,6 +96,39 @@ export default {
 
   methods: {
     date,
+  },
+
+  computed: {
+    currentRate() {
+      if (!this.member.plan_type || !this.member.plan_type.rates) {
+        return null
+      }
+
+      const rates = this.member.plan_type.rates
+      
+      // Handle both object and array formats
+      if (Array.isArray(rates)) {
+        return null
+      }
+
+      const today = new Date().toISOString().split('T')[0]
+      const ratesObj = typeof rates === 'object' ? rates : JSON.parse(rates)
+      
+      // Get all dates and sort them
+      const allDates = Object.keys(ratesObj).sort()
+      
+      // Find the most recent rate that is effective on or before today
+      let applicableRate = null
+      for (const date of allDates) {
+        if (date <= today) {
+          applicableRate = ratesObj[date]
+        } else {
+          break
+        }
+      }
+
+      return applicableRate
+    }
   }
 }
 </script>

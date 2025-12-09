@@ -45,6 +45,11 @@
           </template>
         </app-select>
 
+        <div v-if="selectedPlanType && currentRate" class="p-3 bg-blue-50 border border-blue-200 rounded">
+          <p class="text-sm text-gray-600">Current Membership Rate</p>
+          <p class="text-lg font-semibold text-blue-600">${{ currentRate }}/month</p>
+        </div>
+
         <label class="flex items-center">
           <app-checkbox v-model="form.active_membership" name="active_membership"/>
           <span class="ml-2 text-sm text-gray-600">Active</span>
@@ -99,6 +104,10 @@ export default {
         membership_type: this.member?.membership_type,
         plan_type_id: this.member?.plan_type_id,
       })
+    },
+    'form.plan_type_id'() {
+      // Trigger reactivity when plan type changes
+      this.$forceUpdate()
     }
   },
 
@@ -108,6 +117,46 @@ export default {
         onSuccess: () => this.$emit('close'),
         preserveState: 'errors',
       })
+    }
+  },
+
+  computed: {
+    selectedPlanType() {
+      if (!this.form.plan_type_id) {
+        return null
+      }
+      return this.planTypes.find(p => p.id === parseInt(this.form.plan_type_id))
+    },
+
+    currentRate() {
+      if (!this.selectedPlanType || !this.selectedPlanType.rates) {
+        return null
+      }
+
+      const rates = this.selectedPlanType.rates
+      
+      // Handle both object and array formats
+      if (Array.isArray(rates)) {
+        return null
+      }
+
+      const today = new Date().toISOString().split('T')[0]
+      const ratesObj = typeof rates === 'object' ? rates : JSON.parse(rates)
+      
+      // Get all dates and sort them
+      const allDates = Object.keys(ratesObj).sort()
+      
+      // Find the most recent rate that is effective on or before today
+      let applicableRate = null
+      for (const date of allDates) {
+        if (date <= today) {
+          applicableRate = ratesObj[date]
+        } else {
+          break
+        }
+      }
+
+      return applicableRate
     }
   },
 

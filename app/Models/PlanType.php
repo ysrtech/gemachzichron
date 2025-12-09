@@ -10,6 +10,10 @@ class PlanType extends Model
 {
     public $timestamps = false;
 
+    protected $casts = [
+        'rates' => 'array'
+    ];
+
     protected static function booted()
     {
         static::saved(fn($planType) => Cache::forget('plan-types'));
