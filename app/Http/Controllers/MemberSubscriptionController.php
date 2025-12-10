@@ -39,6 +39,8 @@ class MemberSubscriptionController extends Controller
         }
 
         $request->payment_method_id = $paymentMethod->id;
+        // Replace gateway ID with gateway name for storage
+        $request->merge(['gateway' => $paymentMethod->gateway]);
 
         if ($request->gateway_identifier) { // sync with existing gateway schedule
 
@@ -86,7 +88,9 @@ class MemberSubscriptionController extends Controller
 
         
 
-        $member->subscriptions()->create($request->validated());
+        $validated = $request->validated();
+        $validated['gateway'] = $paymentMethod->gateway;
+        $member->subscriptions()->create($validated);
 
         if ($request->resolves_transaction) {
             Transaction::find($request->resolves_transaction)->update(['resolved' => true]);
