@@ -54,7 +54,7 @@ export default {
           show: this.member.membership_since
         },
         {
-          title: 'Loans',
+          title: 'Loans & Withdrawals',
           route: 'members.loans.index',
           show: this.member.membership_since
         },

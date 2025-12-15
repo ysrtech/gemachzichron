@@ -73,6 +73,11 @@ class Member extends Model
         return $this->hasMany(Loan::class);
     }
 
+    public function withdrawals()
+    {
+        return $this->hasMany(Withdrawal::class);
+    }
+
     public function subscriptions()
     {
         return $this->hasMany(Subscription::class);
@@ -102,8 +107,14 @@ class Member extends Model
     {
         return $query->withSum([
             'transactions as membership_payments_total' => fn($q) => $q
-                ->whereHas('subscription', fn($q) => $q->where('type', Subscription::TYPE_MEMBERSHIP))
-                ->where('type', Transaction::TYPE_MAIN_TRANSACTION)
+                ->where('status', Transaction::STATUS_SUCCESS)
+                ->where(function($q) {
+                    $q->where(function($query) {
+                        $query->whereHas('subscription', fn($sub) => $sub->where('type', Subscription::TYPE_MEMBERSHIP))
+                              ->where('type', Transaction::TYPE_MAIN_TRANSACTION);
+                    })
+                    ->orWhere('direction', 'out'); // Include withdrawals (negative amounts)
+                })
         ], 'amount');
     }
 
@@ -114,8 +125,14 @@ class Member extends Model
         }
 
         return $this->transactions()
-            ->whereHas('subscription', fn($q) => $q->where('type', Subscription::TYPE_MEMBERSHIP))
-            ->where('type', Transaction::TYPE_MAIN_TRANSACTION)
+            ->where('status', Transaction::STATUS_SUCCESS)
+            ->where(function($q) {
+                $q->where(function($query) {
+                    $query->whereHas('subscription', fn($sub) => $sub->where('type', Subscription::TYPE_MEMBERSHIP))
+                          ->where('type', Transaction::TYPE_MAIN_TRANSACTION);
+                })
+                ->orWhere('direction', 'out'); // Include withdrawals (negative amounts)
+            })
             ->sum('amount');
     }
 

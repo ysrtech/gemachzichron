@@ -15,6 +15,7 @@ class MemberLoanController extends Controller
             'loans' => fn($q) => $q->with('guarantors:id,first_name,last_name')
                 ->withSum('transactions', 'amount')
                 ->orderBy('loan_date', 'desc'),
+            'withdrawals' => fn($q) => $q->orderBy('withdrawal_date', 'desc'),
             'dependents:member_id,id,name'
         ]);
 

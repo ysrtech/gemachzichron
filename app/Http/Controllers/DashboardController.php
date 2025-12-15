@@ -38,8 +38,13 @@ class DashboardController extends Controller
                 ->where('process_date', '>=', now()->startOfMonth()->toDateString())
             ->sum('amount'),
             'total_capital' => Transaction::where('status', Transaction::STATUS_SUCCESS)
-                ->where('type',Transaction::TYPE_MAIN_TRANSACTION)
-                ->whereHas('subscription', fn($q) => $q->whereIn('type', [Subscription::TYPE_MEMBERSHIP,Subscription::TYPE_PIKUDON]))
+                ->where(function($q) {
+                    $q->where(function($query) {
+                        $query->where('type', Transaction::TYPE_MAIN_TRANSACTION)
+                              ->whereHas('subscription', fn($sub) => $sub->whereIn('type', [Subscription::TYPE_MEMBERSHIP, Subscription::TYPE_PIKUDON]));
+                    })
+                    ->orWhere('direction', 'out'); // Withdrawals are stored with negative amounts in DB
+                })
                 ->sum('amount'),
             'total_membership_fees' => Transaction::where('status', Transaction::STATUS_SUCCESS)
             ->where('type',Transaction::TYPE_MEMBERSHIP_FEE)

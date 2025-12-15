@@ -41,6 +41,11 @@ class Transaction extends Model
         return $this->belongsTo(Member::class);
     }
 
+    public function withdrawal()
+    {
+        return $this->belongsTo(Withdrawal::class);
+    }
+
     public function resolvingSubscriptions()
     {
         return $this->hasMany(Subscription::class, 'resolves_transaction');
@@ -154,3 +159,4 @@ class Transaction extends Model
         return $this->resolved;
     }
 }
+

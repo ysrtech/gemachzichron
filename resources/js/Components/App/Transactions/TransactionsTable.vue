@@ -27,13 +27,15 @@
         </td>
         <td class="px-6 py-3.5 whitespace-nowrap">
           <inertia-link
+            v-if="transaction.subscription_id"
             class="hover:text-gray-900 hover:underline"
             :href="$route('subscriptions.show', transaction.subscription_id)">
             {{ transaction.subscription_id }}
           </inertia-link>
+          <span v-else class="text-gray-400">—</span>
         </td>
         <td class="px-6 py-3.5 whitespace-nowrap">
-            {{ transaction.subscription.type }}
+            {{ transaction.subscription?.type || '—' }}
         </td>
         <td class="px-6 py-3.5 whitespace-nowrap font-medium">
           <money :amount="transaction.amount"/>
