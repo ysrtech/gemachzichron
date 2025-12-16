@@ -197,35 +197,49 @@ class Member extends Model
             } else {
                 // Multiple rates - process each period
                 $ratesArray = array_keys($sortedRates);
-
+                
+                // Find the rate that was active when membership started
+                $activeRateAtStart = null;
+                $activeRateStartIndex = 0;
+                
                 foreach ($ratesArray as $index => $effectiveDate) {
                     $effectiveDateCarbon = Carbon::parse($effectiveDate)->floorMonth();
+                    if ($effectiveDateCarbon <= $startDate) {
+                        $activeRateAtStart = $sortedRates[$effectiveDate];
+                        $activeRateStartIndex = $index;
+                    } else {
+                        break; // Stop once we find a rate that comes after membership start
+                    }
+                }
 
-                    // Only process rates that came into effect on or after membership start
-                    if ($effectiveDateCarbon >= $startDate) {
-                        // Determine the rate to charge for this period
-                        $rate = $sortedRates[$effectiveDate];
-                        
-                        // Period starts at this rate's effective date
-                        $periodStart = $effectiveDateCarbon;
-                        
-                        // Determine the end of this period (either next rate date or today, whichever is earlier)
-                        if ($index < count($ratesArray) - 1) {
-                            $nextRateDate = Carbon::parse($ratesArray[$index + 1])->floorMonth();
-                            $periodEnd = $nextRateDate->lessThanOrEqualTo($currentDate) ? $nextRateDate->subMonth() : $currentDate;
-                        } else {
-                            $periodEnd = $currentDate;
-                        }
-
-                        // Calculate months in this period
+                // Process from membership start with the active rate at that time
+                $periodStart = $startDate;
+                
+                // Start from the rate that was active when membership began
+                for ($i = $activeRateStartIndex; $i < count($ratesArray); $i++) {
+                    $effectiveDate = $ratesArray[$i];
+                    $effectiveDateCarbon = Carbon::parse($effectiveDate)->floorMonth();
+                    $rate = $sortedRates[$effectiveDate];
+                    
+                    // Determine period end
+                    if ($i < count($ratesArray) - 1) {
+                        // There's a next rate - use the month before it becomes effective
+                        $nextRateDate = Carbon::parse($ratesArray[$i + 1])->floorMonth();
+                        $periodEnd = $nextRateDate->lessThanOrEqualTo($currentDate) ? $nextRateDate->copy()->subMonth() : $currentDate;
+                    } else {
+                        // This is the last rate - use current date
+                        $periodEnd = $currentDate;
+                    }
+                    
+                    // Only calculate if period is valid
+                    if ($periodStart <= $periodEnd) {
                         $months = $periodStart->diffInMonths($periodEnd) + 1;
                         $supposedtobePaid += $months * $rate;
-                    } elseif ($index === count($ratesArray) - 1) {
-                        // Special case: this is the last (most recent) rate, and it came into effect BEFORE membership started
-                        // Use this rate from membership start to today
-                        $rate = $sortedRates[$effectiveDate];
-                        $months = $startDate->diffInMonths($currentDate) + 1;
-                        $supposedtobePaid += $months * $rate;
+                        
+                        // Move to next period (if there is one)
+                        if ($i < count($ratesArray) - 1) {
+                            $periodStart = Carbon::parse($ratesArray[$i + 1])->floorMonth();
+                        }
                     }
                 }
             }
