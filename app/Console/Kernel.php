@@ -28,6 +28,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('transactions:pull cardknox "2 weeks ago"')->dailyAt('0:30');
         $schedule->command('subscriptions:sync')->dailyAt('1:00');
         $schedule->command('queue:restart')->dailyAt('1:30');
+        // $schedule->command('subscriptions:adjust-loan-payments')->monthlyOn(1, '2:00');
     }
 
     /**
