@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataExportController;
 use App\Http\Controllers\GatewayConflictController;
+use App\Http\Controllers\MemberActivityController;
 use App\Http\Controllers\MemberDependentController;
 use App\Http\Controllers\MemberLoanController;
 use App\Http\Controllers\MemberWithdrawalController;
@@ -81,6 +82,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('subscriptions/{subscription}/transactions', [SubscriptionTransactionController::class, 'store'])->name('subscriptions.transactions.store');
     Route::apiResource('transactions', TransactionController::class)->except(['store', 'update', 'destroy']);
 
+    // Activities
+    Route::get('members/{member}/activities', [MemberActivityController::class, 'index'])->name('members.activities.index');
+    Route::post('members/{member}/activities', [MemberActivityController::class, 'store'])->name('members.activities.store');
+    Route::put('members/{member}/activities/{note}', [MemberActivityController::class, 'update'])->name('members.activities.update');
+    Route::delete('members/{member}/activities/{note}', [MemberActivityController::class, 'destroy'])->name('members.activities.destroy');
+
     // Guarantees
     Route::get('members/{member}/guarantees', [MemberGuaranteesController::class, 'index'])->name('members.guarantees.index');
 
@@ -112,4 +119,7 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('settings/plan-types/{planType}/rate', [SettingsController::class, 'updatePlanTypeRate'])->name('settings.plan-types.rate.update');
     Route::delete('settings/plan-types/{planType}/rate', [SettingsController::class, 'deletePlanTypeRate'])->name('settings.plan-types.rate.delete');
     Route::delete('settings/plan-types/{planType}', [SettingsController::class, 'destroyPlanType'])->name('settings.plan-types.destroy');
+    Route::post('settings/loan-types', [SettingsController::class, 'storeLoanType'])->name('settings.loan-types.store');
+    Route::post('settings/loan-types/{loanType}', [SettingsController::class, 'updateLoanType'])->name('settings.loan-types.update');
+    Route::delete('settings/loan-types/{loanType}', [SettingsController::class, 'destroyLoanType'])->name('settings.loan-types.destroy');
 });

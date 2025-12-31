@@ -17,6 +17,8 @@
               <thead v-if="member.loans.length > 0">
               <tr class="bg-gray-50 text-xs text-left text-gray-400 uppercase">
                 <th class="px-6 py-3 font-medium">ID</th>
+                <th class="px-6 py-3 font-medium">Loan Type</th>
+                <th class="px-6 py-3 font-medium">Dependent</th>
                 <th class="px-6 py-3 font-medium">Loan Date</th>
                 <th class="px-6 py-3 font-medium text-right">Amount</th>
                 <th class="px-6 py-3 font-medium text-right">Remaining Balance</th>
@@ -32,6 +34,8 @@
                 :key="loan.id"
                 class="bg-white text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900 cursor-pointer">
                 <td class="px-6 py-3.5 whitespace-nowrap space-x-2">{{ loan.id }}</td>
+                <td class="px-6 py-3.5 whitespace-nowrap">{{ loan.loan_type || '-' }}</td>
+                <td class="px-6 py-3.5 whitespace-nowrap">{{ loan.dependent?.name || '-' }}</td>
                 <td class="px-6 py-3.5 whitespace-nowrap">{{ date(loan.loan_date) }}</td>
                 <td class="px-6 py-3.5 whitespace-nowrap font-medium text-right">
                   <money :amount="loan.amount"/>
@@ -50,7 +54,7 @@
               </tr>
 
               <tr v-if="member.loans.length > 0" class="text-sm bg-gray-50">
-                <td colspan="2" class="px-6 py-3.5 font-medium uppercase border-t border-gray-300">Total:</td>
+                <td colspan="4" class="px-6 py-3.5 font-medium uppercase border-t border-gray-300">Total:</td>
                 <td class="px-6 py-3.5 font-semibold text-right border-t border-gray-300">
                   <money :amount="member.loans.reduce((sum, loan) => sum + loan.amount, 0)"/>
                 </td>
@@ -62,7 +66,7 @@
               </tr>
 
               <tr v-else>
-                <td class="px-6 py-10 text-center text-gray-500" colspan="5">No Loans Found.</td>
+                <td class="px-6 py-10 text-center text-gray-500" colspan="8">No Loans Found.</td>
               </tr>
 
               </tbody>

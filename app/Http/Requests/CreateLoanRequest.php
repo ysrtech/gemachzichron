@@ -11,6 +11,7 @@ class CreateLoanRequest extends FormRequest
         return [
             'dependent_id'     => 'nullable|exists:dependents,id',
             'amount'           => 'required|numeric',
+            'loan_type'        => 'required|string',
             'loan_date'        => 'required|date',
             'cheque_number'    => 'nullable|string',
             'application_copy' => 'nullable|file',

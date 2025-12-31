@@ -14,12 +14,15 @@ class LoanController extends Controller
     public function index(Request $request)
     {
         return Inertia::render('Loans/Index', [
-            'filters' => $request->all('search', 'amount', 'from_date', 'to_date', 'sort'),
+            'filters' => $request->all('search', 'loan_type', 'amount', 'from_date', 'to_date', 'sort'),
             'loans' => Loan::searchByRelated($request->search, ['member'])
-                ->filter($request->only('amount'))
+                ->filter($request->only('amount', 'loan_type'))
                 ->filterBetweenDates('loan_date', $request->from_date, $request->to_date)
                 ->sort($request->sort)
-                ->with(['member' => fn($q) => $q->select(['id', 'first_name', 'last_name', 'deleted_at'])->withTrashed()])
+                ->with([
+                    'member' => fn($q) => $q->select(['id', 'first_name', 'last_name', 'deleted_at'])->withTrashed(),
+                    'dependent:id,name'
+                ])
                 ->withSum('transactions', 'amount')
                 ->orderBy('loan_date', 'desc')
                 ->paginate(20)
@@ -86,10 +89,21 @@ class LoanController extends Controller
             ]);
         }
 
+        // Save loan attributes before deletion
+        $loanAttributes = $loan->toArray();
+        $loanId = $loan->id;
+        $loanType = get_class($loan);
+
         $loan->guarantors()->detach();
         $member = $loan->member->id;
         $loan->delete();
 
+        // Log the deletion event manually (for permanent delete)
+        activity()
+            ->performedOn((new $loanType)->forceFill(['id' => $loanId]))
+            ->causedBy(auth()->user())
+            ->withProperties(['attributes' => $loanAttributes])
+            ->log('Loan deleted');
 
 
         return redirect()->route('members.loans.index', $member)->snackbar('Loan Deleted.');

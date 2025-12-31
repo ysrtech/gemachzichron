@@ -15,10 +15,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class Subscription extends Model
 {
-    use HasFactory, Filterable, SearchableByRelated, Sortable;
+    use HasFactory, Filterable, SearchableByRelated, Sortable, LogsActivity;
 
     const TYPE_MEMBERSHIP = 'Membership';
     const TYPE_LOAN_PAYMENT = 'Loan Payment';
@@ -314,5 +316,13 @@ class Subscription extends Model
         $query
             ->where('gateway_data', 'not like', '%"deleted": true%')
             ->where('gateway_data', 'not like', '%"deleted":true%');
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['member_id', 'type', 'amount', 'frequency', 'status', 'start_date', 'end_date'])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
     }
 }

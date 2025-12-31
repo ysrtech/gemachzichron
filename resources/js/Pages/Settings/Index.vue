@@ -104,6 +104,57 @@
           </div>
         </div>
       </div>
+
+      <!-- Loan Types Section -->
+      <div class="bg-white rounded-lg shadow overflow-hidden">
+        <button
+          @click="loanTypesExpanded = !loanTypesExpanded"
+          class="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 focus:outline-none">
+          <div class="flex items-center space-x-3">
+            <i class="material-icons-outlined text-gray-600">{{ loanTypesExpanded ? 'expand_less' : 'expand_more' }}</i>
+            <h2 class="text-lg font-medium text-gray-900">Loan Types</h2>
+          </div>
+        </button>
+
+        <div v-if="loanTypesExpanded" class="border-t border-gray-200">
+          <div class="px-6 py-4">
+            <div class="flex justify-end mb-4">
+              <button
+                @click="openLoanTypeFormModal()"
+                class="px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded-md hover:bg-primary-700 flex items-center space-x-2">
+                <i class="material-icons-outlined text-base">add</i>
+                <span>Add Loan Type</span>
+              </button>
+            </div>
+
+            <div class="space-y-3">
+              <div v-for="loanType in loanTypes" :key="loanType.id" class="border border-gray-200 rounded-lg">
+                <div class="px-6 py-3 bg-gray-50 flex items-center justify-between">
+                  <div class="text-sm font-medium text-gray-900">{{ loanType.name }}</div>
+                  <div class="flex items-center space-x-2">
+                    <button
+                      @click="openLoanTypeFormModal(loanType)"
+                      v-tippy="{ content: 'Edit' }"
+                      class="text-primary-600 hover:text-primary-900">
+                      <i class="material-icons-outlined">edit</i>
+                    </button>
+                    <button
+                      @click="showDeleteLoanTypeModal(loanType)"
+                      v-tippy="{ content: 'Delete' }"
+                      class="text-red-600 hover:text-red-900">
+                      <i class="material-icons-outlined">delete</i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div v-if="loanTypes.length === 0" class="text-center text-gray-500 py-4">
+                No loan types found.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <plan-type-form-modal
@@ -129,6 +180,22 @@
       :date="selectedRateDate"
       @close="showMembershipRateFormModal = false; selectedPlanTypeForRate = null; selectedRate = null; selectedRateDate = null"
     />
+
+    <loan-type-form-modal
+      :show="showLoanTypeFormModal"
+      :loan-type="selectedLoanType"
+      @close="showLoanTypeFormModal = false; selectedLoanType = null"
+    />
+
+    <confirm-modal
+      :show="showDeleteLoanTypeConfirmModal"
+      title="Delete Loan Type"
+      message="Are you sure you want to delete this loan type? This action cannot be undone."
+      confirm-text="Delete"
+      confirm-color="red"
+      @confirm="confirmDeleteLoanType"
+      @cancel="showDeleteLoanTypeConfirmModal = false"
+    />
   </div>
 </template>
 
@@ -137,6 +204,7 @@ import AppLayout from "@/Layouts/AppLayout";
 import PlanTypeFormModal from "./PlanTypeFormModal";
 import ConfirmModal from "@/Components/ConfirmModal";
 import MembershipRateFormModal from "./MembershipRateFormModal";
+import LoanTypeFormModal from "./LoanTypeFormModal";
 
 export default {
   layout: (h, page) => h(AppLayout, { title: "Settings" }, () => page),
@@ -145,6 +213,7 @@ export default {
     PlanTypeFormModal,
     ConfirmModal,
     MembershipRateFormModal,
+    LoanTypeFormModal,
   },
 
   data() {
@@ -159,11 +228,17 @@ export default {
       selectedPlanTypeForRate: null,
       selectedRate: null,
       selectedRateDate: null,
+      loanTypesExpanded: true,
+      showLoanTypeFormModal: false,
+      selectedLoanType: null,
+      showDeleteLoanTypeConfirmModal: false,
+      loanTypeToDelete: null,
     }
   },
 
   props: {
     planTypes: Array,
+    loanTypes: Array,
   },
 
   methods: {
@@ -214,6 +289,21 @@ export default {
         month: 'short',
         day: 'numeric'
       });
+    },
+
+    openLoanTypeFormModal(loanType = null) {
+      this.selectedLoanType = loanType;
+      this.showLoanTypeFormModal = true;
+    },
+
+    showDeleteLoanTypeModal(loanType) {
+      this.loanTypeToDelete = loanType;
+      this.showDeleteLoanTypeConfirmModal = true;
+    },
+
+    confirmDeleteLoanType() {
+      this.$inertia.delete(this.$route('settings.loan-types.destroy', this.loanTypeToDelete.id));
+      this.showDeleteLoanTypeConfirmModal = false;
     }
   }
 }

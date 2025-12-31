@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PlanType;
+use App\Models\LoanType;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -12,6 +13,7 @@ class SettingsController extends Controller
     {
         return Inertia::render('Settings/Index', [
             'planTypes' => PlanType::withCount('members')->get(),
+            'loanTypes' => LoanType::all(),
         ]);
     }
 
@@ -85,5 +87,34 @@ class SettingsController extends Controller
         $planType->update(['rates' => $rates]);
 
         return back()->snackbar('Rate deleted.');
+    }
+
+    public function storeLoanType(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|unique:loan_types,name',
+        ]);
+
+        LoanType::create($validated);
+
+        return back()->snackbar('Loan type created.');
+    }
+
+    public function updateLoanType(Request $request, LoanType $loanType)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|unique:loan_types,name,' . $loanType->id,
+        ]);
+
+        $loanType->update($validated);
+
+        return back()->snackbar('Loan type updated.');
+    }
+
+    public function destroyLoanType(LoanType $loanType)
+    {
+        $loanType->delete();
+
+        return back()->snackbar('Loan type deleted.');
     }
 }

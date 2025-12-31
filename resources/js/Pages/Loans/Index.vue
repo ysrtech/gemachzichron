@@ -1,11 +1,18 @@
 <template>
-  <div class="max-w-4xl mx-auto">
+  <div class="max-w-12xl mx-auto">
     <search-filter
       v-model="filterForm.search"
       :applied-filters-length="appliedFiltersLength"
       class="w-full max-w-md mb-6"
       placeholder="Search By Member..."
       @reset="reset">
+
+      <search-filter-field
+        v-model="filterForm.loan_type"
+        type="select"
+        label="Loan Type"
+        :options="loanTypeOptions"
+      />
 
       <search-filter-field
         v-model="filterForm.amount"
@@ -59,6 +66,8 @@
                 {{ loan.member.first_name + ' ' + loan.member.last_name }}
               </inertia-link>
             </td>
+            <td class="px-6 py-3.5 whitespace-nowrap">{{ loan.loan_type || '-' }}</td>
+            <td class="px-6 py-3.5 whitespace-nowrap">{{ loan.dependent?.name || '-' }}</td>
             <td class="px-6 py-3.5 whitespace-nowrap">{{ date(loan.loan_date) }}</td>
             <td class="px-6 py-3.5 whitespace-nowrap font-medium text-right">
               <money :amount="loan.amount"/>
@@ -69,7 +78,7 @@
           </inertia-link>
 
           <tr v-if="loans.total === 0">
-            <td class="px-6 py-10 text-center text-gray-500" colspan="3">No Loans Found.</td>
+            <td class="px-6 py-10 text-center text-gray-500" colspan="7">No Loans Found.</td>
           </tr>
 
           </tbody>
@@ -114,6 +123,8 @@ export default {
       headers: [
         {value: 'ID', name: 'id'},
         {value: 'Member', name: 'member_last_name,member_first_name'},
+        {value: 'Loan Type', name: 'loan_type'},
+        {value: 'Dependent', name: 'dependent_name'},
         {value: 'Loan Date', name: 'loan_date'},
         {value: 'Amount', name: 'amount'},
         {value: 'Remaining Balance', name: 'transactions_sum_amount'},
@@ -121,10 +132,12 @@ export default {
       filterForm: {
         sort: this.filters.sort,
         search: this.filters.search,
+        loan_type: this.filters.loan_type,
         amount: this.filters.amount,
         from_date: this.filters.from_date,
         to_date: this.filters.to_date,
-      }
+      },
+      loanTypes: []
     }
   },
 
@@ -135,8 +148,30 @@ export default {
     filters: Object,
   },
 
+  mounted() {
+    this.fetchLoanTypes();
+  },
+
   methods: {
     date,
+    async fetchLoanTypes() {
+      try {
+        const res = await this.$axios.get(this.$route('ajax.loan-types.index'));
+        this.loanTypes = res.data;
+      } catch (error) {
+        console.error('Failed to fetch loan types:', error);
+      }
+    }
+  },
+
+  computed: {
+    loanTypeOptions() {
+      const options = { 'All': '' };
+      this.loanTypes.forEach(type => {
+        options[type.name] = type.name;
+      });
+      return options;
+    }
   }
 }
 </script>

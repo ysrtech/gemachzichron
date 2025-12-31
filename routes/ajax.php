@@ -2,6 +2,7 @@
 
 use App\Models\Member;
 use App\Models\PlanType;
+use App\Models\LoanType;
 use App\Models\Subscription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -46,4 +47,8 @@ Route::middleware(['auth'])->group(function () {
             'plan_types' => Cache::rememberForever('plan-types', fn() => PlanType::all())
         ]);
     })->name('plan-types.index');
+
+    Route::get('loan-types', function () {
+        return LoanType::all();
+    })->name('loan-types.index');
 });

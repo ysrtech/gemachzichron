@@ -9,10 +9,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
+
 
 class Loan extends Model
 {
-    use HasFactory, SearchableByRelated, Filterable, Sortable;
+    use HasFactory, SearchableByRelated, Filterable, Sortable, LogsActivity;
 
     protected $casts = [
         'amount' => 'float'
@@ -81,5 +84,13 @@ class Loan extends Model
         }
 
         return $this->amount - $this->attributes['transactions_sum_amount'];
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['member_id', 'dependent_id', 'amount', 'loan_type', 'status'])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
     }
 }

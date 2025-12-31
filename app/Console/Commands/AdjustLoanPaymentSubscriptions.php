@@ -1,4 +1,4 @@
-php artisan subscriptions:adjust-loan-payments --dry-run<?php
+<?php
 
 namespace App\Console\Commands;
 
@@ -44,16 +44,24 @@ class AdjustLoanPaymentSubscriptions extends Command
         $adjustedCount = 0;
         $errorCount = 0;
 
-        // Find members with more than one monthly loan payment subscription
-        Member::query()
-            ->has('subscriptions', '>', 1)
+        // Find members with more than one monthly loan payment subscription (type = loan payment, frequency = monthly)
+        Member::whereHas('subscriptions', function ($query) {
+                $query->where('type', Subscription::TYPE_LOAN_PAYMENT)
+                      ->where('frequency', Subscription::FREQUENCY_MONTHLY)
+                      ->whereHas('paysLoan', function ($q) {
+                          $q->where('loan_type', 'Wedding');
+                      });
+            }, '>', 1)
             ->with(['subscriptions' => function ($query) {
                 $query->where('type', Subscription::TYPE_LOAN_PAYMENT)
-                    ->where('frequency', Subscription::FREQUENCY_MONTHLY)
-                    ->orderBy('created_at', 'asc');
+                      ->where('frequency', Subscription::FREQUENCY_MONTHLY)
+                      ->whereHas('paysLoan', function ($q) {
+                          $q->where('loan_type', 'Wedding');
+                      })
+                      ->orderBy('created_at', 'asc');
             }])
             ->get()
-            ->each(function (Member $member) use (&$adjustedCount, &$errorCount) {
+            ->each(function (Member $member) use (&$adjustedCount, &$errorCount, $dryRun) {
                 $monthlyLoanSubscriptions = $member->subscriptions
                     ->where('type', Subscription::TYPE_LOAN_PAYMENT)
                     ->where('frequency', Subscription::FREQUENCY_MONTHLY);
@@ -145,15 +153,10 @@ class AdjustLoanPaymentSubscriptions extends Command
                     }
 
                 } catch (\Exception $exception) {
-                    $this->error("Error processing subscription #{$subscriptionToUpdate->id}: " . $exception->getMessage());
-        if ($dryRun) {
-            $this->info("DRY RUN completed! Found {$adjustedCount} subscription(s) that would be adjusted.");
-        } else {
-            $this->info("Completed! Adjusted {$adjustedCount} subscription(s) with {$errorCount} error(s).");
-        }n->getMessage());
-                    $errorCount++;
-                }
-            });
+						$this->error("Error processing subscription #{$subscriptionToUpdate->id}: " . $exception->getMessage());
+						$errorCount++;
+					}
+				});
 
         $this->info("Completed! Adjusted {$adjustedCount} subscription(s) with {$errorCount} error(s).");
 

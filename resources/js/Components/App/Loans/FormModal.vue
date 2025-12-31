@@ -8,12 +8,29 @@
 
     <form @submit.prevent="submit">
       <div class="px-6 pb-4 grid sm:grid-cols-2 gap-x-6 gap-y-4">
+
+        <app-select
+          native
+          id="loan_type"
+          v-model="form.loan_type"
+          :error="form.errors.loan_type"
+          label="Loan Type"
+          @update:model-value="handleLoanTypeChange">
+          <template #options>
+            <option :value="null">--</option>
+            <option v-for="type in loanTypes" :key="type.id" :value="type.name">
+              {{ type.name }}
+            </option>
+          </template>
+        </app-select>
+
         <app-select
           native
           id="type"
           v-model="form.dependent_id"
           :error="form.errors.dependent_id"
           label="Dependent"
+          :disabled="!isDependentEnabled"
           @update:model-value="form.clearErrors('dependent_id')">
           <template #options>
             <option :value="null">--</option>
@@ -144,7 +161,8 @@ export default {
     return {
       form: this.freshForm(),
       membersLoading: false,
-      membersResults: []
+      membersResults: [],
+      loanTypes: []
     }
   },
 
@@ -163,12 +181,16 @@ export default {
     show(val) {
       this.form = this.freshForm()
       this.membersResults = []
+      if (val) {
+        this.fetchLoanTypes();
+      }
     },
   },
 
   methods: {
     freshForm() {
       return this.$inertia.form({
+        loan_type: this.loan?.loan_type || null,
         dependent_id: this.loan?.dependent_id || null,
         amount:  this.loan?.amount || null,
         loan_date:  this.loan?.loan_date || null,
@@ -179,6 +201,19 @@ export default {
       })
     },
 
+    async fetchLoanTypes() {
+      const res = await this.$axios.get(this.$route('ajax.loan-types.index'));
+      this.loanTypes = res.data;
+    },
+
+    handleLoanTypeChange(value) {
+      this.form.clearErrors('loan_type');
+      // Clear dependent_id if loan type is not Wedding
+      if (value !== 'Wedding') {
+        this.form.dependent_id = null;
+      }
+    },
+
     submit() {
       let route = this.loan
         ? this.$route('loans.update', this.loan.id)
@@ -186,6 +221,7 @@ export default {
       this.form
         .transform((data) => ({
           ...data,
+          dependent_id: data.loan_type === 'Wedding' ? data.dependent_id : null,
           guarantors: data.guarantors.map(e => e.id),
           _method: this.loan ? 'put' : 'post',
         }))
@@ -218,6 +254,9 @@ export default {
     },
     guarantorsOptions() {
       return this.form.guarantors.concat(this.membersResults.filter(member => !this.form.guarantors.find(guarantor => guarantor.id == member.id)))
+    },
+    isDependentEnabled() {
+      return this.form.loan_type === 'Wedding';
     }
   },
 }

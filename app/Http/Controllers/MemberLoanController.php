@@ -12,7 +12,10 @@ class MemberLoanController extends Controller
     public function index(Member $member)
     {
         $member->load([
-            'loans' => fn($q) => $q->with('guarantors:id,first_name,last_name')
+            'loans' => fn($q) => $q->with([
+                    'guarantors:id,first_name,last_name',
+                    'dependent:id,name'
+                ])
                 ->withSum('transactions', 'amount')
                 ->orderBy('loan_date', 'desc'),
             'withdrawals' => fn($q) => $q->orderBy('withdrawal_date', 'desc'),

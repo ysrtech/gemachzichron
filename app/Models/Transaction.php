@@ -11,10 +11,12 @@ use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class Transaction extends Model
 {
-    use HasFactory, Filterable, SearchableByRelated, FilterableByRelated, Sortable;
+    use HasFactory, Filterable, SearchableByRelated, FilterableByRelated, Sortable, LogsActivity;
 
     const STATUS_SUCCESS = 1;
     const STATUS_PENDING = 2;
@@ -157,6 +159,14 @@ class Transaction extends Model
     public function isResolved(): bool
     {
         return $this->resolved;
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['member_id', 'subscription_id', 'amount', 'status', 'resolved', 'gateway_id'])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
     }
 }
 

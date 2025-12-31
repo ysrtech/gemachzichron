@@ -74,6 +74,11 @@ export default {
           show: true,
         },
         {
+          title: 'Notes & Activity',
+          route: 'members.activities.index',
+          show: true,
+        },
+        {
           title: 'Dashboard',
           route: 'members.dashboard',
           show: true,

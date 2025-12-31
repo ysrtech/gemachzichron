@@ -24,6 +24,7 @@
                 </inertia-link>
               </key-value>
               <key-value label="Loan date" :value="date(loan.loan_date)"/>
+              <key-value label="Loan Type" :value="loan.loan_type || 'N/A'"/>
               <key-value label="Amount" class="font-medium">
                 <money class="text-base" :amount="loan.amount"/>
               </key-value>

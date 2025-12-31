@@ -12,10 +12,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class Member extends Model
 {
-    use HasFactory, SoftDeletes, Searchable, Filterable, FilterableWithTrashed, Sortable;
+    use HasFactory, SoftDeletes, Searchable, Filterable, FilterableWithTrashed, Sortable, LogsActivity;
 
     const TYPE_MEMBERSHIP = 'Membership';
     const TYPE_PEKUDON = 'Pekudon';
@@ -71,6 +73,11 @@ class Member extends Model
     public function loans()
     {
         return $this->hasMany(Loan::class);
+    }
+
+    public function notes()
+    {
+        return $this->hasMany(Note::class);
     }
 
     public function withdrawals()
@@ -253,12 +260,11 @@ class Member extends Model
         }
     }
 
-
-
-
-
-
-
-
-
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['first_name', 'last_name', 'member_id', 'email', 'phone', 'address', 'city', 'state', 'zip', 'active_membership', 'type'])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
+    }
 }
