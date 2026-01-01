@@ -22,7 +22,10 @@ class EventServiceProvider extends ServiceProvider
         ],
         MemberUpdated::class => [
             MemberUpdateNotifyGateways::class
-        ]
+        ],
+        \Illuminate\Mail\Events\MessageSent::class => [
+            \App\Listeners\LogSentEmail::class,
+        ],
     ];
 
     /**

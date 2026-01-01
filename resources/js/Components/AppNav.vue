@@ -69,6 +69,18 @@ export default {
           active: () => this.$page.component.startsWith('GatewayConflicts/'),
         },
         {
+          title: "Activity Logs",
+          route: "activity-logs.index",
+          icon: 'history',
+          active: () => this.$page.component.startsWith('ActivityLogs/'),
+        },
+        {
+          title: "Mail Logs",
+          route: "mail-logs.index",
+          icon: 'email',
+          active: () => this.$page.component.startsWith('MailLogs/'),
+        },
+        {
           title: "Data Export",
           route: "export.index",
           icon: 'download',

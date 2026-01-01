@@ -103,9 +103,20 @@ class TransactionController extends Controller
                 ],
             ]);
         }
+        
+        // Log the deletion before actually deleting
+        $transactionAttributes = $transaction->toArray();
+        
+        activity()
+            ->performedOn($transaction)
+            ->causedBy(auth()->user())
+            ->withProperties(['attributes' => $transactionAttributes])
+            ->tap(function($activity) use ($transaction) {
+                $activity->member_id = $transaction->member_id;
+            })
+            ->log('Manual transaction deleted');
+        
         $transaction->delete();
-
-
 
         return back()->snackbar('Transaction Deleted.');
     }

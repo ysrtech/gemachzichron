@@ -13,33 +13,12 @@ class MemberActivityController extends Controller
 {
     public function index(Member $member)
     {
-        // Get activities for the member and related models
+        // Get all activities for this member
         $activities = Activity::query()
-            ->where(function ($query) use ($member) {
-                // Activities where member is the subject
-                $query->where(function ($q) use ($member) {
-                    $q->where('subject_type', Member::class)
-                      ->where('subject_id', $member->id);
-                })
-                // Activities on member's loans (including deleted)
-                ->orWhere(function ($q) use ($member) {
-                    $q->where('subject_type', 'App\\Models\\Loan')
-                      ->whereIn('subject_id', Loan::withTrashed()->where('member_id', $member->id)->pluck('id'));
-                })
-                // Activities on member's subscriptions
-                ->orWhere(function ($q) use ($member) {
-                    $q->where('subject_type', 'App\\Models\\Subscription')
-                      ->whereIn('subject_id', $member->subscriptions()->pluck('id'));
-                })
-                // Activities on member's transactions
-                ->orWhere(function ($q) use ($member) {
-                    $q->where('subject_type', 'App\\Models\\Transaction')
-                      ->whereIn('subject_id', $member->transactions()->pluck('id'));
-                });
-            })
+            ->where('member_id', $member->id)
             ->with(['causer', 'subject'])
             ->latest()
-            ->paginate(50);
+            ->paginate(5);
 
         $notes = $member->notes()->latest()->get();
 

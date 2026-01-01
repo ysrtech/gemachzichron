@@ -30,30 +30,38 @@
                     <div>
                       <span
                         class="h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-white"
-                        :class="getActivityColor(activity.event)"
+                        :class="getActivityColor(activity.description || activity.event)"
                       >
                         <svg class="h-5 w-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                          <path v-if="activity.event === 'created'" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
-                          <path v-else-if="activity.event === 'updated'" fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
+                          <path v-if="(activity.description || activity.event) === 'created' || (activity.description && activity.description.includes('created'))" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                          <path v-else-if="(activity.description || activity.event) === 'updated' || (activity.description && activity.description.includes('modified'))" fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
                           <path v-else fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
                         </svg>
                       </span>
                     </div>
                     <div class="flex-1 min-w-0">
-                      <div>
-                        <div class="text-sm">
-                          <span class="font-medium text-gray-900">
+                      <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3 flex-1">
+                          <span class="font-medium text-gray-900 text-sm">
                             {{ getActivityDescription(activity) }}
                           </span>
-                        </div>
-                        <p class="mt-0.5 text-xs text-gray-500">
-                          {{ formatDate(activity.created_at) }}
-                          <span v-if="activity.causer">
+                          <span class="text-xs text-gray-500">
+                            {{ formatDate(activity.created_at) }}
+                          </span>
+                          <span v-if="activity.causer" class="text-xs text-gray-500">
                             by {{ activity.causer.name }}
                           </span>
-                        </p>
+                        </div>
+                        <button
+                          v-if="hasChanges(activity)"
+                          @click="toggleActivity(activity.id)"
+                          class="text-gray-400 hover:text-gray-600 ml-2">
+                          <svg class="h-5 w-5 transform transition-transform" :class="{ 'rotate-180': expandedActivities[activity.id] }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </button>
                       </div>
-                      <div v-if="hasChanges(activity)" class="mt-2 text-sm text-gray-700">
+                      <div v-if="hasChanges(activity) && expandedActivities[activity.id]" class="mt-2 text-sm text-gray-700">
                         <div class="bg-gray-50 rounded-md p-3 space-y-1">
                           <div v-for="(change, key) in getChanges(activity)" :key="key" class="flex items-start">
                             <span class="font-medium text-gray-600 min-w-[120px]">{{ formatFieldName(key) }}:</span>
@@ -223,6 +231,7 @@ export default {
       editForm: this.$inertia.form({
         note: '',
       }),
+      expandedActivities: {},
     };
   },
 
@@ -263,6 +272,10 @@ export default {
         });
       }
     },
+
+    toggleActivity(activityId) {
+      this.expandedActivities[activityId] = !this.expandedActivities[activityId];
+    },
     formatDate(date) {
       return new Date(date).toLocaleString('en-US', {
         year: 'numeric',
@@ -275,6 +288,14 @@ export default {
     },
 
     getActivityColor(event) {
+      // Check for custom descriptions with keywords
+      if (event && event.includes('created')) {
+        return 'bg-green-500';
+      }
+      if (event && event.includes('modified')) {
+        return 'bg-blue-500';
+      }
+      
       const colors = {
         created: 'bg-green-500',
         updated: 'bg-blue-500',
@@ -289,16 +310,16 @@ export default {
     },
 
     getActivityDescription(activity) {
-      const subjectType = activity.subject_type ? activity.subject_type.split('\\').pop() : 'Item';
-      const event = activity.event || 'modified';
-      const subjectId = activity.subject_id || '';
-      
-      // If there's a custom description that's not just the event name, use it
-      if (activity.description && activity.description !== event) {
+      // Check if there's a custom description (for manual logs like "Manual transaction created")
+      if (activity.description && !['created', 'updated', 'deleted'].includes(activity.description)) {
         return activity.description;
       }
-
-      // Build a descriptive string with type, ID, and event
+      
+      const subjectType = activity.subject_type ? activity.subject_type.split('\\').pop() : 'Item';
+      const event = activity.description || activity.event || 'modified';
+      const subjectId = activity.subject_id || '';
+      
+      // Always build descriptive string with type, ID, and event
       return `${subjectType} #${subjectId} ${event}`;
     },
 

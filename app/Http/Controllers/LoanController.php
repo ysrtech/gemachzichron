@@ -103,6 +103,9 @@ class LoanController extends Controller
             ->performedOn((new $loanType)->forceFill(['id' => $loanId]))
             ->causedBy(auth()->user())
             ->withProperties(['attributes' => $loanAttributes])
+            ->tap(function($activity) use ($loanAttributes) {
+                $activity->member_id = $loanAttributes['member_id'];
+            })
             ->log('Loan deleted');
 
 

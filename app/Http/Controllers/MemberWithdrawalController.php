@@ -46,6 +46,16 @@ class MemberWithdrawalController extends Controller
         // Link the transaction to the withdrawal
         $withdrawal->update(['transaction_id' => $transaction->id]);
 
+        // Log withdrawal transaction creation
+        activity()
+            ->performedOn($transaction)
+            ->causedBy(auth()->user())
+            ->withProperties(['attributes' => $transaction->toArray()])
+            ->tap(function($activity) use ($member) {
+                $activity->member_id = $member->id;
+            })
+            ->log('Withdrawal transaction created');
+
         return back()->snackbar('Withdrawal created.');
     }
 }

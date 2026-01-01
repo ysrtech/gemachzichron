@@ -3,6 +3,8 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataExportController;
 use App\Http\Controllers\GatewayConflictController;
+use App\Http\Controllers\ActivityLogController;
+use App\Http\Controllers\MailLogController;
 use App\Http\Controllers\MemberActivityController;
 use App\Http\Controllers\MemberDependentController;
 use App\Http\Controllers\MemberLoanController;
@@ -38,6 +40,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::redirect('/', RouteServiceProvider::HOME);
+
+// Mailgun webhook (public route)
+Route::post('webhooks/mailgun', [MailLogController::class, 'webhook'])->name('webhooks.mailgun');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', DashboardController::class)->name('dashboard');
@@ -104,6 +109,20 @@ Route::middleware(['auth'])->group(function () {
 
     // Gateway Conflicts
     Route::get('conflicts', [GatewayConflictController::class, 'index'])->name('conflicts.index');
+
+    // Activity Logs
+    Route::get('activity-logs', [ActivityLogController::class, 'index'])->name('activity-logs.index');
+
+    // Mail Logs
+    Route::get('mail-logs', [MailLogController::class, 'index'])->name('mail-logs.index');
+    Route::get('mail-logs/{mailLog}', [MailLogController::class, 'show'])->name('mail-logs.show');
+    
+    // Test Email Route
+    Route::get('test-email', function(\Illuminate\Http\Request $request) {
+        $email = $request->input('email', auth()->user()->email);
+        \Illuminate\Support\Facades\Mail::to($email)->send(new \App\Mail\TestEmail());
+        return redirect()->route('mail-logs.index')->with('success', 'Test email sent to ' . $email);
+    })->name('test-email');
 
     // Plan Types
     Route::apiResource('plan-types', PlanTypeController::class);
