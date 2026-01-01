@@ -94,5 +94,46 @@ class MemberSubscriptionController extends Controller
         return back()->snackbar('Subscription created successfully');
     }
 
+    public function adjustLoanPayments(Member $member)
+    {
+        $result = $member->adjustLoanPaymentSubscriptions();
+
+        if ($result['success']) {
+            return back()->snackbar($result['message']);
+        }
+
+        return back()->alert([
+            'icon' => 'info',
+            'title' => 'No Adjustment Needed',
+            'message' => $result['message'],
+        ]);
+    }
+
+    public function previewAdjustLoanPayments(Member $member)
+    {
+        $result = $member->adjustLoanPaymentSubscriptions(true);
+
+        if ($result['success']) {
+            // Load the subscription details
+            $subscription = Subscription::find($result['subscription_id']);
+            return response()->json([
+                'canAdjust' => true,
+                'subscription' => [
+                    'id' => $subscription->id,
+                    'amount' => $subscription->amount,
+                    'new_amount' => 350,
+                    'frequency' => $subscription->frequency,
+                    'gateway' => $subscription->gateway,
+                    'created_at' => $subscription->created_at->format('M d, Y'),
+                ],
+            ]);
+        }
+
+        return response()->json([
+            'canAdjust' => false,
+            'message' => $result['message'],
+        ]);
+    }
+
     
 }

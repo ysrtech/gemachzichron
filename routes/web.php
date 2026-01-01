@@ -74,6 +74,8 @@ Route::middleware(['auth'])->group(function () {
     // Subscriptions
     Route::get('members/{member}/subscriptions', [MemberSubscriptionController::class, 'index'])->name('members.subscriptions.index');
     Route::post('members/{member}/subscriptions', [MemberSubscriptionController::class, 'store'])->name('members.subscriptions.store');
+    Route::get('members/{member}/subscriptions/preview-adjust-loan-payments', [MemberSubscriptionController::class, 'previewAdjustLoanPayments'])->name('members.subscriptions.preview-adjust-loan-payments');
+    Route::post('members/{member}/subscriptions/adjust-loan-payments', [MemberSubscriptionController::class, 'adjustLoanPayments'])->name('members.subscriptions.adjust-loan-payments');
     Route::apiResource('subscriptions', SubscriptionController::class)->except('store');
     Route::post('subscriptions/{subscription}/refresh', [SubscriptionController::class, 'refresh'])->name('subscription.refresh');
     Route::post('subscriptions/{subscription}/destroy', [SubscriptionController::class, 'destroy'])->name('subscription.destroy');
@@ -123,6 +125,12 @@ Route::middleware(['auth'])->group(function () {
         \Illuminate\Support\Facades\Mail::to($email)->send(new \App\Mail\TestEmail());
         return redirect()->route('mail-logs.index')->with('success', 'Test email sent to ' . $email);
     })->name('test-email');
+    
+    // Sync Mailgun Events
+    Route::get('sync-mailgun-events', function() {
+        \Illuminate\Support\Facades\Artisan::call('mailgun:sync-events');
+        return redirect()->route('mail-logs.index')->with('success', 'Email statuses synced from Mailgun!');
+    })->name('sync-mailgun-events');
 
     // Plan Types
     Route::apiResource('plan-types', PlanTypeController::class);

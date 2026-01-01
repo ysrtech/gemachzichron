@@ -267,4 +267,153 @@ class Member extends Model
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs();
     }
+
+    /**
+     * Adjust loan payment subscriptions from $250 to $350
+     * Finds the oldest active $250 monthly wedding loan subscription and updates it to $350
+     * 
+     * @param bool $dryRun If true, only validates without making changes
+     * @return array ['success' => bool, 'message' => string, 'subscription_id' => int|null]
+     */
+    public function adjustLoanPaymentSubscriptions($dryRun = false)
+    {
+        $monthlyLoanSubscriptions = $this->subscriptions()
+            ->where('type', Subscription::TYPE_LOAN_PAYMENT)
+            ->where('frequency', Subscription::FREQUENCY_MONTHLY)
+            ->whereHas('paysLoan', function ($q) {
+                $q->where('loan_type', 'Wedding');
+            })
+            ->orderBy('created_at', 'asc')
+            ->get();
+
+        // Check if member has more than one monthly loan subscription
+        if ($monthlyLoanSubscriptions->count() <= 1) {
+            return [
+                'success' => false,
+                'message' => 'Member does not have multiple monthly loan subscriptions.',
+                'subscription_id' => null,
+            ];
+        }
+
+        // Check if at least one is active
+        if ($monthlyLoanSubscriptions->where('active', true)->isEmpty()) {
+            return [
+                'success' => false,
+                'message' => 'Member has no active monthly loan subscriptions.',
+                'subscription_id' => null,
+            ];
+        }
+
+        // Check if any subscription has amount of $350 and is active
+        if ($monthlyLoanSubscriptions->where('amount', 350)->where('active', true)->isNotEmpty()) {
+            return [
+                'success' => false,
+                'message' => 'Member already has an active $350 subscription.',
+                'subscription_id' => null,
+            ];
+        }
+
+        // Find the oldest active $250 subscription
+        $subscriptionToUpdate = $monthlyLoanSubscriptions
+            ->where('active', true)
+            ->where('amount', 250)
+            ->sortBy('created_at')
+            ->first();
+
+        if (!$subscriptionToUpdate) {
+            return [
+                'success' => false,
+                'message' => 'No active $250 subscription found to update.',
+                'subscription_id' => null,
+            ];
+        }
+
+        try {
+            $oldAmount = $subscriptionToUpdate->amount;
+            $newAmount = 350;
+
+            if ($dryRun) {
+                return [
+                    'success' => true,
+                    'message' => "[DRY RUN] Would adjust subscription #{$subscriptionToUpdate->id} from \${$oldAmount} to \${$newAmount}",
+                    'subscription_id' => $subscriptionToUpdate->id,
+                ];
+            }
+
+            $transactionTotal = $newAmount 
+                + $subscriptionToUpdate->membership_fee 
+                + $subscriptionToUpdate->processing_fee 
+                + $subscriptionToUpdate->decline_fee;
+
+            $updateData = [
+                'amount' => $newAmount,
+                'transaction_total' => $transactionTotal,
+                'start_date' => $subscriptionToUpdate->start_date,
+                'installments' => $subscriptionToUpdate->installments,
+                'membership_fee' => $subscriptionToUpdate->membership_fee,
+                'processing_fee' => $subscriptionToUpdate->processing_fee,
+                'decline_fee' => $subscriptionToUpdate->decline_fee,
+            ];
+
+            // Update in gateway if not manual and not deleted from gateway
+            if ($subscriptionToUpdate->gateway != \App\Gateways\Factory::MANUAL && !$subscriptionToUpdate->isDeletedInGateway()) {
+                try {
+                    $gatewayResponse = \App\Facades\Gateway::initialize($subscriptionToUpdate->gateway)->updateSchedule(
+                        $subscriptionToUpdate,
+                        $updateData
+                    );
+                    $updateData = array_merge($updateData, $gatewayResponse);
+                } catch (\App\Exceptions\NotImplementedException $exception) {
+                    \Illuminate\Support\Facades\Log::error("Failed to update subscription #{$subscriptionToUpdate->id} in gateway for member #{$this->id}: Gateway does not support updates");
+                    return [
+                        'success' => false,
+                        'message' => "Gateway {$subscriptionToUpdate->gateway} does not support updating subscriptions.",
+                        'subscription_id' => $subscriptionToUpdate->id,
+                    ];
+                } catch (\Exception $exception) {
+                    \Illuminate\Support\Facades\Log::error("Failed to update subscription #{$subscriptionToUpdate->id} in gateway for member #{$this->id}: " . $exception->getMessage());
+                    return [
+                        'success' => false,
+                        'message' => 'Failed to update subscription in gateway: ' . $exception->getMessage(),
+                        'subscription_id' => $subscriptionToUpdate->id,
+                    ];
+                }
+            }
+
+            // Update subscription in database (this will trigger activity log automatically)
+            $subscriptionToUpdate->update([
+                'amount' => $newAmount,
+                'membership_fee' => $updateData['membership_fee'],
+                'processing_fee' => $updateData['processing_fee'],
+                'decline_fee' => $updateData['decline_fee'],
+            ]);
+
+            // Log the adjustment
+            \Illuminate\Support\Facades\Log::info("Adjusted loan payment subscription #{$subscriptionToUpdate->id} from \${$oldAmount} to \${$newAmount} for member #{$this->id} ({$this->first_name} {$this->last_name})");
+
+            // Send email notification to member
+            if ($this->email) {
+                try {
+                    \Illuminate\Support\Facades\Mail::to($this->email)
+                        ->send(new \App\Mail\SubscriptionAdjusted($this, $subscriptionToUpdate, $oldAmount, $newAmount));
+                } catch (\Exception $e) {
+                    \Illuminate\Support\Facades\Log::warning("Failed to send subscription adjustment email to member #{$this->id}: " . $e->getMessage());
+                }
+            }
+
+            return [
+                'success' => true,
+                'message' => "Successfully adjusted subscription #{$subscriptionToUpdate->id} from \${$oldAmount} to \${$newAmount}. An email notification has been sent to the member.",
+                'subscription_id' => $subscriptionToUpdate->id,
+            ];
+
+        } catch (\Exception $exception) {
+            \Illuminate\Support\Facades\Log::error("Failed to adjust subscription for member #{$this->id}: " . $exception->getMessage());
+            return [
+                'success' => false,
+                'message' => 'Failed to adjust subscription: ' . $exception->getMessage(),
+                'subscription_id' => $subscriptionToUpdate->id ?? null,
+            ];
+        }
+    }
 }

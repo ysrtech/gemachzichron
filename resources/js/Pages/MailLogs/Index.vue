@@ -1,6 +1,6 @@
 <template>
   <div class="max-w-12xl mx-auto">
-    <div class="flex justify-between items-center mb-6">
+    <div class="flex justify-between items-start mb-6">
       <search-filter
         v-model="filterForm.search"
         :applied-filters-length="appliedFiltersLength"
@@ -28,13 +28,23 @@
         />
       </search-filter>
       
-      <a
-        :href="$route('test-email')"
-        class="ml-4 inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 active:bg-blue-900 focus:outline-none focus:border-blue-900 focus:ring focus:ring-blue-300 disabled:opacity-25 transition"
-      >
-        <i class="material-icons-outlined text-base mr-2">send</i>
-        Send Test Email
-      </a>
+      <div class="flex items-center space-x-2 ml-4">
+        <a
+          :href="$route('test-email')"
+          class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 active:bg-blue-900 focus:outline-none focus:border-blue-900 focus:ring focus:ring-blue-300 disabled:opacity-25 transition whitespace-nowrap"
+        >
+          <i class="material-icons-outlined text-base mr-2">send</i>
+          Send Test
+        </a>
+        
+        <a
+          :href="$route('sync-mailgun-events')"
+          class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 active:bg-green-900 focus:outline-none focus:border-green-900 focus:ring focus:ring-green-300 disabled:opacity-25 transition whitespace-nowrap"
+        >
+          <i class="material-icons-outlined text-base mr-2">sync</i>
+          Sync Status
+        </a>
+      </div>
     </div>
 
     <app-panel>
@@ -78,22 +88,24 @@
                   {{ formatDate(mail.sent_at) }}
                 </td>
                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                  <div v-if="mail.open_count > 0" class="flex items-center space-x-1">
-                    <i class="material-icons-outlined text-base">visibility</i>
-                    <span>{{ mail.open_count }}</span>
-                  </div>
-                  <div v-if="mail.click_count > 0" class="flex items-center space-x-1">
-                    <i class="material-icons-outlined text-base">ads_click</i>
-                    <span>{{ mail.click_count }}</span>
+                  <div class="flex items-center space-x-3">
+                    <div v-if="mail.open_count > 0" class="flex items-center space-x-1">
+                      <i class="material-icons-outlined text-base">visibility</i>
+                      <span>{{ mail.open_count }}</span>
+                    </div>
+                    <div v-if="mail.click_count > 0" class="flex items-center space-x-1">
+                      <i class="material-icons-outlined text-base">ads_click</i>
+                      <span>{{ mail.click_count }}</span>
+                    </div>
                   </div>
                 </td>
                 <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                  <inertia-link
-                    :href="$route('mail-logs.show', mail.id)"
+                  <button
+                    @click="viewMail(mail)"
                     class="text-blue-600 hover:text-blue-900"
                   >
                     View
-                  </inertia-link>
+                  </button>
                 </td>
               </tr>
             </tbody>
@@ -106,6 +118,87 @@
         </div>
       </template>
     </app-panel>
+
+    <!-- Email Details Modal -->
+    <div v-if="selectedMail" class="fixed z-10 inset-0 overflow-y-auto" @click="closeMail">
+      <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
+
+        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full" @click.stop>
+          <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+            <div class="flex justify-between items-start mb-4">
+              <div class="flex-1">
+                <h3 class="text-2xl font-bold text-gray-900 mb-2">{{ selectedMail.subject }}</h3>
+                <span
+                  class="inline-flex rounded-full px-3 py-1 text-sm font-semibold"
+                  :class="getStatusColor(selectedMail.status)"
+                >
+                  {{ selectedMail.status }}
+                </span>
+              </div>
+              <button @click="closeMail" class="text-gray-400 hover:text-gray-500">
+                <i class="material-icons-outlined">close</i>
+              </button>
+            </div>
+
+            <dl class="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2 mb-6">
+              <div>
+                <dt class="text-sm font-medium text-gray-500">To</dt>
+                <dd class="mt-1 text-sm text-gray-900">
+                  {{ selectedMail.to_name ? `${selectedMail.to_name} <${selectedMail.to_email}>` : selectedMail.to_email }}
+                </dd>
+              </div>
+
+              <div>
+                <dt class="text-sm font-medium text-gray-500">From</dt>
+                <dd class="mt-1 text-sm text-gray-900">
+                  {{ selectedMail.from_name ? `${selectedMail.from_name} <${selectedMail.from_email}>` : selectedMail.from_email }}
+                </dd>
+              </div>
+
+              <div>
+                <dt class="text-sm font-medium text-gray-500">Sent At</dt>
+                <dd class="mt-1 text-sm text-gray-900">{{ formatDate(selectedMail.sent_at) }}</dd>
+              </div>
+
+              <div v-if="selectedMail.delivered_at">
+                <dt class="text-sm font-medium text-gray-500">Delivered At</dt>
+                <dd class="mt-1 text-sm text-gray-900">{{ formatDate(selectedMail.delivered_at) }}</dd>
+              </div>
+
+              <div v-if="selectedMail.opened_at">
+                <dt class="text-sm font-medium text-gray-500">First Opened At</dt>
+                <dd class="mt-1 text-sm text-gray-900">{{ formatDate(selectedMail.opened_at) }} ({{ selectedMail.open_count }} times)</dd>
+              </div>
+
+              <div v-if="selectedMail.clicked_at">
+                <dt class="text-sm font-medium text-gray-500">First Clicked At</dt>
+                <dd class="mt-1 text-sm text-gray-900">{{ formatDate(selectedMail.clicked_at) }} ({{ selectedMail.click_count }} times)</dd>
+              </div>
+
+              <div v-if="selectedMail.failed_at">
+                <dt class="text-sm font-medium text-gray-500">Failed At</dt>
+                <dd class="mt-1 text-sm text-gray-900">{{ formatDate(selectedMail.failed_at) }}</dd>
+              </div>
+
+              <div v-if="selectedMail.error_message" class="sm:col-span-2">
+                <dt class="text-sm font-medium text-gray-500">Error Message</dt>
+                <dd class="mt-1 text-sm text-red-600">{{ selectedMail.error_message }}</dd>
+              </div>
+            </dl>
+
+            <div>
+              <dt class="text-sm font-medium text-gray-500 mb-2">Email Body</dt>
+              <dd class="border border-gray-300 rounded-md p-4 bg-gray-50 max-h-96 overflow-y-auto">
+                <div v-html="selectedMail.body"></div>
+              </dd>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -134,6 +227,7 @@ export default {
 
   data() {
     return {
+      selectedMail: null,
       filterForm: {
         search: this.filters.search || '',
         status: this.filters.status || '',
@@ -159,6 +253,14 @@ export default {
   },
 
   methods: {
+    viewMail(mail) {
+      this.selectedMail = mail;
+    },
+
+    closeMail() {
+      this.selectedMail = null;
+    },
+
     formatDate(dateString) {
       if (!dateString) return '-';
       const date = new Date(dateString);
