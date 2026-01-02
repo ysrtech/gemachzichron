@@ -22,6 +22,7 @@ use App\Http\Controllers\MemberGuaranteesController;
 use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\PlanTypeController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\EmailTemplateController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\SubscriptionTransactionController;
 use App\Http\Controllers\TransactionController;
@@ -76,6 +77,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('members/{member}/subscriptions', [MemberSubscriptionController::class, 'store'])->name('members.subscriptions.store');
     Route::get('members/{member}/subscriptions/preview-adjust-loan-payments', [MemberSubscriptionController::class, 'previewAdjustLoanPayments'])->name('members.subscriptions.preview-adjust-loan-payments');
     Route::post('members/{member}/subscriptions/adjust-loan-payments', [MemberSubscriptionController::class, 'adjustLoanPayments'])->name('members.subscriptions.adjust-loan-payments');
+    Route::get('subscriptions/preview-bulk-adjust', [SubscriptionController::class, 'previewBulkAdjustLoanPayments'])->name('subscriptions.preview-bulk-adjust');
+    Route::post('subscriptions/execute-bulk-adjust', [SubscriptionController::class, 'executeBulkAdjustLoanPayments'])->name('subscriptions.execute-bulk-adjust');
     Route::apiResource('subscriptions', SubscriptionController::class)->except('store');
     Route::post('subscriptions/{subscription}/refresh', [SubscriptionController::class, 'refresh'])->name('subscription.refresh');
     Route::post('subscriptions/{subscription}/destroy', [SubscriptionController::class, 'destroy'])->name('subscription.destroy');
@@ -149,4 +152,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('settings/loan-types', [SettingsController::class, 'storeLoanType'])->name('settings.loan-types.store');
     Route::post('settings/loan-types/{loanType}', [SettingsController::class, 'updateLoanType'])->name('settings.loan-types.update');
     Route::delete('settings/loan-types/{loanType}', [SettingsController::class, 'destroyLoanType'])->name('settings.loan-types.destroy');
+    
+    // Email Templates
+    Route::get('settings/email-templates', [EmailTemplateController::class, 'index']);
+    Route::get('settings/email-templates/{template}', [EmailTemplateController::class, 'show']);
+    Route::post('settings/email-templates/{template}/preview', [EmailTemplateController::class, 'preview']);
+    Route::put('settings/email-templates/{template}', [EmailTemplateController::class, 'update']);
 });

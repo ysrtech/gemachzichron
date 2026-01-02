@@ -155,6 +155,50 @@
           </div>
         </div>
       </div>
+
+      <!-- Email Templates Section -->
+      <div class="bg-white rounded-lg shadow overflow-hidden">
+        <button
+          @click="emailTemplatesExpanded = !emailTemplatesExpanded"
+          class="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 focus:outline-none">
+          <div class="flex items-center space-x-3">
+            <i class="material-icons-outlined text-gray-600">{{ emailTemplatesExpanded ? 'expand_less' : 'expand_more' }}</i>
+            <h2 class="text-lg font-medium text-gray-900">Email Templates</h2>
+          </div>
+        </button>
+
+        <div v-if="emailTemplatesExpanded" class="border-t border-gray-200">
+          <div class="px-6 py-4">
+            <div v-if="loadingTemplates" class="text-center py-8">
+              <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary-700"></div>
+              <p class="mt-2 text-gray-600">Loading templates...</p>
+            </div>
+
+            <div v-else class="space-y-3">
+              <div v-for="template in emailTemplates" :key="template.name" class="border border-gray-200 rounded-lg">
+                <div class="px-6 py-3 bg-gray-50 flex items-center justify-between">
+                  <div>
+                    <div class="text-sm font-medium text-gray-900">{{ template.title }}</div>
+                    <div class="text-xs text-gray-500">{{ template.filename }}</div>
+                  </div>
+                  <div class="flex items-center space-x-2">
+                    <button
+                      @click="openTemplateEditor(template)"
+                      class="px-2 py-1 text-xs font-medium text-white bg-primary-600 rounded hover:bg-primary-700 flex items-center space-x-1">
+                      <i class="material-icons-outlined text-base">edit</i>
+                      <span>Edit</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div v-if="emailTemplates.length === 0" class="text-center text-gray-500 py-4">
+                No email templates found.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <plan-type-form-modal
@@ -196,6 +240,12 @@
       @confirm="confirmDeleteLoanType"
       @cancel="showDeleteLoanTypeConfirmModal = false"
     />
+
+    <email-template-editor-modal
+      :show="showTemplateEditorModal"
+      :template="selectedTemplate"
+      @close="showTemplateEditorModal = false; selectedTemplate = null"
+    />
   </div>
 </template>
 
@@ -205,6 +255,7 @@ import PlanTypeFormModal from "./PlanTypeFormModal";
 import ConfirmModal from "@/Components/ConfirmModal";
 import MembershipRateFormModal from "./MembershipRateFormModal";
 import LoanTypeFormModal from "./LoanTypeFormModal";
+import EmailTemplateEditorModal from "./EmailTemplateEditorModal";
 
 export default {
   layout: (h, page) => h(AppLayout, { title: "Settings" }, () => page),
@@ -214,11 +265,12 @@ export default {
     ConfirmModal,
     MembershipRateFormModal,
     LoanTypeFormModal,
+    EmailTemplateEditorModal,
   },
 
   data() {
     return {
-      planTypesExpanded: true,
+      planTypesExpanded: false,
       expandedRates: {},
       showPlanTypeFormModal: false,
       selectedPlanType: null,
@@ -228,17 +280,26 @@ export default {
       selectedPlanTypeForRate: null,
       selectedRate: null,
       selectedRateDate: null,
-      loanTypesExpanded: true,
+      loanTypesExpanded: false,
       showLoanTypeFormModal: false,
       selectedLoanType: null,
       showDeleteLoanTypeConfirmModal: false,
       loanTypeToDelete: null,
+      emailTemplatesExpanded: false,
+      showTemplateEditorModal: false,
+      selectedTemplate: null,
+      emailTemplates: [],
+      loadingTemplates: false,
     }
   },
 
   props: {
     planTypes: Array,
     loanTypes: Array,
+  },
+
+  mounted() {
+    this.fetchEmailTemplates();
   },
 
   methods: {
@@ -304,7 +365,25 @@ export default {
     confirmDeleteLoanType() {
       this.$inertia.delete(this.$route('settings.loan-types.destroy', this.loanTypeToDelete.id));
       this.showDeleteLoanTypeConfirmModal = false;
-    }
+    },
+
+    async fetchEmailTemplates() {
+      this.loadingTemplates = true;
+      try {
+        const response = await this.$axios.get('/settings/email-templates');
+        this.emailTemplates = response.data.templates || response.data;
+      } catch (error) {
+        console.error('Error fetching email templates:', error);
+        alert('Failed to load email templates');
+      } finally {
+        this.loadingTemplates = false;
+      }
+    },
+
+    openTemplateEditor(template) {
+      this.selectedTemplate = template;
+      this.showTemplateEditorModal = true;
+    },
   }
 }
 </script>

@@ -115,13 +115,23 @@
                   required
                 ></textarea>
               </div>
-              <div class="mt-3 flex justify-end">
+              <div class="mt-3 flex justify-end items-center space-x-4">
+                <div v-if="member.email" class="flex items-center">
+                  <input
+                    id="email-to-member"
+                    v-model="form.email_to_member"
+                    type="checkbox"
+                    class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded">
+                  <label for="email-to-member" class="ml-2 block text-sm text-gray-700">
+                    Email to member
+                  </label>
+                </div>
                 <button
                   type="submit"
                   :disabled="form.processing"
                   class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50">
-                  <span v-if="!form.processing">Save Note</span>
-                  <span v-else>Saving...</span>
+                  <span v-if="!form.processing">Add Note</span>
+                  <span v-else>Adding...</span>
                 </button>
               </div>
             </form>
@@ -145,7 +155,12 @@
                     <span class="text-sm font-medium text-gray-900">{{ note.user.name }}</span>
                   </div>
                   <div class="flex items-center space-x-3">
-                    <span class="text-xs text-gray-500">{{ formatDate(note.created_at) }}</span>
+                    <div class="flex items-center space-x-1">
+                      <span class="text-xs text-gray-500">{{ formatDate(note.created_at) }}</span>
+                      <svg v-if="note.email_sent" class="h-4 w-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" title="Sent via email">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                      </svg>
+                    </div>
                     <button
                       @click="editNote(note)"
                       class="text-gray-400 hover:text-primary-600"
@@ -226,6 +241,7 @@ export default {
     return {
       form: this.$inertia.form({
         note: '',
+        email_to_member: false,
       }),
       editingNoteId: null,
       editForm: this.$inertia.form({

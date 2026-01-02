@@ -167,4 +167,97 @@ class SubscriptionController extends Controller
 
         return back();
     }
+
+    public function previewBulkAdjustLoanPayments()
+    {
+        $results = [];
+        
+        // Find members with more than one monthly loan payment subscription
+        $members = \App\Models\Member::whereHas('subscriptions', function ($query) {
+                $query->where('type', Subscription::TYPE_LOAN_PAYMENT)
+                      ->where('frequency', Subscription::FREQUENCY_MONTHLY)
+                      ->whereHas('paysLoan', function ($q) {
+                          $q->where('loan_type', 'Wedding');
+                      });
+            }, '>', 1)
+            ->with(['subscriptions' => function ($query) {
+                $query->where('type', Subscription::TYPE_LOAN_PAYMENT)
+                      ->where('frequency', Subscription::FREQUENCY_MONTHLY)
+                      ->whereHas('paysLoan', function ($q) {
+                          $q->where('loan_type', 'Wedding');
+                      })
+                      ->orderBy('created_at', 'asc');
+            }])
+            ->get();
+
+        foreach ($members as $member) {
+            $result = $member->adjustLoanPaymentSubscriptions(true);
+            
+            if ($result['success']) {
+                $subscription = Subscription::find($result['subscription_id']);
+                $results[] = [
+                    'member_id' => $member->id,
+                    'member_name' => $member->first_name . ' ' . $member->last_name,
+                    'subscription_id' => $subscription->id,
+                    'current_amount' => $subscription->amount,
+                    'new_amount' => 350,
+                    'gateway' => $subscription->gateway,
+                ];
+            }
+        }
+
+        return response()->json([
+            'count' => count($results),
+            'adjustments' => $results,
+        ]);
+    }
+
+    public function executeBulkAdjustLoanPayments()
+    {
+        $adjusted = 0;
+        $errors = [];
+        
+        // Find members with more than one monthly loan payment subscription
+        $members = \App\Models\Member::whereHas('subscriptions', function ($query) {
+                $query->where('type', Subscription::TYPE_LOAN_PAYMENT)
+                      ->where('frequency', Subscription::FREQUENCY_MONTHLY)
+                      ->whereHas('paysLoan', function ($q) {
+                          $q->where('loan_type', 'Wedding');
+                      });
+            }, '>', 1)
+            ->with(['subscriptions' => function ($query) {
+                $query->where('type', Subscription::TYPE_LOAN_PAYMENT)
+                      ->where('frequency', Subscription::FREQUENCY_MONTHLY)
+                      ->whereHas('paysLoan', function ($q) {
+                          $q->where('loan_type', 'Wedding');
+                      })
+                      ->orderBy('created_at', 'asc');
+            }])
+            ->get();
+
+        foreach ($members as $member) {
+            $result = $member->adjustLoanPaymentSubscriptions();
+            
+            if ($result['success']) {
+                $adjusted++;
+            } else {
+                // Only track actual errors, not info messages
+                if (!str_contains($result['message'], 'does not have multiple') && 
+                    !str_contains($result['message'], 'already has') &&
+                    !str_contains($result['message'], 'No active')) {
+                    $errors[] = "Member #{$member->id}: {$result['message']}";
+                }
+            }
+        }
+
+        if ($adjusted > 0) {
+            return back()->snackbar("Successfully adjusted {$adjusted} subscription(s)" . (count($errors) > 0 ? " with " . count($errors) . " error(s)" : ""));
+        }
+
+        return back()->alert([
+            'icon' => 'info',
+            'title' => 'No Adjustments Made',
+            'message' => count($errors) > 0 ? implode(', ', $errors) : 'No subscriptions qualified for adjustment.',
+        ]);
+    }
 }
