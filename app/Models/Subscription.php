@@ -79,6 +79,11 @@ class Subscription extends Model
         return $this->belongsTo(Loan::class, 'loan_id');
     }
 
+    public function paymentMethod()
+    {
+        return $this->belongsTo(PaymentMethod::class);
+    }
+
     public function getTransactionTotalAttribute()
     {
         return $this->amount + $this->membership_fee + $this->processing_fee + $this->decline_fee;
