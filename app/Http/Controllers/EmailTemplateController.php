@@ -141,7 +141,22 @@ class EmailTemplateController extends Controller
                         'frequency' => 'Monthly',
                         'amount' => 350,
                         'billing_frequency' => 'monthly',
-                        'gateway_name' => 'Cardknox',
+                        'gateway' => 'Rotessa',
+                        'paysLoan' => (object)[
+                            'amount' => 25000,
+                            'remaining_balance' => 24250,
+                            'loan_date' => '2025-06-30',
+                            'dependent' => (object)[
+                                'name' => 'Sarah',
+                            ],
+                        ],
+                        'paymentMethod' => (object)[
+                            'gateway' => 'Rotessa',
+                            'gateway_data' => [
+                                'bank_name' => 'TD Bank',
+                                'account_number' => '*****43',
+                            ],
+                        ],
                     ],
                     'oldAmount' => 250,
                     'newAmount' => 350,
