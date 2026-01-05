@@ -395,6 +395,7 @@ class Member extends Model
             // Send email notification to member
             if ($this->email) {
                 try {
+                    $subscriptionToUpdate->load('paysLoan.dependent', 'paymentMethod');
                     \Illuminate\Support\Facades\Mail::to($this->email)
                         ->send(new \App\Mail\SubscriptionAdjusted($this, $subscriptionToUpdate, $oldAmount, $newAmount));
                 } catch (\Exception $e) {
