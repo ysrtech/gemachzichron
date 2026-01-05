@@ -353,6 +353,7 @@ class Member extends Model
                 'membership_fee' => $subscriptionToUpdate->membership_fee,
                 'processing_fee' => $subscriptionToUpdate->processing_fee,
                 'decline_fee' => $subscriptionToUpdate->decline_fee,
+                'comment' => 'Bulk adjustment of loan subscriptions to $350',
             ];
 
             // Update in gateway if not manual and not deleted from gateway

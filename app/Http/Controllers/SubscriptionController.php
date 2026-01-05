@@ -168,27 +168,31 @@ class SubscriptionController extends Controller
         return back();
     }
 
-    public function previewBulkAdjustLoanPayments()
+    private function getMembersWithMultipleLoanPayments()
     {
-        $results = [];
-        
-        // Find members with more than one monthly loan payment subscription
-        $members = \App\Models\Member::whereHas('subscriptions', function ($query) {
+        return \App\Models\Member::whereHas('subscriptions', function ($query) {
                 $query->where('type', Subscription::TYPE_LOAN_PAYMENT)
                       ->where('frequency', Subscription::FREQUENCY_MONTHLY)
                       ->whereHas('paysLoan', function ($q) {
                           $q->where('loan_type', 'Wedding');
                       });
             }, '>', 1)
-            ->with(['subscriptions' => function ($query) {
+            ->whereHas('subscriptions', function ($query) {
                 $query->where('type', Subscription::TYPE_LOAN_PAYMENT)
                       ->where('frequency', Subscription::FREQUENCY_MONTHLY)
+                      ->where('active', true)
                       ->whereHas('paysLoan', function ($q) {
                           $q->where('loan_type', 'Wedding');
-                      })
-                      ->orderBy('created_at', 'asc');
-            }])
+                      });
+            })
             ->get();
+    }
+
+    public function previewBulkAdjustLoanPayments()
+    {
+        $results = [];
+        
+        $members = $this->getMembersWithMultipleLoanPayments();
 
         foreach ($members as $member) {
             $result = $member->adjustLoanPaymentSubscriptions(true);
@@ -217,23 +221,7 @@ class SubscriptionController extends Controller
         $adjusted = 0;
         $errors = [];
         
-        // Find members with more than one monthly loan payment subscription
-        $members = \App\Models\Member::whereHas('subscriptions', function ($query) {
-                $query->where('type', Subscription::TYPE_LOAN_PAYMENT)
-                      ->where('frequency', Subscription::FREQUENCY_MONTHLY)
-                      ->whereHas('paysLoan', function ($q) {
-                          $q->where('loan_type', 'Wedding');
-                      });
-            }, '>', 1)
-            ->with(['subscriptions' => function ($query) {
-                $query->where('type', Subscription::TYPE_LOAN_PAYMENT)
-                      ->where('frequency', Subscription::FREQUENCY_MONTHLY)
-                      ->whereHas('paysLoan', function ($q) {
-                          $q->where('loan_type', 'Wedding');
-                      })
-                      ->orderBy('created_at', 'asc');
-            }])
-            ->get();
+        $members = $this->getMembersWithMultipleLoanPayments();
 
         foreach ($members as $member) {
             $result = $member->adjustLoanPaymentSubscriptions();
