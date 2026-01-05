@@ -100,6 +100,12 @@ return [
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
+
+        'missing_members' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/missing_members.log'),
+            'level' => 'warning',
+        ],
     ],
 
 ];

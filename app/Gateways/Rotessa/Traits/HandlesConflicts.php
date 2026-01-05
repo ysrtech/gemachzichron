@@ -114,6 +114,14 @@ trait HandlesConflicts
 
     public function createMissingMemberFromTransaction($rawTransaction)
     {
-        // todo
+        \Illuminate\Support\Facades\Log::channel('missing_members')->warning('Transaction found for unknown Rotessa customer', [
+            'rotessa_customer_id' => $rawTransaction['customer_id'] ?? null,
+            'transaction_id' => $rawTransaction['id'] ?? null,
+            'transaction_schedule_id' => $rawTransaction['transaction_schedule_id'] ?? null,
+            'amount' => $rawTransaction['amount'] ?? null,
+            'process_date' => $rawTransaction['process_date'] ?? null,
+            'customer_name' => $rawTransaction['customer_name'] ?? null,
+            'status' => $rawTransaction['status'] ?? null,
+        ]);
     }
 }

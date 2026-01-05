@@ -87,15 +87,15 @@
                     <span class="new-amount">${{ number_format($newAmount, 2) }}</span>
                 </div>
                 @if($subscription->paymentMethod && $subscription->gateway === 'Cardknox' && isset($subscription->paymentMethod->gateway_data['Issuer']) && isset($subscription->paymentMethod->gateway_data['MaskedCardNumber']))
-                    <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #e2e8f0;">
-                        <span style="color: #7f8c8d;">Account:</span>
-                        <strong>{{ $subscription->paymentMethod->gateway_data['Issuer'] }} {{ $subscription->paymentMethod->gateway_data['MaskedCardNumber'] }}</strong>
-                    </div>
-                @elseif($subscription->paymentMethod && $subscription->gateway === 'Rotessa' && isset($subscription->paymentMethod->gateway_data['bank_name']) && isset($subscription->paymentMethod->gateway_data['account_number']))
-                    <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #e2e8f0;">
-                        <span style="color: #7f8c8d;">Account:</span>
-                        <strong>{{ $subscription->paymentMethod->gateway_data['bank_name'] }} - {{ $subscription->paymentMethod->gateway_data['account_number'] }}</strong>
-                    </div>
+                <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #e2e8f0;">
+                    <span style="color: #7f8c8d;">Account:</span>
+                    <strong>{{ $subscription->paymentMethod->gateway_data['Issuer'] }} {{ $subscription->paymentMethod->gateway_data['MaskedCardNumber'] }}</strong>
+                </div>
+                @elseif($subscription->paymentMethod && $subscription->gateway === 'Rotessa' && isset($subscription->paymentMethod->gateway_data['account_number']))
+                <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #e2e8f0;">
+                    <span style="color: #7f8c8d;">Account:</span>
+                    <strong>@if(!empty($subscription->paymentMethod->gateway_data['bank_name'])){{ $subscription->paymentMethod->gateway_data['bank_name'] }} - @endif{{ $subscription->paymentMethod->gateway_data['account_number'] }}</strong>
+                </div>
                 @endif
             </div>
 
