@@ -354,6 +354,7 @@ class Member extends Model
                 'processing_fee' => $subscriptionToUpdate->processing_fee,
                 'decline_fee' => $subscriptionToUpdate->decline_fee,
                 'comment' => 'Bulk adjustment of loan subscriptions to $350',
+                'active' => $subscriptionToUpdate->active,
             ];
 
             // Update in gateway if not manual and not deleted from gateway
