@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-3xl mx-auto">
+  <div class="w-full">
 
     <div class="mb-6 flex justify-between items-center px-1">
       <app-button @click="showCreateModal = true">
@@ -7,9 +7,9 @@
       </app-button>
     </div>
 
-    <main class="flex-1 relative pb-8 z-0 overflow-y-auto mx-auto px-1">
+    <main class="flex-1 relative pb-8 z-0 overflow-y-auto px-1">
       <div class="flex flex-col mt-2">
-        <div class="align-middle min-w-full overflow-x-auto shadow overflow-hidden sm:rounded-lg">
+        <div class="align-middle w-full overflow-x-auto shadow overflow-hidden sm:rounded-lg">
           <users-table
             :users="users"
             @edit-user="userToEdit = $event; showCreateModal = true"
