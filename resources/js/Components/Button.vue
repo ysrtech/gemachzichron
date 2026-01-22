@@ -42,9 +42,9 @@ export default {
   computed: {
     colorClasses() {
       return {
-        'primary': 'bg-primary-700 border-transparent text-white hover:bg-primary-800 focus:bg-primary-900 focus:ring-primary-700',
-        'secondary': 'bg-white border-gray-200 text-gray-500 hover:text-gray-700 focus:text-gray-700 focus:ring-primary-700',
-        'danger': 'bg-red-600 border-transparent text-white hover:bg-red-700 focus:bg-red-800 focus:ring-red-700',
+        'primary': 'bg-zinc-800 border-transparent text-white hover:bg-zinc-700 focus:bg-zinc-900 focus:ring-zinc-800',
+        'secondary': 'bg-white border-zinc-200 text-zinc-600 hover:bg-zinc-50 hover:text-zinc-800 focus:ring-zinc-400',
+        'danger': 'bg-red-600 border-transparent text-white hover:bg-red-700 focus:bg-red-800 focus:ring-red-600',
       }[this.color]
     },
   }

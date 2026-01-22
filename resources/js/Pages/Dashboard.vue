@@ -1,154 +1,206 @@
 <template>
-  <main class="overflow-y-auto max-w-12xl mx-auto">
-    <div class="mt-3 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-      <div class="bg-white flex flex-col overflow-hidden rounded-lg shadow p-5">
-        <div class="text-xl text-gray-500">Loans</div>
-        <h2 class="flex-1 font-medium text-4xl">{{ loans_count }}</h2>
-      </div>
-
-      <div class="bg-white flex flex-col overflow-hidden rounded-lg shadow p-5">
-        <div class="text-xl text-gray-500">Loans Total</div>
-        <h2 class="font-medium text-5xl flex-1">
-          <money class="text-4xl" :amount="total_loans" :fraction="0"/>
-        </h2>
-      </div>
-
-      <div class="bg-white flex flex-col overflow-hidden rounded-lg shadow p-5">
-        <div class="text-xl text-gray-500">Outstanding Loans</div>
-        <h2 class="font-medium text-5xl flex-1">
-          <money class="text-4xl" :amount="total_loans_outstanding" :fraction="0"/>
-        </h2>
-      </div>
-
-      <div class="bg-white flex flex-col overflow-hidden rounded-lg shadow p-5">
-        <div class="text-xl text-gray-500">Gemach Capital</div>
-        <h2 class="font-medium text-4xl">
-          <money class="text-4xl" :amount="total_capital" :fraction="0"/>
-        </h2>
-      </div>
-
-      <div class="bg-white flex flex-col overflow-hidden rounded-lg shadow p-5">
-        <div class="text-xl text-gray-500">Membership & Decline Fees</div>
-        <h2 class="font-medium text-4xl">
-          <money class="text-4xl" :amount="total_membership_fees" :fraction="0"/>
-        </h2>
-      </div>
-
-      <div class="bg-white flex flex-col overflow-hidden rounded-lg shadow">
-        <div class="flex flex-col p-5">
-          <div class="text-xl text-gray-500">Pending Manual Transactions</div>
-          <h2 class="font-medium text-4xl">{{ pending_manual_count }}</h2>
-        </div>
-        <inertia-link
-          :href="
-            $route('transactions.index', {
-              status: TRANSACTION_STATUSES.Pending,
-              gateway: AVAILABLE_GATEWAYS.Manual,
-            })
-          "
-          class="
-            py-3
-            px-8
-            bg-gray-50
-            hover:bg-gray-100
-            text-gray-700
-            hover:text-gray-900
-            text-sm
-            font-medium
-            hover:underline
-          "
-        >
-          View
-        </inertia-link>
-      </div>
-      <div class="bg-white flex flex-col overflow-hidden rounded-lg shadow">
-        <div class="flex flex-col p-5">
-          <div class="text-xl text-gray-500">Unresolved Failed Transactions</div>
-          <h2 class="font-medium text-4xl">{{ unresolved_failed_count }}</h2>
-        </div>
-        <inertia-link
-          :href="
-            $route('transactions.index', { status: TRANSACTION_STATUSES.Fail, hide_resolved: true })
-          "
-          class="
-            py-3
-            px-8
-            bg-gray-50
-            hover:bg-gray-100
-            text-gray-700
-            hover:text-gray-900
-            text-sm
-            font-medium
-            hover:underline
-          "
-        >
-          View
-        </inertia-link>
-      </div>
-      <div class="bg-white flex flex-col overflow-hidden rounded-lg shadow p-5">
-        <div class="text-xl text-gray-500">Active Members</div>
-        <h2 class="flex-1 font-medium text-4xl">{{ members_count }}</h2>
-      </div>
-
-      <app-panel
-        class="col-span-1 sm:col-span-2 lg:col-span-4 mt-8 sm:overflow-auto"
-        title="Recent Transactions"
-      >
-        <template #content>
-          <transactions-table :transactions="recent_transactions" :showMember=1 />
-          <div class="text-gray-700 text-center font-medium py-3">
-            <inertia-link
-              class="hover:underline"
-              :href="$route('transactions.index')"
-              >View All</inertia-link
-            >
+  <main class="overflow-y-auto max-w-7xl mx-auto">
+    <!-- Stats Overview -->
+    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="bg-white overflow-hidden rounded-lg shadow-sm ring-1 ring-zinc-950/10">
+        <div class="p-5">
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <i class="material-icons-outlined text-3xl text-sky-500">account_balance_wallet</i>
+            </div>
+            <div class="ml-5 w-0 flex-1">
+              <dl>
+                <dt class="text-sm font-medium text-zinc-500 truncate">Total Revenue</dt>
+                <dd class="text-2xl font-semibold text-zinc-900">$45,231</dd>
+              </dl>
+            </div>
           </div>
-        </template>
-      </app-panel>
+          <div class="mt-4">
+            <div class="flex items-center text-sm">
+              <span class="text-green-600 font-medium">+12.5%</span>
+              <span class="ml-2 text-zinc-500">from last month</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white overflow-hidden rounded-lg shadow-sm ring-1 ring-zinc-950/10">
+        <div class="p-5">
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <i class="material-icons-outlined text-3xl text-sky-500">people</i>
+            </div>
+            <div class="ml-5 w-0 flex-1">
+              <dl>
+                <dt class="text-sm font-medium text-zinc-500 truncate">Active Users</dt>
+                <dd class="text-2xl font-semibold text-zinc-900">1,429</dd>
+              </dl>
+            </div>
+          </div>
+          <div class="mt-4">
+            <div class="flex items-center text-sm">
+              <span class="text-green-600 font-medium">+5.4%</span>
+              <span class="ml-2 text-zinc-500">from last month</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white overflow-hidden rounded-lg shadow-sm ring-1 ring-zinc-950/10">
+        <div class="p-5">
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <i class="material-icons-outlined text-3xl text-sky-500">receipt_long</i>
+            </div>
+            <div class="ml-5 w-0 flex-1">
+              <dl>
+                <dt class="text-sm font-medium text-zinc-500 truncate">Transactions</dt>
+                <dd class="text-2xl font-semibold text-zinc-900">234</dd>
+              </dl>
+            </div>
+          </div>
+          <div class="mt-4">
+            <div class="flex items-center text-sm">
+              <span class="text-red-600 font-medium">-2.1%</span>
+              <span class="ml-2 text-zinc-500">from last month</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white overflow-hidden rounded-lg shadow-sm ring-1 ring-zinc-950/10">
+        <div class="p-5">
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <i class="material-icons-outlined text-3xl text-sky-500">trending_up</i>
+            </div>
+            <div class="ml-5 w-0 flex-1">
+              <dl>
+                <dt class="text-sm font-medium text-zinc-500 truncate">Growth Rate</dt>
+                <dd class="text-2xl font-semibold text-zinc-900">24.7%</dd>
+              </dl>
+            </div>
+          </div>
+          <div class="mt-4">
+            <div class="flex items-center text-sm">
+              <span class="text-green-600 font-medium">+8.2%</span>
+              <span class="ml-2 text-zinc-500">from last month</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="mt-8 grid grid-cols-1 gap-5 lg:grid-cols-2">
+      <!-- Revenue Chart -->
+      <div class="bg-white overflow-hidden rounded-lg shadow-sm ring-1 ring-zinc-950/10">
+        <div class="p-6">
+          <h3 class="text-lg font-semibold text-zinc-900 mb-6">Revenue Overview</h3>
+          <div class="h-64 flex items-end justify-between space-x-2">
+            <div class="flex-1 bg-sky-500 rounded-t" style="height: 45%"></div>
+            <div class="flex-1 bg-sky-500 rounded-t" style="height: 60%"></div>
+            <div class="flex-1 bg-sky-500 rounded-t" style="height: 55%"></div>
+            <div class="flex-1 bg-sky-500 rounded-t" style="height: 75%"></div>
+            <div class="flex-1 bg-sky-500 rounded-t" style="height: 65%"></div>
+            <div class="flex-1 bg-sky-500 rounded-t" style="height: 85%"></div>
+            <div class="flex-1 bg-sky-500 rounded-t" style="height: 90%"></div>
+            <div class="flex-1 bg-sky-500 rounded-t" style="height: 80%"></div>
+            <div class="flex-1 bg-sky-500 rounded-t" style="height: 95%"></div>
+            <div class="flex-1 bg-sky-500 rounded-t" style="height: 100%"></div>
+            <div class="flex-1 bg-sky-500 rounded-t" style="height: 85%"></div>
+            <div class="flex-1 bg-sky-500 rounded-t" style="height: 92%"></div>
+          </div>
+          <div class="mt-4 flex justify-between text-sm text-zinc-500">
+            <span>Jan</span>
+            <span>Feb</span>
+            <span>Mar</span>
+            <span>Apr</span>
+            <span>May</span>
+            <span>Jun</span>
+            <span>Jul</span>
+            <span>Aug</span>
+            <span>Sep</span>
+            <span>Oct</span>
+            <span>Nov</span>
+            <span>Dec</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- User Activity Chart -->
+      <div class="bg-white overflow-hidden rounded-lg shadow-sm ring-1 ring-zinc-950/10">
+        <div class="p-6">
+          <h3 class="text-lg font-semibold text-zinc-900 mb-6">User Activity</h3>
+          <div class="h-64 flex items-center justify-center">
+            <div class="relative w-48 h-48">
+              <!-- Donut Chart Placeholder -->
+              <svg viewBox="0 0 100 100" class="w-full h-full">
+                <circle cx="50" cy="50" r="40" fill="none" stroke="#e5e7eb" stroke-width="20"/>
+                <circle cx="50" cy="50" r="40" fill="none" stroke="#0ea5e9" stroke-width="20" 
+                  stroke-dasharray="188.5" stroke-dashoffset="47" transform="rotate(-90 50 50)"/>
+                <circle cx="50" cy="50" r="40" fill="none" stroke="#14b8a6" stroke-width="20" 
+                  stroke-dasharray="188.5" stroke-dashoffset="141" transform="rotate(-90 50 50)"/>
+              </svg>
+              <div class="absolute inset-0 flex items-center justify-center">
+                <div class="text-center">
+                  <div class="text-2xl font-semibold text-zinc-900">75%</div>
+                  <div class="text-sm text-zinc-500">Active</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mt-6 space-y-3">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center">
+                <div class="w-3 h-3 rounded-full bg-sky-500 mr-2"></div>
+                <span class="text-sm text-zinc-600">Active Users</span>
+              </div>
+              <span class="text-sm font-medium text-zinc-900">75%</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <div class="flex items-center">
+                <div class="w-3 h-3 rounded-full bg-teal-500 mr-2"></div>
+                <span class="text-sm text-zinc-600">Inactive Users</span>
+              </div>
+              <span class="text-sm font-medium text-zinc-900">25%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="mt-8">
+      <div class="bg-white overflow-hidden rounded-lg shadow-sm ring-1 ring-zinc-950/10">
+        <div class="p-6">
+          <h3 class="text-lg font-semibold text-zinc-900 mb-6">Recent Activity</h3>
+          <div class="space-y-4">
+            <div v-for="i in 5" :key="i" class="flex items-center justify-between py-3 border-b border-zinc-100 last:border-0">
+              <div class="flex items-center">
+                <div class="w-10 h-10 rounded-full bg-sky-100 flex items-center justify-center">
+                  <i class="material-icons-outlined text-sky-600 text-xl">{{ ['person_add', 'receipt', 'credit_card', 'email', 'settings'][i-1] }}</i>
+                </div>
+                <div class="ml-4">
+                  <p class="text-sm font-medium text-zinc-900">{{ ['New user registered', 'Transaction completed', 'Payment received', 'Email sent', 'Settings updated'][i-1] }}</p>
+                  <p class="text-sm text-zinc-500">{{ [2, 5, 15, 30, 45][i-1] }} minutes ago</p>
+                </div>
+              </div>
+              <span class="text-sm text-zinc-500">{{ ['User #' + (1234 + i), '$' + (500 + i * 100), '$' + (250 + i * 50), 'Newsletter', 'Admin'][i-1] }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </main>
 </template>
 
 <script>
 import AppLayout from "@/Layouts/AppLayout";
-import { TRANSACTION_STATUSES } from "@/config/transactions";
-import { AVAILABLE_GATEWAYS } from "@/config/gateways";
-import { currentDate } from "@/helpers/dates";
-import Money from "@/Components/Money";
-import TransactionsTable from "@/Components/App/Transactions/TransactionsTable";
-import AppPanel from "@/Components/Panel";
 
 export default {
   layout: (h, page) => h(AppLayout, { title: "Dashboard" }, () => page),
 
-  components: {
-    AppPanel,
-    TransactionsTable,
-    Money,
-  },
-
-  props: {
-    recent_transactions: Array,
-    pending_manual_count: Number,
-    unresolved_failed_count: Number,
-    loans_count: Number,
-    members_count: Number,
-    month_success_total: [Number, String],
-    total_loans: [Number, String],
-    total_loans_outstanding: [Number, String],
-    total_membership_fees: [Number, String],
-    total_capital: [Number, String],
-  },
-
-  data() {
-    return {
-      TRANSACTION_STATUSES,
-      AVAILABLE_GATEWAYS,
-    };
-  },
-
-  methods: {
-    currentDate,
-  },
-};
+  name: 'Dashboard',
+}
 </script>

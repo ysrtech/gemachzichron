@@ -1,9 +1,9 @@
 <template>
-  <div class="min-h-screen flex flex-col justify-center items-center pt-0 bg-gray-100">
+  <div class="min-h-screen flex flex-col justify-center items-center pt-0 bg-zinc-50">
     <inertia-head :title="title ? `${title} - ${APP_NAME}` : APP_NAME"/>
-    <div class="w-full sm:max-w-sm px-6 py-4 sm:bg-white sm:shadow-md overflow-hidden sm:rounded-lg">
+    <div class="w-full sm:max-w-md px-6 py-8 sm:bg-white sm:shadow-sm sm:ring-1 sm:ring-zinc-950/10 overflow-hidden sm:rounded-xl">
       <inertia-link href="/">
-        <app-logo class="h-24 mx-auto my-5"/>
+        <app-logo class="h-16 mx-auto my-6"/>
       </inertia-link>
       <slot/>
     </div>

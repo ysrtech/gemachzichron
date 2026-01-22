@@ -48,37 +48,42 @@ class MailLogController extends Controller
         ]);
     }
 
-    // Webhook handler for Mailgun events
+    // Webhook handler for Resend events
     public function webhook(Request $request)
     {
-        $eventData = $request->input('event-data');
+        $type = $request->input('type');
+        $data = $request->input('data');
         
-        if (!$eventData) {
+        if (!$type || !$data) {
             return response()->json(['message' => 'Invalid webhook data'], 400);
         }
 
-        $messageId = $eventData['message']['headers']['message-id'] ?? null;
-        $event = $eventData['event'] ?? null;
+        $emailId = $data['email_id'] ?? null;
 
-        if (!$messageId) {
-            return response()->json(['message' => 'No message ID'], 400);
+        if (!$emailId) {
+            return response()->json(['message' => 'No email ID'], 400);
         }
 
-        $mailLog = MailLog::where('message_id', $messageId)->first();
+        $mailLog = MailLog::where('message_id', $emailId)->first();
+
+        if (!$mailLog) {
+            // Try with angle brackets (Swift format)
+            $mailLog = MailLog::where('message_id', 'like', "%{$emailId}%")->first();
+        }
 
         if (!$mailLog) {
             return response()->json(['message' => 'Mail log not found'], 404);
         }
 
-        switch ($event) {
-            case 'delivered':
+        switch ($type) {
+            case 'email.delivered':
                 $mailLog->update([
                     'status' => MailLog::STATUS_DELIVERED,
                     'delivered_at' => now(),
                 ]);
                 break;
 
-            case 'opened':
+            case 'email.opened':
                 $mailLog->increment('open_count');
                 $mailLog->update([
                     'status' => MailLog::STATUS_OPENED,
@@ -86,7 +91,7 @@ class MailLogController extends Controller
                 ]);
                 break;
 
-            case 'clicked':
+            case 'email.clicked':
                 $mailLog->increment('click_count');
                 $mailLog->update([
                     'status' => MailLog::STATUS_CLICKED,
@@ -94,18 +99,23 @@ class MailLogController extends Controller
                 ]);
                 break;
 
-            case 'failed':
-            case 'bounced':
+            case 'email.bounced':
                 $mailLog->update([
-                    'status' => $event === 'bounced' ? MailLog::STATUS_BOUNCED : MailLog::STATUS_FAILED,
+                    'status' => MailLog::STATUS_BOUNCED,
                     'failed_at' => now(),
-                    'error_message' => $eventData['delivery-status']['message'] ?? 'Unknown error',
+                    'error_message' => $data['bounce_type'] ?? 'Email bounced',
                 ]);
                 break;
 
-            case 'complained':
+            case 'email.complained':
                 $mailLog->update([
                     'status' => MailLog::STATUS_COMPLAINED,
+                ]);
+                break;
+
+            case 'email.delivery_delayed':
+                $mailLog->update([
+                    'error_message' => 'Delivery delayed',
                 ]);
                 break;
         }

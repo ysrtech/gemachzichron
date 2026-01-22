@@ -43,8 +43,8 @@ use Illuminate\Support\Facades\Route;
 */
 Route::redirect('/', RouteServiceProvider::HOME);
 
-// Mailgun webhook (public route)
-Route::post('webhooks/mailgun', [MailLogController::class, 'webhook'])->name('webhooks.mailgun');
+// Resend webhook (public route - no auth required)
+Route::post('webhooks/resend', [MailLogController::class, 'webhook'])->name('webhooks.resend');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', DashboardController::class)->name('dashboard');
@@ -130,12 +130,7 @@ Route::middleware(['auth'])->group(function () {
         \Illuminate\Support\Facades\Mail::to($email)->send(new \App\Mail\TestEmail());
         return redirect()->route('mail-logs.index')->with('success', 'Test email sent to ' . $email);
     })->name('test-email');
-    
-    // Sync Mailgun Events
-    Route::get('sync-mailgun-events', function() {
-        \Illuminate\Support\Facades\Artisan::call('mailgun:sync-events');
-        return redirect()->route('mail-logs.index')->with('success', 'Email statuses synced from Mailgun!');
-    })->name('sync-mailgun-events');
+
 
     // Plan Types
     Route::apiResource('plan-types', PlanTypeController::class);
